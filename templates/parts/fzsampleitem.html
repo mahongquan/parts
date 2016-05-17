@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<p>sample={{ sample.sample_name }} inclues items:</p>
+<table border=1>
+<tr>
+<td>item</td><td>id</td><td>fz</td><td>action</td>
+</tf>
+{% for i in items %}
+<tr>
+<td>{{ i.item_name }}</td><td>{{ i.id }}</td><td>{{ i.fz }}</td><td><a href="/dd/fzitem?id={{ i.id }}">edit</a></td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

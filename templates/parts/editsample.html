@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block extrahead %}
+<!-- calendar -->
+<link rel="stylesheet" type="text/css" href="/static/jscalendar-1.0/calendar-win2k-cold-2.css" />
+<script type="text/javascript" src="/static/jscalendar-1.0/calendar.js"></script>
+<!-- this is translation file - choose your language here -->
+<script type="text/javascript" src="/static/jscalendar-1.0/lang/calendar-pl.js"></script>
+<script type="text/javascript" src="/static/jscalendar-1.0/calendar-setup.js"></script>
+<!-- /calendar -->
+{% endblock %}
+{% block content %}
+<form action="." method="POST">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<p><input type="submit" value="Submit"></p>
+</form>
+<!-- div class="form-row" >
+  <label for="id_contact_date_date" class="required">Contact date:</label> 
+  
+<p class="datetime"> 
+   Date: <input type="text" id="id_contact_date_date" class="vDateField required" name="contact_date_date" size="10" value="2006-12-10" maxlength="10" /><br />
+   Time: <input type="text" id="id_contact_date_time" class="vTimeField required" name="contact_date_time" size="8" value="20:46:33" maxlength="8" />
+</p>
+</div --!>
+{% endblock %}

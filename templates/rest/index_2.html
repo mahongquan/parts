@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block extrahead %}
+  <title>Rest Proxy Example</title>
+  <link rel="stylesheet" type="text/css" href="/static/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="/static/restful.css" />
+    <script type="text/javascript" src="/static/js/jquery-1.10.2.js"></script>
+    <script>
+    var user="{{ user }}"
+    $.ajaxSetup({
+    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    </script>
+  <script type="text/javascript" src="/static/ext-all.js"></script>
+  <script type="text/javascript">
+    Ext.onReady(function() {  
+  
+            Ext.QuickTips.init();  
+  
+            var msg = function(title, msg) {  
+                Ext.Msg.show({  
+                    title: title,  
+                    msg: msg,  
+                    minWidth: 200,  
+                    modal: true,  
+                    icon: Ext.Msg.INFO,  
+                    buttons: Ext.Msg.OK  
+                });  
+  
+            };  
+              
+            var fp = new Ext.FormPanel({  
+                renderTo: 'fi-form',  
+                fileUpload: true,  
+                width: 500,  
+                frame: true,  
+                title: '图片上传操作',  
+                autoHeight: true,  
+                bodyStyle: 'padding: 10px 10px 0 10px;',  
+                labelWidth: 50,  
+                defaults: {  
+                    anchor: '95%',  
+                    allowBlank: false,  
+                    msgTarget: 'side'  
+                },  
+                items: [{  
+                    xtype: 'textfield',  
+                    fieldLabel: 'Name',  
+                    name:"txtname"  
+                }, {  
+                    xtype: 'fileuploadfield',  
+                    id: 'form-file',  
+                    emptyText: 'Select an image',  
+                    fieldLabel: 'Photo',  
+                    name: 'myFile',  
+                    buttonText: '',  
+                    buttonCfg: {  
+                        iconCls: 'upload-icon'  
+                    }  
+}],  
+                    buttons: [{  
+                        text: 'Save',  
+                        handler: function() {  
+                            if (fp.getForm().isValid()) {  
+                                fp.getForm().submit({  
+                                    url: '/rest/upload',//后台处理的页面  
+                                    waitMsg: 'Uploading your photo...',  
+                                    success: function(fp, o) {  
+                                        msg('Success', 'Processed file "' + o.result.files + '" on the server');  
+                                    }  
+                                });  
+                            }  
+                        }  
+                    }, {  
+                        text: 'Reset',  
+                        handler: function() {  
+                            fp.getForm().reset();  
+                        }  
+}]  
+                    });  
+                });  
+  </script>
+{% endblock %}
+{% block content %}
+  <div id="windowDiv"></div>
+  <div id="fi-form"></div>
+{% endblock %}

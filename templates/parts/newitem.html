@@ -1,0 +1,19 @@
+{% load i18n %}
+{% block content %}
+<form method="post" action="/dd/saveitem/">{% csrf_token %}
+<table>
+<tr>
+<td><label for="id_username">{% trans  "itemname:" %}</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="itemname" size="15" value="" maxlength="30" />
+</td>
+</tr>
+<tr>
+<td><label for="id_username">{% trans  "estimate:" %}</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="estimate" size="15" value="" maxlength="30" />
+</td>
+</tr>
+</table>
+<input type="hidden" name="sampleid" value="{{ sample.id }}" />
+<input type="submit" value={% trans  "save" %} />
+</form>
+{% endblock %}

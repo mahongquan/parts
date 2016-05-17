@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/static/jquery.mobile.custom/jquery.mobile.custom.structure.css">
+	<link rel="stylesheet" href="/static/jquery.mobile.custom/jquery.mobile.custom.theme.css">
+	<script type="text/javascript" src="/static/js/jquery-1.10.2.js"></script>
+	<script src="/static/jquery.mobile.custom/jquery.mobile.custom.js"></script>
+	 <script>
+		    var user="{{ user }}"
+		    $.ajaxSetup({
+		    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+		    });
+    	</script>
+    	<script>
+$(function(){  
+        console.log("document ready");
+        var addnum=0;
+        function addrow(id,name){  
+            console.log("add row");  
+            var newtodo=$("#table_input");  
+            var col1=$( "<td>" );
+            var col2=$( "<td>" );
+            var col3=$( "<td>" );
+            var col4=$( "<td>" );
+            var nm="add_"+addnum;
+            var p_nm="p_"+addnum;
+            var row_nm="row_"+addnum;
+            var input1=$('<p>');input1.attr("id",p_nm);input1.attr("name",p_nm);
+            var input2=$('<input>');input2.attr("id",nm);input2.attr("name",nm);
+            input2.attr( "type","hidden");
+            var input3=$("<button>");input3.append("移去");
+            input3.attr("type","button");
+            var row=$( "<tr>" );row.attr("id",row_nm);
+            //input3.bind("click", { nm:row_nm},button_remove_click );  
+            col1.append(input2); 
+            col2.append(input1); 
+            col3.append(input3);
+            row.append(col1);
+            row.append(col2);
+            row.append(col3);
+            var contact_id=$("#id");
+            contact_id=contact_id.val();
+            col4.append('<a href="/parts/packItem/?id='+id+'&url=/parts/showcontactP/?id='+contact_id+'">修改</a>');
+            row.append(col4);
+            newtodo.append(row);
+            addnum++;
+            $("#add_"+(addnum-1)).val(id);
+            $("#p_"+(addnum-1)).append(name);
+        }  
+        output={"start":0,"limit":10};
+        $.ajax({ 
+          context: document.body,
+          type:'GET',
+          dataType: "json",
+          url: "/rest/Contact",
+          data: output,
+          complete:function(){
+          },
+          error:function(XMLHttpRequest, textStatus, errorThrown){
+              console.log(errorThrown);
+          },
+          success: function(data)
+          {
+              console.log("ajax done");
+              console.log(data);
+              for(var i in data.data)
+              {
+              	var one=data.data[i];
+              	addrow(one.id,one.yonghu);
+              }
+          }
+        });
+ });
+    	</script>
+</head>
+<body>
+<table id="table_input"></table>
+</body>
+</html>

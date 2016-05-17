@@ -1,0 +1,34 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<p>contact={{ contact.contactbh }} inclues samples:</p>
+<table border="1" cellpadding="2" cellspacing="2"  border="1" >
+<tbody>
+<td>样品名称</td><td>id</td><td>操作</td><td>数量</td>
+{% for c in samples %}
+<tr>
+<td>{{ c.sample_name }}</td>
+<td>{{ c.id }}</td>
+<td>
+<p>
+<a href="/dd/showsampleitems?id={{ c.id }}&contactid={{ contact.id }}">
+{% if c.item_set.count %}
+show items
+{% else %}
+add items
+{% endif %}
+</a>
+</p>
+<p>
+<a href="/dd/editsample?id={{ c.id }}&contactid={{ contact.id }}">editsample</a>
+</p>
+<p>
+<a href="/dd/deletesample?id={{ c.id }}&contactid={{ contact.id }}">deletesample</a>
+</p>
+</td>
+<td>{{ c.item_set.count }}</td>
+</tr>
+</tbody>
+{% endfor %}
+</table>
+<p><a href="/dd/newsample?contactid={{ contact.id }}">new</a></p>
+{% endblock %}

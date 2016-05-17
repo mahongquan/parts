@@ -1,0 +1,20 @@
+{% block content %}
+<form method="post" action="/dd/savesample/">
+<table  border="1" >
+<tr>
+<td>
+<label for="id_username">samplename:</label>
+</td>
+<td>
+<input type="text" id="samplename" class="vTextField required" name="samplename" size="15" value="" maxlength="30" />
+</td>
+</tr>
+<tr>
+<td><label for="id_username">samplebh:</label></td>
+<td><input type="text" id="samplebh" class="vTextField required" name="samplebh" size="15" value="" maxlength="30" /></td>
+</tr>
+</table>
+<input type="hidden" name="contactid" value="{{ contact.id }}" />
+<input type="submit" value="save" />
+</form>
+{% endblock %}

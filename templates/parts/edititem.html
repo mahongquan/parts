@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post" action="/dd/updateitem/">{% csrf_token %}
+<table border="1" cellpadding="2" cellspacing="2" bgcolor="#99ccff" border="1" bordercolor="#993366">
+<tr>
+<td><label for="id_username">itemname:</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="itemname" size="15" value={{ item.item_name }} maxlength="30" /></td>
+</tr>
+</table>
+<input type="hidden" name="itemid" value="{{ item.id }}" />
+<input type="submit" value="save" />
+</form>
+{% endblock %}

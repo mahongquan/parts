@@ -1,0 +1,26 @@
+<html>
+	<body>
+		<p align="center">filelist</p>
+		<div align="center">
+		  <table width="100%" border="1" align="center" cellpadding="1" cellspacing="2" bordercolor="#993366" bgcolor="#99CCFF">
+		    <tr>
+		      <td width="151" bgcolor="#99CC00"> <div align="center">name</div></td>
+			    <td width="243" bgcolor="#99CC00"> <div align="center">size</div></td>
+		    </tr>
+		    {%for fl  in filelist %}
+		    <tr>
+		      <td> <div align="center"><a href="{{download_url}}/{{fl.fn}}">{{fl.fn}}</a> </div></td>
+			    <td><div align="center">{{fl.fs}}</div></td>
+		    </tr>
+		    {% endfor %}
+	      </table>
+    </div>
+    {{download_url}}
+	<form action=/download/upload/ method="post" enctype="multipart/form-data" >{% csrf_token %}
+            <div align="center">
+            filename<input type="file" name="myFile" /><br />
+            <input type="submit" value="upload" />
+            </div>
+            </form>
+	</body>
+</html>

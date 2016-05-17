@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+<p></p>
+<table    cellpadding="0" cellspacing="0" border="1"  id="table0" width="300" >
+<tr>
+<td>用户名称:</td>
+<td>{{ contact.yonghu}}</td>
+</tr>
+<tr>
+<td><label >仪器型号:</label></td>
+<td>{{ contact.yiqixinghao }}</td>
+</tr>
+<tr>
+<td><label >仪器编号:</label></td>
+<td>{{ contact.yiqibh }}</td>
+</tr>
+<tr>
+<td><label >包箱:</label></td>
+<td>{{ contact.baoxiang }}</td>
+</tr>
+<tr>
+<td><label >审核:</label></td>
+<td>{{ contact.shenhe }}</td>
+</tr>
+<tr>
+<td><label >预计发货时间:</label></td>
+<td>{{ contact.yujifahuo_date|date:"Y-m-d" }}</td>
+</tr>
+<tr>
+<td><label >合同编号:</label></td>
+<td>{{ contact.hetongbh }}</td>
+</tr>
+</table>
+<p></p>
+<table    border="1px" cellspacing="0px" style="border-collapse:collapse" class="display" id="table1" width="600">
+    <thead>
+      <td>库存编号</td>
+      <td>配件名称</td>
+      <td>规格</td>
+      <td>数量</td>
+      <td>备货</td>
+      <td>备注</td>
+    </thead>
+    <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.bh }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.guige }}</td>
+      <td>{{ item.ct }}{{ item.danwei }}</td>
+      <td></td>
+      <td>{% if item.beizhu %}
+     {{ item.beizhu }}
+{% endif %}</td>
+    </tr>
+  {% endfor %}  
+  </tbody>
+</table>
+{% endblock %}

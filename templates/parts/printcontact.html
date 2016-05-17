@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<table border=".5" width="80%">
+<tr>
+<td><label >合同编号:</label></td>
+<td>{{ contact.contactbh }}  </td>
+</tr>
+<tr>
+<td><label >样品类型:</label></td>
+<td>{{ contact.sampletype }}</td>
+</tr>
+<tr>
+<td><label >分析周期:</label></td>
+<td>{{ contact.fenxizhouqi }}</td>
+</tr>
+<!-- <tr>
+<td><label >是否制样:</label></td>
+{% if   contact.shifouzhiyang  %}
+<td>是</td>
+{% else %}
+<td>否</td>
+{% endif %}
+</tr>
+<tr>
+<td><label >制样周期:</label></td>
+<td>{{ contact.zhiyangzhouqi }}</td>
+</tr> -->
+<tr>
+<td><label >单位:</label></td>
+<td>{{ contact.danwei }} </td>
+</tr>
+<tr>
+<td><label >电话:</label></td>
+<td>{{ contact.dianhua }}</td>
+</tr>
+<tr>
+<td><label >联系人:</label></td>
+<td>{{ contact.lianxiren }}</td>
+</table>
+<table border=".5" width="80%">
+</tr>
+</table>
+{% endblock %}

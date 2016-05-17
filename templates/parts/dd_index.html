@@ -1,0 +1,59 @@
+﻿{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+<a href="/parts/newcontact/">新合同</a>
+<div class="table-responsive">
+<table class="table-striped table-condensed table-bordered table-hover">
+    <thead>
+ <!--      <td>id</td> -->
+       <td>用户名称</td>
+      <td>仪器型号</td>
+      <td>仪器编号</td>
+    <td>包箱</td>
+<!--     <td>审核</td>
+ -->    <td>预计发货时间</td>
+    <td>合同编号</td>
+    <td>操作</td>
+    </thead>
+    <tbody>
+{% for c in contacts %} <tr>
+      <!-- <td>{{ c.id }}</td> -->
+      <td>{{c.yonghu}}</td>
+<!--       <td>{{ c.contact_date }}</td> -->
+      <td>{{ c.yiqixinghao}}</td>
+       <td>{{ c.yiqibh }}</td>
+            <td>{{ c.baoxiang }}</td>
+ <!--      <td>{{ c.shenhe }}</td> -->
+      <td>{{ c.yujifahuo_date|date:"Y-m-d" }}</td>
+      <td>{{ c.hetongbh }}</td>
+     <td> 
+         <p><a href="/parts/showcontact?id={{ c.id }}">详细</a></p>
+         <p><a href="/parts/zhuangxiangdan?id={{ c.id }}">装箱单</a></p>
+         <p><a href="/parts/tar?id={{ c.id }}">证书及数据表</a></p>
+         <p><a href="/parts/showcontactP?id={{ c.id }}">包信息</a></p>
+         <!-- <p><a href="/parts/que?id={{ c.id }}">缺货物资单</a></p> -->
+      </td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+<p>
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">前一页</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">后一页</a>
+        {% endif %}
+    </span>
+</div>
+</p>
+{% endblock %}

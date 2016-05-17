@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<p>sample={{ sample.sample_name }} inclues items:</p>
+<table border="1" cellpadding="2" cellspacing="2"  border="1" >
+{% for i in items %}
+<tr>
+<td>{{ i.item_name }}</td>
+<td>{{ i.id }}</td>
+<td>
+<p><a href="/dd/edititem?id={{ i.id }}">edit</a></p>
+<p><a href="/dd/deleteitem?id={{ i.id }}">delete</a></p>
+</td>
+</tr>
+{% endfor %}
+</table>
+<p><a href="/dd/newitem?sampleid={{ sample.id }}">new</a></p>
+{% endblock %}

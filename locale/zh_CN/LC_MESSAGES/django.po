@@ -1,0 +1,446 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-17 20:52+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: templates/admin_doc/404.html:4 templates/admin_doc/404.html:8
+msgid "Page not found"
+msgstr ""
+
+#: templates/admin_doc/404.html:10
+msgid "We're sorry, but the requested page could not be found."
+msgstr ""
+
+#: templates/admin_doc/500.html:6 templates/admin_doc/app_index.html:9
+#: templates/admin_doc/auth/user/change_password.html:13
+#: templates/admin_doc/base.html:56 templates/admin_doc/change_form.html:18
+#: templates/admin_doc/change_list.html:40
+#: templates/admin_doc/delete_confirmation.html:8
+#: templates/admin_doc/delete_selected_confirmation.html:8
+#: templates/admin_doc/invalid_setup.html:6
+#: templates/admin_doc/object_history.html:6
+msgid "Home"
+msgstr ""
+
+#: templates/admin_doc/500.html:7
+msgid "Server error"
+msgstr ""
+
+#: templates/admin_doc/500.html:11
+msgid "Server error (500)"
+msgstr ""
+
+#: templates/admin_doc/500.html:14
+msgid "Server Error <em>(500)</em>"
+msgstr ""
+
+#: templates/admin_doc/500.html:15
+msgid ""
+"There's been an error. It's been reported to the site administrators via "
+"email and should be fixed shortly. Thanks for your patience."
+msgstr ""
+
+#: templates/admin_doc/actions.html:4
+msgid "Run the selected action"
+msgstr ""
+
+#: templates/admin_doc/actions.html:4
+msgid "Go"
+msgstr ""
+
+#: templates/admin_doc/actions.html:11
+msgid "Click here to select the objects across all pages"
+msgstr ""
+
+#: templates/admin_doc/actions.html:11
+#, python-format
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr ""
+
+#: templates/admin_doc/actions.html:13
+msgid "Clear selection"
+msgstr ""
+
+#: templates/admin_doc/auth/user/add_form.html:6
+msgid ""
+"First, enter a username and password. Then, you'll be able to edit more user "
+"options."
+msgstr ""
+
+#: templates/admin_doc/auth/user/add_form.html:8
+msgid "Enter a username and password."
+msgstr ""
+
+#: templates/admin_doc/auth/user/change_password.html:17
+#: templates/admin_doc/auth/user/change_password.html:54
+#: templates/admin_doc/base.html:44
+msgid "Change password"
+msgstr ""
+
+#: templates/admin_doc/auth/user/change_password.html:27
+#: templates/admin_doc/change_form.html:47
+#: templates/admin_doc/change_list.html:67 templates/admin_doc/login.html:21
+msgid "Please correct the error below."
+msgstr ""
+
+#: templates/admin_doc/auth/user/change_password.html:27
+#: templates/admin_doc/change_form.html:47
+#: templates/admin_doc/change_list.html:67 templates/admin_doc/login.html:21
+msgid "Please correct the errors below."
+msgstr ""
+
+#: templates/admin_doc/auth/user/change_password.html:31
+#, python-format
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr ""
+
+#: templates/admin_doc/base.html:30
+msgid "Welcome,"
+msgstr ""
+
+#: templates/admin_doc/base.html:35
+msgid "View site"
+msgstr ""
+
+#: templates/admin_doc/base.html:40
+msgid "Documentation"
+msgstr ""
+
+#: templates/admin_doc/base.html:46
+msgid "Log out"
+msgstr ""
+
+#: templates/admin_doc/base_site.html:3
+msgid "Django site admin"
+msgstr ""
+
+#: templates/admin_doc/base_site.html:6
+msgid "Django administration"
+msgstr ""
+
+#: templates/admin_doc/change_form.html:21 templates/admin_doc/index.html:31
+#: templates/admin_doc/related_widget_wrapper.html:16
+msgid "Add"
+msgstr ""
+
+#: templates/admin_doc/change_form.html:33
+#: templates/admin_doc/object_history.html:10
+msgid "History"
+msgstr ""
+
+#: templates/admin_doc/change_form.html:35
+#: templates/admin_doc/edit_inline/stacked.html:10
+#: templates/admin_doc/edit_inline/tabular.html:33
+msgid "View on site"
+msgstr ""
+
+#: templates/admin_doc/change_list.html:58
+#, python-format
+msgid "Add %(name)s"
+msgstr ""
+
+#: templates/admin_doc/change_list.html:78
+msgid "Filter"
+msgstr ""
+
+#: templates/admin_doc/change_list_results.html:17
+msgid "Remove from sorting"
+msgstr ""
+
+#: templates/admin_doc/change_list_results.html:18
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr ""
+
+#: templates/admin_doc/change_list_results.html:19
+msgid "Toggle sorting"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:12
+#: templates/admin_doc/related_widget_wrapper.html:23
+#: templates/admin_doc/submit_line.html:6
+msgid "Delete"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:18
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would result in deleting "
+"related objects, but your account doesn't have permission to delete the "
+"following types of objects:"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:25
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
+"following protected related objects:"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:32
+#, python-format
+msgid ""
+"Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
+"All of the following related items will be deleted:"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:34
+#: templates/admin_doc/delete_selected_confirmation.html:33
+msgid "Objects"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:41
+#: templates/admin_doc/delete_selected_confirmation.html:44
+msgid "Yes, I'm sure"
+msgstr ""
+
+#: templates/admin_doc/delete_confirmation.html:42
+#: templates/admin_doc/delete_selected_confirmation.html:45
+msgid "No, take me back"
+msgstr ""
+
+#: templates/admin_doc/delete_selected_confirmation.html:11
+msgid "Delete multiple objects"
+msgstr ""
+
+#: templates/admin_doc/delete_selected_confirmation.html:17
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would result in deleting related "
+"objects, but your account doesn't have permission to delete the following "
+"types of objects:"
+msgstr ""
+
+#: templates/admin_doc/delete_selected_confirmation.html:24
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would require deleting the following "
+"protected related objects:"
+msgstr ""
+
+#: templates/admin_doc/delete_selected_confirmation.html:31
+#, python-format
+msgid ""
+"Are you sure you want to delete the selected %(objects_name)s? All of the "
+"following objects and their related items will be deleted:"
+msgstr ""
+
+#: templates/admin_doc/edit_inline/stacked.html:8
+#: templates/admin_doc/edit_inline/tabular.html:31
+#: templates/admin_doc/index.html:37
+#: templates/admin_doc/related_widget_wrapper.html:9
+msgid "Change"
+msgstr ""
+
+#: templates/admin_doc/edit_inline/stacked.html:26
+#: templates/admin_doc/edit_inline/tabular.html:80
+msgid "Remove"
+msgstr ""
+
+#: templates/admin_doc/edit_inline/stacked.html:27
+#: templates/admin_doc/edit_inline/tabular.html:79
+#, python-format
+msgid "Add another %(verbose_name)s"
+msgstr ""
+
+#: templates/admin_doc/edit_inline/tabular.html:17
+msgid "Delete?"
+msgstr ""
+
+#: templates/admin_doc/filter.html:2
+#, python-format
+msgid " By %(filter_title)s "
+msgstr ""
+
+#: templates/admin_doc/includes/object_delete_summary.html:2
+msgid "Summary"
+msgstr ""
+
+#: templates/admin_doc/index.html:20
+#, python-format
+msgid "Models in the %(name)s application"
+msgstr ""
+
+#: templates/admin_doc/index.html:47
+msgid "You don't have permission to edit anything."
+msgstr ""
+
+#: templates/admin_doc/index.html:55
+msgid "Recent Actions"
+msgstr ""
+
+#: templates/admin_doc/index.html:56
+msgid "My Actions"
+msgstr ""
+
+#: templates/admin_doc/index.html:60
+msgid "None available"
+msgstr ""
+
+#: templates/admin_doc/index.html:74
+msgid "Unknown content"
+msgstr ""
+
+#: templates/admin_doc/invalid_setup.html:12
+msgid ""
+"Something's wrong with your database installation. Make sure the appropriate "
+"database tables have been created, and make sure the database is readable by "
+"the appropriate user."
+msgstr ""
+
+#: templates/admin_doc/login.html:37
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr ""
+
+#: templates/admin_doc/login.html:57
+msgid "Forgotten your password or username?"
+msgstr ""
+
+#: templates/admin_doc/login.html:61
+msgid "Log in"
+msgstr ""
+
+#: templates/admin_doc/object_history.html:22
+msgid "Date/time"
+msgstr ""
+
+#: templates/admin_doc/object_history.html:23
+msgid "User"
+msgstr ""
+
+#: templates/admin_doc/object_history.html:24
+msgid "Action"
+msgstr ""
+
+#: templates/admin_doc/object_history.html:38
+msgid ""
+"This object doesn't have a change history. It probably wasn't added via this "
+"admin site."
+msgstr ""
+
+#: templates/admin_doc/pagination.html:10
+#: templates/admin_doc/search_form.html:9
+msgid "Show all"
+msgstr ""
+
+#: templates/admin_doc/pagination.html:11
+#: templates/admin_doc/submit_line.html:3
+msgid "Save"
+msgstr ""
+
+#: templates/admin_doc/popup_response.html:3
+msgid "Popup closing..."
+msgstr ""
+
+#: templates/admin_doc/related_widget_wrapper.html:8
+#, python-format
+msgid "Change selected %(model)s"
+msgstr ""
+
+#: templates/admin_doc/related_widget_wrapper.html:15
+#, python-format
+msgid "Add another %(model)s"
+msgstr ""
+
+#: templates/admin_doc/related_widget_wrapper.html:22
+#, python-format
+msgid "Delete selected %(model)s"
+msgstr ""
+
+#: templates/admin_doc/search_form.html:7
+msgid "Search"
+msgstr ""
+
+#: templates/admin_doc/search_form.html:9
+#, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin_doc/search_form.html:9
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr ""
+
+#: templates/admin_doc/submit_line.html:8
+msgid "Save as new"
+msgstr ""
+
+#: templates/admin_doc/submit_line.html:9
+msgid "Save and add another"
+msgstr ""
+
+#: templates/admin_doc/submit_line.html:10
+msgid "Save and continue editing"
+msgstr ""
+
+#: templates/parts/newitem.html:6
+msgid "itemname:"
+msgstr ""
+
+#: templates/parts/newitem.html:11
+msgid "estimate:"
+msgstr ""
+
+#: templates/parts/newitem.html:17 templates/registration/register.html:17
+msgid "save"
+msgstr ""
+
+#: templates/registration/login.html:4
+msgid "注册"
+msgstr ""
+
+#: templates/registration/login.html:5
+msgid "登录样品信息系统"
+msgstr ""
+
+#: templates/registration/login.html:11
+msgid "用户名称:"
+msgstr ""
+
+#: templates/registration/login.html:16
+msgid "密码:"
+msgstr ""
+
+#: templates/registration/login.html:25
+msgid "登录"
+msgstr ""
+
+#: templates/registration/register.html:5
+msgid "new user register:"
+msgstr ""
+
+#: templates/registration/register.html:10
+msgid "Username:"
+msgstr ""
+
+#: templates/registration/register.html:13
+msgid "Password:"
+msgstr ""
+
+#: templates/testi18n.html:2
+msgid "This is the title."
+msgstr ""
+
+#: templates/testi18n.html:3
+msgid "hello."
+msgstr ""

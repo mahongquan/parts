@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<p>
+user={{ user.username }} inclues contacts:</p>
+<table align="center" border="1"  cellpadding="1" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>bh</td>
+      <td>id</td>
+      <td>date</td>
+      <td>action</td>
+      <td>sample count</td>
+      <td>state</td>
+    </tr>
+{% for c in contacts %} <tr>
+      <td>{{ c.contactbh }}</td>
+      <td>{{ c.id }}</td>
+      <td>{{ c.contact_date }}</td>
+      <td>
+		<p><a href="/dd/fzone?id={{ c.id }}">fz</a></p>
+		<p><a href="/dd/finishfz?id={{ c.id }}">finishfz</a></p>
+      </td>
+      <td>{{ c.sample_set.count }}</td>
+      <td>{{ c.state }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+<p>finished:</p>
+<table align="center"  border="1"  cellpadding="1" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>bh</td>
+      <td>id</td>
+      <td>date</td>
+      <td>action</td>
+      <td>sample count</td>
+      <td>state</td>
+    </tr>
+{% for c in contacts_finish %} <tr>
+      <td>{{ c.contactbh }}</td>
+      <td>{{ c.id }}</td>
+      <td>{{ c.contact_date }}</td>
+      <td>
+      		<p><a href="/dd/fzone?id={{ c.id }}">fz</a></p>
+      </td>
+      <td>{{ c.sample_set.count }}</td>
+      <td>{{ c.state }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

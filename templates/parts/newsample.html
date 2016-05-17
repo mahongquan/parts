@@ -1,0 +1,18 @@
+{% block content %}
+<form method="post" action="/dd/savesample/">{% csrf_token %}
+<table>
+<tr>
+<td><label for="id_username">样品名称:</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="samplename" size="15" value="{{ sample.sample_name}}" maxlength="30" /></td>
+</tr>
+<tr>
+<td><label for="id_username">samplebh:</label></td>
+<td><input type="text" id="samplebh" style="background:#eee none; color:#222; font-style: italic" class="vTextField required" name="samplebh" size="15" value="{{ sample.sample_bh }}" maxlength="30" readonly/></td>
+</tr>
+</table>
+<input type="hidden" name="id" value="{{ sample.id }}" />
+<input type="hidden" name="contactid" value="{{ contactid }}" />
+<input type="hidden" name="new" value="{{ new }}" />
+<input type="submit" value="save" />
+</form>
+{% endblock %}

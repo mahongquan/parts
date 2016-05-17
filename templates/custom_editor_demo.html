@@ -1,0 +1,241 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/static/restful.css" />
+<link rel="stylesheet" type="text/css"
+	href="/static/resources/css/ext-all.css" />
+<script type="text/javascript" src="/static/ext-all.js"></script>
+
+<style type="text/css">
+span.male_span {
+	background: url(/static/extjs5/ch11/male.png) no-repeat right;
+	width: 16px;
+	line-height: 16px;
+	padding-left: 10px;
+}
+
+span.female_span {
+	background: url(/static/extjs5/ch11/female.png) no-repeat right;
+	width: 16px;
+	line-height: 16px;
+	padding-left: 10px;
+}
+
+span.checked_span {
+	background: url(/static/extjs5/ch11/checked.png) no-repeat right;
+	width: 16px;
+	line-height: 16px;
+	padding-left: 10px;
+}
+
+span.unchecked_span {
+	background: url(/static/extjs5/ch11/unchecked.png) no-repeat right;
+	width: 16px;
+	line-height: 16px;
+	padding-left: 10px;
+}
+</style>
+
+<script type="text/javascript">
+Ext.define('ContactItem', {
+    extend: 'Ext.data.Model',
+    fields: [{
+        name: 'id',
+        type: 'int',
+    }, 'name','gender',{name:'dob',type:"date"},'epaper']
+});
+		Ext.onReady(function(){
+		 	var movieList = Ext.get('csrf');
+	    	var a=movieList.dom.childNodes[0];
+			var token=a.defaultValue;
+
+			var pageSize1=3;
+			var store = Ext.create('Ext.data.Store', {
+	            pageSize:pageSize1,
+	            // autoLoad: false,
+	            autoSync: true,
+	            model: 'ContactItem',
+	            proxy: {
+	                type: 'ajax',
+	                url: '/custom_editor',
+	                useDefaultXhrHeader: false,
+	                reader: {
+	                    type: 'json',
+	                    rootProperty: 'results'
+	                },
+	                writer: {
+	                    type: 'json'
+	                }
+	            },
+	        });
+			var headers={}||store.proxy.headers;
+	        headers["X_CSRFTOKEN"]=token;
+	        headers["Content-Type"]="application/json"//multipart/form-data;charset=UTF-8";
+	        store.proxy.headers=headers;
+			//Various editors for the related fields:
+			var textFieldEditor = {
+				xtype:'textfield',
+				allowBlank:false, blankText:'此欄不可空白',
+				minLength:2, minText:'最少要填入{0}個字元',
+				maxLength:20, maxText:'最多只能填入{0}個字元'
+			};
+			
+			var genderFieldEditor = {
+				xtype:'combo',
+				triggerAction:'all',
+				forceSelection:true,
+				displayField:'label',
+				valueField:'id',
+				mode:'local',
+				store:{
+					xtype:'jsonstore',
+					fields:[
+						'id', 'label'
+					],
+					data:[
+					   { id:'M', label:'男'  },
+					   { id:'F', label:'女'  }
+					]
+				}
+			};
+			
+			var dobFieldEditor = {
+				xtype:'datefield',
+				allowBlank:false, blankText:'此欄不可空白',
+				editable:false
+			};
+			
+			var epaperFieldEditor = {
+				xtype:'checkbox'
+			}
+
+			//Cell renderers:
+			var genderRenderer = function(value){
+				if(value == 'M'){
+					return '<span class="male_span">&nbsp;</span>';
+				}else{
+					return '<span class="female_span">&nbsp;</span>';
+				}
+			}
+
+			var epaperRenderer = function(value){
+				if(value){
+					return '<span class="checked_span">&nbsp;</span>';
+				}else{
+					return '<span class="unchecked_span">&nbsp;</span>';
+				}
+			}
+			
+			var columns = [
+				    { header:'序號', dataIndex:'id', width:30 },
+				    { header:'姓名', dataIndex:'name', width:150 , editor:textFieldEditor },
+				    { header:'性別', dataIndex:'gender', width:40, renderer:genderRenderer, editor:genderFieldEditor },
+				    { header:'生日', dataIndex:'dob', width:100, renderer:Ext.util.Format.dateRenderer('Y年m月d日'), editor:dobFieldEditor},
+				    { header:'訂閱電子報', dataIndex:'epaper', renderer:epaperRenderer, editor:epaperFieldEditor }
+				];
+			
+			var paginTB = {
+				xtype:'pagingtoolbar',
+				store:store,
+				pageSize:pageSize1,
+				displayInfo:true
+			}
+
+			var queryStore = function(){
+				var targetString = Ext.getCmp('queryText').getValue();
+				if(targetString == ''){
+					store.clearFilter();
+					return;
+				}
+				store.filterBy(function(record, id){
+					if(record.get('name') == targetString ){
+					       return true;
+					}
+					return false;
+				});
+			}
+		var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+            listeners: {
+                cancelEdit: function(rowEditing, context) {
+                    // Canceling editing of a locally added, unsaved record: remove it
+                    if (context.record.phantom) {
+                        store.remove(context.record);
+                    }
+                },
+                // edit:function(editor, e){
+                //     context.record.data.contact=contactid;
+                // }
+            }
+        });
+		var grid = new Ext.grid.GridPanel({//
+			dockedItems: [{
+                xtype: 'toolbar',
+                items: [
+                { xtype:'textfield', emptyText:'請輸入關鍵字...', width:220, id:'queryText' },
+						//{ xtype:'spacer', width:5 },
+				{ xtype:'button', text:'搜尋', handler:queryStore, scope:this },
+                {
+                    text: 'Add',
+                    iconCls: 'icon-add',
+                    handler: function(){
+                        // empty record
+                        console.log("add");
+                        var c=new ContactItem();
+                        store.insert(0, c);
+                        rowEditing.startEdit(0, 0);
+                    }
+                }, '-', {
+                    itemId: 'delete',
+                    text: 'Delete',
+                    iconCls: 'icon-delete',
+                    disabled: true,
+                    handler: function(){
+                        var selection = grid.getView().getSelectionModel().getSelection()[0];
+                        console.log("delete");
+						if (selection) {
+                                 Ext.Msg.show({
+                                     //title:'确实删除?',
+                                     message:'确实删除?',
+                                     buttons: Ext.Msg.YESNO,
+                                     icon: Ext.Msg.QUESTION,
+                                     fn: function(btn) {
+                                         if (btn === 'yes') {
+                                             store.remove(selection);
+                                         } else if (btn === 'no') {
+                                             console.log('No pressed');
+                                         } else {
+                                             console.log('Cancel pressed');
+                                         } 
+                                     }
+                                 });
+                        }
+                    }
+                }]
+            }],
+				title:'會員資料',
+				plugins: [rowEditing],
+				width:400,
+				height:250,
+				store:store,
+				viewConfig:{
+					forceFit:true
+				},
+				colModel:columns,
+				bbar:paginTB
+			});
+			grid.getSelectionModel().on('selectionchange', function(selModel, selections){
+	            grid.down('#delete').setDisabled(selections.length === 0);
+	        });
+			grid.render('container');
+			
+			store.load({params:{start:0, limit:pageSize1}});			
+			
+		});
+        
+    </script>
+</head>
+<body style="padding: 10px;">
+<div id="csrf">{% csrf_token %}</div>
+<div id="container"></div>
+</body>
+</html>

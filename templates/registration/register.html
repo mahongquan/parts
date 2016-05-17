@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<p>{{ err }}</p>
+<p>{% trans "new user register:" %}</p>
+<form method="post" action="/dd/saveuser/">
+<table   border="1" >
+<tr>
+<td>
+<label for="id_username">{% trans "Username:" %}</label></td>
+<td><input type="text" id="contactbh" class="vTextField required" name="username" size="15" value="" maxlength="30" /></td>
+</tr>
+<tr><td><label for="id_username">{% trans "Password:" %}</label></td>
+<td>
+<input type="password" name="password" value="" /></td></tr>
+</table>
+<input type="submit" value={% trans "save" %} />
+</form>
+{% endblock %}

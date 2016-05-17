@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post" action="/dd/updatefz/">{% csrf_token %}
+<table bgcolor="#99ccff" border="1" bordercolor="#993366">
+<tr>
+<td><label for="id_username">itemname:</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="itemname" size="15" value={{ item.item_name }} maxlength="30" readonly/></td>
+</tr>
+<tr>
+<td><label for="id_username">estimate:</label></td>
+<td><input type="text" id="samplename" class="vTextField required" name="itemname" size="15" value={{ item.estimate }} maxlength="30" readonly/></td>
+</tr>
+<tr>
+<td>fz</td>
+<td><input type="text" id="samplename" class="vTextField required" name="fz" size="15" value={{ item.fz }} maxlength="30" /></td>
+</tr>
+</table>
+<input type="hidden" name="itemid" value="{{ item.id }}" />
+<input type="submit" value="save" />
+</form>
+{% endblock %}

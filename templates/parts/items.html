@@ -1,0 +1,51 @@
+﻿{% extends "base.html" %}
+{% block extrahead %}
+<style type="text/css">
+        table
+        {
+            border-collapse: collapse;
+            border: none;
+        }
+        td
+        {
+            border: solid #000 1px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<table    cellpadding="0" cellspacing="0" border="1" class="display" id="table1" width="100%">
+    <thead>
+      <td>编号</td>
+      <td>名称</td>
+      <td>图片</td>
+      <td>英文名称</td>
+    </thead>
+    <tbody>
+{% for c in contacts %} 
+    <tr>
+      <td>{{ c.bh }}</td>
+      <td>{{ c.name }}</td>
+      <td><img src="/media/{{ c.image }}" width="100" height="100"></td>
+       <td>{{ c.name_en }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+<p>
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">前一页</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">后一页</a>
+        {% endif %}
+    </span>
+</div>
+</p>
+{% endblock %}

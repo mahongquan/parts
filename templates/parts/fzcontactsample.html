@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+	<p>contact={{ contact.contactbh }} inclues samples:</p>
+	<table border=2>
+	<td>sample name</td><td>id</td><td>action</td><td>count</td>
+	{% for c in samples %}
+	<tr>
+	<td>{{ c.sample_name }}
+	</td>
+	<td>{{ c.id }}</td>
+	<td>
+	<a href="/dd/fzsampleitems?id={{ c.id }}&contactid={{ contact.id }}">
+	fzitems
+	</a>
+	</td>
+	<td>{{ c.item_set.count }}
+	</td>
+	</tr>
+	{% endfor %}
+	</table>
+{% endblock %}

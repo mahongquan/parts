@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+		  <table width="100%">
+		    <thead>
+		      <td width="151"> <div align="center">name</div></td>
+			    <td width="243"> <div align="center">size</div></td>
+		    </thead>
+            <tbody>
+		    {%for fl  in filelist %}
+		    <tr>
+		      <td> <div align="center"><a href="{{download_url}}/{{fl.fn}}">{{fl.fn}}</a> </div></td>
+			    <td><div align="center">{{fl.fs}}</div></td>
+		    </tr>
+		    {% endfor %}
+            </tbody>
+	      </table>
+	<form action=/download/upload/ method="post" enctype="multipart/form-data" >{% csrf_token %}
+            <div align="center">
+            filename<input type="file" name="myFile" /><br />
+            <input type="submit" value="upload" />
+            </div>
+    </form>
+{% endblock %}
