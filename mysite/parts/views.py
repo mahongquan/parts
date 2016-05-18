@@ -1,4 +1,4 @@
-﻿# Create your views here.
+# Create your views here.
 # -*- coding: utf-8 -*-
 from django.db.models import Q
 from mysite.parts.models import *
@@ -434,6 +434,7 @@ def tar(request):
     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
     tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
     t['Content-Disposition'] = tstr.encode("gb2312")
+    t['Content-Length']=len(data)
     return t
 def jiaozhun(request):
     contact_id=request.GET["id"]
@@ -461,6 +462,7 @@ def zhuangxiangdan(request):
     data=genPack(c,fullfilepath)
     t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
     tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.xml"
+    t['Content-Length']=len(data)
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def shujubiao(request):
@@ -515,7 +517,7 @@ def copypack(request):
                 n.ct=pi.ct
                 n.save()
             content="ok"
-        r=Response()
+        r=HttpResponse()
         r.content=content
         return r   
 def sql(request):

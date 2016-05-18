@@ -1,23 +1,40 @@
 {% extends "base.html" %} {% block extrahead %}
+<link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+<script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 <script type="text/javascript" charset="utf-8">
     $(function () {
         console.log("document ready");
         var cache = {};
         $("#namefrom").autocomplete({
-            minLength: 2
-            , source: function (request, response) {
-                var term = request.term;
-                if (term in cache) {
-                    response(cache[term]);
-                    return;
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#new_pack1" ).val( ui.item.value);
+                    return false;
                 }
-
-                $.getJSON("/search.php", request, function (data, status, xhr) {
-                    cache[term] = data;
-                    response(data);
-                });
-            }
-        });
+                , select: function (event, ui) {
+                    $( "#namefrom" ).val( ui.item.value);
+                    //$( "#new_id1" ).val( ui.item.pk );
+                    //addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            })
+            .autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
         console.log("here");
         //      var todos=["a","b","c"];  
         //      console.log("document ready");  
