@@ -1,52 +1,77 @@
-{% extends "base.html" %}
-{% block extrahead %}
+{% extends "base.html" %} {% block extrahead %}
 <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
-<!-- <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css" /> -->
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-$(function() {
-		$( "#date" ).datepicker({
-		});
-	});
+    $(function () {
+        $("#date").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
 </script>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <div>内部编号:{{contact.id}}</div>
 <form method="post" action="/parts/savecontact/">{% csrf_token %}
-<table    cellpadding="0" cellspacing="0" border="0"  id="table0" width="300" >
-<tr>
-<td><label >用户名称:</label></td>
-<td><input type="text"   name="yonghu"  value={{ contact.yonghu}}></input></td>
-</tr>
-<tr>
-<td><label >仪器型号:</label></td>
-<td><input type="text"  	  name="yiqixinghao"  value={{ contact.yiqixinghao }}  ></input></td>
-</tr>
-<tr>
-<td><label >仪器编号:</label></td>
-<td><input type="text"   name="yiqibh"  value={{ contact.yiqibh }} ></input></td>
-</tr>
-<tr>
-<td><label >包箱:</label></td>
-<td><input type="text"   name="baoxiang"  value={{ contact.baoxiang }} ></input></td>
-</tr>
-<tr>
-<td><label >审核:</label></td>
-<td><input type="text"   name="shenhe"  value={{ contact.shenhe }} ></input></td>
-</tr>
-<tr>
-<td><label >预计发货时间:</label></td>
-<td><input type="text"  id='date'  name="yujifahuo_date"  value={{ contact.yujifahuo_date|date:"Y-m-d" }} ></input></td>
-</tr>
-<tr>
-<td><label >合同编号:</label></td>
-<td><input type="text"   name="hetongbh"  value={{ contact.hetongbh }} ></input></td>
-</tr>
-</table>
-<input type="hidden" name="contact_id" value="{{ contact.id }}" />
-<input type="hidden" name="user_id" value="{{ user.id }}" />
-<input type="hidden" name="new" value="{{ new }}" />
-<input type="submit" value="保存" />
+    <table>
+        <tr>
+            <td>
+                <label>用户名称:</label>
+            </td>
+            <td>
+                <input type="text" name="yonghu" value={{ contact.yonghu}}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>仪器型号:</label>
+            </td>
+            <td>
+                <input type="text" name="yiqixinghao" value={{ contact.yiqixinghao }}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>仪器编号:</label>
+            </td>
+            <td>
+                <input type="text" name="yiqibh" value={{ contact.yiqibh }}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>包箱:</label>
+            </td>
+            <td>
+                <input type="text" name="baoxiang" value={{ contact.baoxiang }}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>审核:</label>
+            </td>
+            <td>
+                <input type="text" name="shenhe" value={{ contact.shenhe }}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>预计发货时间:</label>
+            </td>
+            <td>
+                <input type="text" id='date' name="yujifahuo_date" value={{ contact.yujifahuo_date|date: "Y-m-d" }}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>合同编号:</label>
+            </td>
+            <td>
+                <input type="text" name="hetongbh" value={{ contact.hetongbh }}>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="contact_id" value="{{ contact.id }}" />
+    <input type="hidden" name="user_id" value="{{ user.id }}" />
+    <input type="hidden" name="new" value="{{ new }}" />
+    <input type="submit" value="保存" />
 </form>
 {% endblock %}

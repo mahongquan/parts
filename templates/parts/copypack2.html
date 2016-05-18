@@ -1,6 +1,5 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block extrahead %}
- <script type="text/javascript" language="javascript" src="/static/js/bootstrap.js"></script>
  <script type="text/javascript" charset="utf-8">
 	$(function(){  
       var availableTags = [
@@ -166,14 +165,14 @@
 <div id="dialog" title="选择包"></div>
 <div id="csrf_token" value={{ csrf_token }}><div>
 <form method="post" action="/parts/copypack/">{% csrf_token %}
-<table cellpadding="0" cellspacing="0" border="1" class="display">
+<table>
 <tr>
 	<td>
 		<label for="id_from">包名称:</label>
 	</td>
 	<td>
 		<input id="namefrom" type="text" id="oldname" class="vTextField required" name="oldname"  size="15" value="" maxlength="30" />
-		<button id="buttonfrom" type="button"><img src="/static/images/add.gif"></img></button>
+		<button id="buttonfrom" type="button"><img src="/static/images/add.gif"></button>
 	</td>
 </tr>
 <tr>

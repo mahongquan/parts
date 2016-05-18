@@ -1,303 +1,333 @@
-{% extends "base.html" %}
-{% block extrahead %}
+{% extends "base.html" %} {% block extrahead %}
 <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
-<!-- <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css" /> -->
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
- <script type="text/javascript" charset="utf-8">
-  $(function(){  
-        console.log("document ready");  
-        var csrf_token="{{ csrf_token }}";
-        var addnum=0;
+<script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        console.log("document ready");
+        var csrf_token = "{{ csrf_token }}";
+        var addnum = 0;
         var cache = {};
-        $( "#new_item1" ).autocomplete({
-          minLength: 1,
-          focus: function( event, ui ) {
-            //$( "#new_item1" ).val( ui.item.value);
-            return false;
-          },
-          select: function( event, ui ) {
-            $( "#new_item1" ).val( ui.item.value);
-            //$( "#new_id1" ).val( ui.item.pk );
-            //addrow(ui.item.pk,ui.item.value,$( "#input_num" ).value);
-            $( "#id_item1" ).val(ui.item.pk);
-            return false;
-          },
-          source: function( request, response ) {
-            var term = request.term;
-            if ( term in cache ) {
-              data=cache[term];
-              response( data);
-              return;
-            }
-             $.getJSON( "/admin/lookups/ajax_lookup/item", request, function( data, status, xhr ) {
-              cache[ term ] = data;
-              response( data);
-            });
-          }
-        })
-       .autocomplete( "instance" )._renderItem = function( ul, item ) {
-          return $( "<li>" )
-            .append( "<a>" + item.pk + "_" + item.value + "</a>" )
-           .appendTo( ul );
-        };
-         function addrow(id,name,ct){  
-            console.log("add row");  
-            var newtodo=$("#table_input");  
-            var col1=$( "<td>" );col1.attr("hidden","true");
-            var col11=$( "<td>" );
-            var col2=$( "<td>" );
-            var col3=$( "<td>" );
-            var nm="add_"+addnum;
-            var p_nm="p_"+addnum;
-            var row_nm="row_"+addnum;
+        $("#new_item1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#new_item1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    $("#new_item1").val(ui.item.value);
+                    //$( "#new_id1" ).val( ui.item.pk );
+                    //addrow(ui.item.pk,ui.item.value,$( "#input_num" ).value);
+                    $("#id_item1").val(ui.item.pk);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/item", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            })
+            .autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+
+        function addrow(id, name, ct) {
+            console.log("add row");
+            var newtodo = $("#table_input");
+            var col1 = $("<td>");
+            col1.attr("hidden", "true");
+            var col11 = $("<td>");
+            var col2 = $("<td>");
+            var col3 = $("<td>");
+            var nm = "add_" + addnum;
+            var p_nm = "p_" + addnum;
+            var row_nm = "row_" + addnum;
             //var input1=$('<p>');
-            col2.attr("id",p_nm);col2.attr("name",p_nm);
-            var input2=$('<input>');input2.attr("id",nm);input2.attr("name",nm);
-            input2.attr( "type","hidden");
-            var input3=$("<button>");input3.append("移去");
-            input3.attr("type","button");
-            var row=$( "<tr>" );row.attr("id",row_nm);
-            input3.bind("click", { nm:row_nm},button_remove_click );  
-            col1.append(input2); 
+            col2.attr("id", p_nm);
+            col2.attr("name", p_nm);
+            var input2 = $('<input>');
+            input2.attr("id", nm);
+            input2.attr("name", nm);
+            input2.attr("type", "hidden");
+            var input3 = $("<button>");
+            input3.append("移去");
+            input3.attr("type", "button");
+            var row = $("<tr>");
+            row.attr("id", row_nm);
+            input3.bind("click", {
+                nm: row_nm
+            }, button_remove_click);
+            col1.append(input2);
             //col2.append(input1); 
             col3.append(input3);
             row.append(col1);
-            
-            row.append(col2); row.append(col11);
+
+            row.append(col2);
+            row.append(col11);
             row.append(col3);
 
             newtodo.append(row);
             addnum++;
-            $("#add_"+(addnum-1)).val(id+":"+ct);
-            $("#p_"+(addnum-1)).append(name);
+            $("#add_" + (addnum - 1)).val(id + ":" + ct);
+            $("#p_" + (addnum - 1)).append(name);
             col11.append(ct)
-        }  
-        function button_remove_click(event){  
-            console.log("button_remove_click"); 
-            var newtodo=$("#table_input");  
-            var nm="#"+event.data.nm;
+        }
+
+        function button_remove_click(event) {
+            console.log("button_remove_click");
+            var newtodo = $("#table_input");
+            var nm = "#" + event.data.nm;
             console.log(nm);
-            var toremove= $(nm);  
+            var toremove = $(nm);
             toremove.remove();
             //newtodo.removeChild(toremove);
-        }          
-        function buttonaddrow_click(){  
+        }
+
+        function buttonaddrow_click() {
             //console.log("button_addrow clicked"); 
-            var id=$("#id_item1"); 
-            addrow(id.val(),$("#new_item1").val(),$("#input_num").val());
-        } 
+            var id = $("#id_item1");
+            addrow(id.val(), $("#new_item1").val(), $("#input_num").val());
+        }
         // function buttonhouxuan_click(){  
         //     console.log("buttonhouxuan_click");  
         //     var id=this.parentNode.parentNode.children[0].innerText;
         //     var name=this.parentNode.parentNode.children[1].innerText;
         //     addrow(id,name);
         // }   
-       // function buttonsetrow_click(id,name){  
-       //      console.log("button_setrow clicked");  
-       //      $("#add_"+(addnum-1)).val(id);
-       //      $("#p_"+(addnum-1)).append(name);
-       //  }  
-        $("#bt_add").click(buttonaddrow_click);  
+        // function buttonsetrow_click(id,name){  
+        //      console.log("button_setrow clicked");  
+        //      $("#add_"+(addnum-1)).val(id);
+        //      $("#p_"+(addnum-1)).append(name);
+        //  }  
+        $("#bt_add").click(buttonaddrow_click);
         //$("#setrow").click(buttonsetrow_click);  
         //$(".bt_houxuan").click(buttonhouxuan_click);
         //----------------------------------////////////////////////////////////////////////////////////////
-    function button_select_click(event){  
-        console.log("button_select clicked");  
-        console.log(event.data);  
-        var table=$("#item_input");
-        console.log(table[0]);
-        var cs=table[0].children;
-        console.log(cs);
-        cs=cs[0].children;
-        data={}
-        for(var i=0;i<cs.length;i++){
-          var input1=cs[i].children[1].children[0];
-          //console.log(cs[i].children[1].children[0].value);
-          data[input1.name]=input1.value;
+        function button_select_click(event) {
+            console.log("button_select clicked");
+            console.log(event.data);
+            var table = $("#item_input");
+            console.log(table[0]);
+            var cs = table[0].children;
+            console.log(cs);
+            cs = cs[0].children;
+            data = {}
+            for (var i = 0; i < cs.length; i++) {
+                var input1 = cs[i].children[1].children[0];
+                //console.log(cs[i].children[1].children[0].value);
+                data[input1.name] = input1.value;
+            }
+
+            console.log(data);
+            //$("#dialog").dialog("close");
+            $.ajax({
+                type: 'POST'
+                , dataType: "json"
+                , url: "/parts/create_item"
+                , data: {
+                    data: JSON.stringify(data)
+                    , csrfmiddlewaretoken: csrf_token
+                }
+                , complete: function () {
+
+                }
+                , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+                , success: function (data) {
+                    console.log("ajax done");
+                    console.log(data);
+                    if (data.success) {
+                        $("#id_item1").val(data.data.id);
+                        $("#new_item1").val(data.data.name);
+                        $("#dialog").dialog("close");
+                    }
+                }
+            });
         }
 
-        console.log(data);
-        //$("#dialog").dialog("close");
-        $.ajax({ 
-          type:'POST',
-              dataType: "json",
-          url: "/parts/create_item",
-          data: {data:JSON.stringify(data),csrfmiddlewaretoken:csrf_token},
-          complete:function(){
+        function showDialog(tochange) {
+            var start = 0;
+            var limit = 10;
+            var todolist = $("#dialog");
+            todolist.empty();
+            var tbl = $('<table id="item_input">');
+            var one = $('<tr>');
+            var rowid = $('<td>编号</td>');
+            var newEl = $('<td><input name="bh"></input></td>');
+            one.append(rowid);
+            one.append(newEl);
+            tbl.append(one);
+            var one = $('<tr>');
+            var rowid = $('<td>名称</td>');
+            var newEl = $('<td><input name="name"></input></td>');
+            one.append(rowid);
+            one.append(newEl);
+            tbl.append(one);
+            var one = $('<tr>');
+            var rowid = $('<td>规格</td>');
+            var newEl = $('<td><input name="guige"></input></td>');
+            one.append(rowid);
+            one.append(newEl);
+            tbl.append(one);
+            var one = $('<tr>');
+            var rowid = $('<td>单位</td>');
+            var newEl = $('<td><input name="danwei"></input></td>');
+            one.append(rowid);
+            one.append(newEl);
+            tbl.append(one);
+            todolist.append(tbl);
+            var btn_select = $('<td><button type="button">确定</button></td>');
+            todolist.append(btn_select);
+            btn_select.bind("click", {}, button_select_click);
+            //   $.ajax({ 
+            //     type:'POST',
+            //         dataType: "json",
+            //     url: "/rest/view_pack",
+            //         data: {start:start,limit:limit,csrfmiddlewaretoken:$("#csrf_token").attr("value")},
+            //     //context: document.body,
+            //         complete:function(){
 
-          },
-          error:function(XMLHttpRequest, textStatus, errorThrown){
-              console.log(errorThrown);
-          },
-          success: function(data)
-          {
-              console.log("ajax done");
-              console.log(data);
-              if(data.success){
-                 $("#id_item1").val(data.data.id); 
-                 $("#new_item1").val(data.data.name);
-                 $("#dialog").dialog("close");
-              }
-          }
-        });
-    }     
-    function showDialog(tochange){
-        var start=0;
-        var limit=10;
-        var todolist=$("#dialog");
-        todolist.empty();
-        var tbl = $('<table id="item_input">');  
-        var one = $('<tr>');  
-        var rowid = $('<td>编号</td>');  
-        var newEl = $('<td><input name="bh"></input></td>');  
-        one.append(rowid);  
-        one.append(newEl); 
-        tbl.append(one);
-        var one = $('<tr>');  
-        var rowid = $('<td>名称</td>');  
-        var newEl = $('<td><input name="name"></input></td>');  
-        one.append(rowid);  
-        one.append(newEl); 
-        tbl.append(one);
-         var one = $('<tr>');  
-        var rowid = $('<td>规格</td>');  
-        var newEl = $('<td><input name="guige"></input></td>');  
-        one.append(rowid);  
-        one.append(newEl); 
-        tbl.append(one);
-         var one = $('<tr>');  
-        var rowid = $('<td>单位</td>');  
-        var newEl = $('<td><input name="danwei"></input></td>');  
-        one.append(rowid);  
-        one.append(newEl); 
-        tbl.append(one);
-        todolist.append(tbl);  
-        var btn_select = $('<td><button type="button">确定</button></td>');  
-        todolist.append(btn_select); 
-        btn_select.bind("click", { },button_select_click );  
-    //   $.ajax({ 
-    //     type:'POST',
-    //         dataType: "json",
-    //     url: "/rest/view_pack",
-    //         data: {start:start,limit:limit,csrfmiddlewaretoken:$("#csrf_token").attr("value")},
-    //     //context: document.body,
-    //         complete:function(){
+            //         },
+            //         error:function(XMLHttpRequest, textStatus, errorThrown){
+            //             console.log(errorThrown);
+            //         },
+            //     success: function(data)
+            //     {
+            //         console.log("ajax done");
+            //         console.log(data);
+            //         var todolist=$("#dialog");
+            //         //data=eval("("+data+")");
+            //         console.log(data.data);  
+            //         var tbl = $('<table></table>');  
+            //         data.data.forEach(function(onerow){  
+            //         console.log(onerow);  
+            //               //console.log(i);
+            //                 var one = $('<tr one="true"></tr>');  
+            //                 var rowid = $('<td>'+onerow.name+'</td>');  
+            //                 var newEl = $('<td>'+onerow.id+'</td>');  
+            //                 var btn_select = $('<td><button type="button">选择</button></td>');  
+            //                 //btn.click(button_remove_click);  
+            //                 btn_select.bind("click", { tochange:tochange,name:onerow.name,id:onerow.id},button_select_click );  
+            //                 //var btnedit = $('<td><button type="button">edit</button></td>');  
+            //                 //btnedit.click(button_edit_click);  
+            //                 one.append(rowid);  
+            //                 one.append(newEl);   
+            //                 //one.append(btnedit);  
+            //                 one.append(btn_select);  
+            //                 tbl.append(one);
+            //           }) 
+            //           todolist.append(tbl);        
+            //     }
+            // });
+            $("#dialog").dialog({
+                //bgiframe: true,
+                //resizable: false, height: "530",width:"200",
+                //height:140,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+                , // buttons: {
+                //     Cancel: function() {
+                //         $(this).dialog('close');
+                //     },
+                // }
+            });
+        }
 
-    //         },
-    //         error:function(XMLHttpRequest, textStatus, errorThrown){
-    //             console.log(errorThrown);
-    //         },
-    //     success: function(data)
-    //     {
-    //         console.log("ajax done");
-    //         console.log(data);
-    //         var todolist=$("#dialog");
-    //         //data=eval("("+data+")");
-    //         console.log(data.data);  
-    //         var tbl = $('<table></table>');  
-    //         data.data.forEach(function(onerow){  
-    //         console.log(onerow);  
-    //               //console.log(i);
-    //                 var one = $('<tr one="true"></tr>');  
-    //                 var rowid = $('<td>'+onerow.name+'</td>');  
-    //                 var newEl = $('<td>'+onerow.id+'</td>');  
-    //                 var btn_select = $('<td><button type="button">选择</button></td>');  
-    //                 //btn.click(button_remove_click);  
-    //                 btn_select.bind("click", { tochange:tochange,name:onerow.name,id:onerow.id},button_select_click );  
-    //                 //var btnedit = $('<td><button type="button">edit</button></td>');  
-    //                 //btnedit.click(button_edit_click);  
-    //                 one.append(rowid);  
-    //                 one.append(newEl);   
-    //                 //one.append(btnedit);  
-    //                 one.append(btn_select);  
-    //                 tbl.append(one);
-    //           }) 
-    //           todolist.append(tbl);        
-    //     }
-    // });
-      $("#dialog").dialog({
-        //bgiframe: true,
-        //resizable: false, height: "530",width:"200",
-        //height:140,
-        modal: true,
-        overlay: {
-            backgroundColor: '#000',
-            opacity: 0.5
-        },
-        autoOpen: true,
-        // buttons: {
-        //     Cancel: function() {
-        //         $(this).dialog('close');
-        //     },
-        // }
-    }); 
-    }
-    function buttonfrom_click(event){  
-        console.log("buttonfrom clicked"); 
-        showDialog("namefrom"); 
-          
-    }  
-    function buttonto_click(event){  
-        console.log("buttonto clicked"); 
-        showDialog("nameto"); 
-        // console.log(event.data);  
-        // console.log(event.data.row);  
-        // event.data.row.remove();  
-        // rowid=event.data.rowid;  
-        // todos[rowid]=undefined;//=todos.slice(rowid);  
-    }          
-    function buttonnewitem_click(id,name){  
-        console.log("button_newitem clicked"); 
-        showDialog(); 
-    }  
-    $("#bt_newitem").click(buttonnewitem_click);  
-  });  
- </script>  
-{% endblock %}
-{% block content %}
+        function buttonfrom_click(event) {
+            console.log("buttonfrom clicked");
+            showDialog("namefrom");
+
+        }
+
+        function buttonto_click(event) {
+            console.log("buttonto clicked");
+            showDialog("nameto");
+            // console.log(event.data);  
+            // console.log(event.data.row);  
+            // event.data.row.remove();  
+            // rowid=event.data.rowid;  
+            // todos[rowid]=undefined;//=todos.slice(rowid);  
+        }
+
+        function buttonnewitem_click(id, name) {
+            console.log("button_newitem clicked");
+            showDialog();
+        }
+        $("#bt_newitem").click(buttonnewitem_click);
+    });
+</script>
+{% endblock %} {% block content %}
 <div>
-      <table>
-      <tr>
-      <td> 包名称:</td> <td>{{ pack.name }}</td>
-      </tr>
-      </table>
-  <form method="post" action="/parts/packItem/">{% csrf_token %}
-    <input type="hidden" name="id" value="{{ pack.id }}" />
-    <input type="hidden" name="url" value="{{ url }}" />
-    <table class="table-bordered">
-         <tr>
-          <td>名称</td>
-          <td>数量</td>
-          <td>删除</td>
-        </tr>
-      {% for packitem in pack.packitem_set.all %}
+    <table>
         <tr>
-          <td>{{ packitem.item.name }}</td>
-          <td>  {{ packitem.ct }}</td>
-          <td><input name="delete_{{ packitem.id }}" type="checkbox"></td>
+            <td> 包名称:</td>
+            <td>{{ pack.name }}</td>
         </tr>
-      {% endfor %}  
     </table>
-    <table  id="table_input" class="table-condensed table-bordered"></table>
-    <!--                 -->
-       <table background-color="green">
-       <tr>
-<td><label >名称:</label></td>
-<td><input id="id_item1" type="hidden"><input id="new_item1"  type="text" placeholder="输入备件名称" ></td>
-</tr>
-<tr>
-<td><label >数量:</label></td>
-<td><input id="input_num"  type="text" value="1" ></td>
-</tr>
-<tr>
-      <td><button id="bt_add" type="button">增加</button></td>
-      <td align="right"><button id="bt_newitem" type="button">增加新备件</button></td>
-</tr>
-</table>
-      <!--       -->
-    <input type="submit" value="保存" />
-</form>
+    <form method="post" action="/parts/packItem/">{% csrf_token %}
+        <input type="hidden" name="id" value="{{ pack.id }}" />
+        <input type="hidden" name="url" value="{{ url }}" />
+        <table class="table-bordered">
+            <tr>
+                <td>名称</td>
+                <td>数量</td>
+                <td>删除</td>
+            </tr>
+            {% for packitem in pack.packitem_set.all %}
+            <tr>
+                <td>{{ packitem.item.name }}</td>
+                <td> {{ packitem.ct }}</td>
+                <td>
+                    <input name="delete_{{ packitem.id }}" type="checkbox">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <table id="table_input" class="table-condensed table-bordered"></table>
+        <!--                 -->
+        <table background-color="green">
+            <tr>
+                <td>
+                    <label>名称:</label>
+                </td>
+                <td>
+                    <input id="id_item1" type="hidden">
+                    <input id="new_item1" type="text" placeholder="输入备件名称">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>数量:</label>
+                </td>
+                <td>
+                    <input id="input_num" type="text" value="1">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="bt_add" type="button">增加</button>
+                </td>
+                <td align="right">
+                    <button id="bt_newitem" type="button">增加新备件</button>
+                </td>
+            </tr>
+        </table>
+        <!--       -->
+        <input type="submit" value="保存" />
+    </form>
 </div>
 <div id="dialog"></div>
 {% endblock %}

@@ -1,215 +1,228 @@
-{% extends "base.html" %}
-{% block extrahead %}
+{% extends "base.html" %} {% block extrahead %}
 <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
-<!-- <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css" /> -->
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
-<script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
- <script type="text/javascript" charset="utf-8">
-  $(function(){  
-        console.log("document ready");  
-        var csrf_token="{{ csrf_token }}";
-        $( "#date" ).datepicker({dateFormat: 'yy-mm-dd'
+<script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        console.log("document ready");
+        var csrf_token = "{{ csrf_token }}";
+        $("#date").datepicker({
+            dateFormat: 'yy-mm-dd'
         });
-        var addnum=0;
+        var addnum = 0;
         var cache = {};
-        $( "#new_pack1" ).autocomplete({
-          minLength: 1,
-          focus: function( event, ui ) {
-            //$( "#new_pack1" ).val( ui.item.value);
-            return false;
-          },
-          select: function( event, ui ) {
-            //$( "#new_pack1" ).val( ui.item.value);
-            //$( "#new_id1" ).val( ui.item.pk );
-            addrow(ui.item.pk,ui.item.value);
-            return false;
-          },
-          source: function( request, response ) {
-            var term = request.term;
-            if ( term in cache ) {
-              data=cache[term];
-              response( data);
-              return;
-            }
-             $.getJSON( "/admin/lookups/ajax_lookup/pack", request, function( data, status, xhr ) {
-              cache[ term ] = data;
-              response( data);
-            });
-          }
-        })
-       .autocomplete( "instance" )._renderItem = function( ul, item ) {
-          return $( "<li>" )
-            .append( "<a>" + item.pk + "_" + item.value + "</a>" )
-           .appendTo( ul );
-        };
-         function addrow(id,name){  
-            console.log("add row");  
-            var newtodo=$("#table_input");  
-            var col1=$( "<td>" );
-            var col2=$( "<td>" );
-            var col3=$( "<td>" );
+        $("#new_pack1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#new_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    //$( "#new_pack1" ).val( ui.item.value);
+                    //$( "#new_id1" ).val( ui.item.pk );
+                    addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            })
+            .autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+
+        function addrow(id, name) {
+            console.log("add row");
+            var newtodo = $("#table_input");
+            var col1 = $("<td>");
+            var col2 = $("<td>");
+            var col3 = $("<td>");
             //var col4=$( "<td>" );
-            var nm="add_"+addnum;
-            var p_nm="p_"+addnum;
-            var row_nm="row_"+addnum;
-            var input1=$('<p>');input1.attr("id",p_nm);input1.attr("name",p_nm);//here is name
-            var input2=$('<input>');input2.attr("id",nm);input2.attr("name",nm);
-            input2.attr( "type","hidden");
-            var input3=$("<button>");input3.append("移去");
-            input3.attr("type","button");
-            var row=$( "<tr>" );row.attr("id",row_nm);
-            input3.bind("click", { nm:row_nm},button_remove_click );  
-            col1.append(input2); 
-            col2.append(input1); 
+            var nm = "add_" + addnum;
+            var p_nm = "p_" + addnum;
+            var row_nm = "row_" + addnum;
+            var input1 = $('<p>');
+            input1.attr("id", p_nm);
+            input1.attr("name", p_nm); //here is name
+            var input2 = $('<input>');
+            input2.attr("id", nm);
+            input2.attr("name", nm);
+            input2.attr("type", "hidden");
+            var input3 = $("<button>");
+            input3.append("移去");
+            input3.attr("type", "button");
+            var row = $("<tr>");
+            row.attr("id", row_nm);
+            input3.bind("click", {
+                nm: row_nm
+            }, button_remove_click);
+            col1.append(input2);
+            col2.append(input1);
             col3.append(input3);
             row.append(col1);
             row.append(col2);
             row.append(col3);
-            var contact_id=$("#id");
-            contact_id=contact_id.val();
+            var contact_id = $("#id");
+            contact_id = contact_id.val();
             //col4.append('<a href="/parts/packItem/?id='+id+'&url=/parts/showcontactP/?id='+contact_id+'">修改</a>');
             //row.append(col4);
             newtodo.append(row);
             addnum++;
-            $("#add_"+(addnum-1)).val(id);
-            $("#p_"+(addnum-1)).append('<a href="/parts/packItem/?id='+id+'&url=/parts/showcontactP/?id='+contact_id+'">'+name+'</a>');
-        }  
-        function button_remove_click(event){  
-            console.log("button_remove_click"); 
-            var newtodo=$("#table_input");  
-            var nm="#"+event.data.nm;
+            $("#add_" + (addnum - 1)).val(id);
+            $("#p_" + (addnum - 1)).append('<a href="/parts/packItem/?id=' + id + '&url=/parts/showcontactP/?id=' + contact_id + '">' + name + '</a>');
+        }
+
+        function button_remove_click(event) {
+            console.log("button_remove_click");
+            var newtodo = $("#table_input");
+            var nm = "#" + event.data.nm;
             console.log(nm);
-            var toremove= $(nm);  
+            var toremove = $(nm);
             toremove.remove();
             //newtodo.removeChild(toremove);
-        }          
-        function buttonaddrow_click(){  
-            console.log("button_addrow clicked");  
-            addrow(1,"name1");
-        } 
-        function buttonhouxuan_click(){  
-            console.log("buttonhouxuan_click");  
-            var id=this.parentNode.parentNode.children[0].textContent;
-            var name=this.parentNode.parentNode.children[1].textContent;
-            addrow(id,name);
-        }   
-       function buttonsetrow_click(id,name){  
-            console.log("button_setrow clicked");  
-            $("#add_"+(addnum-1)).val(id);
-            $("#p_"+(addnum-1)).append(name);
-        }  
+        }
+
+        function buttonaddrow_click() {
+            console.log("button_addrow clicked");
+            addrow(1, "name1");
+        }
+
+        function buttonhouxuan_click() {
+            console.log("buttonhouxuan_click");
+            var id = this.parentNode.parentNode.children[0].textContent;
+            var name = this.parentNode.parentNode.children[1].textContent;
+            addrow(id, name);
+        }
+
+        function buttonsetrow_click(id, name) {
+            console.log("button_setrow clicked");
+            $("#add_" + (addnum - 1)).val(id);
+            $("#p_" + (addnum - 1)).append(name);
+        }
         //$("#addrow").click(buttonaddrow_click);  
         //$("#setrow").click(buttonsetrow_click);  
-        
-        //----------------------------------////////////////////////////////////////////////////////////////
-    function button_select_click(event){  
-        console.log("button_select clicked");  
-        console.log(event.data);  
-        var table=$("#item_input");
-        console.log(table[0]);
-        var cs=table[0].children;
-        console.log(cs);
-        cs=cs[0].children;
-        data={}
-        for(var i=0;i<cs.length;i++){
-          var input1=cs[i].children[1].children[0];
-          //console.log(cs[i].children[1].children[0].value);
-          data[input1.name]=input1.value;
-        }
-        console.log(data);
-        output={data:JSON.stringify(data),csrfmiddlewaretoken:csrf_token};
-        console.log(output);
-        $.ajax({ 
-          context: document.body,
-          type:'POST',
-          dataType: "json",
-          url: "/parts/create_pack",
-          data: output,
-          complete:function(){
 
-          },
-          error:function(XMLHttpRequest, textStatus, errorThrown){
-              console.log(errorThrown);
-          },
-          success: function(data)
-          {
-              console.log("ajax done");
-              console.log(data);
-              if(data.success){
-                 addrow(data.data.id,data.data.name);
-                 $("#dialog").dialog("close");
-              }
-          }
-        });
-    }     
-    function showDialog(tochange){
-       var start=0;
-        var limit=10;
-        var todolist=$("#dialog");
-        todolist.empty();
-        var tbl = $('<table id="item_input">');  
-        // var one = $('<tr>');  
-        // var rowid = $('<td>编号</td>');  
-        // var newEl = $('<td><input name="bh"></input></td>');  
-        // one.append(rowid);  
-        // one.append(newEl); 
-        // tbl.append(one);
-        var one = $('<tr>');  
-        var rowid = $('<td>名称</td>');  
-        var newEl = $('<td>');
-        var input1=$('<input name="name" ></input>');  
-        input1.val($("#hetongbh").val());
-        newEl.append(input1);
-        one.append(rowid);  
-        one.append(newEl); 
-        tbl.append(one);
-        //  var one = $('<tr>');  
-        // var rowid = $('<td>规格</td>');  
-        // var newEl = $('<td><input name="guige"></input></td>');  
-        // one.append(rowid);  
-        // one.append(newEl); 
-        // tbl.append(one);
-        //  var one = $('<tr>');  
-        // var rowid = $('<td>单位</td>');  
-        // var newEl = $('<td><input name="danwei"></input></td>');  
-        // one.append(rowid);  
-        // one.append(newEl); 
-        // tbl.append(one);
-        todolist.append(tbl);  
-        var btn_select = $('<button>');//' type="button">确定</button>');  
-        btn_select.attr("type",'button');
-        todolist.append(btn_select); 
-        btn_select.click(button_select_click);  
-        btn_select.append("确定");
-      $("#dialog").dialog({
-        //bgiframe: true,
-        //resizable: false, height: "530",width:"200",
-        //height:140,
-        modal: true,
-        overlay: {
-            backgroundColor: '#000',
-            opacity: 0.5
-        },
-        autoOpen: true,
-        // buttons: {
-        //     Cancel: function() {
-        //         $(this).dialog('close');
-        //     },
-        // }
-      });     
-    }
-    function buttonnewpack_click(id,name){  
-        console.log("button_newpack clicked"); 
-        showDialog(); 
-    }  
-    $(".bt_houxuan").click(buttonhouxuan_click);
-    $("#bt_newpack").click(buttonnewpack_click);  
-     });  
- </script>  
-{% endblock %}
-{% block content %}
+        //----------------------------------////////////////////////////////////////////////////////////////
+        function button_select_click(event) {
+            console.log("button_select clicked");
+            console.log(event.data);
+            var table = $("#item_input");
+            console.log(table[0]);
+            var cs = table[0].children;
+            console.log(cs);
+            cs = cs[0].children;
+            data = {}
+            for (var i = 0; i < cs.length; i++) {
+                var input1 = cs[i].children[1].children[0];
+                //console.log(cs[i].children[1].children[0].value);
+                data[input1.name] = input1.value;
+            }
+            console.log(data);
+            output = {
+                data: JSON.stringify(data)
+                , csrfmiddlewaretoken: csrf_token
+            };
+            console.log(output);
+            $.ajax({
+                context: document.body
+                , type: 'POST'
+                , dataType: "json"
+                , url: "/parts/create_pack"
+                , data: output
+                , complete: function () {
+
+                }
+                , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+                , success: function (data) {
+                    console.log("ajax done");
+                    console.log(data);
+                    if (data.success) {
+                        addrow(data.data.id, data.data.name);
+                        $("#dialog").dialog("close");
+                    }
+                }
+            });
+        }
+
+        function showDialog(tochange) {
+            var start = 0;
+            var limit = 10;
+            var todolist = $("#dialog");
+            todolist.empty();
+            var tbl = $('<table id="item_input">');
+            // var one = $('<tr>');  
+            // var rowid = $('<td>编号</td>');  
+            // var newEl = $('<td><input name="bh"></input></td>');  
+            // one.append(rowid);  
+            // one.append(newEl); 
+            // tbl.append(one);
+            var one = $('<tr>');
+            var rowid = $('<td>名称</td>');
+            var newEl = $('<td>');
+            var input1 = $('<input name="name" ></input>');
+            input1.val($("#hetongbh").val());
+            newEl.append(input1);
+            one.append(rowid);
+            one.append(newEl);
+            tbl.append(one);
+            //  var one = $('<tr>');  
+            // var rowid = $('<td>规格</td>');  
+            // var newEl = $('<td><input name="guige"></input></td>');  
+            // one.append(rowid);  
+            // one.append(newEl); 
+            // tbl.append(one);
+            //  var one = $('<tr>');  
+            // var rowid = $('<td>单位</td>');  
+            // var newEl = $('<td><input name="danwei"></input></td>');  
+            // one.append(rowid);  
+            // one.append(newEl); 
+            // tbl.append(one);
+            todolist.append(tbl);
+            var btn_select = $('<button>'); //' type="button">确定</button>');  
+            btn_select.attr("type", 'button');
+            todolist.append(btn_select);
+            btn_select.click(button_select_click);
+            btn_select.append("确定");
+            $("#dialog").dialog({
+                //bgiframe: true,
+                //resizable: false, height: "530",width:"200",
+                //height:140,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true, // buttons: {
+                //     Cancel: function() {
+                //         $(this).dialog('close');
+                //     },
+                // }
+            });
+        }
+
+        function buttonnewpack_click(id, name) {
+            console.log("button_newpack clicked");
+            showDialog();
+        }
+        $(".bt_houxuan").click(buttonhouxuan_click);
+        $("#bt_newpack").click(buttonnewpack_click);
+    });
+</script>
+{% endblock %} {% block content %}
 <div class="results">
-<!--       <table>
+    <!--       <table>
       <tr>
       <td>用户名称:</td>
       <td>{{ contact.yonghu}}</td>
@@ -239,97 +252,132 @@
       <td>{{ contact.hetongbh }}</td>
       </tr>
       </table> -->
-  <form method="post" action="/parts/showcontactP/">{% csrf_token %}
-    <input type="hidden" name="new" value="{{ new }}" />
-<table  class="table-condensed">
-<tr>
-<td><label >用户名称:</label></td>
-<td><input type="text"   name="yonghu"  value={{ contact.yonghu}}></input></td>
-</tr>
-<tr>
-<td><label >仪器型号:</label></td>
-<td><input type="text"      name="yiqixinghao"  value={{ contact.yiqixinghao }}  ></input></td>
-</tr>
-<tr>
-<td><label >仪器编号:</label></td>
-<td><input type="text"   name="yiqibh"  value={{ contact.yiqibh }} ></input></td>
-</tr>
-<tr>
-<td><label >包箱:</label></td>
-<td><input type="text"   name="baoxiang"  value={{ contact.baoxiang }} ></input></td>
-</tr>
-<tr>
-<td><label >审核:</label></td>
-<td><input type="text"   name="shenhe"  value={{ contact.shenhe }} ></input></td>
-</tr>
-<tr>
-<td><label >预计发货时间:</label></td>
-<td><input type="text"  id='date'  name="yujifahuo_date"  value={{ contact.yujifahuo_date|date:"Y-m-d" }} ></input></td>
-</tr>
-<tr>
-<td><label >合同编号:</label></td>
-<td><input type="text" id="hetongbh"  name="hetongbh"  value={{ contact.hetongbh }} ></input></td>
-</tr>
-</table>
-    <input type="hidden" name="id" id="id" value="{{ contact.id }}" />
-    <table border="4">
-        <thead>
-          <td>包</td>
-           <td></td>
-          <td>候选包</td>
-        </thead>
-     <tr>
-    <td>
-    <table class="table-bordered">
-        <tbody>
-        <tr><td>名称</td><td>删除</td></tr>
-      {% for usepack in contact.usepack_set.all %}
-        <tr>
-          <td>  <a href="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
-          </td>
-          <td>
-               <input name="delete_{{ usepack.id }}" type="checkbox"></input>
-            </td>
-  <!--           <td>
+    <form method="post" action="/parts/showcontactP/">{% csrf_token %}
+        <input type="hidden" name="new" value="{{ new }}" />
+        <table class="table-condensed">
+            <tr>
+                <td>
+                    <label>用户名称:</label>
+                </td>
+                <td>
+                    <input type="text" name="yonghu" value={{ contact.yonghu}}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>仪器型号:</label>
+                </td>
+                <td>
+                    <input type="text" name="yiqixinghao" value={{ contact.yiqixinghao }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>仪器编号:</label>
+                </td>
+                <td>
+                    <input type="text" name="yiqibh" value={{ contact.yiqibh }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>包箱:</label>
+                </td>
+                <td>
+                    <input type="text" name="baoxiang" value={{ contact.baoxiang }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>审核:</label>
+                </td>
+                <td>
+                    <input type="text" name="shenhe" value={{ contact.shenhe }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>预计发货时间:</label>
+                </td>
+                <td>
+                    <input type="text" id='date' name="yujifahuo_date" value={{ contact.yujifahuo_date|date: "Y-m-d" }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>合同编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="hetongbh" name="hetongbh" value={{ contact.hetongbh }}>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="id" id="id" value="{{ contact.id }}" />
+        <table border="4">
+            <thead>
+                <td>包</td>
+                <td></td>
+                <td>候选包</td>
+            </thead>
+            <tr>
+                <td>
+                    <table class="table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>名称</td>
+                                <td>删除</td>
+                            </tr>
+                            {% for usepack in contact.usepack_set.all %}
+                            <tr>
+                                <td> <a href="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
+                                </td>
+                                <td>
+                                    <input name="delete_{{ usepack.id }}" type="checkbox">
+                                </td>
+                                <!--           <td>
                 <a href="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">修改</a>
            </td> -->
-        </tr>
-      {% endfor %}  
-      </tbody>
-    </table>
-    <table  id="table_input"></table>
-<!--     <button id="addrow" type="button">add row</button>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <table id="table_input"></table>
+                    <!--     <button id="addrow" type="button">add row</button>
     <button id="setrow" type="button">set value</button> -->
-     
-    </td>
-    <td></td>
-    <td>
-      <table class="table-condensed">
-       {% for pack in maybes %}
-        <tr>
-          <td hidden="true">{{ pack.id }}</td>
-            <td>{{ pack.name }}</td>
-            <td> <a href="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">修改</a>
-           </td>
-          <td>
-          <button class="bt_houxuan" type="button">加入</button>
-           </td>
-        </tr>
-      {% endfor %} 
-      </table>
-      <table>
-      <tr><td><input id="new_pack1" name="new_pack1" placeholder="input package" ></input></td></tr>
-      <tr>
-        <td>
-          <button id="bt_newpack" type="button">增加新包</button>
-        </td>
-      </tr>
-      </table>
-      </td>
-    </tr>
-    </table>
-    <input type="submit" value="保存" />
-</form>
+
+                </td>
+                <td></td>
+                <td>
+                    <table class="table-condensed">
+                        {% for pack in maybes %}
+                        <tr>
+                            <td hidden="true">{{ pack.id }}</td>
+                            <td>{{ pack.name }}</td>
+                            <td> <a href="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">修改</a>
+                            </td>
+                            <td>
+                                <button class="bt_houxuan" type="button">加入</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <input id="new_pack1" name="new_pack1" placeholder="input package">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="bt_newpack" type="button">增加新包</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="保存" />
+    </form>
 </div>
 <div id="dialog"></div>
 {% endblock %}
