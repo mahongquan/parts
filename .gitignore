@@ -1,0 +1,6 @@
+*.pyc
+*~
+media/*
+rest_framework/*
+__pycache__
+data.sqlite
