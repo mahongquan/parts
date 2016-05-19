@@ -225,8 +225,8 @@
         }
         $(".bt_houxuan").click(buttonhouxuan_click);
         $("#bt_newpack").click(buttonnewpack_click);
-        $(".tojs").attr("data",$(".tojs").attr("href"));
-        $(".tojs").attr("href","#");
+        // $(".tojs").attr("data",$(".tojs").attr("href"));
+        // $(".tojs").attr("href","#");
         $(".tojs").click(href_click);
     });
 </script>
@@ -339,7 +339,7 @@
                             </tr>
                             {% for usepack in contact.usepack_set.all %}
                             <tr>
-                                <td> <a class="tojs" href="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
+                                <td> <a class="tojs" href="#" data="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
                                 </td>
                                 <td>
                                     <input name="delete_{{ usepack.id }}" type="checkbox">
@@ -362,7 +362,7 @@
                         {% for pack in maybes %}
                         <tr>
                             <td hidden="true">{{ pack.id }}</td>
-                            <td> <a class="tojs" href="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ pack.name }}</a>
+                            <td> <a class="tojs" href="#" data="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ pack.name }}</a>
                             </td>
                             <td>
                                 <button class="bt_houxuan" type="button">加入</button>
@@ -385,7 +385,7 @@
                 </td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-primary">"保存"</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </form>
 </div>
 <div id="dialog"></div>

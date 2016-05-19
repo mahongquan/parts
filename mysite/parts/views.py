@@ -1,4 +1,3 @@
-# Create your views here.
 # -*- coding: utf-8 -*-
 from django.db.models import Q
 from mysite.parts.models import *
@@ -8,7 +7,7 @@ import tarfile
 import os
 from io import BytesIO,StringIO
 import logging
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect,FileResponse
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -462,7 +461,7 @@ def zhuangxiangdan(request):
     data=genPack(c,fullfilepath)
     t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
     tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.xml"
-    t['Content-Length']=len(data)
+    #t['Content-Length']=len(data)
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def shujubiao(request):
@@ -654,9 +653,9 @@ def packItem(request):
             e.save()
         logging.info(request.META['PATH_INFO'])
         if url=="None":
-            return(HttpResponseRedirect("/parts/"))#request.META['PATH_INFO']+"?id="+contact_id))    
+            return(HttpResponseRedirect("/parts/packItem?id="+contact_id))#request.META['PATH_INFO']+"?id="+contact_id))    
         else:
-            return(HttpResponseRedirect(url))#request.META['PATH_INFO']+"?id="+contact_id))    
+            return(HttpResponseRedirect("/parts/packItem?id="+contact_id))#request.META['PATH_INFO']+"?id="+contact_id))    
 def create_pack(request):
     #request=Request(request,(JSONParser(),))
     #datas = json.loads(request.body.decode("utf-8"))#extjs read data from body

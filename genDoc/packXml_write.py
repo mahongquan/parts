@@ -214,9 +214,5 @@ def genQue(contact,fn):
     data=data.decode('utf-8')
     data= data.replace('\n', '\r\n')
     return data
-    #f=open(fn,"w",encoding="utf-8")#convert \n  to \r\n. word xml 的特殊之处
-    #f.write(data)
-    #f.close()
-
 if __name__=="__main__":
     print(genPack("4111533499"))
