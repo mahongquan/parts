@@ -74,12 +74,16 @@
             row.append(col3);
             var contact_id = $("#id");
             contact_id = contact_id.val();
-            //col4.append('<a href="/parts/packItem/?id='+id+'&url=/parts/showcontactP/?id='+contact_id+'">修改</a>');
-            //row.append(col4);
             newtodo.append(row);
             addnum++;
             $("#add_" + (addnum - 1)).val(id);
-            $("#p_" + (addnum - 1)).append('<a href="/parts/packItem/?id=' + id + '&url=/parts/showcontactP/?id=' + contact_id + '">' + name + '</a>');
+            var href=$("<a>");
+            href.attr("href","#");
+            href.attr("data",'/parts/packItem/?id=' + id + '&url=/parts/showcontactP/?id=' + contact_id );
+            href.append(name);
+            $("#p_" + (addnum - 1)).append(href);//<a  href="#" data="/parts/packItem/?id=' + id + '&url=/parts/showcontactP/?id=' + contact_id + '">' + name + '</a>');
+
+            href.click(href_click);
         }
 
         function button_remove_click(event) {
@@ -225,43 +229,13 @@
         }
         $(".bt_houxuan").click(buttonhouxuan_click);
         $("#bt_newpack").click(buttonnewpack_click);
-        $(".tojs").attr("data",$(".tojs").attr("href"));
-        $(".tojs").attr("href","#");
+        //$(".tojs").attr("data",$(".tojs").attr("href"));
+        //$(".tojs").attr("href","#");
         $(".tojs").click(href_click);
     });
 </script>
 {% endblock %} {% block content %}
 <div class="results">
-    <!--       <table>
-      <tr>
-      <td>用户名称:</td>
-      <td>{{ contact.yonghu}}</td>
-      </tr>
-      <tr>
-      <td><label >仪器型号:</label></td>
-      <td>{{ contact.yiqixinghao }}</td>
-      </tr>
-      <tr>
-      <td><label >仪器编号:</label></td>
-      <td>{{ contact.yiqibh }}</td>
-      </tr>
-      <tr>
-      <td><label >包箱:</label></td>
-      <td>{{ contact.baoxiang }}</td>
-      </tr>
-      <tr>
-      <td><label >审核:</label></td>
-      <td>{{ contact.shenhe }}</td>
-      </tr>
-      <tr>
-      <td><label >预计发货时间:</label></td>
-      <td>{{ contact.yujifahuo_date|date:"Y-m-d" }}</td>
-      </tr>
-      <tr>
-      <td><label >合同编号:</label></td>
-      <td>{{ contact.hetongbh }}</td>
-      </tr>
-      </table> -->
     <form method="post" action="/parts/showcontactP/">{% csrf_token %}
         <input type="hidden" name="new" value="{{ new }}" />
         <table class="table-condensed">
@@ -339,7 +313,7 @@
                             </tr>
                             {% for usepack in contact.usepack_set.all %}
                             <tr>
-                                <td> <a class="tojs" href="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
+                                <td> <a class="tojs" href="#" datga="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
                                 </td>
                                 <td>
                                     <input name="delete_{{ usepack.id }}" type="checkbox">
@@ -362,7 +336,7 @@
                         {% for pack in maybes %}
                         <tr>
                             <td hidden="true">{{ pack.id }}</td>
-                            <td> <a class="tojs" href="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ pack.name }}</a>
+                            <td> <a class="tojs" href="#" data="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ pack.name }}</a>
                             </td>
                             <td>
                                 <button class="bt_houxuan" type="button">加入</button>
@@ -385,7 +359,7 @@
                 </td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-primary">"保存"</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </form>
 </div>
 <div id="dialog"></div>
