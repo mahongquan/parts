@@ -282,18 +282,20 @@
 </head>
      <body>
 <div>
+
+    <form method="post" action="/parts/packItem/">{% csrf_token %}
+    <input type="hidden" name="new" value="{{ new }}" />
     <table>
         <tr>
             <td> 包名称:</td>
-            <td>{{ pack.name }}</td>
+            <td><input name="packname" value="{{ pack.name }}"></td>
         </tr>
     </table>
-    <form method="post" action="/parts/packItem/">{% csrf_token %}
         <input type="hidden" name="id" value="{{ pack.id }}" />
         <input type="hidden" name="url" value="{{ url }}" />
         <table class="table-bordered">
             <tr>
-                <td>名称</td>
+                <td>备件名称</td>
                 <td>数量</td>
                 <td>删除</td>
             </tr>

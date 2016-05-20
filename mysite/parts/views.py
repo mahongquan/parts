@@ -624,16 +624,22 @@ def packItem(request):
     if request.method=='GET':
         dic = {}
         dic.update(csrf(request))
-        contact_id=request.GET["id"]
-        url=request.GET.get("url")
-        c=Pack.objects.get(id=contact_id)
-        dic["user"]=request.user
-        dic["pack"]=c
-        maybes=Item.objects.filter(Q(name__icontains="天平") | Q(name__icontains="打印机"))
-        dic["maybes"]=maybes
-        dic["url"]=url
-        r=render_to_response("parts/packItem.html",dic)
-        return(r)    
+        contact_id=request.GET.get("id")
+        if contact_id==None:
+            dic["new"]="1"
+            r=render_to_response("parts/packItem.html",dic)
+            return(r)    
+        else:
+            dic["new"]="0"
+            url=request.GET.get("url")
+            c=Pack.objects.get(id=contact_id)
+            dic["user"]=request.user
+            dic["pack"]=c
+            maybes=Item.objects.filter(Q(name__icontains="天平") | Q(name__icontains="打印机"))
+            dic["maybes"]=maybes
+            dic["url"]=url
+            r=render_to_response("parts/packItem.html",dic)
+            return(r)    
     else:
         logging.info(request.POST)
         adds=[]
@@ -645,9 +651,17 @@ def packItem(request):
                 adds.append(request.POST[k])
         logging.info(adds)
         logging.info(deletes)
-        contact_id=request.POST["id"]
-        url=request.POST["url"]
-        c=Pack.objects.get(id=contact_id)
+        new=request.POST["new"]
+        if new=="1":
+            c=Pack()
+            c.name=request.POST["packname"]
+            c.save()
+        else:
+            contact_id=request.POST["id"]
+            url=request.POST["url"]
+            c=Pack.objects.get(id=contact_id)
+            c.name=request.POST["packname"]
+            c.save()
         for one in deletes:
             e = PackItem.objects.get(id=int(one))
             logging.info(dir(c.usepack_set))
