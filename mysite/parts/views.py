@@ -535,7 +535,7 @@ def sql(request):
     cursor.execute('select * from other_other2 where id>%s' ,[1])
     raw = cursor.fetchone()                 #返回结果行 或使用 #raw = cursor.fetchall()
     return render_to_response('other/sql.html',{'raw':raw})        
-def checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh):
+def checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,new):
     change=False
     if c.yonghu!=yonghu:
         c.yonghu=yonghu
@@ -564,14 +564,20 @@ def showcontactP(request):
     if request.method=='GET':
         dic = {}
         dic.update(csrf(request))
-        contact_id=request.GET["id"]
-        c=Contact.objects.get(id=contact_id)
-        dic["user"]=request.user
-        dic["contact"]=c
-        maybes=Pack.objects.filter(Q(name__icontains="必备") & Q(name__icontains=c.hetongbh[:2]) | Q(name__icontains=c.hetongbh))
-        dic["maybes"]=maybes
-        r=render_to_response("parts/contactPack.html",dic)
-        return(r)    
+        contact_id=request.GET.get("id")
+        if contact_id==None:
+            dic["new"]="1"
+            r=render_to_response("parts/contactPack.html",dic)
+            return(r)    
+        else:
+            dic["new"]="0"
+            c=Contact.objects.get(id=contact_id)
+            dic["user"]=request.user
+            dic["contact"]=c
+            maybes=Pack.objects.filter(Q(name__icontains="必备") & Q(name__icontains=c.hetongbh[:2]) | Q(name__icontains=c.hetongbh))
+            dic["maybes"]=maybes
+            r=render_to_response("parts/contactPack.html",dic)
+            return(r)    
     else:
         logging.info(request.POST)
         new=request.POST["new"]
@@ -582,10 +588,13 @@ def showcontactP(request):
         shenhe=request.POST["shenhe"]
         yujifahuo_date=request.POST["yujifahuo_date"]
         hetongbh=request.POST["hetongbh"]
-        contact_id=request.POST["id"]
-        c=Contact.objects.get(id=contact_id)
-        checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh)
-       
+        if new=="1":
+            c=Contact(yonghu=yonghu,yiqixinghao=yiqixinghao,yiqibh=yiqibh,baoxiang=baoxiang,shenhe=shenhe,yujifahuo_date=yujifahuo_date,hetongbh=hetongbh )
+            c.save()
+        else:
+            contact_id=request.POST["id"]
+            c=Contact.objects.get(id=contact_id)
+            checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,new)
         adds=[]
         deletes=[]
         for k in request.POST:
@@ -653,9 +662,9 @@ def packItem(request):
             e.save()
         logging.info(request.META['PATH_INFO'])
         if url=="None":
-            return(HttpResponseRedirect("/parts/packItem?id="+contact_id))#request.META['PATH_INFO']+"?id="+contact_id))    
+            return(HttpResponseRedirect(request.META['PATH_INFO']+"?id="+contact_id)) #"/parts/"))#request.META['PATH_INFO']+"?id="+contact_id))    
         else:
-            return(HttpResponseRedirect("/parts/packItem?id="+contact_id))#request.META['PATH_INFO']+"?id="+contact_id))    
+            return(HttpResponseRedirect(request.META['PATH_INFO']+"?id="+contact_id))    #url))#request.META['PATH_INFO']+"?id="+contact_id))    
 def create_pack(request):
     #request=Request(request,(JSONParser(),))
     #datas = json.loads(request.body.decode("utf-8"))#extjs read data from body
