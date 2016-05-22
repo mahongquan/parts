@@ -44,7 +44,7 @@
         function addrow(id, name) {
             console.log("add row");
             var newtodo = $("#table_input");
-            var col1 = $("<td>");
+            var col1 = $("<td>");col1.attr("hidden","true");
             var col2 = $("<td>");
             var col3 = $("<td>");
             //var col4=$( "<td>" );
@@ -59,7 +59,7 @@
             input2.attr("name", nm);
             input2.attr("type", "hidden");
             var input3 = $("<button>");
-            input3.append("移去");
+            input3.append("移去");input3.attr("class","btn btn-sm");
             input3.attr("type", "button");
             var row = $("<tr>");
             row.attr("id", row_nm);
@@ -305,17 +305,19 @@
             </thead>
             <tr>
                 <td>
-                    <table class="table-bordered">
+                    <table id="table_input" class="table-bordered">
                         <tbody>
                             <tr>
+                                <td hidden="true">名称</td>
                                 <td>名称</td>
                                 <td>删除</td>
                             </tr>
                             {% for usepack in contact.usepack_set.all %}
                             <tr>
+                                <td hidden="true">名称</td>
                                 <td> <a class="tojs" href="#" data="/parts/packItem/?id={{ usepack.pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ usepack.pack.name }}</a>
                                 </td>
-                                <td>
+                                <td align="center">
                                     <input name="delete_{{ usepack.id }}" type="checkbox">
                                 </td>
                                 <!--           <td>
@@ -325,10 +327,6 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <table id="table_input"></table>
-                    <!--     <button id="addrow" type="button">add row</button>
-    <button id="setrow" type="button">set value</button> -->
-
                 </td>
                 <td></td>
                 <td>
@@ -338,8 +336,8 @@
                             <td hidden="true">{{ pack.id }}</td>
                             <td> <a class="tojs" href="#" data="/parts/packItem/?id={{ pack.id }}&url=/parts/showcontactP/?id={{ contact.id }}">{{ pack.name }}</a>
                             </td>
-                            <td>
-                                <button class="bt_houxuan" type="button">加入</button>
+                            <td  align="right">
+                                <button class="bt_houxuan btn btn-sm" type="button">加入</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -347,12 +345,12 @@
                     <table>
                         <tr>
                             <td>
-                                <input id="new_pack1" name="new_pack1" placeholder="input package">
+                                <input id="new_pack1" name="new_pack1" placeholder="输入包">
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <button id="bt_newpack" type="button">增加新包</button>
+                            <td align="right">
+                                <button id="bt_newpack" class="btn" type="button">增加新包</button>
                             </td>
                         </tr>
                     </table>

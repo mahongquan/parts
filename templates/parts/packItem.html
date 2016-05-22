@@ -25,8 +25,6 @@
                 }
                 , select: function (event, ui) {
                     $("#new_item1").val(ui.item.value);
-                    //$( "#new_id1" ).val( ui.item.pk );
-                    //addrow(ui.item.pk,ui.item.value,$( "#input_num" ).value);
                     $("#id_item1").val(ui.item.pk);
                     return false;
                 }
@@ -45,7 +43,7 @@
             })
             .autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .append("<a>" +  item.value + "</a>")
                     .appendTo(ul);
             };
 
@@ -54,7 +52,7 @@
             var newtodo = $("#table_input");
             var col1 = $("<td>");
             col1.attr("hidden", "true");
-            var col11 = $("<td>");
+            var col11 = $("<td>");col11.attr("align","center");
             var col2 = $("<td>");
             var col3 = $("<td>");
             var nm = "add_" + addnum;
@@ -67,7 +65,7 @@
             input2.attr("id", nm);
             input2.attr("name", nm);
             input2.attr("type", "hidden");
-            var input3 = $("<button>");
+            var input3 = $("<button>");input3.attr("class","btn btn-sm")
             input3.append("移去");
             input3.attr("type", "button");
             var row = $("<tr>");
@@ -293,24 +291,22 @@
     </table>
         <input type="hidden" name="id" value="{{ pack.id }}" />
         <input type="hidden" name="url" value="{{ url }}" />
-        <table class="table-bordered">
+        <table id="table_input" class="table-bordered">
             <tr>
                 <td>备件名称</td>
-                <td>数量</td>
+                <td align="center">数量</td>
                 <td>删除</td>
             </tr>
             {% for packitem in pack.packitem_set.all %}
             <tr>
                 <td>{{ packitem.item.name }}</td>
-                <td> {{ packitem.ct }}</td>
-                <td>
-                    <input name="delete_{{ packitem.id }}" type="checkbox">
+                <td align="center"> {{ packitem.ct }}</td>
+                <td align="center">
+                    <input name="delete_{{ packitem.id }}" type="checkbox" align="center">
                 </td>
             </tr>
             {% endfor %}
         </table>
-        <table id="table_input" class="table-condensed table-bordered"></table>
-        <!--                 -->
         <table background-color="green">
             <tr>
                 <td>
@@ -334,7 +330,7 @@
                     <button class="btn btn-info"  id="bt_add" type="button">增加</button>
                 </td>
                 <td align="right">
-                    <button class="btn btn-info" id="bt_newitem" type="button">增加新备件</button>
+                    <button class="btn" id="bt_newitem" type="button">增加新备件</button>
                 </td>
             </tr>
         </table>
