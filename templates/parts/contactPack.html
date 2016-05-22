@@ -5,6 +5,22 @@
     $(function () {
         console.log("document ready");
         var csrf_token = "{{ csrf_token }}";
+        var availableTags = [
+          "CS-1011C",
+          "CS-2800",
+          "CS-3000",
+          "CS-3000G",
+          "HD-5",
+          "N-3000",
+          "O-3000",
+          "OH-3000",
+          "ON-3000",
+          "ON-4000",
+          "ONH-3000"
+        ];
+        $( "#yiqixinghao" ).autocomplete({
+          source: availableTags
+        });
         $("#date").datepicker({
             dateFormat: 'yy-mm-dd'
         });
@@ -224,7 +240,7 @@
             var url=event.currentTarget.attributes["data"].nodeValue;   
             var str="<iframe src='"+url+"' />";
             $(str).dialog({ autoopen: true, modal: true, 
-                           title: "修改包",width:300,height:500
+                           title: "修改包",width:320,height:500
                           });
         }
         $(".bt_houxuan").click(buttonhouxuan_click);
@@ -252,7 +268,7 @@
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <input type="text" name="yiqixinghao" value={{ contact.yiqixinghao }}>
+                    <input id="yiqixinghao" type="text" name="yiqixinghao" value={{ contact.yiqixinghao }}>
                 </td>
             </tr>
             <tr>

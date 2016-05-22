@@ -286,12 +286,13 @@
     <table>
         <tr>
             <td> 包名称:</td>
-            <td><input name="packname" value="{{ pack.name }}"></td>
+            <td><input name="packname"   class="form-control"  value="{{ pack.name }}"></td>
         </tr>
-    </table>
+        <tr>
+        <td colspan="2" align="center">
         <input type="hidden" name="id" value="{{ pack.id }}" />
         <input type="hidden" name="url" value="{{ url }}" />
-        <table id="table_input" class="table-bordered">
+        <table id="table_input" class="table-bordered" style="margin:10px 5px 5px 5px">
             <tr>
                 <td>备件名称</td>
                 <td align="center">数量</td>
@@ -299,7 +300,7 @@
             </tr>
             {% for packitem in pack.packitem_set.all %}
             <tr>
-                <td>{{ packitem.item.name }}</td>
+                <td><div style="width:180px">{{ packitem.item.name }}</div></td>
                 <td align="center"> {{ packitem.ct }}</td>
                 <td align="center">
                     <input name="delete_{{ packitem.id }}" type="checkbox" align="center">
@@ -307,6 +308,9 @@
             </tr>
             {% endfor %}
         </table>
+        </td>
+        </tr>
+    </table>
         <table background-color="green">
             <tr>
                 <td>
@@ -314,7 +318,7 @@
                 </td>
                 <td>
                     <input id="id_item1" type="hidden">
-                    <input id="new_item1" type="text" placeholder="输入备件名称">
+                    <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称">
                 </td>
             </tr>
             <tr>
@@ -322,7 +326,7 @@
                     <label>数量:</label>
                 </td>
                 <td>
-                    <input id="input_num" type="text" value="1">
+                    <input id="input_num"  class="form-control" type="text" value="1">
                 </td>
             </tr>
             <tr>
