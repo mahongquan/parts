@@ -24,7 +24,7 @@ class ItemLookup(LookupChannel):
 
     def format_item_display(self, obj):
         """ (HTML) formatted item for displaying item in the selected deck area """
-        return u"%s" % (escape(obj.bh+"_"+obj.name+"_"+obj.guige))
+        return u"%s" % (escape(obj.guige))
 
 @register('contact')
 class ContactLookup(LookupChannel):

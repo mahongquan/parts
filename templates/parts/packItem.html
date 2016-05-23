@@ -26,6 +26,7 @@
                 , select: function (event, ui) {
                     $("#new_item1").val(ui.item.value);
                     $("#id_item1").val(ui.item.pk);
+                    $("#input_gg").val(ui.item.repr);
                     return false;
                 }
                 , source: function (request, response) {
@@ -43,11 +44,11 @@
             })
             .autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" +  item.value + "</a>")
+                    .append("<a>" +item.value+"("+ item.repr+")" + "</a>")
                     .appendTo(ul);
             };
 
-        function addrow(id, name, ct) {
+        function addrow(id, name,guige, ct) {
             console.log("add row");
             var newtodo = $("#table_input");
             var col1 = $("<td>");
@@ -55,6 +56,7 @@
             var col11 = $("<td>");col11.attr("align","center");
             var col2 = $("<td>");
             var col3 = $("<td>");
+            var col22 = $("<td>");
             var nm = "add_" + addnum;
             var p_nm = "p_" + addnum;
             var row_nm = "row_" + addnum;
@@ -79,7 +81,9 @@
             row.append(col1);
 
             row.append(col2);
+            row.append(col22);col22.append(guige);
             row.append(col11);
+            
             row.append(col3);
 
             newtodo.append(row);
@@ -102,7 +106,7 @@
         function buttonaddrow_click() {
             //console.log("button_addrow clicked"); 
             var id = $("#id_item1");
-            addrow(id.val(), $("#new_item1").val(), $("#input_num").val());
+            addrow(id.val(), $("#new_item1").val(),$("#input_gg").val(), $("#input_num").val());
         }
         // function buttonhouxuan_click(){  
         //     console.log("buttonhouxuan_click");  
@@ -295,12 +299,14 @@
         <table id="table_input" class="table-bordered" style="margin:10px 5px 5px 5px">
             <tr>
                 <td>备件名称</td>
+                <td align="center">规格</td>
                 <td align="center">数量</td>
                 <td>删除</td>
             </tr>
             {% for packitem in pack.packitem_set.all %}
             <tr>
                 <td><div style="width:180px">{{ packitem.item.name }}</div></td>
+                <td align="center"> {{ packitem.item.guige }}</td>
                 <td align="center"> {{ packitem.ct }}</td>
                 <td align="center">
                     <input name="delete_{{ packitem.id }}" type="checkbox" align="center">
@@ -319,6 +325,14 @@
                 <td>
                     <input id="id_item1" type="hidden">
                     <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称">
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>规格:</label>
+                </td>
+                <td>
+                    <input id="input_gg"  class="form-control" type="text">
                 </td>
             </tr>
             <tr>
