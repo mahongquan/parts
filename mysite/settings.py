@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'explore',
     'mysite.parts',
     'ajax_select',
-    # 'extjs',
+    'extjs',
     # 'rest',
 ]
 
@@ -120,7 +120,7 @@ LOCALE_PATHS = [
 USE_TZ = True
 TIME_ZONE ='Asia/Shanghai'
 
-#LANGUAGE_CODE = 'zh_CN'
+LANGUAGE_CODE = 'zh_CN'
 
 SITE_ID = 1
 
@@ -154,5 +154,6 @@ CSRF_COOKIE_NAME="csrftoken"
 CSRF_HEADER_NAME="CSRF_COOKIE"
 logging.basicConfig(
     level = logging.DEBUG,
+    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
     #format = '%(asctiome)s %(levelname)s %(module)s.%(funcName)s Line:%(lineno)d%(message)s',
 )

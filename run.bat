@@ -1,1 +1,1 @@
-python manage.py runserver 8000
+d:\python34\python manage.py runserver 8000
