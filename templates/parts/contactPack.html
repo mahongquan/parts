@@ -250,14 +250,16 @@
             showDialog();
         }
         function href_click(event){
-            var url=event.currentTarget.attributes["data"].nodeValue;   
-            //window.open(url);
-            var str='<iframe width="600" height="500" src="'+url+'" />';
-            var iframe=$(str);
-            var div1=$("<div></div>");div1.append(iframe);
-            div1.dialog({ autoopen: true, modal: true, 
-                           title: "修改包",width:600,height:500
-                          });
+            var url=event.currentTarget.attributes["data"].nodeValue;
+            var name="";
+            var win = window.open(url, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+            win.focus();   
+            // var str='<iframe width="600" height="500" src="'+url+'" />';
+            // var iframe=$(str);
+            // var div1=$("<div></div>");div1.append(iframe);
+            // div1.dialog({ autoopen: true, modal: true, 
+            //                title: "修改包",width:600,height:500
+            //               });
         }
         $(".bt_houxuan").click(buttonhouxuan_click);
         $("#bt_newpack").click(buttonnewpack_click);

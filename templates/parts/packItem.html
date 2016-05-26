@@ -150,6 +150,7 @@
                     if (data.success) {
                         $("#id_item1").val(data.data.id);
                         $("#new_item1").val(data.data.name);
+                        $("#input_gg").val(data.data.guige);
                         $("#dialog").dialog("close");
                     }
                 }
@@ -244,7 +245,7 @@
         <input type="hidden" name="url" value="{{ url }}" />
         <table id="table_input" class="table-bordered" style="margin:10px 5px 5px 5px">
             <tr>
-                <td>备件名称</td>
+                <td><h4>备件名称</h4></td>
                 <td align="center">规格</td>
                 <td align="center">数量</td>
                 <td>删除</td>
@@ -272,6 +273,9 @@
                     <input id="id_item1" type="hidden">
                     <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称">
                 </td>
+                 <td>
+                    <button class="btn btn-info"  id="bt_add" type="button">增加</button>
+                </td>
             </tr>
              <tr>
                 <td>
@@ -279,6 +283,9 @@
                 </td>
                 <td>
                     <input id="input_gg"  class="form-control" type="text">
+                </td>
+                <td align="right">
+                   <!--  <button class="btn" id="bt_newitem" type="button">增加新备件</button> -->
                 </td>
             </tr>
             <tr>
@@ -288,15 +295,18 @@
                 <td>
                     <input id="input_num"  class="form-control" type="text" value="1">
                 </td>
+                <td align="right">
+                    <button class="btn" id="bt_newitem" type="button">增加新备件</button>
+                </td>
             </tr>
-            <tr>
+          <!--   <tr>
                 <td>
                     <button class="btn btn-info"  id="bt_add" type="button">增加</button>
                 </td>
                 <td align="right">
                     <button class="btn" id="bt_newitem" type="button">增加新备件</button>
                 </td>
-            </tr>
+            </tr> -->
         </table>
         <!--       -->
         <button class="btn btn-primary" type="submit">保存</button>
