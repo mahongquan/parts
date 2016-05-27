@@ -40,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'explore',
+    #'xadmin',
+    #'crispy_forms',
+    #'reversion',
     'mysite.parts',
     'ajax_select',
     # 'extjs',
-    # 'rest',
+     'rest',
 ]
 
 MIDDLEWARE_CLASSES = [

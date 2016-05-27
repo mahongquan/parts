@@ -2,12 +2,9 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from mysite import settings
 from mysite import mainview
-#from adminplus.sites import AdminSitePlus
-#from mysite.mygateway import echoGateway
-#admin.site=AdminSitePlus()
+#import xadmin
+#xadmin.autodiscover()
 admin.autodiscover()
-#myconfig_download_url=r"/photo/"
-#download_url="/download/"
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from ajax_select import urls as ajax_select_urls
@@ -37,7 +34,8 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/lookups/', include(ajax_select_urls)),
-    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^xadmin/', include(xadmin.site.urls)),
+     url(r'^admin/', include(admin.site.urls)),
     #url(r'^gateway/', echoGateway),
     url(r'^explore/',include('explore.urls')), 
     url(r'^accounts/login/$', mainview.loginpage),
