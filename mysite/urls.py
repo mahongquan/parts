@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^fetch_products.php$', mainview.fetch_products),
     url(r'^search.php$', mainview.search),
 	url(r'^welcome$', mainview.welcome),
+    url(r'^extjs/',include('extjs.urls')),
     url(r'^rest/',include('rest.urls')),   
     url(r'^parts/',include('mysite.parts.urls')),   
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

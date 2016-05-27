@@ -26,6 +26,7 @@
                 , select: function (event, ui) {
                     $("#new_item1").val(ui.item.value);
                     $("#id_item1").val(ui.item.pk);
+                    $("#input_gg").val(ui.item.repr);
                     return false;
                 }
                 , source: function (request, response) {
@@ -43,11 +44,11 @@
             })
             .autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" +  item.value + "</a>")
+                    .append("<a>" +item.value+"("+ item.repr+")" + "</a>")
                     .appendTo(ul);
             };
 
-        function addrow(id, name, ct) {
+        function addrow(id, name,guige, ct) {
             console.log("add row");
             var newtodo = $("#table_input");
             var col1 = $("<td>");
@@ -55,6 +56,7 @@
             var col11 = $("<td>");col11.attr("align","center");
             var col2 = $("<td>");
             var col3 = $("<td>");
+            var col22 = $("<td>");
             var nm = "add_" + addnum;
             var p_nm = "p_" + addnum;
             var row_nm = "row_" + addnum;
@@ -79,7 +81,9 @@
             row.append(col1);
 
             row.append(col2);
+            row.append(col22);col22.append(guige);
             row.append(col11);
+            
             row.append(col3);
 
             newtodo.append(row);
@@ -102,19 +106,9 @@
         function buttonaddrow_click() {
             //console.log("button_addrow clicked"); 
             var id = $("#id_item1");
-            addrow(id.val(), $("#new_item1").val(), $("#input_num").val());
+            addrow(id.val(), $("#new_item1").val(),$("#input_gg").val(), $("#input_num").val());
         }
-        // function buttonhouxuan_click(){  
-        //     console.log("buttonhouxuan_click");  
-        //     var id=this.parentNode.parentNode.children[0].innerText;
-        //     var name=this.parentNode.parentNode.children[1].innerText;
-        //     addrow(id,name);
-        // }   
-        // function buttonsetrow_click(id,name){  
-        //      console.log("button_setrow clicked");  
-        //      $("#add_"+(addnum-1)).val(id);
-        //      $("#p_"+(addnum-1)).append(name);
-        //  }  
+
         $("#bt_add").click(buttonaddrow_click);
         //$("#setrow").click(buttonsetrow_click);  
         //$(".bt_houxuan").click(buttonhouxuan_click);
@@ -156,6 +150,7 @@
                     if (data.success) {
                         $("#id_item1").val(data.data.id);
                         $("#new_item1").val(data.data.name);
+                        $("#input_gg").val(data.data.guige);
                         $("#dialog").dialog("close");
                     }
                 }
@@ -196,50 +191,7 @@
             var btn_select = $('<td><button type="button">确定</button></td>');
             todolist.append(btn_select);
             btn_select.bind("click", {}, button_select_click);
-            //   $.ajax({ 
-            //     type:'POST',
-            //         dataType: "json",
-            //     url: "/rest/view_pack",
-            //         data: {start:start,limit:limit,csrfmiddlewaretoken:$("#csrf_token").attr("value")},
-            //     //context: document.body,
-            //         complete:function(){
-
-            //         },
-            //         error:function(XMLHttpRequest, textStatus, errorThrown){
-            //             console.log(errorThrown);
-            //         },
-            //     success: function(data)
-            //     {
-            //         console.log("ajax done");
-            //         console.log(data);
-            //         var todolist=$("#dialog");
-            //         //data=eval("("+data+")");
-            //         console.log(data.data);  
-            //         var tbl = $('<table></table>');  
-            //         data.data.forEach(function(onerow){  
-            //         console.log(onerow);  
-            //               //console.log(i);
-            //                 var one = $('<tr one="true"></tr>');  
-            //                 var rowid = $('<td>'+onerow.name+'</td>');  
-            //                 var newEl = $('<td>'+onerow.id+'</td>');  
-            //                 var btn_select = $('<td><button type="button">选择</button></td>');  
-            //                 //btn.click(button_remove_click);  
-            //                 btn_select.bind("click", { tochange:tochange,name:onerow.name,id:onerow.id},button_select_click );  
-            //                 //var btnedit = $('<td><button type="button">edit</button></td>');  
-            //                 //btnedit.click(button_edit_click);  
-            //                 one.append(rowid);  
-            //                 one.append(newEl);   
-            //                 //one.append(btnedit);  
-            //                 one.append(btn_select);  
-            //                 tbl.append(one);
-            //           }) 
-            //           todolist.append(tbl);        
-            //     }
-            // });
             $("#dialog").dialog({
-                //bgiframe: true,
-                //resizable: false, height: "530",width:"200",
-                //height:140,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -280,7 +232,6 @@
 </head>
      <body>
 <div>
-
     <form method="post" action="/parts/packItem/">{% csrf_token %}
     <input type="hidden" name="new" value="{{ new }}" />
     <table>
@@ -294,13 +245,15 @@
         <input type="hidden" name="url" value="{{ url }}" />
         <table id="table_input" class="table-bordered" style="margin:10px 5px 5px 5px">
             <tr>
-                <td>备件名称</td>
+                <td><h4>备件名称</h4></td>
+                <td align="center">规格</td>
                 <td align="center">数量</td>
                 <td>删除</td>
             </tr>
             {% for packitem in pack.packitem_set.all %}
             <tr>
                 <td><div style="width:180px">{{ packitem.item.name }}</div></td>
+                <td align="center"> {{ packitem.item.guige }}</td>
                 <td align="center"> {{ packitem.ct }}</td>
                 <td align="center">
                     <input name="delete_{{ packitem.id }}" type="checkbox" align="center">
@@ -320,6 +273,20 @@
                     <input id="id_item1" type="hidden">
                     <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称">
                 </td>
+                 <td>
+                    <button class="btn btn-info"  id="bt_add" type="button">增加</button>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>规格:</label>
+                </td>
+                <td>
+                    <input id="input_gg"  class="form-control" type="text">
+                </td>
+                <td align="right">
+                   <!--  <button class="btn" id="bt_newitem" type="button">增加新备件</button> -->
+                </td>
             </tr>
             <tr>
                 <td>
@@ -328,15 +295,18 @@
                 <td>
                     <input id="input_num"  class="form-control" type="text" value="1">
                 </td>
+                <td align="right">
+                    <button class="btn" id="bt_newitem" type="button">增加新备件</button>
+                </td>
             </tr>
-            <tr>
+          <!--   <tr>
                 <td>
                     <button class="btn btn-info"  id="bt_add" type="button">增加</button>
                 </td>
                 <td align="right">
                     <button class="btn" id="bt_newitem" type="button">增加新备件</button>
                 </td>
-            </tr>
+            </tr> -->
         </table>
         <!--       -->
         <button class="btn btn-primary" type="submit">保存</button>

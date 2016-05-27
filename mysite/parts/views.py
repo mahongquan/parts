@@ -156,7 +156,7 @@ def onepage(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
-    r=render_to_response("parts/index.html",{"user":request.user,"contacts":contacts})
+    r=render_to_response("parts/onepage.html",{"user":request.user,"contacts":contacts})
     return(r) 
 def getCurrentContacts(request):        
     return request.user.contact_set.all()

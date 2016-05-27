@@ -251,11 +251,9 @@
         }
         function href_click(event){
             var url=event.currentTarget.attributes["data"].nodeValue;
-            window.open(url);   
-            // var str="<iframe src='"+url+"' />";
-            // $(str).dialog({ autoopen: true, modal: true, 
-            //                title: "修改包",width:320,height:500
-            //               });
+            var name="";
+            var win = window.open(url, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+            win.focus();   
         }
         $(".bt_houxuan").click(buttonhouxuan_click);
         $("#bt_newpack").click(buttonnewpack_click);
