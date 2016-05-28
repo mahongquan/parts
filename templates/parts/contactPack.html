@@ -250,7 +250,7 @@
             showDialog();
         }
         function href_click(event){
-            var url=event.currentTarget.attributes["data"].nodeValue;
+            var url=event.currentTarget.attributes["data"].value;
             var name="";
             var win = window.open(url, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
             win.focus();   
