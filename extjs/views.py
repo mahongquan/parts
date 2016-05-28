@@ -112,16 +112,18 @@ def boardOne(request,id=None):
         obj.delete()
         output=[]
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    if request.method == 'PUT':
+        return create_update_board(request)
 def board(request):
     logging.info("=board==========")
     logging.info(request)
     logging.info("------------------")
     if request.method == 'GET':
         return view_board(request)
-    if request.method == 'POST':
-        return create_board(request)
+    # if request.method == 'POST':
+    #     return create_board(request)
     if request.method == 'PUT':
-        return update_board(request)
+        return create_update_board(request)
     if request.method == 'DELETE':
         return destroy_board(request)
 def view_board(request):
@@ -148,49 +150,15 @@ def view_board(request):
     for rec in objs:
         data.append(rec.json())
     output=data#{"total":total,"data":data}
-    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
-def create_board(request):
+    rstr=json.dumps(output, ensure_ascii=False,cls=MyEncoder)
+    logging.info(rstr)
+    return HttpResponse(rstr)
+def create_update_board(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     logging.info(data)
-    rec=Ch11()
-    rec.user=User.objects.get(id=1)
-    # if data.get("channels")!=None:
-    #     rec.channels=data.get("channels")
-    rec.title=data["title"]
+    rec=Ch11.create(data)
     rec.save()
-    output={"success":True,"message":"Created new User" +str(rec.id)}
-    output["data"]=rec.json()
-    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
-def update_board(request):
-    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
-    id1=data.get("id")
-    id1=int(id1)
-    rec=Ch11.objects.get(id=id1)
-    if data.get("hetongbh")!=None:
-        rec.hetongbh=data["hetongbh"]
-    if data.get("yujifahuo_date")!=None:
-        dt=datetime.datetime.strptime(data["yujifahuo_date"],'%Y-%m-%d')
-        rec.yujifahuo_date=dt.date()
-    if data.get("yonghu")!=None:
-        rec.yonghu=data.get("yonghu")
-    if data.get("baoxiang")!=None:
-        rec.baoxiang=data.get("baoxiang")
-    if data.get("yiqixinghao")!=None:
-        rec.yiqixinghao=data.get("yiqixinghao")
-    if data.get("yiqibh")!=None:
-        rec.yiqibh=data.get("yiqibh")
-    if data.get("shenhe")!=None:
-        rec.shenhe=data.get("shenhe")
-    if data.get("addr")!=None:
-        rec.addr=data.get("addr")
-    if data.get("channels")!=None:
-        rec.channels=data.get("channels")
-    if data.get("tiaoshi_date")!=None:
-        dt=datetime.datetime.strptime(data["tiaoshi_date"],'%Y-%m-%d')
-        rec.tiaoshi_date=dt.date()
-    rec.save()
-    output={"success":True,"message":"update Ch11 " +str(rec.id)}
-    output["data"]=rec.json()
+    output=rec.json()
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def destroy_board(request):
     data = json.loads(request.body.decode("utf-8"))
