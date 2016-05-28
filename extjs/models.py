@@ -10,7 +10,7 @@ class Ch11(models.Model):
 	@classmethod
 	def create(c,data):
 		id=data.get("id")
-		logging.info("id="+id)
+		logging.info("id="+str(id))
 		if id=="":
 			obj=Ch11()
 			fields=c._meta.fields
