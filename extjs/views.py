@@ -130,26 +130,17 @@ def view_board(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
     search=request.GET.get("search",'')
-    search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
     if search!='':
-        if search_bh!='':
-            total=Ch11.objects.filter(yonghu__contains=search).filter(hetongbh__contains=search_bh).count()
-            objs = Ch11.objects.filter(yonghu__contains=search).filter(hetongbh__contains=search_bh)[start:start+limit]
-        else:
-            total=Ch11.objects.filter(yonghu__contains=search).count()
-            objs = Ch11.objects.filter(yonghu__contains=search)[start:start+limit]
+        total=Ch11.objects.filter(name__contains=search).count()
+        objs = Ch11.objects.filter(name__contains=search)[start:start+limit]
     else:
-        if search_bh!='':
-            total=Ch11.objects.filter(hetongbh__contains=search_bh).count()
-            objs = Ch11.objects.filter(hetongbh__contains=search_bh)[start:start+limit]
-        else:
-            total=Ch11.objects.count()
-            objs = Ch11.objects.all()[start:start+limit]
+        total=Ch11.objects.count()
+        objs = Ch11.objects.all()[start:start+limit]
     data=[]
     for rec in objs:
         data.append(rec.json())
-    output=data#{"total":total,"data":data}
+    output={"total":total,"data":data}
     rstr=json.dumps(output, ensure_ascii=False,cls=MyEncoder)
     logging.info(rstr)
     return HttpResponse(rstr)
