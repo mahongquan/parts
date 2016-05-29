@@ -1,5 +1,6 @@
 $(function(){
    ////console.log("running");
+  var myglobal={};
   var Todo = Backbone.Model.extend({
     urlRoot : "/extjs/board/",
     fields:["name","id","gender","epaper","dob"],
@@ -16,6 +17,7 @@ $(function(){
     url : "/extjs/board/",
     //localStorage: new Backbone.LocalStorage("todos-backbone"),
      parse: function(data, options) {
+        myglobal.total=data.total;
         return data.data;
      }
   });
@@ -131,14 +133,48 @@ $(function(){
     // events: {
     //   "keypress #new-todo":  "createOnEnter",
     // },
+    button_prev_click:function(){
+        myglobal.start=myglobal.start-myglobal.limit;
+        if(myglobal.start<0) myglobal.start=0;
+        //todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
+        App.mysetdata();
+        console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+    },
+    button_next_click:function(){
+        myglobal.start=myglobal.start+myglobal.limit;
+        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+        App.mysetdata();//todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
+        console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+    },
+    mysetdata:function(){
+        this.$("#todo-list").empty();
+        todos.fetch({
+            reset:true,
+            data: { start:myglobal.start,limit:myglobal.limit},
+            success:function(){
+                console.log(todos.length+" todo")
+                this.$("#page").empty();
+                var right=myglobal.start+myglobal.limit
+                this.$("#page").append("item "+(myglobal.start+1)+"_"+right+" of "+myglobal.total);
+            },
+            error:function(){
+            }
+          }
+        );//{ reset: true,data: { start:this.start,limit:this.limit} });
+    },
     initialize: function() {
+      myglobal.start=0;
+      myglobal.limit=3;
+      myglobal.total=0;
       this.listenTo(todos, 'add', this.addOne);
       this.listenTo(todos, 'reset', this.addAll);
       this.listenTo(todos, 'all', this.render);
       this.main = $('#main');
       this.editview = new TodoEditView({model: new Todo()});
       this.$("#section_edit").append(this.editview.render().el);
-      todos.fetch();
+      this.$("#bt_prev").bind("click", {}, this.button_prev_click);
+      this.$("#bt_next").bind("click", {}, this.button_next_click);
+      this.mysetdata();
     },
     render: function() {
       if (todos.length) {
@@ -154,12 +190,6 @@ $(function(){
     addAll: function() {
       todos.each(this.addOne, this);
     },
-    createOnEnter: function(e) {
-      if (e.keyCode != 13) return;
-      if (!this.input.val()) return;
-      todos.create({name: this.input.val()});
-      this.input.val('');
-    }
   });
   var App = new AppView();
 });
