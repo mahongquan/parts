@@ -92,6 +92,9 @@ $(function(){
     },
     edit:function(){
       console.log("edit click");
+      console.log(App);
+      App.editview.model=this.model;
+      App.editview.render();
     },
     delete:function(){
       console.log("delete click");
@@ -122,63 +125,63 @@ $(function(){
     // updateOnEnter: function(e) {
     //   if (e.keyCode == 13) this.close();
     // },
-    clear: function() {
-      this.model.destroy();
-    }
+    // clear: function() {
+    //   this.model.destroy();
+    // }
   });
   var AppView = Backbone.View.extend({
     el: $("#todoapp"),
     // events: {
     //   "keypress #new-todo":  "createOnEnter",
     // },
-    buttonclear_click:function(event){
-      var table = event.data.appview.table;
-      //console.log(this.table);
-      var cs = table[0].children;
-      //console.log(cs);
-      cs = cs[0].children;
-      var data = {}
-      for (var i = 0; i < cs.length; i++) {
-          var input1 = cs[i].children[1].children[0];
-          if(input1.attributes["type"].value=="checkbox")
-          {
-            input1.checked=false;
-          }
-          else
-          {
-            input1.value="";//setAttribute("value","");
-          }
-      }
-    },
-    buttonedit_click:function(event){
-      var tmpid=event.currentTarget.attributes["data"].value;
-      var table = event.data.appview.table;
-      var themodel=null;
-       for(var i=0;i<todos.length;i++)
-      {
-            if(todos.models[i].attributes.id==tmpid)
-            {
-              themodel=todos.models[i]; 
-              break;
-            }
-      }
-      var cs = table[0].children;
-      //console.log(cs);
-      cs = cs[0].children;
-      for (var i = 0; i < cs.length; i++) {
-          var input1 = cs[i].children[1].children[0];
-          var name=input1.attributes["name"].value;
-          //console.log(themodel.attributes[name]);
-          if(input1.attributes["type"].value=="checkbox")
-          {
-            input1.checked=themodel.attributes[name];
-          }
-          else
-          {
-            input1.value=themodel.attributes[name];//.value;
-          }
-      }
-    },
+    // buttonclear_click:function(event){
+    //   var table = event.data.appview.table;
+    //   //console.log(this.table);
+    //   var cs = table[0].children;
+    //   //console.log(cs);
+    //   cs = cs[0].children;
+    //   var data = {}
+    //   for (var i = 0; i < cs.length; i++) {
+    //       var input1 = cs[i].children[1].children[0];
+    //       if(input1.attributes["type"].value=="checkbox")
+    //       {
+    //         input1.checked=false;
+    //       }
+    //       else
+    //       {
+    //         input1.value="";//setAttribute("value","");
+    //       }
+    //   }
+    // },
+    // buttonedit_click:function(event){
+    //   var tmpid=event.currentTarget.attributes["data"].value;
+    //   var table = event.data.appview.table;
+    //   var themodel=null;
+    //    for(var i=0;i<todos.length;i++)
+    //   {
+    //         if(todos.models[i].attributes.id==tmpid)
+    //         {
+    //           themodel=todos.models[i]; 
+    //           break;
+    //         }
+    //   }
+    //   var cs = table[0].children;
+    //   //console.log(cs);
+    //   cs = cs[0].children;
+    //   for (var i = 0; i < cs.length; i++) {
+    //       var input1 = cs[i].children[1].children[0];
+    //       var name=input1.attributes["name"].value;
+    //       //console.log(themodel.attributes[name]);
+    //       if(input1.attributes["type"].value=="checkbox")
+    //       {
+    //         input1.checked=themodel.attributes[name];
+    //       }
+    //       else
+    //       {
+    //         input1.value=themodel.attributes[name];//.value;
+    //       }
+    //   }
+    // },
     // buttondelete_click:function(event){
     //   var tmpid=event.currentTarget.attributes["data"].value;
     //   var table = event.data.appview.table;
@@ -193,48 +196,48 @@ $(function(){
     //   }
     //   if(themodel!=null) themodel.destroy();
     // },
-    buttonsave_click:function(event){
-      //console.log("save click");
-      //console.log(this);
-      //console.log(event);
-      var table = event.data.appview.table;
-      //console.log(this.table);
-      var cs = table[0].children;
-      //console.log(cs);
-      cs = cs[0].children;
-      var data = {}
-      for (var i = 0; i < cs.length; i++) {
-          var input1 = cs[i].children[1].children[0];
-          ////console.log(cs[i].children[1].children[0].value);
-          //console.log(input1.attributes["type"]);
-          if(input1.attributes["type"].value=="checkbox")
-          {
-           data[input1.name] = input1.checked; 
-          }
-          else
-          {
-            data[input1.name] = input1.value;
-          }
-      }
-      if(data["id"]!="")
-      {
-         var tmp=data["id"];
-         var tmpid=parseInt(tmp);
-         for(var i=0;i<todos.length;i++)
-         {
-            if(todos.models[i].attributes.id==tmpid)
-            {
-             todos.models[i].save(data); 
-              break;
-            }
-         }
-      }
-      else{
-        todos.create(data);
-      }
-      //console.log(data);
-      event.data.appview.buttonclear_click(event);
-    },
+    // buttonsave_click:function(event){
+    //   //console.log("save click");
+    //   //console.log(this);
+    //   //console.log(event);
+    //   var table = event.data.appview.table;
+    //   //console.log(this.table);
+    //   var cs = table[0].children;
+    //   //console.log(cs);
+    //   cs = cs[0].children;
+    //   var data = {}
+    //   for (var i = 0; i < cs.length; i++) {
+    //       var input1 = cs[i].children[1].children[0];
+    //       ////console.log(cs[i].children[1].children[0].value);
+    //       //console.log(input1.attributes["type"]);
+    //       if(input1.attributes["type"].value=="checkbox")
+    //       {
+    //        data[input1.name] = input1.checked; 
+    //       }
+    //       else
+    //       {
+    //         data[input1.name] = input1.value;
+    //       }
+    //   }
+    //   if(data["id"]!="")
+    //   {
+    //      var tmp=data["id"];
+    //      var tmpid=parseInt(tmp);
+    //      for(var i=0;i<todos.length;i++)
+    //      {
+    //         if(todos.models[i].attributes.id==tmpid)
+    //         {
+    //          todos.models[i].save(data); 
+    //           break;
+    //         }
+    //      }
+    //   }
+    //   else{
+    //     todos.create(data);
+    //   }
+    //   //console.log(data);
+    //   event.data.appview.buttonclear_click(event);
+    // },
     initialize: function() {
       this.table = this.$("#table_input");
       //console.log("init"+this.table);
@@ -244,8 +247,8 @@ $(function(){
       this.listenTo(todos, 'reset', this.addAll);
       this.listenTo(todos, 'all', this.render);
       this.main = $('#main');
-      var view = new TodoEditView({model: new Todo()});
-      this.$("#section_edit").append(view.render().el);
+      this.editview = new TodoEditView({model: new Todo()});
+      this.$("#section_edit").append(this.editview.render().el);
       // this.bt_save = this.$("#bt_save");
       // this.bt_save.bind("click", {appview:this}, this.buttonsave_click);
       // this.$("#bt_clear").bind("click", {appview:this}, this.buttonclear_click);
