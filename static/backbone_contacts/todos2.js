@@ -103,7 +103,7 @@ $(function(){
   });
   var TodoView = Backbone.View.extend({
     tagName:  "tr",
-    template: _.template($('#item-template').html()),
+    template: _.template('<td><%- id %></td><td><%- name %></td><td><%- gender %></td>  <td><%- dob %></td>      <td><%- epaper %></td><td><a class="item_edit" data="<%- id %>">edit</a><a style="margin:1px 20px;" class="item_delete" data="<%- id %>">delete</a></td>'),
     events: {
       "click .item_edit" : "edit",
        "click .item_delete" : "delete",
@@ -155,7 +155,7 @@ $(function(){
                 console.log(todos.length+" todo")
                 this.$("#page").empty();
                 var right=myglobal.start+myglobal.limit
-                this.$("#page").append("item "+(myglobal.start+1)+"_"+right+" of "+myglobal.total);
+                this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
             },
             error:function(){
             }

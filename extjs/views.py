@@ -8,10 +8,8 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User,Group
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
-from datetime import datetime
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.context_processors import csrf
@@ -23,17 +21,7 @@ from extjs.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
-class MyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj,datetime.date):
-            return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
-        if isinstance(obj,datetime.datetime):
-            return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
-        if isinstance(obj,Ch11):
-            return obj.name
-        if isinstance(obj,Contact):
-            return obj.hetongbh        
-        return json.JSONEncoder.default(self, obj)  
+from myutil import MyEncoder
 def index(request):
 	c=RequestContext(request,{"user":request.user})
 	c.update(csrf(request))
@@ -73,25 +61,17 @@ def view_ch11(request):
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 def create_ch11(request):
     data = request.POST
-    rec=Ch11()
-    myupdate(rec,data)
+    rec=Ch11.create(data)
     rec.save()
     output={"success":True,"message":"Created new User" +str(rec.id)}
     output["data"]=rec.json()
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-def myupdate(obj,data):
-	fields=type(obj)._meta.fields
-	for f in fields:
-		if f.name=="id":
-			pass
-		else:
-			if data.get(f.name)!=None:
-				exec("obj.%s=%s" % (f.name,data.get(f.name)))
 def update_ch11(request):
     requestPOST = json.loads(request.body.decode("utf-8"))
-    id1=int(requestPOST["id"])
-    rec=Ch11.objects.get(id=id1)
-    myupdate(Ch11,rec,requestPOST)
+    # id1=int(requestPOST["id"])
+    # rec=Ch11.objects.get(id=id1)
+    # myupdate(Ch11,rec,requestPOST)
+    rec=Ch11.create(requestPOST)
     rec.save()
     output={"success":True,"message":"update ch11 " +str(rec.id)}
     output["data"]=rec.json()
@@ -120,8 +100,6 @@ def board(request):
     logging.info("------------------")
     if request.method == 'GET':
         return view_board(request)
-    # if request.method == 'POST':
-    #     return create_board(request)
     if request.method == 'PUT':
         return create_update_board(request)
     if request.method == 'DELETE':
