@@ -95,6 +95,11 @@ def boardOne(request,id=None):
     if request.method == 'PUT':
         return create_update_board(request)
 def board(request,id=None):
+# GET  /books/ .... collection.fetch();
+# POST /books/ .... collection.create();
+# GET  /books/1 ... model.fetch();
+# PUT  /books/1 ... model.save();
+# DEL  /books/1 ... model.destroy();
     logging.info("=board==========")
     logging.info(request)
     logging.info("------------------")
@@ -105,8 +110,8 @@ def board(request,id=None):
             return view_board(request)
         if request.method == 'PUT':
             return create_update_board(request)
-    # if request.method == 'DELETE':
-    #     return destroy_board(request)
+        if request.method == 'POST':
+            return destroy_board(request)
 def view_board(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))

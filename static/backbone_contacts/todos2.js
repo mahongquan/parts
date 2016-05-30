@@ -31,7 +31,6 @@ $(function(){
         "click #bt_clearid" : "myclearid",
     },
     save:function(){
-      //console.log("save click");
       var data={}
       for(var i in this.model.fields){
         var fname=this.model.fields[i];
@@ -41,10 +40,6 @@ $(function(){
           var node=this.$("#"+fname);
           if(node.attr("type")=="checkbox")
           {
-              // console.log("checked");
-              // console.log(node[0].checked);
-              // console.log(node.attr("checked"));
-              //var v=this.$("#"+fname).attr("checked")[0].checked;
               data[name]=node[0].checked;
           }
           else
@@ -53,7 +48,7 @@ $(function(){
           }
          }
        }//for
-       console.log(data);
+      console.log(data);
       this.model.save(data);
       if(this.model.get("id")=="")
       {
