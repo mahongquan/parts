@@ -94,16 +94,19 @@ def boardOne(request,id=None):
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     if request.method == 'PUT':
         return create_update_board(request)
-def board(request):
+def board(request,id=None):
     logging.info("=board==========")
     logging.info(request)
     logging.info("------------------")
-    if request.method == 'GET':
-        return view_board(request)
-    if request.method == 'PUT':
-        return create_update_board(request)
-    if request.method == 'DELETE':
-        return destroy_board(request)
+    if id!=None:
+        return boardOne(request,id)
+    else:
+        if request.method == 'GET':
+            return view_board(request)
+        if request.method == 'PUT':
+            return create_update_board(request)
+    # if request.method == 'DELETE':
+    #     return destroy_board(request)
 def view_board(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
