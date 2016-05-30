@@ -6,6 +6,12 @@
   <script src="/static/backbone_contacts/underscore.js"></script>
   <script src="/static/backbone_contacts/backbone.js"></script>
   <script src="/static/backbone_contacts/todos2.js"></script>
+      <script>
+    var user="{{ user }}"
+    $.ajaxSetup({
+    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    </script>
   <style type="text/css">
     td{ padding: 5px 5px 5px 5px; }
   </style>
@@ -70,6 +76,6 @@
                 </td>
             </tr>
         </table>
-        <button id="bt_save">save</button> <button id="bt_clear">clear</button>
+        <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
   </script>
 {% endblock %}

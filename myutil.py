@@ -1,11 +1,31 @@
 import json
 import datetime
+import logging
 class MyModel:
     @classmethod
     def create(c,data):
-        pass
-    def json():
-        pass
+        id=data.get("id")
+        logging.info(id)
+        if id=="":
+            obj=c()
+            fields=c._meta.fields
+            for f in fields:
+                if f.name!="id":
+                    exec("obj.%s=data['%s']" % (f.name,f.name))
+            return obj
+        else:
+            obj=c.objects.get(id=int(id))
+            fields=c._meta.fields
+            for f in fields:
+                if f.name!="id":
+                    exec("obj.%s=data['%s']" % (f.name,f.name))
+            return obj
+    def json(self):
+        fields=type(self)._meta.fields
+        dic1={}
+        for f in fields:
+            exec("dic1['%s']=self.%s" % (f.name,f.name))
+        return dic1
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj,datetime.date):

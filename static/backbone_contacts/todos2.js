@@ -28,6 +28,7 @@ $(function(){
     events: {
       "click #bt_save" : "save",
        "click #bt_clear" : "myclear",
+        "click #bt_clearid" : "myclearid",
     },
     save:function(){
       //console.log("save click");
@@ -65,6 +66,10 @@ $(function(){
       this.model=new Todo();
       this.render();
     },
+    myclearid:function(){
+      this.$("#id").val("");
+    },
+
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
