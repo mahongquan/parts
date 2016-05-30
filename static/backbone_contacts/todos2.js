@@ -8,7 +8,7 @@ $(function(){
       var d=new Date();
       var dstr=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
       return {
-        name: "",id:"",gender:"",epaper:false,dob:dstr
+        name: "",id:undefined,gender:"",epaper:false,dob:dstr
       };
     }
   });
@@ -34,35 +34,58 @@ $(function(){
       var data={}
       for(var i in this.model.fields){
         var fname=this.model.fields[i];
-        var name=this.$("#"+fname).attr("name");
-        var value=this.$("#"+fname).val();
-        if (value) {
-          var node=this.$("#"+fname);
-          if(node.attr("type")=="checkbox")
-          {
-              data[name]=node[0].checked;
-          }
-          else
-          {
-           data[name]=value;
-          }
-         }
+        if(fname!="id")
+        {
+            var name=this.$("#"+fname).attr("name");
+            var value=this.$("#"+fname).val();
+            if (value) {
+              var node=this.$("#"+fname);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[name]=node[0].checked;
+              }
+              else
+              {
+               data[name]=value;
+              }
+             }
+        }
        }//for
       console.log(data);
-      this.model.save(data);
-      if(this.model.get("id")=="")
+      if(this.model.get("id")==undefined)
       {
           todos.add(this.model);
-          this.render();
       }
+      this.model.save(data,{
+         success:function(context, model, resp, options)
+        {
+            //this is window;
+        }
+      }
+      );
     },
     myclear:function(){
       //console.log("clear click");
       this.model=new Todo();
       this.render();
     },
-    myclearid:function(){
-      this.$("#id").val("");
+    myclearid:function(){//copy
+      //this.$("#id").val(undefined);
+      data={}//copy data from old model
+      for(var i in this.model.fields){
+        var fname=this.model.fields[i];
+        if(fname!="id")
+        {
+              data[fname]=this.model.get(fname);
+        }
+      }
+      data["id"]=undefined;//id undefined save use POST,else use PUT
+      this.model=new Todo();
+      this.model.set(data);
+      console.log("id="+this.model.get("id"));
+      this.render();
+      this.listenTo(this.model, 'change', this.render);//model change must relisten
+      this.listenTo(this.model, 'destroy', this.remove);
     },
 
     initialize: function() {

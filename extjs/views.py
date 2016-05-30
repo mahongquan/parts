@@ -111,7 +111,7 @@ def board(request,id=None):
         if request.method == 'PUT':
             return create_update_board(request)
         if request.method == 'POST':
-            return destroy_board(request)
+            return create_update_board(request)
 def view_board(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))

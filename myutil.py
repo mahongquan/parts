@@ -6,7 +6,7 @@ class MyModel:
     def create(c,data):
         id=data.get("id")
         logging.info(id)
-        if id=="":
+        if id==None or id=="":
             obj=c()
             fields=c._meta.fields
             for f in fields:
