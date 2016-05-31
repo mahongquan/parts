@@ -1,0 +1,81 @@
+{% extends "base.html" %} 
+{% block extrahead %}
+  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <script src="/static/backbone_contacts/json2.js"></script>
+  <script src="/static/backbone_contacts/underscore.js"></script>
+  <script src="/static/backbone_contacts/backbone.js"></script>
+  <script src="/static/backbone_contacts/todos2.js"></script>
+      <script>
+    var user="{{ user }}"
+    $.ajaxSetup({
+    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    </script>
+  <style type="text/css">
+    td{ padding: 5px 5px 5px 5px; }
+  </style>
+{% endblock %} 
+{% block content %}
+  <div id="todoapp">
+      <section id="main">
+      <table  class="table-bordered" >
+    　<thead>
+　　<tr style="font-weight:bold;">
+　　　<td>id</td><td>name</td><td>gender</td><td>dob</td><td>epaper</td><td>actions</td>
+　　</tr>
+   　</thead> 
+      <tbody id="todo-list">
+      </tbody>
+      </table>
+      <a id="bt_prev">prev</a> <label id="page">page/page</label><a id="bt_next">next</a>
+    </section>
+    <section id="section_edit">
+    </section>
+  </div>
+  <script type="text/template" id="item-edit-template">
+        <table id="table_input" class="table-condensed" style="background-color:green;">
+         <tr>
+                <td>
+                    <label>id:</label>
+                </td>
+                <td>
+                    <input type="text" id="id" name="id" value="<%- id %>" readonly="readonly">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>用户名称:</label>
+                </td>
+                <td>
+                    <input type="text" id="name" name="name" value="<%- name %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>性别</label>
+                </td>
+                <td>
+                    <input id="gender" type="text" name="gender" value="<%- gender %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>出生日期:</label>
+                </td>
+                <td>
+                    <input type="text" id="dob" name="dob" value="<%- dob %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>epaper:</label>
+                </td>
+                <td>
+                    <input  id="epaper" type="checkbox" name="epaper"  checked="<%- epaper %>">
+                </td>
+            </tr>
+        </table>
+        <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
+  </script>
+{% endblock %}

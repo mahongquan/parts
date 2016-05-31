@@ -1,0 +1,44 @@
+<html ng-app="myApp">
+  <head>
+    <meta charset='utf8'>
+    <base href="/extjs/angular/" />
+    <title>Angular Express Seed App</title>
+    <link rel="stylesheet" href="/static/contacts/public/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/contacts/public/css/app.css">
+  </head>
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+      <a href="/" class="brand">Contacts</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <div ng-controller="MainCtrl">
+        <ng-view>
+      </ng-view>
+    </div>
+  </div>
+</div>
+<div class="footer"><p>&copy; Company 2012</p>
+</div>
+</div>
+    <script src='/static/contacts/public/js/lib/angular/angular.js'></script>
+    <script src='/static/contacts/public/js/lib/angular/angular-resource.js'></script>
+    <script src='/static/contacts/public/js/app.js'></script>
+    <script src='/static/contacts/public/js/services.js'></script>
+    <script src='/static/contacts/public/js/controllers/ContactsEditCtrl.js'></script>
+    <script src='/static/contacts/public/js/controllers/ContactsDeleteCtrl.js'></script>
+    <script src='/static/contacts/public/js/controllers/ContactsIndexCtrl.js'></script>
+    <script src='/static/contacts/public/js/controllers/ContactsShowCtrl.js'></script>
+    <script src='/static/contacts/public/js/controllers/MainCtrl.js'></script>
+    <script src='/static/contacts/public/js/filters.js'></script>
+    <script src='/static/contacts/public/js/directives.js'></script>
+    <script>
+     var global_token='{{ csrf_token }}';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block extrahead %}
+<script src="/static/react-15.1.0/build/react.js"></script>
+<script src="/static/react-15.1.0/build/react-dom.js"></script>
+<script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
+<script>
+  $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  });
+</script>
+<script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
+<script type="text/babel">
+var CommentBox = React.createClass({
+  handleCommentSubmit: function(item) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: item,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function() {
+    return {data: []};
+  },
+  componentDidMount: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  render: function() {
+    return (
+      <div className="itemBox">
+        <h4>备件</h4>
+        <CommentList data={this.state.data} />
+        <button>前一页</button><div></div><button>后一页</button>
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+      </div>
+    );
+  }
+});
+
+var CommentList = React.createClass({
+  render: function() {
+    console.log(this.props.data);
+    var itemNodes =null;
+    if (this.props.data.data==undefined){
+
+    }
+    else{
+      itemNodes = this.props.data.data.map(function(item) {
+        return (
+          <Comment name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
+          </Comment>
+        );
+      });
+    }
+    return (
+      <table className="itemList table-bordered"><tbody>
+      <tr><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td></tr>
+        {itemNodes}
+      </tbody>
+      </table>
+    );
+  }
+});
+
+var CommentForm = React.createClass({
+  getInitialState: function() {
+    return {name: '', guige: '',bh:'',danwei:''};
+  },
+  handleNameChange: function(e) {
+    this.setState({name: e.target.value});
+  },
+  handleTextChange: function(e) {
+    this.setState({guige: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var name = this.state.name.trim();
+    var guige = this.state.guige.trim();
+    if (!guige || !name) {
+      return;
+    }
+   this.props.onCommentSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
+   this.setState({name: '', guige: '',bh:'',danwei:''});
+  },
+  render: function() {
+    return (
+      <form className="itemForm" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="name"
+          value={this.state.name}
+          onChange={this.handleNameChange}
+        />
+        <input
+          type="text"
+          placeholder="Say something..."
+          value={this.state.guige}
+          onChange={this.handleTextChange}
+        />
+        <input type="submit" value="Post" />
+      </form>
+    );
+  }
+});
+var Comment = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+  render: function() {
+    return (
+      <tr className="item">
+        <td>{this.props.bh}</td>
+        <td className="itemName">
+          {this.props.name}
+        </td>
+        <td>{this.props.guige}</td>
+        <td>{this.props.danwei}</td>
+      </tr>
+    );
+  }
+});
+ReactDOM.render(
+  <CommentBox url="/rest/Item" />,
+  document.getElementById('content')
+);    
+</script>
+{% endblock %}
+{% block content %}
+  <div id="content"></div>
+{% endblock %}
