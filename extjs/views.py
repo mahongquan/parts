@@ -14,7 +14,6 @@ from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.context_processors import csrf
 from django.template.context import RequestContext
-import mysite.settings
 import datetime
 import json
 from extjs.models import *
@@ -27,6 +26,21 @@ def index(request):
 	c.update(csrf(request))
 	r=render_to_response("extjs/index.html",c)
 	return(r)
+def backbone(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    r=render_to_response("extjs/backbone.html",c)
+    return(r)
+def angular(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    r=render_to_response("extjs/angular.html",c)
+    return(r)
+def react(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    r=render_to_response("extjs/react.html",c)
+    return(r)
 def ch11(request):
     logging.info("===================")
     logging.info(request)
@@ -153,3 +167,29 @@ def destroy_board(request):
     else:
         output={"success":False,"message":"OK"}
         return HttpResponse(json.dumps(output, ensure_ascii=False))
+def contacts(request):
+    if request.method == 'GET':
+        rec=Contact.objects.all()
+        output=[]
+        for one in rec:
+            output.append(one.json())
+        return HttpResponse(json.dumps(output, ensure_ascii=False)) 
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
+        contact=Contact.mycreate(data)
+        contact.save()
+        output=contact.json()
+        return HttpResponse(json.dumps(output, ensure_ascii=False)) 
+def contactOne(request,id=None):
+    if request.method == 'GET':
+        rec=Contact.objects.get(id=int(id))
+        output=rec.json()
+        return HttpResponse(json.dumps(output, ensure_ascii=False)) 
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode("utf-8"))
+        id=data.get("id")
+        rec=Contact.objects.get(id=int(id))
+        rec.myupdate(data)
+        rec.save()
+        output=rec.json()
+        return HttpResponse(json.dumps(output, ensure_ascii=False))         
