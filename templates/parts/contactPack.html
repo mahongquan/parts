@@ -273,6 +273,7 @@
     <form method="post" action="/parts/showcontactP/">{% csrf_token %}
         <input type="hidden" name="new" value="{{ new }}" />
         <table class="table-condensed">
+            <tbody>
             <tr>
                 <td>
                     <label>用户名称:</label>
@@ -329,6 +330,23 @@
                     <input type="text" id="hetongbh" name="hetongbh" value={{ contact.hetongbh }}>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <label>通道:</label>
+                </td>
+                <td>
+                    <input type="text" id="channels" name="channels" value={{ contact.channels }}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>客户地址:</label>
+                </td>
+                <td>
+                    <input type="text" id="addr" name="addr" value={{ contact.addr }}>
+                </td>
+            </tr>
+            </tbody>
         </table>
         <input type="hidden" name="id" id="id" value="{{ contact.id }}" />
         <table border="4">

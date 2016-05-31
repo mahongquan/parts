@@ -535,7 +535,7 @@ def sql(request):
     cursor.execute('select * from other_other2 where id>%s' ,[1])
     raw = cursor.fetchone()                 #返回结果行 或使用 #raw = cursor.fetchall()
     return render_to_response('other/sql.html',{'raw':raw})        
-def checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,new):
+def checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,channels,addr,new):
     change=False
     if c.yonghu!=yonghu:
         c.yonghu=yonghu
@@ -558,6 +558,13 @@ def checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,heton
     if c.hetongbh!=hetongbh:
         c.hetongbh=hetongbh
         change=True
+    if c.channels!=channels:
+        c.channels=channels
+        change=True
+    if c.addr!=addr:
+        c.addr=addr
+        change=True
+
     if change:
         c.save()
 def showcontactP(request):
@@ -588,13 +595,15 @@ def showcontactP(request):
         shenhe=request.POST["shenhe"]
         yujifahuo_date=request.POST["yujifahuo_date"]
         hetongbh=request.POST["hetongbh"]
+        channels=request.POST["channels"]
+        addr=request.POST["addr"]
         if new=="1":
-            c=Contact(yonghu=yonghu,yiqixinghao=yiqixinghao,yiqibh=yiqibh,baoxiang=baoxiang,shenhe=shenhe,yujifahuo_date=yujifahuo_date,hetongbh=hetongbh )
+            c=Contact(yonghu=yonghu,yiqixinghao=yiqixinghao,yiqibh=yiqibh,baoxiang=baoxiang,shenhe=shenhe,yujifahuo_date=yujifahuo_date,hetongbh=hetongbh,channels=channels,addr=addr)
             c.save()
         else:
             contact_id=request.POST["id"]
             c=Contact.objects.get(id=contact_id)
-            checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,new)
+            checkChange(c,yonghu,yiqixinghao,yiqibh,baoxiang,shenhe,yujifahuo_date,hetongbh,channels,addr,new)
         adds=[]
         deletes=[]
         for k in request.POST:
@@ -604,7 +613,7 @@ def showcontactP(request):
                 adds.append(request.POST[k])
             elif k[:6]=="delete":
                 deletes.append(k.split("_")[1])
-            elif k[:3]=="add":
+            elif k[:4]=="add_":
                 adds.append(request.POST[k])
         logging.info(adds)
         logging.info(deletes)
