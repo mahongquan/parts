@@ -1,18 +1,6 @@
 {% extends "base.html" %}
-{% block extrahead %}
-  <title>Rest Proxy Example</title>
-  <link rel="stylesheet" type="text/css" href="/static/resources/css/ext-all.css" />
-  <link rel="stylesheet" type="text/css" href="/static/restful.css" />
-    <script type="text/javascript" src="/static/js/jquery-1.10.2.js"></script>
-    <script>
-    var user="{{ user }}"
-    $.ajaxSetup({
-    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-    });
-    </script>
-  <script type="text/javascript" src="/static/ext-all.js"></script>
-  <script type="text/javascript" src="/static/onepage.js"></script>
-{% endblock %}
 {% block content %}
-  <div id="windowDiv"></div>
+  <a href="restful">restful</a>
+  <a href="extjs6">extjs6</a>
+  <a href="jqm">jqm</a>
 {% endblock %}

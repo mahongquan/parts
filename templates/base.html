@@ -10,9 +10,9 @@
 <script type="text/javascript"  src="/static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
 <script type="text/javascript"  src="/static/bootstrap-3.3.6-dist/js/bootstrap.js"></script>
       	{% block extrahead %}{% endblock %}
-    <style>
+<!--     <style>
         button{margin: 3px 3px 3px 3px}
-    </style>
+    </style> -->
 </head>
 <body>
  <div class="container table-responsive">
@@ -28,10 +28,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
           <li><a href="/">合同</a></li>
-          <li><a href="/admin">管理</a></li>
-          <li><a href="/parts/items">备件</a></li>
-          <li><a href="/rest">应用界面</a></li>
-          <li><a href="/parts/copypack">复制包</a></li>
+          <li><a href="/admin/">管理</a></li>
+          <li><a href="/parts/items/">备件</a></li>
+          <li><a href="/rest/restful">应用界面</a></li>
+          <li><a href="/parts/copypack/">复制包</a></li>
           </ul>
         </div><!--/.nav-collapse -->
 		{% block content %}{% endblock %}

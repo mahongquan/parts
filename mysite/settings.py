@@ -14,7 +14,7 @@ import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#APPEND_SLASH=False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -40,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'explore',
+    #'xadmin',
+    #'crispy_forms',
+    #'reversion',
     'mysite.parts',
     'ajax_select',
+     'rest',
     'extjs',
-    # 'rest',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -120,7 +123,7 @@ LOCALE_PATHS = [
 USE_TZ = True
 TIME_ZONE ='Asia/Shanghai'
 
-LANGUAGE_CODE = 'zh_CN'
+LANGUAGE_CODE = 'zh-Hans'
 
 SITE_ID = 1
 

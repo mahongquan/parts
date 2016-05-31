@@ -8,10 +8,8 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User,Group
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
-from datetime import datetime
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.context_processors import csrf
@@ -102,8 +100,11 @@ def app_users_create(request):
     output={"success":True,"message":"create new User" +str(rec.id)}
     output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-
 def index(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    return render_to_response("rest/index.html",c)
+def restful(request):
     c=RequestContext(request,{"user":request.user})
     c.update(csrf(request))
     r=render_to_response("rest/restful.html",c)

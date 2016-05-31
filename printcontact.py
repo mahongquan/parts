@@ -38,4 +38,40 @@ def printAllContact():
 		f.write(rec.baoxiang)
 		f.write("\n")
 	f.close()
-printAllContact()
+def gentd():
+	fields=Contact._meta.fields
+	dic1=[]
+	for f in fields:
+	    #exec("dic1['%s']=self.%s" %(f.name,f.name))
+	    dic1.append(f.name)
+	    #print(r"<td><%%- %s %%></td>" % f.name)
+	    # print("""<tr>
+     #            <td>
+     #                <label>%s:</label>
+     #            </td>
+     #            <td>
+     #                <input type="text" id="%s" name="%s" value="<%%- %s %%>">
+     #            </td>
+     #        </tr>""" % (f.name,f.name,f.name,f.name) )
+     	r=[]
+     	for one in dic1:
+     		r.append(one+":''")
+     	print(",".join(r))
+def gentitle():
+	fields=Contact._meta.fields
+	dic1=[]
+	for f in fields:
+	    print(r"<td>%s</td>" % f.verbose_name)
+def genedit():
+	fields=Contact._meta.fields
+	for f in fields:
+	    print("""<tr>
+                <td>
+                    <label>%s:</label>
+                </td>
+                <td>
+                    <input type="text" id="%s" name="%s" value="<%%- %s %%>">
+                </td>
+            </tr>""" % (f.verbose_name,f.name,f.name,f.name) )
+#gentitle()
+genedit()
