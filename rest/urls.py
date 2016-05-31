@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from rest import views
 urlpatterns = [
         url(r'^$',views.index),
+        url(r'^restful',views.restful),
         url(r'^upload',views.upload),
         url(r'^jqm',views.jqm),
         url(r'^index_2',views.index_2),

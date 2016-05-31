@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from extjs import views
 urlpatterns = [
+        url(r'^$',views.index),
         url(r'^backbone$',views.backbone),
         url(r'^angular',views.angular),
         url(r'^react',views.react),
