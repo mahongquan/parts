@@ -9,9 +9,6 @@
       <script>
     var user="{{ user }}";
     var csrf_token="{{ csrf_token }}";
-    // $.ajaxSetup({
-    // data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-    // });
     </script>
   <style type="text/css">
     td{ padding: 5px 5px 5px 5px; }
@@ -19,6 +16,9 @@
 {% endblock %} 
 {% block content %}
   <div id="todoapp">
+    <p id="current_user_name"></p>
+    <section id="current_user">
+    </section>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -151,5 +151,26 @@
                 </td>
             </tr>        </table>
         <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
+  </script>
+  <script type="text/template" id="login-template">
+        <table class="table-condensed" style="background-color:green;">
+          <tr>
+                <td>
+                    <label>用户名:</label>
+                </td>
+                <td>
+                    <input type="text" id="user_name"  value="<%- name %>">
+                </td>
+          </tr>
+          <tr>
+                <td>
+                    <label>密码:</label>
+                </td>
+                <td>
+                    <input type="text" id="user_password"  value="<%- password %>">
+                </td>
+          </tr>
+        </table>
+        <button id="bt_login">提交</button>
   </script>
 {% endblock %}

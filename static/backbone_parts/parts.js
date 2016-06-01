@@ -234,18 +234,25 @@ $(function(){
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
     },
     initialize: function() {
-      myglobal.start=0;
-      myglobal.limit=3;
-      myglobal.total=0;
-      this.listenTo(todos, 'add', this.addOne);
-      this.listenTo(todos, 'reset', this.addAll);
-      this.listenTo(todos, 'all', this.render);
-      this.main = $('#main');
-      this.editview = new TodoEditView({model: new Todo()});
-      this.$("#section_edit").append(this.editview.render().el);
-      this.$("#bt_prev").bind("click", {}, this.button_prev_click);
-      this.$("#bt_next").bind("click", {}, this.button_next_click);
-      this.mysetdata();
+      if (user=="AnonymousUser"){
+        console.log("begin login");
+        this.userv= new UserView({model: new User()});
+        this.$("#current_user").append(this.userv.render().el);
+      }
+      else{
+        myglobal.start=0;
+        myglobal.limit=3;
+        myglobal.total=0;
+        this.listenTo(todos, 'add', this.addOne);
+        this.listenTo(todos, 'reset', this.addAll);
+        this.listenTo(todos, 'all', this.render);
+        this.main = $('#main');
+        this.editview = new TodoEditView({model: new Todo()});
+        this.$("#section_edit").append(this.editview.render().el);
+        this.$("#bt_prev").bind("click", {}, this.button_prev_click);
+        this.$("#bt_next").bind("click", {}, this.button_next_click);
+        this.mysetdata();
+      }
     },
     render: function() {
        if (todos.length) {
@@ -262,5 +269,31 @@ $(function(){
       todos.each(this.addOne, this);
     },
   });
+  $("#current_user_name").text(user);
+  var User = Backbone.Model.extend({
+    fields:['name', 'password'],
+    defaults: function() {
+      return {
+        name:'no name',password:'no password'
+      };
+    }
+  });
+  var UserView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#login-template').html()),
+    events: {
+      "click #bt_login" : "login",
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+    login:function(){
+      console.log("login");
+    },
+  });  
   var App = new AppView();
 });
