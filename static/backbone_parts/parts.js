@@ -233,13 +233,7 @@ $(function(){
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
     },
-    initialize: function() {
-      if (user=="AnonymousUser"){
-        console.log("begin login");
-        this.userv= new UserView({model: new User()});
-        this.$("#current_user").append(this.userv.render().el);
-      }
-      else{
+    afterlogin:function(){
         myglobal.start=0;
         myglobal.limit=3;
         myglobal.total=0;
@@ -252,6 +246,15 @@ $(function(){
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
         this.mysetdata();
+    },
+    initialize: function() {
+      if (user=="AnonymousUser"){
+        console.log("begin login");
+        this.userv= new UserView({model: new User()});
+        this.$("#current_user").append(this.userv.render().el);
+      }
+      else{
+        this.afterlogin();
       }
     },
     render: function() {
@@ -271,10 +274,9 @@ $(function(){
   });
   $("#current_user_name").text(user);
   var User = Backbone.Model.extend({
-    fields:['name', 'password'],
     defaults: function() {
       return {
-        name:'no name',password:'no password'
+        username:'mahongquan',password:'333333'
       };
     }
   });
@@ -293,6 +295,46 @@ $(function(){
     },
     login:function(){
       console.log("login");
+      var data={};
+       for(var name in this.model.attributes){
+            console.log(name);
+            var value=this.$("#"+name).val();
+            if (value) {
+              var node=this.$("#"+name);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[name]=node[0].checked;
+              }
+              else
+              {
+               data[name]=value;
+              }
+             }
+       }//for
+       console.log(data);
+        $.ajax({
+          context: App
+          , type: 'POST'
+          , url: "/rest/login"
+          , data: data
+          , complete: function () {
+          }
+          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log(errorThrown);
+          }
+          , success: function (data) {
+              console.log("ajax done");
+              console.log(data);
+              data=JSON.parse(data);
+              if (data.success) {
+                   user=data.data.name;
+                  $("#current_user_name").text(user);
+                  $("#current_user").attr("hidden",true);
+                  //var app=$(this);
+                  this.afterlogin();
+              }
+          }
+      });
     },
   });  
   var App = new AppView();
