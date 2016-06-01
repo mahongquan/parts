@@ -1,0 +1,38 @@
+Request URL:http://localhost:8000/rest/UsePack/?contact=115/223&_dc=1464757858544
+Request Method:DELETE
+Status Code:200 OK
+Remote Address:127.0.0.1:8000
+
+Response Headers
+view source
+Content-Type:text/html; charset=utf-8
+Date:Wed, 01 Jun 2016 05:10:59 GMT
+Server:WSGIServer/0.2 CPython/3.4.3
+Vary:Cookie
+X-Frame-Options:SAMEORIGIN
+
+Request Headers
+view source
+Accept:*/*
+Accept-Encoding:gzip, deflate, sdch
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:10
+Content-Type:application/json
+Cookie:sessionid=7oiafjlj4iufmgbj1raodat8a79jznex; csrftoken=oQn7HituRL2V8o7TtMtIDzc3JLESyiAG
+Host:localhost:8000
+Origin:http://localhost:8000
+Referer:http://localhost:8000/rest/restful
+User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+Query String Parameters
+view source
+view URL encoded
+contact:115/223
+_dc:1464757858544
+
+Request Payload
+view source
+{id: 223}
+id
+:
+223
