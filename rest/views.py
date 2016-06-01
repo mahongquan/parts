@@ -104,6 +104,11 @@ def index(request):
     c=RequestContext(request,{"user":request.user})
     c.update(csrf(request))
     return render_to_response("rest/index.html",c)
+def backbone(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    r=render_to_response("rest/backbone.html",c)
+    return(r)    
 def restful(request):
     c=RequestContext(request,{"user":request.user})
     c.update(csrf(request))
@@ -301,6 +306,7 @@ def view_contact(request):
     output={"total":total,"data":data}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
+    logging.info(request.body)
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     rec=Contact()
     if data.get("hetongbh")!=None:

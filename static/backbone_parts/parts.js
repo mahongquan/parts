@@ -1,6 +1,30 @@
 //todo create delete
 $(function(){
-   ////console.log("running");
+  // Backbone.ajax = function() {
+  //   var param = arguments[0];
+  //   if (param.success) {//修改响应数据
+  //     var oldSuccess = param.success;
+  //     var oldError = param.error;
+  //     param.success = function() {
+  //       var newArguments = Array.prototype.slice.call(arguments, 0);
+  //       //newArguments[0]=newArguments[0].data;//remove other
+  //       oldSuccess.apply(null, newArguments);
+  //     };
+  //   }
+  //   //2发送请求
+  //   console.log("Backbone.ajax");
+  //   console.log(param);
+  //   console.log(param.data);
+  //   return $.ajax({
+  //     url : param.url,
+  //     data : param.data,
+  //     success : param.success,
+  //     type : param.type,
+  //     dataType :param.dataType
+  //     contentType : 'multipart/form-data'//application/x-www-form-urlencoded, multipart/form-data, or text/plain
+  //   });
+    
+  // };
   var myglobal={};
   var Todo = Backbone.Model.extend({
     urlRoot : "/rest/Contact/",
@@ -9,7 +33,7 @@ $(function(){
       var d=new Date();
       var dstr=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
       return {
-        id:'',yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:'',tiaoshi_date:'',hetongbh:'',method:''
+        id:undefined,yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:'',tiaoshi_date:'',hetongbh:'',method:''
       };
     }
   });
@@ -17,10 +41,12 @@ $(function(){
     model: Todo,
     url : "/rest/Contact/",
     //localStorage: new Backbone.LocalStorage("todos-backbone"),
-     parse: function(data, options) {
+   parse: function(data, options) {
+      console.log("parse response");
+      if(data.total)
         myglobal.total=data.total;
-        return data.data;
-     }
+      return data.data;
+   }
   });
   var todos = new TodoList();
   var TodoEditView = Backbone.View.extend({
@@ -32,43 +58,63 @@ $(function(){
        "click #bt_clearid" : "myclearid",
     },
     save:function(){
-      //console.log("save click");
       var data={}
       for(var i in this.model.fields){
         var fname=this.model.fields[i];
-        var name=this.$("#"+fname).attr("name");
-        var value=this.$("#"+fname).val();
-        if (value) {
-          var node=this.$("#"+fname);
-          if(node.attr("type")=="checkbox")
-          {
-              // console.log("checked");
-              // console.log(node[0].checked);
-              // console.log(node.attr("checked"));
-              //var v=this.$("#"+fname).attr("checked")[0].checked;
-              data[name]=node[0].checked;
-          }
-          else
-          {
-           data[name]=value;
-          }
-         }
+        if(fname!="id")
+        {
+            var name=this.$("#"+fname).attr("name");
+            var value=this.$("#"+fname).val();
+            if (value) {
+              var node=this.$("#"+fname);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[name]=node[0].checked;
+              }
+              else
+              {
+               data[name]=value;
+              }
+             }
+        }
        }//for
-       console.log(data);
-      this.model.save(data);
-      if(this.model.get("id")=="")
+      //console.log(data);
+      if(this.model.get("id")==undefined)
       {
           todos.add(this.model);
-          this.render();
       }
+      this.model.set(data);
+      this.model.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+        }
+      });
     },
     myclear:function(){
       //console.log("clear click");
       this.model=new Todo();
       this.render();
     },
-    myclearid:function(){
-      this.$("#id").val("");
+    myclearid:function(){//copy
+      //this.$("#id").val(undefined);
+      data={}//copy data from old model
+      for(var i in this.model.fields){
+        var fname=this.model.fields[i];
+        if(fname!="id")
+        {
+              data[fname]=this.model.get(fname);
+        }
+      }
+      data["id"]=undefined;//id undefined save use POST,else use PUT
+      this.model=new Todo();
+      this.model.set(data);
+      //console.log("id="+this.model.get("id"));
+      this.render();
+      this.listenTo(this.model, 'change', this.render);//model change must relisten
+      this.listenTo(this.model, 'destroy', this.remove);
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -137,7 +183,11 @@ $(function(){
     },
     delete:function(){
       //console.log("delete click");
-       this.model.destroy();
+      var data={};
+      data.id=this.model.get("id");
+      data.csrfmiddlewaretoken=csrf_token;
+      data= JSON.stringify(data);
+      this.model.destroy({ data:data,contentType:"application:json"});
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -159,13 +209,13 @@ $(function(){
         if(myglobal.start<0) myglobal.start=0;
         //todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
         App.mysetdata();
-        console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
     button_next_click:function(){
         myglobal.start=myglobal.start+myglobal.limit;
         if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
         App.mysetdata();//todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
-        console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
     mysetdata:function(){
         this.$("#todo-list").empty();
@@ -198,11 +248,11 @@ $(function(){
       this.mysetdata();
     },
     render: function() {
-      if (todos.length) {
-        this.main.show();
-      } else {
-        this.main.hide();
-      }
+       if (todos.length) {
+         this.main.show();
+       } else {
+         this.main.hide();
+       }
     },
     addOne: function(todo) {
       var view = new TodoView({model: todo});

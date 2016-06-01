@@ -1,0 +1,155 @@
+{% extends "base.html" %} 
+{% block extrahead %}
+  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <script src="/static/backbone_parts/json2.js"></script>
+  <script src="/static/backbone_parts/underscore.js"></script>
+  <script src="/static/backbone_parts/backbone.js"></script>
+  <script src="/static/backbone_parts/parts.js"></script>
+      <script>
+    var user="{{ user }}";
+    var csrf_token="{{ csrf_token }}";
+    // $.ajaxSetup({
+    // data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    // });
+    </script>
+  <style type="text/css">
+    td{ padding: 5px 5px 5px 5px; }
+  </style>
+{% endblock %} 
+{% block content %}
+  <div id="todoapp">
+      <section id="main">
+      <table  class="table-bordered" >
+    　<thead>
+    　　<tr style="font-weight:bold;">
+    　　　<td>ID</td><td>用户单位</td><td>客户地址</td><td>通道配置</td><td>仪器型号</td><td>仪器编号</td><td>包箱</td><td>审核</td>
+          <td>预计发货时间</td><td>调试时间</td><td>合同编号</td><td>方法</td><td>actions</td>
+    　　</tr>
+   　</thead> 
+      <tbody id="todo-list">
+      </tbody>
+      </table>
+      <a id="bt_prev">prev</a> <label id="page">page/page</label><a id="bt_next">next</a>
+    </section>
+    <section id="section_edit">
+    </section>
+  </div>
+  <script type="text/template" id="item-template">
+  <td>
+                    <%- id %>
+               </td><td>
+                    <%- yonghu %>
+               </td><td>
+                    <%- addr %>
+               </td><td>
+                    <%- channels %>
+               </td><td>
+                    <%- yiqixinghao %>
+               </td><td>
+                    <%- yiqibh %>
+               </td><td>
+                    <%- baoxiang %>
+               </td><td>
+                    <%- shenhe %>
+               </td><td>
+                    <%- yujifahuo_date %>
+               </td><td>
+                    <%- tiaoshi_date %>
+               </td><td>
+                    <%- hetongbh %>
+               </td><td>
+                    <%- method %>
+               </td>
+               <td><a class="item_edit" data="<%- id %>">edit</a><a style="margin:1px 20px;" class="item_delete" data="<%- id %>">delete</a></td>
+  </script>
+  <script type="text/template" id="item-edit-template">
+        <table id="table_input" class="table-condensed" style="background-color:green;">
+<tr>
+                <td>
+                    <label>ID:</label>
+                </td>
+                <td>
+                    <input type="text" id="id" name="id" value="<%- id %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>用户单位:</label>
+                </td>
+                <td>
+                    <input type="text" id="yonghu" name="yonghu" value="<%- yonghu %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>客户地址:</label>
+                </td>
+                <td>
+                    <input type="text" id="addr" name="addr" value="<%- addr %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>通道配置:</label>
+                </td>
+                <td>
+                    <input type="text" id="channels" name="channels" value="<%- channels %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>仪器型号:</label>
+                </td>
+                <td>
+                    <input type="text" id="yiqixinghao" name="yiqixinghao" value="<%- yiqixinghao %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>仪器编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="yiqibh" name="yiqibh" value="<%- yiqibh %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>包箱:</label>
+                </td>
+                <td>
+                    <input type="text" id="baoxiang" name="baoxiang" value="<%- baoxiang %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>审核:</label>
+                </td>
+                <td>
+                    <input type="text" id="shenhe" name="shenhe" value="<%- shenhe %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>预计发货时间:</label>
+                </td>
+                <td>
+                    <input type="text" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>调试时间:</label>
+                </td>
+                <td>
+                    <input type="text" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>合同编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="hetongbh" name="hetongbh" value="<%- hetongbh %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>方法:</label>
+                </td>
+                <td>
+                    <input type="text" id="method" name="method" value="<%- method %>">
+                </td>
+            </tr>        </table>
+        <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
+  </script>
+{% endblock %}

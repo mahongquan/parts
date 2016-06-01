@@ -656,12 +656,15 @@
     // Optimistically removes the model from its collection, if it has one.
     // If `wait: true` is passed, waits for the server to respond before removal.
     destroy: function(options) {
+      //console.log("in destroy");
+      //console.log(options);
       options = options ? _.clone(options) : {};
       var model = this;
       var success = options.success;
       var wait = options.wait;
 
       var destroy = function() {
+        //console.log("in destroy of destroy");
         model.stopListening();
         model.trigger('destroy', model, model.collection, options);
       };
@@ -1385,6 +1388,8 @@
   // Useful when interfacing with server-side languages like **PHP** that make
   // it difficult to read the body of `PUT` requests.
   Backbone.sync = function(method, model, options) {
+    //console.log("Backbone.sync");
+    //console.log(options);
     var type = methodMap[method];
 
     // Default options, unless specified.
@@ -1395,7 +1400,7 @@
 
     // Default JSON-request options.
     var params = {type: type, dataType: 'json'};
-
+    
     // Ensure that we have a URL.
     if (!options.url) {
       params.url = _.result(model, 'url') || urlError();
