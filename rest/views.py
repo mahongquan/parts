@@ -21,17 +21,9 @@ from mysite.parts.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
-class MyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj,datetime.date):
-            return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
-        if isinstance(obj,datetime.datetime):
-            return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
-        if isinstance(obj,Item):
-            return obj.name
-        if isinstance(obj,Contact):
-            return obj.hetongbh        
-        return json.JSONEncoder.default(self, obj)  
+from django.db.models import Q
+from myutil import MyEncoder
+
 def writer(request):
     # logging.info(request)
     # output={}
@@ -284,25 +276,17 @@ def view_contact(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
     search=request.GET.get("search",'')
-    search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
     if search!='':
-        if search_bh!='':
-            total=Contact.objects.filter(yonghu__contains=search).filter(hetongbh__contains=search_bh).count()
-            objs = Contact.objects.order_by('-yujifahuo_date').filter(yonghu__contains=search).filter(hetongbh__contains=search_bh)[start:start+limit]
-        else:
-            total=Contact.objects.filter(yonghu__contains=search).count()
-            objs = Contact.objects.order_by('-yujifahuo_date').filter(yonghu__contains=search)[start:start+limit]
+        total=Contact.objects.filter(Q(hetongbh__icontains=search) or Q(yiqibh__icontains=search)).count()
+        objs = Contact.objects.filter(Q(hetongbh__icontains=search) or Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
     else:
-        if search_bh!='':
-            total=Contact.objects.filter(hetongbh__contains=search_bh).count()
-            objs = Contact.objects.order_by('-yujifahuo_date').filter(hetongbh__contains=search_bh)[start:start+limit]
-        else:
-            total=Contact.objects.count()
-            objs = Contact.objects.order_by('-yujifahuo_date').all()[start:start+limit]
+        total=Contact.objects.count()
+        objs = Contact.objects.order_by('-yujifahuo_date')[start:start+limit]
     data=[]
     for rec in objs:
-        data.append({"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date})
+        data.append(rec.json())
+    logging.info(data)
     output={"total":total,"data":data}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
@@ -896,7 +880,7 @@ def upload(request):
     # right, so 'file' is the name of the file upload field
     #print request.FILES
     logging.info(request.FILES)
-    f= request.FILES[ 'myFile' ]
+    f= request.FILES[ 'file' ]
     logging.info(dir(f))
     filename = f.name
     filetype = f.content_type

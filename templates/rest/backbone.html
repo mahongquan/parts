@@ -6,23 +6,53 @@
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
   <script src="/static/backbone_parts/parts.js"></script>
-      <script>
-    var user="{{ user }}";
-    var csrf_token="{{ csrf_token }}";
-    </script>
+  <script>
+  var user="{{ user }}";
+  $(function () {
+    function upload_click(){
+      console.log("upload_click");
+      $.ajax({
+      url: '/rest/upload',
+      type: 'POST',
+      cache: false,
+      data: new FormData($('#uploadForm')[0]),
+      processData: false,
+      contentType: false
+      }).done(function(res) {
+      }).fail(function(res) {});
+    }
+    $("#upload").bind("click"
+        ,{}
+        ,upload_click);
+  });
+  </script>
   <style type="text/css">
-    td{ padding: 5px 5px 5px 5px; }
+    td{ 
+      padding: 5px 5px 5px 5px; 
+    }
+    #page{ 
+      padding: 5px 5px 5px 5px;
+     /* background-color:green;*/
+    }
+    .item_delete{margin:1px 20px;}
+    thead tr{ font-weight:bold;}
+    .table_input{background-color:green;}
   </style>
 {% endblock %} 
 {% block content %}
+<form id="uploadForm" enctype="multipart/form-data">
+    <input id="file" type="file" name="file"/>
+    <button id="upload" type="button">upload</button>
+</form>
+
   <div id="todoapp">
     <p id="current_user_name"></p>
-    <section id="current_user">
-    </section>
+    <span id="current_user">
+    </span>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
-    　　<tr style="font-weight:bold;">
+    　　<tr>
     　　　<td>ID</td><td>用户单位</td><td>客户地址</td><td>通道配置</td><td>仪器型号</td><td>仪器编号</td><td>包箱</td><td>审核</td>
           <td>预计发货时间</td><td>调试时间</td><td>合同编号</td><td>方法</td><td>actions</td>
     　　</tr>
@@ -37,34 +67,34 @@
   </div>
   <script type="text/template" id="item-template">
   <td>
-                    <%- id %>
-               </td><td>
-                    <%- yonghu %>
-               </td><td>
-                    <%- addr %>
-               </td><td>
-                    <%- channels %>
-               </td><td>
-                    <%- yiqixinghao %>
-               </td><td>
-                    <%- yiqibh %>
-               </td><td>
-                    <%- baoxiang %>
-               </td><td>
-                    <%- shenhe %>
-               </td><td>
-                    <%- yujifahuo_date %>
-               </td><td>
-                    <%- tiaoshi_date %>
-               </td><td>
-                    <%- hetongbh %>
-               </td><td>
-                    <%- method %>
-               </td>
-               <td><a class="item_edit" data="<%- id %>">edit</a><a style="margin:1px 20px;" class="item_delete" data="<%- id %>">delete</a></td>
+      <%- id %>
+ </td><td>
+      <%- yonghu %>
+ </td><td>
+      <%- addr %>
+ </td><td>
+      <%- channels %>
+ </td><td>
+      <%- yiqixinghao %>
+ </td><td>
+      <%- yiqibh %>
+ </td><td>
+      <%- baoxiang %>
+ </td><td>
+      <%- shenhe %>
+ </td><td>
+      <%- yujifahuo_date %>
+ </td><td>
+      <%- tiaoshi_date %>
+ </td><td>
+      <%- hetongbh %>
+ </td><td>
+      <%- method %>
+ </td>
+ <td><a class="item_edit" data="<%- id %>">edit</a><a  class="item_delete" data="<%- id %>">delete</a></td>
   </script>
   <script type="text/template" id="item-edit-template">
-        <table id="table_input" class="table-condensed" style="background-color:green;">
+        <table id="table_input" class="table-condensed" >
 <tr>
                 <td>
                     <label>ID:</label>
@@ -153,7 +183,7 @@
         <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
   </script>
   <script type="text/template" id="login-template">
-        <table class="table-condensed" style="background-color:green;">
+        <table class="table-condensed">
           <tr>
                 <td>
                     <label>用户名:</label>

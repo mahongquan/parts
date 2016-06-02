@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from rest import views
 urlpatterns = [
+        url(r'^upload', views.upload),
+
         url(r'^$',views.index),
         url(r'^restful',views.restful),
         url(r'^backbone',views.backbone),

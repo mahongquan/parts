@@ -6,8 +6,10 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
+import myutil
+
 @python_2_unicode_compatible 
-class Contact(models.Model):
+class Contact(models.Model,myutil.MyModel):
     #=======销售===========
     yonghu = models.CharField(max_length=30,verbose_name="用户单位")#用户单位
     addr = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
