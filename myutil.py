@@ -34,7 +34,7 @@ class MyModel:
         return dic1
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
-        logging.info(obj)
+        #logging.info(obj)
         if isinstance(obj,datetime.date):
             return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
         if isinstance(obj,datetime.datetime):
@@ -42,7 +42,7 @@ class MyEncoder(json.JSONEncoder):
         if isinstance(obj,mysite.parts.models.Item):
             return obj.name
         if isinstance(obj,FieldFile):
-            logging.info(dir(obj))
+            #logging.info(dir(obj))
             return obj.name
         if isinstance(obj,mysite.parts.models.Contact):
             return obj.hetongbh        

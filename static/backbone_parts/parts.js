@@ -53,9 +53,79 @@ $(function(){
     tagName:  "div",
     template: _.template($('#item-edit-template').html()),
     events: {
+      "click #bt_file" : "uploadfile",
        "click #bt_save" : "save",
        "click #bt_clear" : "myclear",
        "click #bt_clearid" : "myclearid",
+    },
+    upload_click:function(event){
+      console.log("upload_click");
+      console.log(event.data);
+      var view=event.data.view;
+      $.ajax({
+        context:view,
+        url: '/rest/upload',
+        type: 'POST',
+        cache: false,
+        data: new FormData($('#uploadForm')[0]),
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          console.log("done");
+          console.log(res);//{"success":True, "files":fullfilepath}
+          data=JSON.parse(res);
+          if(data.success){
+            this.$("#method").val(data.files);
+            $('#uploadForm').dialog('close');
+            console.log(this);
+          }
+          else{
+
+          }
+        }).fail(function(res) {
+
+        });
+    },
+    uploadfile:function(){
+      $("#upload").bind("click",{view:this},this.upload_click);
+      $('#uploadForm').dialog({
+            //bgiframe: true,
+            //resizable: false, height: "530",width:"200",
+            //height:140,
+            modal: true
+            , overlay: {
+                backgroundColor: '#000'
+                , opacity: 0.5
+            }
+            , autoOpen: true, // buttons: {
+            //     Cancel: function() {
+            //         $(this).dialog('close');
+            //     },
+            // }
+      });
+    },
+    save_new:function(){
+      console.log("upload_click");
+      var data=new FormData(this.$('#uploadForm')[0]);
+      $.ajax({
+        context: this,
+        url: "/rest/Contact/",
+        cache: false,
+        data: data,
+        processData: false,
+        contentType: false
+        , error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+        , success: function (data) {
+            console.log("ajax done");
+            console.log(data);
+            // if (data.success) {
+            //     addrow(data.data.id, data.data.name);
+            //     $("#dialog").dialog("close");
+            // }
+        }
+      });
     },
     save:function(){
       var data={}

@@ -902,7 +902,7 @@ def upload(request):
         f = open( fullfilepath, 'wb' ) # Writing in binary mode for windows..?
         f.write( data )
         f.close( )
-        res={"success":True, "files":fullfilepath}
+        res={"success":True, "files":"./"+filename}
     except e:
         res={"success":False, "files":str(e)}
         # something went wrong 

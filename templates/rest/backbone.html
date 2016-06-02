@@ -1,32 +1,7 @@
 {% extends "base.html" %} 
 {% block extrahead %}
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
-  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
-  <script src="/static/backbone_parts/json2.js"></script>
-  <script src="/static/backbone_parts/underscore.js"></script>
-  <script src="/static/backbone_parts/backbone.js"></script>
-  <script src="/static/backbone_parts/parts.js"></script>
-  <script>
-  var user="{{ user }}";
-  $(function () {
-    function upload_click(){
-      console.log("upload_click");
-      $.ajax({
-      url: '/rest/upload',
-      type: 'POST',
-      cache: false,
-      data: new FormData($('#uploadForm')[0]),
-      processData: false,
-      contentType: false
-      }).done(function(res) {
-      }).fail(function(res) {});
-    }
-    $("#upload").bind("click"
-        ,{}
-        ,upload_click);
-  });
-  </script>
-  <style type="text/css">
+    <style type="text/css">
     td{ 
       padding: 5px 5px 5px 5px; 
     }
@@ -38,9 +13,34 @@
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <script src="/static/backbone_parts/json2.js"></script>
+  <script src="/static/backbone_parts/underscore.js"></script>
+  <script src="/static/backbone_parts/backbone.js"></script>
+  <script src="/static/backbone_parts/parts.js"></script>
+  <script>
+  var user="{{ user }}";
+  // $(function () {
+  //   function upload_click(){
+  //     console.log("upload_click");
+  //     $.ajax({
+  //     url: '/rest/upload',
+  //     type: 'POST',
+  //     cache: false,
+  //     data: new FormData($('#uploadForm')[0]),
+  //     processData: false,
+  //     contentType: false
+  //     }).done(function(res) {
+  //     }).fail(function(res) {});
+  //   }
+  //   $("#upload").bind("click"
+  //       ,{}
+  //       ,upload_click);
+  // });
+  </script>
 {% endblock %} 
 {% block content %}
-<form id="uploadForm" enctype="multipart/form-data">
+<form hidden="true" id="uploadForm" enctype="multipart/form-data">
     <input id="file" type="file" name="file"/>
     <button id="upload" type="button">upload</button>
 </form>
@@ -177,7 +177,7 @@
                     <label>方法:</label>
                 </td>
                 <td>
-                    <input type="text" id="method" name="method" value="<%- method %>">
+                <input type="text" readonly="true" id="method" name="method" value="<%- method %>"><button id="bt_file">browse</button>
                 </td>
             </tr>        </table>
         <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
