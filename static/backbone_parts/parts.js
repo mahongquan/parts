@@ -346,7 +346,7 @@ $(function(){
   var User = Backbone.Model.extend({
     defaults: function() {
       return {
-        username:'mahongquan',password:'333333'
+        username:'mahongquan',password:'333333',csrfmiddlewaretoken:csrf_token
       };
     }
   });

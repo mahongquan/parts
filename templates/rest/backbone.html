@@ -20,6 +20,7 @@
   <script src="/static/backbone_parts/parts.js"></script>
   <script>
   var user="{{ user }}";
+  var csrf_token="{{ csrf_token }}";
   // $(function () {
   //   function upload_click(){
   //     console.log("upload_click");
@@ -184,6 +185,14 @@
   </script>
   <script type="text/template" id="login-template">
         <table class="table-condensed">
+        <tr>
+                <td>
+                    <label>csrfmiddlewaretoken:</label>
+                </td>
+                <td>
+                    <input type="text" id="csrfmiddlewaretoken"  value="<%- csrfmiddlewaretoken %>">
+                </td>
+          </tr>
           <tr>
                 <td>
                     <label>用户名:</label>
