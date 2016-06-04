@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import *
 import time
+import sys
 def mywait_id(id):
 	loc=(By.ID,id)#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
@@ -110,7 +111,7 @@ def  showTodo():
 	#submenu=browser.find_element_by_class_name("second_menu_content")
 	items=browser.find_elements_by_class_name("second_menu_item")
 	items[4].click()#dai ban
-def  openTodo():
+def  downloadTodofiles():
 	tbody=mywait_id("list")
 	mes=tbody.find_elements_by_tag_name("tr")
 	for me in mes:
@@ -121,20 +122,18 @@ def  openTodo():
 		browser.switch_to_frame(summary);
 		files=mywait_id("attachmentAreashowAttFile")
 		link=files.find_element_by_tag_name("a")
-		#print(link.get_attribute("href"))
 		cmd="window.open('%s')" % link.get_attribute("href")
 		browser.execute_script(cmd)
-		# time.sleep(.5)
-		# actions=ActionChains(browser)
-		# actions.move_to_element(link)
-		# actions.click().perform()
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
-browser=setupBrowser()
-print(dir(browser))
-login("zhouwei","123456")
-showTodo()#testMessage()
-findTodo("标钢")
-openTodo()
+if __name__ == "__main__":
+	#python3 oa.py name pwd
+	print(sys.argv)
+	browser=setupBrowser()
+	print(dir(browser))
+	login(sys.argv[1],sys.argv[2])
+	showTodo()#testMessage()
+	findTodo("标钢")
+	#openTodo()
 
