@@ -45,6 +45,7 @@ def login(name,pwd):
 	login_username.send_keys(name)
 	browser.find_element_by_id("login_password").send_keys(pwd)
 	browser.find_element_by_id('login_button').click()
+
 def showMessages():
 	msg=mywait_id('remind_msga')
 	msg.click()
@@ -52,8 +53,8 @@ def testMessage():
 	showMessages()
 	findMessage("车辆")
 	getMessages()
-def setupBrowser():
-	usefirefox=True
+def setupBrowser(usefirefox):
+	#usefirefox=True
 	if usefirefox:
 		profile=webdriver.FirefoxProfile()
 		print(dir(profile))
@@ -80,6 +81,7 @@ def setupBrowser():
 		return browser
 	else:
 		browser = webdriver.PhantomJS()
+		browser.set_window_size(1024,800)
 		return browser
 def findTodo(title):
 	frame=browser.find_element_by_id("main");
@@ -108,8 +110,9 @@ def  showTodo():
 	actions.move_to_element(co)
 	actions.click()
 	actions.perform()
-	#submenu=browser.find_element_by_class_name("second_menu_content")
 	items=browser.find_elements_by_class_name("second_menu_item")
+	#browser.get_screenshot_as_file("before daiban click.png")
+	#print(len(items))
 	items[4].click()#dai ban
 def  downloadTodofiles():
 	tbody=mywait_id("list")
@@ -123,17 +126,18 @@ def  downloadTodofiles():
 		files=mywait_id("attachmentAreashowAttFile")
 		link=files.find_element_by_tag_name("a")
 		cmd="window.open('%s')" % link.get_attribute("href")
-		browser.execute_script(cmd)
+		#browser.execute_script(cmd)
+		print(cmd)
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
 if __name__ == "__main__":
 	#python3 oa.py name pwd
 	print(sys.argv)
-	browser=setupBrowser()
+	browser=setupBrowser(True)
 	print(dir(browser))
 	login(sys.argv[1],sys.argv[2])
 	showTodo()#testMessage()
 	findTodo("标钢")
-	#openTodo()
+	downloadTodofiles()#openTodo()
 
