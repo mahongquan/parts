@@ -114,19 +114,22 @@ def  showTodo():
 def  downloadTodofiles():
 	tbody=mywait_id("list")
 	mes=tbody.find_elements_by_tag_name("tr")
+	rt=[]
 	for me in mes:
 		tds=me.find_elements_by_tag_name("td")
 		tds[1].click()
-		time.sleep(2)#wait new summary
+		time.sleep(3)#wait new summary
 		summary=mywait_id("summary")
 		browser.switch_to_frame(summary);
 		files=mywait_id("attachmentAreashowAttFile")
 		link=files.find_element_by_tag_name("a")
-		cmd="window.open('%s')" % link.get_attribute("href")
-		browser.execute_script(cmd)
+		#cmd="window.open('%s')" % link.get_attribute("href")
+		rt.append(link.get_attribute("href"))
+		#browser.execute_script(cmd)
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
+	return rt
 if __name__ == "__main__":
 	#python3 oa.py name pwd
 	print(sys.argv)
@@ -135,5 +138,10 @@ if __name__ == "__main__":
 	login(sys.argv[1],sys.argv[2])
 	showTodo()#testMessage()
 	findTodo("标钢")
-	#openTodo()
+	rt=downloadTodofiles()#openTodo()
+	for i in range(len(rt)):
+		print(rt[i])
+		cmd="window.open('%s')" % rt[i]
+		browser.execute_script(cmd)
+		time.sleep(3)
 

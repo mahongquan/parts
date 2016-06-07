@@ -39,3 +39,7 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page=10
 admin.site.register(Contact,ContactAdmin)
 
+admin.site.register(Danju)
+admin.site.register(DanjuItem)
+
+
