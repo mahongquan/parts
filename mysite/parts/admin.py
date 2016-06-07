@@ -39,7 +39,17 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page=10
 admin.site.register(Contact,ContactAdmin)
 
-admin.site.register(Danju)
+
+
+class DanjuItemInline( AjaxSelectAdminTabularInline):#采用ajax
+    model=DanjuItem
+    form = make_ajax_form(PackItem, {
+        'item': 'item'
+    })
+class DanjuAdmin(admin.ModelAdmin):
+    search_fields = ('beizhu', )
+    inlines=[DanjuItemInline,]
+admin.site.register(Danju,DanjuAdmin)
 admin.site.register(DanjuItem)
 
 

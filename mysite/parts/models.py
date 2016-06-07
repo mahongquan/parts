@@ -92,10 +92,11 @@ class Danju(models.Model):
     shenhe=models.DateField(null=True,blank=True,verbose_name="审核日期")
     leibie =  models.CharField(max_length=30,verbose_name="入库类别")
     beizhu =  models.CharField(max_length=30,verbose_name="备注")
+    filename =  models.CharField(max_length=30,verbose_name="文件名")
     zhidan =  models.CharField(max_length=30,verbose_name="制单人")
     qianzi =  models.CharField(max_length=30,verbose_name="签字人")
     def __str__(self):
-        return str(self.id)+":"+self.danjuhao
+        return str(self.filename)+":"+self.beizhu
     class Meta:
         verbose_name="单据"
         verbose_name_plural="单据"
@@ -104,7 +105,7 @@ class DanjuItem(models.Model):
     item=models.ForeignKey(Item,verbose_name="备件")#备件
     ct=  models.IntegerField(verbose_name="数量",default=1)#数量
     def __str__(self):
-        return self.danju.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
+        return self.danju.beizhu+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
     class Meta:
         verbose_name="单据条目"
         verbose_name_plural=verbose_name         
