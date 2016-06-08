@@ -614,7 +614,8 @@ def showcontactP(request):
             elif k[:6]=="delete":
                 deletes.append(k.split("_")[1])
             elif k[:4]=="add_":
-                adds.append(request.POST[k])
+                adds.append((int(k[4:]),request.POST[k]))
+        adds.sort()
         logging.info(adds)
         logging.info(deletes)
         for one in deletes:
@@ -625,7 +626,7 @@ def showcontactP(request):
         for one in adds:
             e = UsePack()
             e.contact=c
-            e.pack=Pack.objects.get(id=int(one))
+            e.pack=Pack.objects.get(id=int(one[1]))
             e.save()
         logging.info(request.META['PATH_INFO'])
         return(HttpResponseRedirect("/parts/"))#request.META['PATH_INFO']+"?id="+contact_id))    
@@ -657,8 +658,10 @@ def packItem(request):
             if k[:6]=="delete":
                 deletes.append(k.split("_")[1])
             elif k[:3]=="add":
-                adds.append(request.POST[k])
+                #adds.append(request.POST[k])
+                adds.append((int(k[4:]),request.POST[k]))
         logging.info(adds)
+        adds.sort()
         logging.info(deletes)
         new=request.POST["new"]
         if new=="1":
@@ -677,7 +680,7 @@ def packItem(request):
             #c.usepack_set.remove(e)
             e.delete()
         for one in adds:
-            (id,ct)=one.split(":")
+            (id,ct)=one[1].split(":")
             e = PackItem()
             e.pack=c
             e.item=Item.objects.get(id=int(id))
