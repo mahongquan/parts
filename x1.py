@@ -120,11 +120,12 @@ def readfile(path,fn):
 	for one in dan:
 		treatOne(one,fn)
 #readfile("media/3.24标钢入库.xls")
-#readfile("media/2016.6.2标钢入库记录.xls")
-if __name__=="__main__":
+def readMedia():
 	fs=mylistdir("media","*.xls")
 	print(fs)
 	for f in fs:
 		readfile("media",f)
+if __name__=="__main__":
+	readfile("media","6.3标钢入库清单.xls")
 
 

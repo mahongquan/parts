@@ -50,6 +50,6 @@ class DanjuAdmin(admin.ModelAdmin):
     search_fields = ('beizhu', )
     inlines=[DanjuItemInline,]
 admin.site.register(Danju,DanjuAdmin)
-admin.site.register(DanjuItem)
+
 
 
