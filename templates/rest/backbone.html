@@ -101,7 +101,7 @@
                     <label>ID:</label>
                 </td>
                 <td>
-                    <input type="text" id="id" name="id" value="<%- id %>">
+                    <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
                 </td>
             </tr><tr>
                 <td>
@@ -178,7 +178,7 @@
                     <label>方法:</label>
                 </td>
                 <td>
-                <input type="text" readonly="true" id="method" name="method" value="<%- method %>"><button id="bt_file">browse</button>
+                <input type="text" readonly="true" id="method" name="method" readonly="true" value="<%- method %>"><button id="bt_file">browse</button>
                 </td>
             </tr>        </table>
         <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>

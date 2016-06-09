@@ -347,6 +347,8 @@ def update_contact(request):
     if data.get("tiaoshi_date")!=None:
         dt=datetime.datetime.strptime(data["tiaoshi_date"],'%Y-%m-%d')
         rec.tiaoshi_date=dt.date()
+    if data.get("method")!=None:
+        rec.method=data["method"]
     rec.save()
     output={"success":True,"message":"update Contact " +str(rec.id)}
     output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}

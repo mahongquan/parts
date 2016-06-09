@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lxml import etree as ET
 from io import BytesIO,StringIO
 import datetime
