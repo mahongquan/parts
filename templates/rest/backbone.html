@@ -50,6 +50,7 @@
     <p id="current_user_name"></p>
     <span id="current_user">
     </span>
+    <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">search</button>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -90,7 +91,7 @@
  </td><td>
       <%- hetongbh %>
  </td><td>
-      <%- method %>
+      <a href="/media/<%- method %>"><%- method %></a>
  </td>
  <td><a class="item_edit" data="<%- id %>">edit</a><a  class="item_delete" data="<%- id %>">delete</a></td>
   </script>
@@ -178,7 +179,7 @@
                     <label>方法:</label>
                 </td>
                 <td>
-                <input type="text" readonly="true" id="method" name="method" readonly="true" value="<%- method %>"><button id="bt_file">browse</button>
+                <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button id="bt_file">browse</button>
                 </td>
             </tr>        </table>
         <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>

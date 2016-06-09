@@ -278,8 +278,10 @@ def view_contact(request):
     search=request.GET.get("search",'')
     logging.info("search="+search)
     if search!='':
-        total=Contact.objects.filter(Q(hetongbh__icontains=search) or Q(yiqibh__icontains=search)).count()
-        objs = Contact.objects.filter(Q(hetongbh__icontains=search) or Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+        #total=Contact.objects.filter( Q(yiqibh__icontains=search)).count()
+        total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).count()
+        #objs = Contact.objects.filter( Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+        objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
     else:
         total=Contact.objects.count()
         objs = Contact.objects.order_by('-yujifahuo_date')[start:start+limit]

@@ -267,10 +267,16 @@ $(function(){
     },
   });
   var AppView = Backbone.View.extend({
-    el: $("#todoapp"),
-    // events: {
-    //   "keypress #new-todo":  "createOnEnter",
-    // },
+     el: $("#todoapp"),
+     events: {
+      "click #id_bt_search" : "mysearch",
+    },
+    mysearch:function(){
+       myglobal.search=this.$("#id_input_search").val();
+       console.log("search="+myglobal.search);
+       App.mysetdata();
+    },
+
     button_prev_click:function(){
         myglobal.start=myglobal.start-myglobal.limit;
         if(myglobal.start<0) myglobal.start=0;
@@ -288,7 +294,7 @@ $(function(){
         this.$("#todo-list").empty();
         todos.fetch({
             reset:true,
-            data: { start:myglobal.start,limit:myglobal.limit},
+            data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search},
             success:function(){
                 console.log(todos.length+" todo")
                 this.$("#page").empty();
@@ -304,6 +310,7 @@ $(function(){
         myglobal.start=0;
         myglobal.limit=3;
         myglobal.total=0;
+        myglobal.search="";
         this.listenTo(todos, 'add', this.addOne);
         this.listenTo(todos, 'reset', this.addAll);
         this.listenTo(todos, 'all', this.render);
@@ -312,6 +319,7 @@ $(function(){
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
+        //this.$("#bt_search").bind("click", {}, this.search);
         this.mysetdata();
     },
     initialize: function() {
