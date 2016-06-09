@@ -192,17 +192,6 @@ $(function(){
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      // var d=this.model.get("epaper");
-      // console.log(d);
-      //var node =this.$("#epaper");// document.getElementById("#epaper");
-      //node[0].checked=this.model.get("epaper");
-      // if (this.model.get("epaper"))
-      // {
-      //   this.$("#epaper").attr("checked","");
-      // }
-      // else{
-      //   this.$("#epaper").removeAttr("checked");
-      // }
       this.$("#yujifahuo_date").datepicker({
             dateFormat: 'yy-mm-dd',
             numberOfMonths:1,//显示几个月
@@ -246,10 +235,18 @@ $(function(){
        "click .item_delete" : "delete",
     },
     edit:function(){
-      //console.log("edit click");
-      //console.log(App);
-      App.editview.model=this.model;
-      App.editview.render();
+        App.editview.model=this.model;
+        //App.$("#section_edit").show();
+
+        App.editview.render();
+        App.editview.$el.dialog({
+                modal: false
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });
     },
     delete:function(){
       //console.log("delete click");
@@ -312,7 +309,7 @@ $(function(){
         this.listenTo(todos, 'all', this.render);
         this.main = $('#main');
         this.editview = new TodoEditView({model: new Todo()});
-        this.$("#section_edit").append(this.editview.render().el);
+        //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
         this.mysetdata();
@@ -330,8 +327,10 @@ $(function(){
     render: function() {
        if (todos.length) {
          this.main.show();
+         //this.$("#section_edit").hide();
        } else {
          this.main.hide();
+         //this.$("#section_edit").show();
        }
     },
     addOne: function(todo) {
