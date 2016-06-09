@@ -15,6 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import *
 import time
 import sys
+browser=None
 def mywait_id(id):
 	loc=(By.ID,id)#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
@@ -114,30 +115,66 @@ def  showTodo():
 	#browser.get_screenshot_as_file("before daiban click.png")
 	#print(len(items))
 	items[4].click()#dai ban
+def checktitle(title):
+	# id="colSummaryData" table tbody tr td[1] 
+	summarydata=browser.find_element_by_id("colSummaryData")
+	tbody=summarydata.find_element_by_tag_name("tbody")
+	tr=tbody.find_element_by_tag_name("tr")
+	tds=tr.find_elements_by_tag_name("td")
+	while True:
+		print(tds[1].text,title)
+		if tds[1].text==title:
+			break
+		time.sleep(3)
 def  downloadTodofiles():
-	tbody=mywait_id("list")
-	mes=tbody.find_elements_by_tag_name("tr")
+	tbody=mywait_id("listPending")
+	mes=tbody.find_elements_by_tag_name("tr")#here error selenium.common.exceptions.StaleElementReferenceException
+	rt=[]
+	i=0
 	for me in mes:
 		tds=me.find_elements_by_tag_name("td")
+		#print(dir(tds[1]))
+		title=tds[1].text
 		tds[1].click()
-		time.sleep(2)#wait new summary
+		time.sleep(3)#wait new summary
 		summary=mywait_id("summary")
 		browser.switch_to_frame(summary);
 		files=mywait_id("attachmentAreashowAttFile")
+		checktitle(title)
 		link=files.find_element_by_tag_name("a")
-		cmd="window.open('%s')" % link.get_attribute("href")
+		#cmd="window.open('%s')" % link.get_attribute("href")
 		#browser.execute_script(cmd)
 		print(cmd)
+		#cmd="window.open('%s')" % link.get_attribute("href")
+		rt.append(link.get_attribute("href"))
+		#print(rt)
+		#browser.execute_script(cmd
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
+		# i+=1
+		# if i==3:
+		# 	break
+	return rt
+def downloadBg():
+	rt=downloadTodofiles()#openTodo()
+	for i in range(len(rt)):
+		print(rt[i])
+		cmd="window.open('%s')" % rt[i]
+		browser.execute_script(cmd)
+		time.sleep(3)
+def main(name,pwd):
+	global browser
+	browser=setupBrowser()
+	print(dir(browser))
+	login(name,pwd)
+	showTodo()#testMessage()
+	findTodo("标钢")
+	downloadTodofiles()
+	return browser
 if __name__ == "__main__":
 	#python3 oa.py name pwd
 	print(sys.argv)
-	browser=setupBrowser(True)
-	print(dir(browser))
-	login(sys.argv[1],sys.argv[2])
-	showTodo()#testMessage()
-	findTodo("标钢")
-	downloadTodofiles()#openTodo()
+	if len(sys.argv)>2:
+		main(sys.argv[1],sys.argv[2])
 

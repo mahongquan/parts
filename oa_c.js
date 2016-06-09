@@ -9,13 +9,7 @@ var casper = require('casper').create({
         }
 );
 casper.options.viewportSize={width: 1024, height: 768}; 
-var links=[];
-function getLinks() {
-    var links = document.querySelectorAll('a');
-    return Array.prototype.map.call(links, function(e) {
-        return e.getAttribute('href');
-    });
-}
+var mouse = require("mouse").create(casper);
 casper.start('http://oa.ncschina.com/');
 casper.thenEvaluate(function() {
     	$("#login_username").val("mahongquan");
@@ -30,8 +24,8 @@ var showTodo=function(argument) {
 	actions.click()
 	actions.perform()
 	items=browser.find_elements_by_class_name("second_menu_item")
-	#browser.get_screenshot_as_file("before daiban click.png")
-	#print(len(items))
+	//browser.get_screenshot_as_file("before daiban click.png")
+	//print(len(items))
 	items[4].click()#dai ban
 }
 casper.waitFor(function check() {
@@ -41,6 +35,7 @@ casper.waitFor(function check() {
     this.echo(rt);
     return rt>0;
 }, function then() {
+    this.mouse.move("");
     this.evaluate(showTodo);
     this.captureSelector('main.png', '#main');
 });

@@ -14,7 +14,7 @@ casper.start('http://localhost:8000/static/hover.html');
 casper.then(function() {
 	var url = 'http://localhost:8000/static/hover.html';
     	this.download(url, 'google_company.html');
-    	this.mouse.move("#ima_1");//can do
+    	this.mouse.move("a");//can do
 });
 casper.run(function() {
 	this.captureSelector('exit.png', 'body');

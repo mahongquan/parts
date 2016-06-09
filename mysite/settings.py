@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     #'reversion',
     'mysite.parts',
     'ajax_select',
-     'rest',
-    'extjs',
+    'rest',
+    'extjs'
 ]
 
 MIDDLEWARE_CLASSES = [
