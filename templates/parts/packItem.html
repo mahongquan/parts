@@ -24,27 +24,29 @@
                     return false;
                 }
                 , select: function (event, ui) {
-                    $("#new_item1").val(ui.item.value);
-                    $("#id_item1").val(ui.item.pk);
-                    $("#input_gg").val(ui.item.repr);
+                    $("#new_item1").val(ui.item.name);
+                    $("#id_item1").val(ui.item.id);
+                    $("#input_gg").val(ui.item.guige);
                     return false;
                 }
                 , source: function (request, response) {
+                    console.log(request);
                     var term = request.term;
+                    request={ query: term };
                     if (term in cache) {
                         data = cache[term];
-                        response(data);
+                        response(data.data);
                         return;
                     }
-                    $.getJSON("/admin/lookups/ajax_lookup/item", request, function (data, status, xhr) {
+                    $.getJSON("/rest/Item", request, function (data, status, xhr) {
                         cache[term] = data;
-                        response(data);
+                        response(data.data);
                     });
                 }
             })
             .autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" +item.value+"("+ item.repr+")" + "</a>")
+                    .append("<a>" +item.name+"("+ item.guige+")" + "</a>")
                     .appendTo(ul);
             };
 
@@ -271,10 +273,10 @@
                 </td>
                 <td>
                     <input id="id_item1" type="hidden">
-                    <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称">
+                    <input id="new_item1" class="form-control" type="text" placeholder="输入备件名称"> <button class="btn" id="bt_newitem" type="button">新备件</button>
                 </td>
                  <td>
-                    <button class="btn btn-info"  id="bt_add" type="button">增加</button>
+                    
                 </td>
             </tr>
              <tr>
@@ -285,7 +287,7 @@
                     <input id="input_gg"  class="form-control" type="text">
                 </td>
                 <td align="right">
-                   <!--  <button class="btn" id="bt_newitem" type="button">增加新备件</button> -->
+                   <!--  <button class="btn" id="bt_newitem" type="button">新备件</button> -->
                 </td>
             </tr>
             <tr>
@@ -296,7 +298,7 @@
                     <input id="input_num"  class="form-control" type="text" value="1">
                 </td>
                 <td align="right">
-                    <button class="btn" id="bt_newitem" type="button">增加新备件</button>
+                    <button class="btn btn-info"  id="bt_add" type="button">增加</button>
                 </td>
             </tr>
           <!--   <tr>
