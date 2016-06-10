@@ -9,7 +9,7 @@
       padding: 5px 5px 5px 5px;
      /* background-color:green;*/
     }
-    .item_delete{margin:1px 20px;}
+    td a{margin:1px 20px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
@@ -93,7 +93,9 @@
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
- <td><a class="item_edit" data="<%- id %>">edit</a><a  class="item_delete" data="<%- id %>">delete</a></td>
+ <td><a class="contact_edit" data="<%- id %>">edit</a><a  class="contact_delete" data="<%- id %>">delete</a>
+    <a class="contact_package" data="<%- id %>">package</a>
+ </td>
   </script>
   <script type="text/template" id="item-edit-template">
         <table id="table_input" class="table-condensed" >

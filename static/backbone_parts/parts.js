@@ -227,12 +227,13 @@ $(function(){
       return this;
     },
   });
-  var TodoView = Backbone.View.extend({
+  var ContactView = Backbone.View.extend({
     tagName:  "tr",
     template: _.template($('#item-template').html()),
     events: {
-      "click .item_edit" : "edit",
-       "click .item_delete" : "delete",
+      "click .contact_edit" : "edit",
+      "click .contact_delete" : "delete",
+      "click .contact_package" : "package",
     },
     edit:function(){
         App.editview.model=this.model;
@@ -342,7 +343,7 @@ $(function(){
        }
     },
     addOne: function(todo) {
-      var view = new TodoView({model: todo});
+      var view = new ContactView({model: todo});
       this.$("#todo-list").append(view.render().el);
     },
     addAll: function() {
