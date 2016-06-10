@@ -45,7 +45,6 @@
     <input id="file" type="file" name="file"/>
     <button id="upload" type="button">upload</button>
 </form>
-
   <div id="todoapp">
     <p id="current_user_name"></p>
     <span id="current_user">
@@ -214,5 +213,22 @@
           </tr>
         </table>
         <button id="bt_login">提交</button>
+  </script>
+  <script type="text/template" id="delete-template">
+        <table class="table-condensed">
+          <tr>
+                <td>
+                Are you sure?
+                </td>
+          </tr>
+          <tr>
+                <td>
+                    <button id="id_ok">ok</button>
+                </td>
+                <td>
+                    <button id="id_cancel">cancel</button>
+                </td>
+          </tr>
+        </table>
   </script>
 {% endblock %}

@@ -128,7 +128,7 @@ $(function(){
       });
     },
     save:function(){
-      var data={}
+      var data={};
       for(var fname in this.model.attributes){
         if(fname!="id")
         {
@@ -143,9 +143,9 @@ $(function(){
               else
               {
                data[fname]=value;
-              }
-             }
-        }
+              }//else
+             }//if
+        }//if
        }//for
       //console.log(data);
       if(this.model.get("id")==undefined)
@@ -246,13 +246,25 @@ $(function(){
                 , autoOpen: true
        });
     },
+    true_delete:function(){
+        var data={};
+        data.id=this.model.get("id");
+        data.csrfmiddlewaretoken=csrf_token;
+        data= JSON.stringify(data);
+        this.model.destroy({ data:data,contentType:"application:json"});
+    },
     delete:function(){
-      //console.log("delete click");
-      var data={};
-      data.id=this.model.get("id");
-      data.csrfmiddlewaretoken=csrf_token;
-      data= JSON.stringify(data);
-      this.model.destroy({ data:data,contentType:"application:json"});
+          //delete-template
+           var deleteview = new DeleteView({model:this});
+           deleteview.render();
+           deleteview.$el.dialog({
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+           });
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -271,6 +283,7 @@ $(function(){
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
+       myglobal.start=0;
        console.log("search="+myglobal.search);
        App.mysetdata();
     },
@@ -412,5 +425,30 @@ $(function(){
       });
     },
   });  
-  var App = new AppView();
+  var DeleteView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#delete-template').html()),
+    events: {
+      "click #id_ok" : "ok",
+      "click #id_cancel" : "cancel"
+    },
+    initialize: function() {
+    },
+    render: function() {
+      this.$el.html(this.template());
+      return this;
+    },
+    cancel:function(){
+      console.log("cancel");
+      var contactlistview=this.model;
+      this.$el.dialog('close');
+    },
+    ok:function(){
+      console.log("ok");
+      var contactlistview=this.model;//ture object is view
+      contactlistview.true_delete();
+      this.$el.dialog("close");
+    }
+  });  
+   var App = new AppView();
 });
