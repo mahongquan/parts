@@ -26,9 +26,9 @@ $(function(){
     
   // };
   var myglobal={};
-  var Todo = Backbone.Model.extend({
+  var Contact = Backbone.Model.extend({
     urlRoot : "/rest/Contact/",
-    fields:['id', 'yonghu', 'addr', 'channels', 'yiqixinghao', 'yiqibh', 'baoxiang', 'shenhe', 'yujifahuo_date', 'tiaoshi_date', 'hetongbh', 'method'],
+    //fields:['id', 'yonghu', 'addr', 'channels', 'yiqixinghao', 'yiqibh', 'baoxiang', 'shenhe', 'yujifahuo_date', 'tiaoshi_date', 'hetongbh', 'method'],
     defaults: function() {
       var d=new Date();
       var dstr=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
@@ -37,8 +37,8 @@ $(function(){
       };
     }
   });
-  var TodoList = Backbone.Collection.extend({
-    model: Todo,
+  var ContactList = Backbone.Collection.extend({
+    model: Contact,
     url : "/rest/Contact/",
     //localStorage: new Backbone.LocalStorage("todos-backbone"),
    parse: function(data, options) {
@@ -48,8 +48,8 @@ $(function(){
       return data.data;
    }
   });
-  var todos = new TodoList();
-  var TodoEditView = Backbone.View.extend({
+  var todos = new ContactList();
+  var ContactEditView = Backbone.View.extend({
     tagName:  "div",
     template: _.template($('#item-edit-template').html()),
     events: {
@@ -129,21 +129,20 @@ $(function(){
     },
     save:function(){
       var data={}
-      for(var i in this.model.fields){
-        var fname=this.model.fields[i];
+      for(var fname in this.model.attributes){
         if(fname!="id")
         {
-            var name=this.$("#"+fname).attr("name");
+            //var name=this.$("#"+fname).attr("name");
             var value=this.$("#"+fname).val();
             if (value) {
               var node=this.$("#"+fname);
               if(node.attr("type")=="checkbox")
               {
-                  data[name]=node[0].checked;
+                  data[fname]=node[0].checked;
               }
               else
               {
-               data[name]=value;
+               data[fname]=value;
               }
              }
         }
@@ -165,23 +164,21 @@ $(function(){
     },
     myclear:function(){
       //console.log("clear click");
-      this.model=new Todo();
+      this.model=new Contact();
       this.render();
     },
     myclearid:function(){//copy
       //this.$("#id").val(undefined);
       data={}//copy data from old model
-      for(var i in this.model.fields){
-        var fname=this.model.fields[i];
+      for(var fname in this.model.attributes){
         if(fname!="id")
         {
               data[fname]=this.model.get(fname);
         }
       }
       data["id"]=undefined;//id undefined save use POST,else use PUT
-      this.model=new Todo();
+      this.model=new Contact();
       this.model.set(data);
-      //console.log("id="+this.model.get("id"));
       this.render();
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
@@ -316,7 +313,7 @@ $(function(){
         this.listenTo(todos, 'reset', this.addAll);
         this.listenTo(todos, 'all', this.render);
         this.main = $('#main');
-        this.editview = new TodoEditView({model: new Todo()});
+        this.editview = new ContactEditView({model: new Contact()});
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
