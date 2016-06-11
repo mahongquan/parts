@@ -48,10 +48,28 @@ $(function(){
       return data.data;
    }
   });
+  var Package= Backbone.Model.extend({
+    urlRoot : "/rest/UsePack/",
+    defaults: function() {
+      return {
+        id:undefined,name:''
+      };
+    }
+  });
+  var PackageList = Backbone.Collection.extend({
+    model: Contact,
+    url : "/rest/UsePack/",
+    parse: function(data, options) {
+      console.log("parse response");
+      // if(data.total)
+      //   myglobal.total=data.total;
+      return data.data;
+   }
+  });
   var todos = new ContactList();
   var ContactEditView = Backbone.View.extend({
     tagName:  "div",
-    template: _.template($('#item-edit-template').html()),
+    template: _.template($('#contact-edit-template').html()),
     events: {
       "click #bt_file" : "uploadfile",
        "click #bt_save" : "save",
@@ -226,16 +244,27 @@ $(function(){
   });
   var ContactView = Backbone.View.extend({
     tagName:  "tr",
-    template: _.template($('#item-template').html()),
+    template: _.template($('#contact-template').html()),
     events: {
       "click .contact_edit" : "edit",
       "click .contact_delete" : "delete",
       "click .contact_package" : "package",
     },
+    package:function(){
+      var packageListview = new PackageListView({model:this.model});
+           packageListview.render();
+           packageListview.$el.dialog({
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });
+    },
     edit:function(){
         App.editview.model=this.model;
         //App.$("#section_edit").show();
-
         App.editview.render();
         App.editview.$el.dialog({
                 modal: false
@@ -450,5 +479,105 @@ $(function(){
       this.$el.dialog("close");
     }
   });  
+  /////////////////////////////////////////////////////////packageListView
+  var PackageListView = Backbone.View.extend({
+     tagName:  "div",
+     template: _.template($('#package-list-template').html()),
+     events: {
+      "click #id_select_package" : "select_package",
+    },
+    select_package:function(){
+      console.log("select_package");
+    },
+    button_prev_click:function(){
+        myglobal.start=myglobal.start-myglobal.limit;
+        if(myglobal.start<0) myglobal.start=0;
+        //todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
+        App.mysetdata();
+        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+    },
+    button_next_click:function(){
+        myglobal.start=myglobal.start+myglobal.limit;
+        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+        App.mysetdata();//todos.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
+        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+    },
+    mysetdata:function(){
+        this.$("#todo-list").empty();
+        todos.fetch({
+            reset:true,
+            data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search},
+            success:function(){
+                console.log(todos.length+" todo")
+                this.$("#page").empty();
+                var right=myglobal.start+myglobal.limit
+                this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+            },
+            error:function(){
+            }
+          }
+        );//{ reset: true,data: { start:this.start,limit:this.limit} });
+    },
+    afterlogin:function(){
+        myglobal.start=0;
+        myglobal.limit=3;
+        myglobal.total=0;
+        myglobal.search="";
+        this.listenTo(todos, 'add', this.addOne);
+        this.listenTo(todos, 'reset', this.addAll);
+        this.listenTo(todos, 'all', this.render);
+        this.main = $('#main');
+        this.editview = new ContactEditView({model: new Contact()});
+        //this.$("#section_edit").append(this.editview.render().el);
+        this.$("#bt_prev").bind("click", {}, this.button_prev_click);
+        this.$("#bt_next").bind("click", {}, this.button_next_click);
+        //this.$("#bt_search").bind("click", {}, this.search);
+        this.mysetdata();
+    },
+    initialize: function() {
+      if (user=="AnonymousUser"){
+        console.log("begin login");
+        this.userv= new UserView({model: new User()});
+        this.$("#current_user").append(this.userv.render().el);
+      }
+      else{
+        this.afterlogin();
+      }
+    },
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+    addOne: function(todo) {
+      var view = new ContactView({model: todo});
+      this.$("#todo-list").append(view.render().el);
+    },
+    addAll: function() {
+      todos.each(this.addOne, this);
+    },
+  });
+ //////////////////////////////////////////////////////////packageView
+  var PackageView = Backbone.View.extend({
+    tagName:  "tr",
+    template: _.template($('#package-template').html()),
+    events: {
+      "click .contact_edit" : "edit",
+      "click .contact_delete" : "delete",
+    },
+    edit:function(){
+      console.log("edit");
+    },
+    delete:function(){
+      console.log("delete");
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
    var App = new AppView();
 });

@@ -66,7 +66,7 @@
     <section id="section_edit">
     </section>
   </div>
-  <script type="text/template" id="item-template">
+  <script type="text/template" id="contact-template">
   <td>
       <%- id %>
  </td><td>
@@ -96,7 +96,7 @@
     <a class="contact_package" data="<%- id %>">package</a>
  </td>
   </script>
-  <script type="text/template" id="item-edit-template">
+  <script type="text/template" id="contact-edit-template">
         <table id="table_input" class="table-condensed" >
 <tr>
                 <td>
@@ -230,5 +230,23 @@
                 </td>
           </tr>
         </table>
+  </script>
+  <script type="text/template" id="package-list-template">
+      <p>"<%- id %>"</p>      <p>"<%- hetongbh %>"</p>      
+        <table  class="table-bordered" >
+    　<thead>
+    　　<tr>
+    　　　<td>ID</td><td>name</td><td>actions</td>
+    　　</tr>
+   　</thead> 
+      <tbody id="package-list">
+      </tbody>
+      </table>
+      <button id="id_select_package">select</button>
+  </script>
+  <script type="text/template" id="package-template">
+    　　<tr>
+    　　　<td><%- id %></td><td><%- name %></td><td>actions</td>
+    　　</tr>
   </script>
 {% endblock %}
