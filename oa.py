@@ -81,7 +81,7 @@ def setupBrowser(usefirefox):
 		browser = webdriver.Firefox(profile)
 		return browser
 	else:
-		browser = webdriver.PhantomJS()
+		browser = webdriver.Ie()#PhantomJS()
 		browser.set_window_size(1024,800)
 		return browser
 def findTodo(title):
@@ -165,12 +165,12 @@ def downloadBg():
 		time.sleep(3)
 def main(name,pwd):
 	global browser
-	browser=setupBrowser()
+	browser=setupBrowser(False)
 	print(dir(browser))
 	login(name,pwd)
 	showTodo()#testMessage()
 	findTodo("标钢")
-	downloadTodofiles()
+	#downloadTodofiles()
 	return browser
 if __name__ == "__main__":
 	#python3 oa.py name pwd
