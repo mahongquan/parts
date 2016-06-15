@@ -84,20 +84,28 @@ def setupBrowser(usefirefox):
 		browser = webdriver.Firefox(profile)
 		return browser
 	else:
-		browser = webdriver.Ie()#Chrome()#Ie()#PhantomJS()
-		#browser.set_window_size(1024,800)
+		browser = webdriver.PhantomJS()#Ie()#Chrome()#Ie()#PhantomJS()
+		browser.set_window_size(1024,800)
 		return browser
 def findTodo(title):
 	frame=browser.find_element_by_id("main");
 	browser.switch_to_frame(frame);#switch_to_default_content
+	body=browser.find_element_by_tag_name("body")
+	
+	#print(body.text)
+	#print(dir(body))
 	loc=(By.CLASS_NAME,"common_search")#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
 	search=WebDriverWait(browser,10).until(ec)#browser.find_element_by_id('condition')#bodyIDmessageList')	
 	loc=(By.CLASS_NAME,"common_drop_list_text")#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
 	condition=WebDriverWait(browser,10).until(ec)#browser.find_element_by_id('condition')#bodyIDmessageList')
-	actions=ActionChains(browser)
-	actions.move_to_element(condition).perform()
+	#actions=ActionChains(browser)
+	#actions.move_to_element(condition).perform()
+	browser.execute_script("""
+m0=$(".common_drop_list_text");
+$(m0).trigger("mouseenter");
+""")
 	items=search.find_elements_by_class_name("text_overflow")
 	items[1].click()
 	search.find_element_by_class_name('search_input').send_keys(title)
@@ -131,9 +139,10 @@ $(m0).trigger("mouseenter");
 	# actions=ActionChains(browser)
 	# actions.move_to_element(co).click(co).move_by_offset(0,50).perform()
 	items=browser.find_elements_by_class_name("second_menu_item")
-	#browser.get_screenshot_as_file("before daiban click.png")
-	print(items)
-	items[4].click()#dai ban
+	for item in items:
+		print(item.text)
+	items[4].find_element_by_tag_name("span").click()#dai ban
+	#time.sleep(5)
 def checktitle(title):
 	# id="colSummaryData" table tbody tr td[1] 
 	summarydata=browser.find_element_by_id("colSummaryData")
@@ -194,6 +203,23 @@ def main(name,pwd):
 	findTodo("标钢")
 	downloadTodofiles()
 	return browser
+def  printTodo():
+	time.sleep(5)#todo:how to check new list
+	tbody=mywait_id("listPending")
+	browser.save_screenshot('screenshot.png')
+	mes=tbody.find_elements_by_tag_name("tr")#here error selenium.common.exceptions.StaleElementReferenceException
+	for me in mes:
+		tds=me.find_elements_by_tag_name("td")
+		print(tds[3].text,tds[1].text)
+def mainTest(name,pwd):
+	global browser
+	browser=setupBrowser(False)
+	print(dir(browser))
+	login(name,pwd)
+	showTodo()#testMessage()
+	findTodo("通知")
+	printTodo()
+	return browser	
 def load():
 	global objSave
 	try:
@@ -211,5 +237,5 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		main(sys.argv[1],sys.argv[2])
+		mainTest(sys.argv[1],sys.argv[2])
 
