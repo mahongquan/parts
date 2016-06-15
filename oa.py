@@ -84,8 +84,8 @@ def setupBrowser(usefirefox):
 		browser = webdriver.Firefox(profile)
 		return browser
 	else:
-		browser = webdriver.Ie()#PhantomJS()
-		browser.set_window_size(1024,800)
+		browser = webdriver.Ie()#Chrome()#Ie()#PhantomJS()
+		#browser.set_window_size(1024,800)
 		return browser
 def findTodo(title):
 	frame=browser.find_element_by_id("main");
@@ -106,6 +106,9 @@ def findTodo(title):
 def  showTodo():
 	#second_menu_content
 	menuUL=mywait_id("menuUL")
+	menus=browser.find_elements_by_class_name("main_menu_a")
+	for menu in menus:
+		print(menu.text)
 	browser.execute_script("""
 m0=$(".main_menu_a")[0];
 $(m0).trigger("mouseenter");
