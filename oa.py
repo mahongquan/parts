@@ -15,7 +15,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import *
 import time
 import sys
+import pickle
+from datetime import datetime
 browser=None
+objSave={}
 def mywait_id(id):
 	loc=(By.ID,id)#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
@@ -55,7 +58,7 @@ def testMessage():
 	findMessage("车辆")
 	getMessages()
 def setupBrowser(usefirefox):
-	#usefirefox=True
+	global browser
 	if usefirefox:
 		profile=webdriver.FirefoxProfile()
 		print(dir(profile))
@@ -94,9 +97,7 @@ def findTodo(title):
 	ec=EC.presence_of_element_located(loc)
 	condition=WebDriverWait(browser,10).until(ec)#browser.find_element_by_id('condition')#bodyIDmessageList')
 	actions=ActionChains(browser)
-	actions.move_to_element(condition)
-	actions.click()#_and_hold()
-	actions.perform()
+	actions.move_to_element(condition).perform()
 	items=search.find_elements_by_class_name("text_overflow")
 	items[1].click()
 	search.find_element_by_class_name('search_input').send_keys(title)
@@ -105,15 +106,30 @@ def findTodo(title):
 def  showTodo():
 	#second_menu_content
 	menuUL=mywait_id("menuUL")
-	menus=browser.find_elements_by_class_name("main_menu_a")
-	co=menus[0]
-	actions=ActionChains(browser)
-	actions.move_to_element(co)
-	actions.click()
-	actions.perform()
+	browser.execute_script("""
+m0=$(".main_menu_a")[0];
+$(m0).trigger("mouseenter");
+//while(true){
+	//items=$(".second_menu_item");
+	//if(items!=undefined)
+	//{
+	//	break;
+	//}
+//}
+//console.log(items);
+//i=items[4];
+//$(i).trigger("mouseenter");
+//$(i.children[0]).trigger("click");//eval(i.children[0].attributes["onclick"].value);
+""")
+	# menus=browser.find_elements_by_class_name("main_menu_a")
+	# for menu in menus:
+	# 	print(menu.text)
+	# co=menus[0]
+	# actions=ActionChains(browser)
+	# actions.move_to_element(co).click(co).move_by_offset(0,50).perform()
 	items=browser.find_elements_by_class_name("second_menu_item")
 	#browser.get_screenshot_as_file("before daiban click.png")
-	#print(len(items))
+	print(items)
 	items[4].click()#dai ban
 def checktitle(title):
 	# id="colSummaryData" table tbody tr td[1] 
@@ -131,9 +147,18 @@ def  downloadTodofiles():
 	mes=tbody.find_elements_by_tag_name("tr")#here error selenium.common.exceptions.StaleElementReferenceException
 	rt=[]
 	i=0
+	maxtime=None
 	for me in mes:
 		tds=me.find_elements_by_tag_name("td")
-		#print(dir(tds[1]))
+		todotime=datetime.strptime(tds[3].text,"%Y-%m-%d %H:%M")
+		print(objSave["lasttime"],todotime)
+		if todotime<=objSave["lasttime"]:
+			objSave["lasttime"]=maxtime
+			save()
+			break
+		else:
+			if maxtime==None:
+				maxtime=todotime
 		title=tds[1].text
 		tds[1].click()
 		time.sleep(3)#wait new summary
@@ -142,19 +167,13 @@ def  downloadTodofiles():
 		files=mywait_id("attachmentAreashowAttFile")
 		checktitle(title)
 		link=files.find_element_by_tag_name("a")
-		#cmd="window.open('%s')" % link.get_attribute("href")
-		#browser.execute_script(cmd)
+		cmd="window.open('%s')" % link.get_attribute("href")
+		browser.execute_script(cmd)
 		print(cmd)
-		#cmd="window.open('%s')" % link.get_attribute("href")
 		rt.append(link.get_attribute("href"))
-		#print(rt)
-		#browser.execute_script(cmd
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
-		# i+=1
-		# if i==3:
-		# 	break
 	return rt
 def downloadBg():
 	rt=downloadTodofiles()#openTodo()
@@ -170,10 +189,23 @@ def main(name,pwd):
 	login(name,pwd)
 	showTodo()#testMessage()
 	findTodo("标钢")
-	#downloadTodofiles()
+	downloadTodofiles()
 	return browser
+def load():
+	global objSave
+	try:
+		objSave=pickle.load(open("save.pickle","rb"))
+	except FileNotFoundError as e:
+		objSave={}
+	return objSave
+def save():#'2016-06-07 14:31'
+	pickle.dump(objSave, open("save.pickle","wb")) 
 if __name__ == "__main__":
 	#python3 oa.py name pwd
+	load()
+	if objSave.get("lasttime")==None:
+		t=datetime.strptime('2016-06-07 14:31',"%Y-%m-%d %H:%M")
+		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
 		main(sys.argv[1],sys.argv[2])
