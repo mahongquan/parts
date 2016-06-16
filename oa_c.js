@@ -57,19 +57,31 @@ casper.waitFor(function check() {
 });//$("#objid",document.frames('iframename').document)
 casper.then(function check() {
     var rt=this.evaluate(function() {
-        //return $(document.getElementById('main').contentWindow.document.body).html();
         $('#main')[0].contentWindow.$('.common_drop_list_text').trigger('mouseenter');
-        //items=search.find_elements_by_class_name("text_overflow")
         var items=$("#main").contents().find(".text_overflow");
-        
         $('#main')[0].contentWindow.$(items[1]).trigger('click');//title
         $("#main").contents().find(".search_input").val("通知");
-
         $('#main')[0].contentWindow.$(".search_btn").trigger("click");//$("#main").contents().find(".search_btn").trigger("click");
         return $("#main").contents().find(".search_input").val();
     });
     this.echo("search_input val:"+rt);
 });//$("#objid",document.frames('iframename').document)
+casper.wait(2000, function() {
+    var rt=this.evaluate(function() {
+        var tbody=$('#main')[0].contentWindow.$('#listPending');
+        var mes=tbody.find("tr");
+        var r="length="+mes.length+"\r\n";
+        for(var i=0;i<mes.length;i++){
+            var me=mes[i];
+            var tds=$('#main')[0].contentWindow.$(me).find("td");
+            r+=i+" "+tds.text()+"\r\n";//[3].textContent+"\t"+tds[1].textContent+"\r\n";
+        }
+        // var tds=$('#main')[0].contentWindow.$(mes[0]).find("td");
+        // return tds.text();
+        return r;
+    });
+    this.echo("table text:"+rt);
+});
 casper.run(function() {
     this.capture("exit.png");
     this.echo("run_exit_func");this.exit();
