@@ -1,6 +1,7 @@
 var casper = require('casper').create({
     //verbose: true,  
     //logLevel: "debug",  
+    viewportSize:{width: 1024, height: 768},
     clientScripts: ["static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"],
     onError: function(self,m){  
         this.capture("error.png");  
@@ -8,7 +9,6 @@ var casper = require('casper').create({
         self.exit();  
     }  
 });
-casper.options.viewportSize={width: 1024, height: 768}; 
 casper.start('http://127.0.0.1:8000/admin/', function() {
     this.echo("start");
     var rt=this.evaluate(function() {
