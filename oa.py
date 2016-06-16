@@ -44,7 +44,7 @@ def getMessages():
 		tds[1].find_element_by_class_name("like-a").click()
 		break
 def login(name,pwd):
-	browser.get("http://oa.ncschina.com")
+	browser.get("http://oa.ncschina.com/")
 	login_username=mywait_id("login_username")
 	login_username.send_keys(name)
 	browser.find_element_by_id("login_password").send_keys(pwd)
@@ -118,20 +118,9 @@ def  showTodo():
 	for menu in menus:
 		print(menu.text)
 	browser.execute_script("""
-m0=$(".main_menu_a")[0];
-$(m0).trigger("mouseenter");
-//while(true){
-	//items=$(".second_menu_item");
-	//if(items!=undefined)
-	//{
-	//	break;
-	//}
-//}
-//console.log(items);
-//i=items[4];
-//$(i).trigger("mouseenter");
-//$(i.children[0]).trigger("click");//eval(i.children[0].attributes["onclick"].value);
-""")
+		var m0=$(".main_menu_a")[0];
+		$(m0).trigger("mouseenter");
+	""")
 	# menus=browser.find_elements_by_class_name("main_menu_a")
 	# for menu in menus:
 	# 	print(menu.text)
@@ -141,7 +130,8 @@ $(m0).trigger("mouseenter");
 	items=browser.find_elements_by_class_name("second_menu_item")
 	for item in items:
 		print(item.text)
-	items[4].find_element_by_tag_name("span").click()#dai ban
+	items[4].click();#firefox
+	#items[4].find_element_by_tag_name("span").click()#phtomjs
 	#time.sleep(5)
 def checktitle(title):
 	# id="colSummaryData" table tbody tr td[1] 
@@ -196,7 +186,7 @@ def downloadBg():
 		time.sleep(3)
 def main(name,pwd):
 	global browser
-	browser=setupBrowser(False)
+	browser=setupBrowser(True)
 	print(dir(browser))
 	login(name,pwd)
 	showTodo()#testMessage()
@@ -237,5 +227,5 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		mainTest(sys.argv[1],sys.argv[2])
+		main(sys.argv[1],sys.argv[2])
 

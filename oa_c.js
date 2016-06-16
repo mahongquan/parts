@@ -73,8 +73,13 @@ casper.wait(2000, function() {
         var r="length="+mes.length+"\r\n";
         for(var i=0;i<mes.length;i++){
             var me=mes[i];
-            var tds=$('#main')[0].contentWindow.$(me).find("td");
-            r+=i+" "+tds.text()+"\r\n";//[3].textContent+"\t"+tds[1].textContent+"\r\n";
+            //var tds=$('#main')[0].contentWindow.$(me).find("td");
+            //r+=i+" "+tds.text()+"\r\n";//[3].textContent+"\t"+tds[1].textContent+"\r\n";
+            var affix=$('#main')[0].contentWindow.$(me).find(".affix_16")
+            if(affix.length>0){
+                
+            }
+
         }
         // var tds=$('#main')[0].contentWindow.$(mes[0]).find("td");
         // return tds.text();
