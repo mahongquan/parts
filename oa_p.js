@@ -71,29 +71,25 @@ var page = require('webpage').create();page.viewportSize = { width: 1024, height
 //     console.log("page.onPrompt");
 //     printArgs.apply(this, arguments);
 // };
-var getfirstContact=function(){//run in brower contex
-    var td=$("tbody").children()[0].children[0];
-    //return td.firstChild.attributes["href"].value;
-    td.firstChild.click();
-}
 var login=function(){//////////////////////////////////////////////run in brower contex
-    $("#id_username").val("mahongquan");
-    $("#id_password").val("333333");
-    $("input[type=submit]").trigger("click");
-    return $("#id_username").val();
+    $("#username").val("mahongquan");
+    $("#password").val("333333");
+    $("#bt_login").trigger("click");
+    //return $("body").html();
+    return "login";
 }
-var call_login=function(page){
-    console.log("call_login");
-    console.log(page);
-    var rt=page.evaluate(login);
-    console.log(rt);
-    myexit();
-}
-var clickAdmin=function(){///////////////////////////////////////////////run in brower contex
-    var admin_link=$("#navbar li")[1].children[0];
-    admin_link.click();
-    return $("body").;
-}
+// var call_login=function(page){
+//     console.log("call_login");
+//     console.log(page);
+//     var rt=page.evaluate(login);
+//     console.log(rt);
+//     myexit();
+// }
+// var clickAdmin=function(){///////////////////////////////////////////////run in brower contex
+//     var admin_link=$("#navbar li")[1].children[0];
+//     admin_link.click();
+//     return $("body").;
+// }
 var myexit=function(){
     setTimeout(exit_func,5000);
 }
@@ -110,10 +106,11 @@ var openF=function(status)
         console.log("opened");
         if(page.injectJs("static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"))
         {
-            var rt=page.evaluate(clickAdmin);
+            var rt=page.evaluate(login);
             console.log(rt);
-            setTimeout(2000,call_login(page));
+            //setTimeout(2000,call_login(page));
+            myexit();
         }
     }
 }
-page.open('http://127.0.0.1:8000/', openF);
+page.open('http://localhost:8000/rest/backbone/', openF);

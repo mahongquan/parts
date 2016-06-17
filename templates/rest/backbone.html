@@ -286,6 +286,8 @@ $(function(){
        });
     },
     edit:function(){
+        console.log("edit");
+        console.log(arguments)
         App.editview.model=this.model;
         //App.$("#section_edit").show();
         App.editview.render();
@@ -307,7 +309,7 @@ $(function(){
     },
     delete:function(){
           //delete-template
-           var deleteview = new DeleteView({model:this});
+           var deleteview = new DeleteView({callback:this.true_delete,obj:this});
            deleteview.render();
            deleteview.$el.dialog({
                 modal: true
@@ -489,6 +491,9 @@ $(function(){
       "click #id_cancel" : "cancel"
     },
     initialize: function() {
+      console.log(arguments);
+      this.callback=arguments[0].callback;
+      this.obj=arguments[0].obj;
     },
     render: function() {
       this.$el.html(this.template());
@@ -496,13 +501,14 @@ $(function(){
     },
     cancel:function(){
       console.log("cancel");
-      var contactlistview=this.model;
       this.$el.dialog('close');
     },
     ok:function(){
       console.log("ok");
-      var contactlistview=this.model;//ture object is view
-      contactlistview.true_delete();
+      //var contactlistview=this.model;//ture object is view
+      //contactlistview.true_delete();
+      //this.callback();
+      this.callback.apply(this.obj, []);
       this.$el.dialog("close");
     }
   });  
@@ -579,14 +585,30 @@ $(function(){
     tagName:  "tr",
     template: _.template($('#package-template').html()),
     events: {
-      "click .contact_edit" : "edit",
-      "click .contact_delete" : "delete",
+      "click .package_edit" : "edit",
+      "click .package_delete" : "delete",
     },
     edit:function(){
       console.log("edit");
     },
+    true_delete:function(){
+        var data={};
+        data.id=this.model.get("id");
+        data.csrfmiddlewaretoken=csrf_token;
+        data= JSON.stringify(data);
+        this.model.destroy({ data:data,contentType:"application:json"});     
+    },
     delete:function(){
-      console.log("delete");
+      var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+           deleteview.render();
+           deleteview.$el.dialog({
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+           });
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -808,6 +830,6 @@ $(function(){
       <button id="id_select_package">select</button>
   </script>
   <script type="text/template" id="package-template">
-    　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><a class="package_edit" data="<%- id %>">edit</a><a  class="package_remove" data="<%- id %>">remove</a></td>
+    　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><button class="package_edit" data="<%- id %>">edit</button><button  class="package_delete" data="<%- id %>">remove</button></td>
   </script>
 {% endblock %}
