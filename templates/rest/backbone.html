@@ -21,6 +21,7 @@
 $(function(){
   var user="{{ user }}"; $("#current_user_name").text(user);
   var csrf_token="{{ csrf_token }}";
+  var cache={};
   // Backbone.ajax = function() {
   //   var param = arguments[0];
   //   if (param.success) {//修改响应数据
@@ -276,7 +277,7 @@ $(function(){
       var packageListview = new PackageListView({model:this.model});
            packageListview.render();
            packageListview.$el.dialog({
-                width:500,
+                width:500,height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -284,6 +285,33 @@ $(function(){
                 }
                 , autoOpen: true
        });
+           packageListview.$("#auto_pack1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    packageListview.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            }).autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
     },
     edit:function(){
         console.log("edit");
@@ -554,7 +582,27 @@ $(function(){
        this.listenTo(this.packages, 'add', this.addOne);
        this.listenTo(this.packages, 'reset', this.addAll);
        this.listenTo(this.packages, 'all', this.render);
+       this.on('event_data', this.callback_data);
        this.mysetdata();
+    },
+    callback_data:function(){
+      console.log(arguments);
+    },
+    addrow:function(pk,value){
+      console.log(pk);
+      console.log(value);
+      var p=new Package();
+      var self=this;
+      p.set({contact:this.model.get("id"),name:value,pack:pk});
+      p.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+          self.packages.add(p);
+        }
+      });
     },
     render: function() {
       console.log("package-list render");
@@ -565,6 +613,11 @@ $(function(){
       }
       else{
         this.$el.html(this.template(this.model.toJSON()));
+        var self=this;
+        // console.log("input pack");
+        // console.log(tmp.autocomplete("instance"));
+        // tmp.autocomplete("instance").mydata=this;
+        //tmp.mydata=this;
       }
       return this;
     },
@@ -827,7 +880,8 @@ $(function(){
       <tbody id="package-list">
       </tbody>
       </table>
-      <button id="id_select_package">select</button>
+      <input id="auto_pack1" name="auto_pack1" placeholder="输入包">
+      <button id="id_new_package">新包</button>
   </script>
   <script type="text/template" id="package-template">
     　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><button class="package_edit" data="<%- id %>">edit</button><button  class="package_delete" data="<%- id %>">remove</button></td>
