@@ -1,6 +1,5 @@
 {% extends "base.html" %} 
 {% block extrahead %}
-  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
     <style type="text/css">
     td{ 
       padding: 5px 5px 5px 5px; 
@@ -9,19 +8,33 @@
       padding: 5px 5px 5px 5px;
      /* background-color:green;*/
     }
-    td a{margin:1px 20px;}
+    .contact_delete{margin:1px 20px 1px 20px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
+  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
   <script>
 $(function(){
+//   var object = {};
+//   _.extend(object, Backbone.Events);
+// var object2 = {};
+//   _.extend(object2, Backbone.Events);
+//   object.on("alert", function(msg) {
+//     alert("object Triggered " + msg);
+//   });
+//   object2.on("alert", function(msg) {
+//     alert("object2 Triggered " + msg);
+//   });
+//   object.trigger("alert", "an event");
+//   object2.trigger("alert", "an event");
   var user="{{ user }}"; $("#current_user_name").text(user);
   var csrf_token="{{ csrf_token }}";
   var cache={};
+  var cache_item={};
   // Backbone.ajax = function() {
   //   var param = arguments[0];
   //   if (param.success) {//修改响应数据
@@ -85,6 +98,33 @@ $(function(){
         id:undefined,name:''
       };
     }
+  });
+  //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147},
+  var Item= Backbone.Model.extend({
+    urlRoot : "/rest/Item/",
+    defaults: function() {
+      return {
+        id:undefined,name:''
+      };
+    }
+  });
+  var PackItem= Backbone.Model.extend({
+    urlRoot : "/rest/PackItem/",
+    defaults: function() {
+      return {
+        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined
+      };
+    }
+  });
+  var PackItemList = Backbone.Collection.extend({
+    model: PackItem,
+    url : "/rest/PackItem/",
+    parse: function(data, options) {
+      console.log("parse response");
+      // if(data.total)
+      //   myglobal.total=data.total;
+      return data.data;
+   }
   });
   var UsepackList = Backbone.Collection.extend({
     model: UsePack,
@@ -227,7 +267,6 @@ $(function(){
       data["id"]=undefined;//id undefined save use POST,else use PUT
       this.model=new Contact();
       this.model.set(data);
-      this.render();
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
     },
@@ -237,38 +276,6 @@ $(function(){
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$("#yujifahuo_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-       this.$("#tiaoshi_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
       return this;
     },
   });
@@ -324,10 +331,44 @@ $(function(){
     edit:function(){
         console.log("edit");
         console.log(arguments)
-        App.editview.model=this.model;
+        var editview= new ContactEditView({model: this.model});
+        // App.editview.model=this.model;
         //App.$("#section_edit").show();
-        App.editview.render();
-        App.editview.$el.dialog({
+        editview.render();//must call because editview has no element now;
+        editview.$("#yujifahuo_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+       editview.$("#tiaoshi_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+        editview.$el.dialog({
+                width:600,height:600,
                 modal: false
                 , overlay: {
                     backgroundColor: '#000'
@@ -346,7 +387,7 @@ $(function(){
     delete:function(){
           //delete-template
            var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
+           //deleteview.render();
            deleteview.$el.dialog({
                 modal: true
                 , overlay: {
@@ -371,6 +412,55 @@ $(function(){
      el: $("#todoapp"),
      events: {
       "click #id_bt_search" : "mysearch",
+      "click #id_bt_new" : "newcontact",
+    },
+    newcontact:function(){
+        var editview= new ContactEditView({model: new Contact()});
+        // App.editview.model=this.model;
+        //App.$("#section_edit").show();
+        editview.render();//must call because editview has no element now;
+        editview.$el.dialog({
+                width:600,height:600,
+                modal: false
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });
+      editview.$("#yujifahuo_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+      editview.$("#tiaoshi_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
@@ -417,7 +507,7 @@ $(function(){
         this.listenTo(contacts, 'reset', this.addAll);
         this.listenTo(contacts, 'all', this.render);
         this.main = $('#main');
-        this.editview = new ContactEditView({model: new Contact()});
+        
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
@@ -438,7 +528,6 @@ $(function(){
        console.log("contact-list render");
        if (contacts.length) {
          this.main.show();
-         //this.$("#section_edit").hide();
        } else {
          this.main.hide();
          //this.$("#section_edit").show();
@@ -640,6 +729,43 @@ $(function(){
     },
     edit:function(){
       console.log("edit");
+      var packitemListView = new PackItemListView({model:this.model});
+           packitemListView.$el.dialog({
+                width:600,height:500,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });
+           packitemListView.$("#auto_item1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    packitemListView.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache_item) {
+                        data = cache_item[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/item", request, function (data, status, xhr) {
+                        cache_item[term] = data;
+                        response(data);
+                    });
+                }
+            }).autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
     },
     true_delete:function(){
         var data={};
@@ -669,6 +795,187 @@ $(function(){
       return this;
     },
   });
+  /////////////////////////////
+  ///////
+  /////////////////////////////////////////////////////////usepackListView
+  var PackItemListView = Backbone.View.extend({
+     tagName:  "div",//el: $("#section_usepack"),
+     template: _.template($('#packitem-list-template').html()),
+     events: {
+      "click #id_new_packitem" : "new_packitem",
+    },
+    new_packitem:function(){
+      console.log("new packitem");
+      var p=new Item();
+      var self=this;
+      p.set({name:this.$("#new_item1").val()});
+      p.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+          //self.usepacks.add(p);
+          //alert("success");
+          self.addrow(p.get("id"),p.get("name"));
+          self.$("#new_item1").val("");
+        }
+      });
+    },
+    mysetdata:function(){
+        this.$("#packitem-list").empty();
+        this.packitems.fetch({
+            reset:true,
+            data: { pack:this.model.get("pack"),start:0,limit:200},
+            success:function(){
+                //console.log(this.usepacks.length+" usepacks")
+                // this.$("#page").empty();
+                // var right=myglobal.start+myglobal.limit
+                // this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+            },
+            error:function(){
+            }
+          }
+        );//{ reset: true,data: { start:this.start,limit:this.limit} });
+    },
+    initialize: function() {
+       this.packitems = new PackItemList();
+       this.listenTo(this.packitems, 'add', this.addOne);
+       this.listenTo(this.packitems, 'reset', this.addAll);
+       this.listenTo(this.packitems, 'all', this.render);
+       this.$el.html(this.template(this.model.toJSON()));
+       this.mysetdata();
+    },
+    addrow:function(pk,value){
+      console.log(pk);
+      console.log(value);
+      var p=new PackItem();
+      var self=this;
+      p.set({pack:this.model.get("pack"),name:value,itemid:pk,ct:1});
+      p.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+          self.packitems.add(p);
+        }
+      });
+    },
+    render: function() {
+      console.log("packitem-list render");//_.template($('#usepack-list-template').html()),
+       //this.$el.html(this.template(this.model.toJSON()));
+      //return this;
+    },
+    addOne: function(packitem) {
+      console.log("addOne usepacks");
+      var view = new PackItemView({model: packitem});
+      var viewc=view.render().el;
+      console.log(viewc);
+      this.$("#packitem-list").append(viewc);
+    },
+    addAll: function() {
+      console.log("addAll usepacks");
+      this.packitems.each(this.addOne, this);
+    },
+  });
+ //////////////////////////////////////////////////////////UsepackView
+  var PackItemView = Backbone.View.extend({
+    tagName:  "tr",
+    template: _.template($('#packitem-template').html()),
+    events: {
+      "click .packitem_edit" : "edit",
+      "click .packitem_delete" : "delete",
+    },
+    edit:function(){
+      console.log("edit");
+       packitemedit=new PackItemEditView({model:this.model});
+       packitemedit.render();
+       packitemedit.$el.dialog({
+              width:600,height:600,
+                modal: false
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });  
+    },
+    true_delete:function(){
+        var data={};
+        data.id=this.model.get("id");
+        data.csrfmiddlewaretoken=csrf_token;
+        data= JSON.stringify(data);
+        this.model.destroy({ data:data,contentType:"application:json"});     
+    },
+    delete:function(){
+      var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+           deleteview.render();
+           deleteview.$el.dialog({
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+           });
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
+  //////////////
+    var PackItemEditView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#packitem-edit-template').html()),
+    events: {
+       "click #bt_save_item" : "save",
+    },
+    save:function(){
+      var data={};
+      for(var fname in this.model.attributes){
+        if(fname!="id")
+        {
+            var value=this.$("#"+fname).val();
+            if (value) {
+              var node=this.$("#"+fname);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[fname]=node[0].checked;
+              }
+              else
+              {
+               data[fname]=value;
+              }//else
+             }//if
+        }//if
+       }//for
+      this.model.set(data);
+      var self=this;
+      this.model.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+          self.$el.dialog("close");
+        }
+      });
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
    var App = new AppView();
 });
   </script>
@@ -683,6 +990,7 @@ $(function(){
     <span id="current_user">
     </span>
     <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">search</button>
+    <button id="id_bt_new">new</button>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -867,6 +1175,7 @@ $(function(){
         </table>
   </script>
   <script type="text/template" id="usepack-list-template">
+  <div class="container">
       <div id="contact-info">
       <p>id:<%- id %></p>      <p>hetongbh:<%- hetongbh %></p>      
       </div>
@@ -883,8 +1192,55 @@ $(function(){
       <p><input id="auto_pack1" placeholder="输入包"></p>
       <p><input id="new_pack1"  placeholder="新包"><button id="id_new_usepack">新包</button></p>
       </div>
+  </div>
   </script>
   <script type="text/template" id="usepack-template">
     　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">edit</button><button  class="usepack_delete" data="<%- id %>">remove</button></td>
   </script>
-{% endblock %}
+<script type="text/template" id="packitem-list-template">
+  <div class="container">
+      <div id="pack-info">
+      <p>id:<%- id %></p>      <p>name:<%- name %></p>      
+      </div>
+      <table  class="table-bordered" >
+    　<thead>
+    　　<tr>
+    　　　<td>ID</td><td>name</td><td>ct</td><td>pack</td><td>itemid</td><td>actions</td>
+    　　</tr>
+   　</thead> 
+      <tbody id="packitem-list">
+      </tbody>
+      </table>
+      <div style="padding: 5px 5px 50px 5px;">  <!-- leave margin to show autocomplete items -->
+      <p><input id="auto_item1" placeholder="输入Item"></p>
+      <p><input id="new_item1"  placeholder="新Item"><button id="id_new_packitem">新Item</button></p>
+      </div>
+  </div>
+  </script>
+<!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
+  <script type="text/template" id="packitem-template">
+    　　　<td><%- id %></td><td><%- name %></td><td><%- ct %></td><td><%- pack %></td><td><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">edit</button><button  class="packitem_delete" data="<%- id %>">remove</button></td>
+  </script>
+    <script type="text/template" id="packitem-edit-template">
+    <table  class="table-condensed" >
+        <tr>
+                <td>
+                    <label>ID:</label>
+                </td>
+                <td>
+                    <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>ct:</label>
+                </td>
+                <td>
+                    <input type="text" id="ct" name="ct" value="<%- ct %>">
+                </td>
+            </tr>        
+            </table>
+        <button id="bt_save_item">save</button>
+    </script>
+{% endblock %} 
+
