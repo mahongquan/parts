@@ -283,7 +283,7 @@ $(function(){
     },
     usepack:function(){
       var usepackListView = new UsepackListView({model:this.model});
-           usepackListView.render();
+           //usepackListView.render();
            usepackListView.$el.dialog({
                 width:500,height:500,
                 modal: true
@@ -549,19 +549,8 @@ $(function(){
     }
   });  
   /////////////////////////////////////////////////////////usepackListView
-  // <p>"<%- id %>"</p>      <p>"<%- hetongbh %>"</p>      
-  //     <table  class="table-bordered" >
-  //   　<thead>
-  //   　　<tr>
-  //   　　　<td>ID</td><td>name</td><td>actions</td>
-  //   　　</tr>
-  //  　</thead> 
-  //     <tbody id="usepack-list">
-  //     </tbody>
-  //     </table>
-  //     <button id="id_select_usepack">select</button>
   var UsepackListView = Backbone.View.extend({
-     tagName:  "div",
+     tagName:  "div",//el: $("#section_usepack"),
      template: _.template($('#usepack-list-template').html()),
      events: {
       "click #id_new_usepack" : "new_usepack",
@@ -605,11 +594,8 @@ $(function(){
        this.listenTo(this.usepacks, 'add', this.addOne);
        this.listenTo(this.usepacks, 'reset', this.addAll);
        this.listenTo(this.usepacks, 'all', this.render);
-       this.on('event_data', this.callback_data);
+       this.$el.html(this.template(this.model.toJSON()));
        this.mysetdata();
-    },
-    callback_data:function(){
-      console.log(arguments);
     },
     addrow:function(pk,value){
       console.log(pk);
@@ -628,21 +614,9 @@ $(function(){
       });
     },
     render: function() {
-      console.log("usepack-list render");
-      //this.$("contact-info").html(this.template(this.model.toJSON()));
-      if(this.usepacks.length>0)
-      {
-
-      }
-      else{
-        this.$el.html(this.template(this.model.toJSON()));
-        var self=this;
-        // console.log("input pack");
-        // console.log(tmp.autocomplete("instance"));
-        // tmp.autocomplete("instance").mydata=this;
-        //tmp.mydata=this;
-      }
-      return this;
+      console.log("usepack-list render");//_.template($('#usepack-list-template').html()),
+       //this.$el.html(this.template(this.model.toJSON()));
+      //return this;
     },
     addOne: function(usepack) {
       console.log("addOne usepacks");
@@ -722,8 +696,10 @@ $(function(){
       </table>
       <a id="bt_prev">prev</a> <label id="page">page/page</label><a id="bt_next">next</a>
     </section>
-    <section id="section_edit">
+<!--     <section id="section_edit">
     </section>
+    <section id="section_usepack">
+    </section> -->
   </div>
   <script type="text/template" id="contact-template">
   <td>
@@ -892,7 +868,7 @@ $(function(){
   </script>
   <script type="text/template" id="usepack-list-template">
       <div id="contact-info">
-      <p>"<%- id %>"</p>      <p>"<%- hetongbh %>"</p>      
+      <p>id:<%- id %></p>      <p>hetongbh:<%- hetongbh %></p>      
       </div>
       <table  class="table-bordered" >
     　<thead>
@@ -903,9 +879,10 @@ $(function(){
       <tbody id="usepack-list">
       </tbody>
       </table>
-      <input id="auto_pack1" placeholder="输入包">
-      <input id="new_pack1"  placeholder="新包">
-      <button id="id_new_usepack">新包</button>
+      <div style="padding: 5px 5px 50px 5px;">  <!-- leave margin to show autocomplete items -->
+      <p><input id="auto_pack1" placeholder="输入包"></p>
+      <p><input id="new_pack1"  placeholder="新包"><button id="id_new_usepack">新包</button></p>
+      </div>
   </script>
   <script type="text/template" id="usepack-template">
     　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">edit</button><button  class="usepack_delete" data="<%- id %>">remove</button></td>
