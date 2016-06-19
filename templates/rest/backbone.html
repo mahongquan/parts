@@ -104,7 +104,7 @@ $(function(){
     urlRoot : "/rest/Item/",
     defaults: function() {
       return {
-        id:undefined,name:''
+        id:undefined,name:'',guige:'',bh:'',danwei:''
       };
     }
   });
@@ -112,7 +112,7 @@ $(function(){
     urlRoot : "/rest/PackItem/",
     defaults: function() {
       return {
-        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined
+        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:''
       };
     }
   });
@@ -789,6 +789,8 @@ $(function(){
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
+    
+      
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
@@ -844,6 +846,8 @@ $(function(){
        this.listenTo(this.packitems, 'reset', this.addAll);
        this.listenTo(this.packitems, 'all', this.render);
        this.$el.html(this.template(this.model.toJSON()));
+       // this.pie=new PackItemEditView({model:new PackItem()});
+       // this.$("#packitem-edit").append(this.pie.render().el);
        this.mysetdata();
     },
     addrow:function(pk,value){
@@ -889,10 +893,10 @@ $(function(){
     },
     edit:function(){
       console.log("edit");
-       packitemedit=new PackItemEditView({model:this.model});
+       var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
        packitemedit.$el.dialog({
-              width:600,height:600,
+              width:300,height:300,
                 modal: false
                 , overlay: {
                     backgroundColor: '#000'
@@ -939,28 +943,38 @@ $(function(){
     save:function(){
       var data={};
       for(var fname in this.model.attributes){
-        if(fname!="id")
-        {
-            var value=this.$("#"+fname).val();
-            if (value) {
-              var node=this.$("#"+fname);
-              if(node.attr("type")=="checkbox")
-              {
-                  data[fname]=node[0].checked;
-              }
-              else
-              {
-               data[fname]=value;
-              }//else
-             }//if
-        }//if
+           if(fname!="id"){
+                      var value=this.$("#"+fname).val();
+                      if (value) {
+                        var node=this.$("#"+fname);
+                        if(node.attr("type")=="checkbox")
+                        {
+                            data[fname]=node[0].checked;
+                        }
+                        else
+                        {
+                         data[fname]=value;
+                        }//else
+                       }//if
+           }
        }//for
+       //save Item///////////////////////
+       var item=new Item();
+       item.set(data);
+       item.set({id:data["itemid"]});
+       item.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("item save finish");
+        }
+      }); 
+       //save PackItem///////////////////////
       this.model.set(data);
       var self=this;
       this.model.save(null,{
         success:function(context, model, resp, options){
           console.log(options);
-          console.log("save finish");
+          console.log("packitem save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.$el.dialog("close");
@@ -1182,7 +1196,7 @@ $(function(){
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>name</td><td>合同</td><td>包</td><td>合同号</td><td>actions</td>
+    　　　<td>ID</td><td>name</td><td hidden="true">合同</td><td hidden="true">包</td><td hidden="true">合同号</td><td>actions</td>
     　　</tr>
    　</thead> 
       <tbody id="usepack-list">
@@ -1195,7 +1209,7 @@ $(function(){
   </div>
   </script>
   <script type="text/template" id="usepack-template">
-    　　　<td><%- id %></td><td><%- name %></td><td><%- contact %></td><td><%- pack %></td><td><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">edit</button><button  class="usepack_delete" data="<%- id %>">remove</button></td>
+    　　　<td><%- id %></td><td><%- name %></td><td hidden="true"><%- contact %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">edit</button><button  class="usepack_delete" data="<%- id %>">remove</button></td>
   </script>
 <script type="text/template" id="packitem-list-template">
   <div class="container">
@@ -1205,12 +1219,14 @@ $(function(){
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>name</td><td>ct</td><td>pack</td><td>itemid</td><td>actions</td>
+    　　　<td>ID</td><td>name</td><td>ct</td><td hidden="true">pack</td><td hidden="true">itemid</td><td>actions</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
       </tbody>
       </table>
+      <section id="packitem-edit">
+      </section>
       <div style="padding: 5px 5px 50px 5px;">  <!-- leave margin to show autocomplete items -->
       <p><input id="auto_item1" placeholder="输入Item"></p>
       <p><input id="new_item1"  placeholder="新Item"><button id="id_new_packitem">新Item</button></p>
@@ -1219,11 +1235,11 @@ $(function(){
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- name %></td><td><%- ct %></td><td><%- pack %></td><td><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">edit</button><button  class="packitem_delete" data="<%- id %>">remove</button></td>
+    　　　<td><%- id %></td><td><%- name %></td><td><%- ct %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">edit</button><button  class="packitem_delete" data="<%- id %>">remove</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
-        <tr>
+            <tr>
                 <td>
                     <label>ID:</label>
                 </td>
@@ -1231,6 +1247,38 @@ $(function(){
                     <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
                 </td>
             </tr>
+             <tr>
+                <td>
+                    <label>itemid:</label>
+                </td>
+                <td>
+                    <input type="text" id="itemid" name="itemid" readonly="true"      value="<%- itemid %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>name:</label>
+                </td>
+                <td>
+                    <input type="text" id="name" name="name" value="<%- name %>">
+                </td>
+            </tr>        
+            <tr>
+                <td>
+                    <label>guige:</label>
+                </td>
+                <td>
+                    <input type="text" id="guige" name="guige" value="<%- guige %>">
+                </td>
+            </tr>        
+            <tr>
+                <td>
+                    <label>danwei:</label>
+                </td>
+                <td>
+                    <input type="text" id="danwei" name="danwei" value="<%- danwei %>">
+                </td>
+            </tr>        
             <tr>
                 <td>
                     <label>ct:</label>
