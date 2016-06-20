@@ -10,15 +10,19 @@
 </script>
 <script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
 <script type="text/babel">
+var myglobal={start:0,limit:10,total:0};
 var CommentBox = React.createClass({
   handleCommentSubmit: function(item) {
+    console.log("submit");
+    console.log(item);
     $.ajax({
       url: this.props.url,
       dataType: 'json',
+      contentType: "application/json",
       type: 'POST',
-      data: item,
+      data: JSON.stringify(item),//item,
       success: function(data) {
-        this.setState({data: data});
+        this.setState({data: data.data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -29,24 +33,40 @@ var CommentBox = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
+    console.log("did mount");
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
+      data:{start:myglobal.start,limit:myglobal.limit},
       success: function(data) {
-        this.setState({data: data});
+        console.log(data);
+        myglobal.total=data.total;
+        this.setState({data: data.data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
+  handlePrev:function(){
+    console.log("prev");
+     myglobal.start=myglobal.start-myglobal.limit;
+     if(myglobal.start<0) myglobal.start=0;
+     this.componentDidMount();
+  },
+  handleNext:function(){
+    console.log("next");
+     myglobal.start=myglobal.start+myglobal.limit;
+        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+    this.componentDidMount();    
+  },
   render: function() {
     return (
       <div className="itemBox">
         <h4>备件</h4>
         <CommentList data={this.state.data} />
-        <button>前一页</button><div></div><button>后一页</button>
+        <p><button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button></p>
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
@@ -57,11 +77,11 @@ var CommentList = React.createClass({
   render: function() {
     console.log(this.props.data);
     var itemNodes =null;
-    if (this.props.data.data==undefined){
+    if (this.props.data==undefined){
 
     }
     else{
-      itemNodes = this.props.data.data.map(function(item) {
+      itemNodes = this.props.data.map(function(item) {
         return (
           <Comment name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
           </Comment>
@@ -92,6 +112,8 @@ var CommentForm = React.createClass({
     e.preventDefault();
     var name = this.state.name.trim();
     var guige = this.state.guige.trim();
+    var bh=this.state.bh.trim();
+    var danwei=this.state.danwei.trim();
     if (!guige || !name) {
       return;
     }
