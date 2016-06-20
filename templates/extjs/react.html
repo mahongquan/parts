@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block extrahead %}
+<style type="text/css">
+    .item_delete{margin:1px 20px 1px 20px;}
+</style>
 <script src="/static/react-15.1.0/build/react.js"></script>
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
@@ -101,14 +104,14 @@ var ItemList = React.createClass({
     else{
       itemNodes = this.props.data.map(function(item) {
         return (
-          <Item name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
+          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
           </Item>
         );
       });
     }
     return (
       <table className="itemList table-bordered"><tbody>
-      <tr><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td></tr>
+      <tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
         {itemNodes}
       </tbody>
       </table>
@@ -142,7 +145,7 @@ var ItemForm = React.createClass({
       return;
     }
    this.props.onItemSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
-   this.setState({name: '', guige: '',bh:'',danwei:''});
+   this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
   },
   render: function() {
     return (
@@ -193,7 +196,7 @@ var ItemForm = React.createClass({
                 </td>
         </tr>
         </tbody></table>
-        <input type="submit" value="Post" />
+        <input type="submit" value="save" />
       </form>
     );
   }
@@ -206,12 +209,15 @@ var Item = React.createClass({
   render: function() {
     return (
       <tr className="item">
+        <td>{this.props.id}</td>
         <td>{this.props.bh}</td>
         <td className="itemName">
           {this.props.name}
         </td>
         <td>{this.props.guige}</td>
         <td>{this.props.danwei}</td>
+        <td><a className="item_edit" data="<%- id %>">edit</a><a className="item_delete" data="<%- id %>">delete</a>
+        </td>
       </tr>
     );
   }
