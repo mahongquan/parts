@@ -198,10 +198,10 @@ def view_item(request):
     #pack_id=int(request.GET.get("pack"))
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
-    search_bh=request.GET.get("query",'')
-    if search_bh!='':
-        total=Item.objects.filter(name__contains=search_bh).count()
-        objs = Item.objects.filter(name__contains=search_bh)[start:start+limit]
+    search=request.GET.get("query",'')
+    if search!='':
+        total=Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search)).count()
+        objs = Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search))[start:start+limit]
     else:
         total=Item.objects.count()
         objs = Item.objects.all()[start:start+limit]

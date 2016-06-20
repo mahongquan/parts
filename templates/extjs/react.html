@@ -10,9 +10,9 @@
 </script>
 <script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
 <script type="text/babel">
-var myglobal={start:0,limit:10,total:0};
-var CommentBox = React.createClass({
-  handleCommentSubmit: function(item) {
+var myglobal={start:0,limit:5,total:0};
+var ItemBox = React.createClass({
+  handleItemSubmit: function(item) {
     console.log("submit");
     console.log(item);
     $.ajax({
@@ -22,7 +22,12 @@ var CommentBox = React.createClass({
       type: 'POST',
       data: JSON.stringify(item),//item,
       success: function(data) {
-        this.setState({data: data.data});
+        console.log("handleItemSubmit");
+        console.log(data);
+        //this.setState({data: data.data});
+        var data0=this.state.data;
+        data0.push(data.data);
+        this.setState({data:data0});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -30,7 +35,7 @@ var CommentBox = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: [],search:""};
   },
   componentDidMount: function() {
     console.log("did mount");
@@ -38,7 +43,7 @@ var CommentBox = React.createClass({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      data:{start:myglobal.start,limit:myglobal.limit},
+      data:{start:myglobal.start,limit:myglobal.limit,query:this.state.search},
       success: function(data) {
         console.log(data);
         myglobal.total=data.total;
@@ -57,23 +62,36 @@ var CommentBox = React.createClass({
   },
   handleNext:function(){
     console.log("next");
-     myglobal.start=myglobal.start+myglobal.limit;
-        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+    myglobal.start=myglobal.start+myglobal.limit;
+    if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
     this.componentDidMount();    
+  },
+  handleSearch:function(){
+    myglobal.start=0;
+    this.componentDidMount();    
+  },
+  handleSearchChange:function(e){
+     this.setState({search: e.target.value});
   },
   render: function() {
     return (
       <div className="itemBox">
         <h4>备件</h4>
-        <CommentList data={this.state.data} />
-        <p><button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button></p>
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <p>
+          <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
+          <button id="id_bt_search" onClick={this.handleSearch}>search</button>
+        </p>
+        <ItemList data={this.state.data} />
+        <p>
+          <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
+        </p>
+        <ItemForm onItemSubmit={this.handleItemSubmit} />
       </div>
     );
   }
 });
 
-var CommentList = React.createClass({
+var ItemList = React.createClass({
   render: function() {
     console.log(this.props.data);
     var itemNodes =null;
@@ -83,8 +101,8 @@ var CommentList = React.createClass({
     else{
       itemNodes = this.props.data.map(function(item) {
         return (
-          <Comment name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
-          </Comment>
+          <Item name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
+          </Item>
         );
       });
     }
@@ -98,7 +116,7 @@ var CommentList = React.createClass({
   }
 });
 
-var CommentForm = React.createClass({
+var ItemForm = React.createClass({
   getInitialState: function() {
     return {name: '', guige: '',bh:'',danwei:''};
   },
@@ -107,6 +125,12 @@ var CommentForm = React.createClass({
   },
   handleTextChange: function(e) {
     this.setState({guige: e.target.value});
+  },
+  handleBhChange: function(e) {
+    this.setState({bh: e.target.value});
+  },
+  handleDanweiChange: function(e) {
+    this.setState({danwei: e.target.value});
   },
   handleSubmit: function(e) {
     e.preventDefault();
@@ -117,30 +141,64 @@ var CommentForm = React.createClass({
     if (!guige || !name) {
       return;
     }
-   this.props.onCommentSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
+   this.props.onItemSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
    this.setState({name: '', guige: '',bh:'',danwei:''});
   },
   render: function() {
     return (
       <form className="itemForm" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="name"
-          value={this.state.name}
-          onChange={this.handleNameChange}
-        />
-        <input
-          type="text"
-          placeholder="Say something..."
-          value={this.state.guige}
-          onChange={this.handleTextChange}
-        />
+      <table><tbody>
+      <tr>
+              <td>bh</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="bh"
+                  value={this.state.bh}
+                  onChange={this.handleBhChange}
+                ></input>
+                </td>
+       </tr>
+      <tr>
+                <td>name</td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="name"
+                    value={this.state.name}
+                    onChange={this.handleNameChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                  <td>guige</td>
+                  <td>
+                  <input
+                    type="text"
+                    placeholder="Say something..."
+                    value={this.state.guige}
+                    onChange={this.handleTextChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                <td>danwei</td>
+                <td>
+                <input
+                  type="text"
+                  placeholder="Say something..."
+                  value={this.state.danwei}
+                  onChange={this.handleDanweiChange}
+                ></input>
+                </td>
+        </tr>
+        </tbody></table>
         <input type="submit" value="Post" />
       </form>
     );
   }
 });
-var Comment = React.createClass({
+var Item = React.createClass({
   rawMarkup: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
@@ -159,7 +217,7 @@ var Comment = React.createClass({
   }
 });
 ReactDOM.render(
-  <CommentBox url="/rest/Item" />,
+  <ItemBox url="/rest/Item" />,
   document.getElementById('content')
 );    
 </script>
