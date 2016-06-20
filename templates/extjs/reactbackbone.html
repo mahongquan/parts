@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% block extrahead %}
+<style type="text/css">
+    .item_delete{margin:1px 20px 1px 20px;}
+</style>
+  <script src="/static/backbone_parts/json2.js"></script>
+  <script src="/static/backbone_parts/underscore.js"></script>
+  <script src="/static/backbone_parts/backbone.js"></script>
+
+<script src="/static/react-15.1.0/build/react.js"></script>
+<script src="/static/react-15.1.0/build/react-dom.js"></script>
+<script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
+ <script src="/static/backbone_parts/react.backbone.js"></script>
+<script>
+  $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  });
+</script>
+<script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
+<script type="text/babel">
+var myglobal={start:0,limit:5,total:0};
+var ItemBox = React.createClass({
+  handleItemDelete:function(data_out){
+    console.log("item_delete in box");
+    console.log(data_out);
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      contentType: "application/json",
+      type: 'DELETE',
+      data: JSON.stringify(data_out),//item,
+      success: function(data) {
+        console.log("handleItemDelete");
+        console.log(data);
+        var id=data_out.id;
+        var data0=this.state.data;
+        var at=-1;
+        for(var i in data0){
+          if(data0[i].id==id)
+          {
+            at=i;
+          }
+        }
+        data0.splice(at,1);
+        this.setState({data:data0});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleItemSubmit: function(item) {
+    console.log("submit");
+    console.log(item);
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      contentType: "application/json",
+      type: 'POST',
+      data: JSON.stringify(item),//item,
+      success: function(data) {
+        console.log("handleItemSubmit");
+        console.log(data);
+        //this.setState({data: data.data});
+        var data0=this.state.data;
+        data0.push(data.data);
+        this.setState({data:data0});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function() {
+    return {data: [],search:""};
+  },
+  componentDidMount: function() {
+    console.log("did mount");
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      data:{start:myglobal.start,limit:myglobal.limit,query:this.state.search},
+      success: function(data) {
+        console.log(data);
+        myglobal.total=data.total;
+        this.setState({data: data.data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handlePrev:function(){
+    console.log("prev");
+     myglobal.start=myglobal.start-myglobal.limit;
+     if(myglobal.start<0) myglobal.start=0;
+     this.componentDidMount();
+  },
+  handleNext:function(){
+    console.log("next");
+    myglobal.start=myglobal.start+myglobal.limit;
+    if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+    this.componentDidMount();    
+  },
+  handleSearch:function(){
+    myglobal.start=0;
+    this.componentDidMount();    
+  },
+  handleSearchChange:function(e){
+     this.setState({search: e.target.value});
+  },
+  render: function() {
+    return (
+      <div className="itemBox">
+        <h4>备件 react with backbone</h4>
+        <p>
+          <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
+          <button id="id_bt_search" onClick={this.handleSearch}>search</button>
+        </p>
+        <ItemList data={this.state.data} onItemDelete={this.handleItemDelete}/>
+        <p>
+          <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
+        </p>
+        <ItemForm onItemSubmit={this.handleItemSubmit} />
+      </div>
+    );
+  }
+});
+
+var ItemList = React.createClass({
+  handleItemDelete:function(data){
+    console.log("item delete in list");
+    console.log(data);
+    this.props.onItemDelete(data);
+  },
+  render: function() {
+    console.log(this.props.data);
+    var itemNodes =null;
+    var self=this;
+    if (this.props.data==undefined){
+
+    }
+    else{
+      itemNodes = this.props.data.map(function(item) {
+        return (
+          <ItemOne id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei} onItemDelete={self.handleItemDelete}>
+          </ItemOne>
+        );
+      });
+    }
+    return (
+      <table className="itemList table-bordered"><tbody>
+      <tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
+        {itemNodes}
+      </tbody>
+      </table>
+    );
+  }
+});
+
+var ItemForm = React.createClass({
+  getInitialState: function() {
+    return {name: '', guige: '',bh:'',danwei:''};
+  },
+  handleNameChange: function(e) {
+    this.setState({name: e.target.value});
+  },
+  handleTextChange: function(e) {
+    this.setState({guige: e.target.value});
+  },
+  handleBhChange: function(e) {
+    this.setState({bh: e.target.value});
+  },
+  handleDanweiChange: function(e) {
+    this.setState({danwei: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var name = this.state.name.trim();
+    var guige = this.state.guige.trim();
+    var bh=this.state.bh.trim();
+    var danwei=this.state.danwei.trim();
+    if (!guige || !name) {
+      return;
+    }
+   this.props.onItemSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
+   this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
+  },
+  render: function() {
+    return (
+      <form className="itemForm" onSubmit={this.handleSubmit}>
+      <table><tbody>
+      <tr>
+              <td>bh</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="bh"
+                  value={this.state.bh}
+                  onChange={this.handleBhChange}
+                ></input>
+                </td>
+       </tr>
+      <tr>
+                <td>name</td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="name"
+                    value={this.state.name}
+                    onChange={this.handleNameChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                  <td>guige</td>
+                  <td>
+                  <input
+                    type="text"
+                    placeholder="Say something..."
+                    value={this.state.guige}
+                    onChange={this.handleTextChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                <td>danwei</td>
+                <td>
+                <input
+                  type="text"
+                  placeholder="Say something..."
+                  value={this.state.danwei}
+                  onChange={this.handleDanweiChange}
+                ></input>
+                </td>
+        </tr>
+        </tbody></table>
+        <input type="submit" value="save" />
+      </form>
+    );
+  }
+});
+var ItemOne = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+  handleDelete:function(){
+    console.log("delete");
+    for(var i in this.props){
+      console.log(i);
+    }
+    this.props.onItemDelete({id: this.props.id});
+  },
+  handleEdit:function(){
+    console.log("edit");
+  },
+  render: function() {
+    return (
+      <tr className="item">
+        <td>{this.props.id}</td>
+        <td>{this.props.bh}</td>
+        <td className="itemName">
+          {this.props.name}
+        </td>
+        <td>{this.props.guige}</td>
+        <td>{this.props.danwei}</td>
+        <td><a className="item_edit" onClick={this.handleEdit}>edit</a><a className="item_delete" onClick={this.handleDelete} data="<%- id %>">delete</a>
+        </td>
+      </tr>
+    );
+  }
+});
+ReactDOM.render(
+  <ItemBox url="/rest/Item" />,
+  document.getElementById('content')
+);  
+////////////////////////////////////////////////////////////////////////////////
+var UserViewComponent = React.createBackboneClass({
+    changeOptions: "change:name", // DEFAULT is "change",
+    render: function() {
+        return (
+          <div>
+              <h1>{this.getModel().get("name")}</h1>
+          </div>
+        );
+    }
+});
+  var Item= Backbone.Model.extend({
+    urlRoot : "/rest/Item/",
+    defaults: function() {
+      return {
+        id:undefined,name:'',guige:'',bh:'',danwei:''
+      };
+    }
+  });
+var user = new Item();
+var UserView = React.createFactory(UserViewComponent);
+var userView = UserView({model: user});
+var UserView = React.createFactory(UserViewComponent);
+var userView = UserView({model: user});
+
+// Mount your component directly
+//React.render(userView, document.getElementById('element'));
+ReactDOM.render(
+  userView,
+  document.getElementById('element_0')
+);  
+
+// Render as a subview
+var ProfileViewComponent = React.createClass({
+  render: function() {
+      return (
+        <div>
+          <UserViewComponent model={this.props.user} />
+        </div>
+      );
+  }
+});
+
+var ProfileView = React.createFactory(ProfileViewComponent);
+var profileView = ProfileView({user: user});
+//React.render(profileView, document.getElementById('element'));  
+ReactDOM.render(
+  profileView,
+  document.getElementById('element')
+);  
+</script>
+{% endblock %}
+{% block content %}
+  <div id="content"></div>
+  <div id="element_0"></div>
+  <div id="element"></div>
+{% endblock %}
