@@ -15,6 +15,35 @@
 <script type="text/babel">
 var myglobal={start:0,limit:5,total:0};
 var ItemBox = React.createClass({
+  handleItemDelete:function(data_out){
+    console.log("item_delete in box");
+    console.log(data_out);
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      contentType: "application/json",
+      type: 'DELETE',
+      data: JSON.stringify(data_out),//item,
+      success: function(data) {
+        console.log("handleItemDelete");
+        console.log(data);
+        var id=data_out.id;
+        var data0=this.state.data;
+        var at=-1;
+        for(var i in data0){
+          if(data0[i].id==id)
+          {
+            at=i;
+          }
+        }
+        data0.splice(at,1);
+        this.setState({data:data0});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   handleItemSubmit: function(item) {
     console.log("submit");
     console.log(item);
@@ -84,7 +113,7 @@ var ItemBox = React.createClass({
           <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
           <button id="id_bt_search" onClick={this.handleSearch}>search</button>
         </p>
-        <ItemList data={this.state.data} />
+        <ItemList data={this.state.data} onItemDelete={this.handleItemDelete}/>
         <p>
           <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
         </p>
@@ -95,16 +124,22 @@ var ItemBox = React.createClass({
 });
 
 var ItemList = React.createClass({
+  handleItemDelete:function(data){
+    console.log("item delete in list");
+    console.log(data);
+    this.props.onItemDelete(data);
+  },
   render: function() {
     console.log(this.props.data);
     var itemNodes =null;
+    var self=this;
     if (this.props.data==undefined){
 
     }
     else{
       itemNodes = this.props.data.map(function(item) {
         return (
-          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei}>
+          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei} onItemDelete={self.handleItemDelete}>
           </Item>
         );
       });
@@ -206,6 +241,16 @@ var Item = React.createClass({
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
   },
+  handleDelete:function(){
+    console.log("delete");
+    for(var i in this.props){
+      console.log(i);
+    }
+    this.props.onItemDelete({id: this.props.id});
+  },
+  handleEdit:function(){
+    console.log("edit");
+  },
   render: function() {
     return (
       <tr className="item">
@@ -216,7 +261,7 @@ var Item = React.createClass({
         </td>
         <td>{this.props.guige}</td>
         <td>{this.props.danwei}</td>
-        <td><a className="item_edit" data="<%- id %>">edit</a><a className="item_delete" data="<%- id %>">delete</a>
+        <td><a className="item_edit" onClick={this.handleEdit}>edit</a><a className="item_delete" onClick={this.handleDelete} data="<%- id %>">delete</a>
         </td>
       </tr>
     );
