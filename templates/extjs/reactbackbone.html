@@ -37,13 +37,23 @@ var ItemList = Backbone.Collection.extend({
   }
 });
 var ItemViewComponent = React.createBackboneClass({
-    changeOptions: "change:name", // DEFAULT is "change",
+  changeOptions: "change:name", // DEFAULT is "change",
+  handleDelete:function(){
+    var model=this.getModel();
+    var data={}
+    data.id=model.get("id");
+    data= JSON.stringify(data);
+    model.destroy({ data:data,contentType:"application:json"}); //this.props.onItemDelete(this.getModel());
+  },
+  handleEdit:function(){
+    console.log("edit");
+  },
     render: function() {
         return (
           // <div>
           //     <h1>{this.getModel().get("name")}</h1>
           // </div>
-          <tr><td>{this.getModel().get("id")}</td><td>{this.getModel().get("bh")}</td><td><h5>{this.getModel().get("name")}</h5></td><td><h5>{this.getModel().get("guige")}</h5></td><td>{this.getModel().get("danwei")}</td><td>actions</td></tr>
+          <tr><td>{this.getModel().get("id")}</td><td>{this.getModel().get("bh")}</td><td><h5>{this.getModel().get("name")}</h5></td><td><h5>{this.getModel().get("guige")}</h5></td><td>{this.getModel().get("danwei")}</td><td><a className="item_edit" onClick={this.handleEdit}>edit</a><a className="item_delete" onClick={this.handleDelete} data="<%- id %>">delete</a></td></tr>
         );
     }
 });
@@ -84,12 +94,23 @@ var ItemsListViewComponent = React.createBackboneClass({
     if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
     this.componentDidMount();    
   },
+  handleItemDelete:function(data_out){
+    console.log("item_delete in box");
+    console.log(data_out);
+    //data_out.destroy();
+    var model=data_out;
+    var data={}
+    data.id=data_out.get("id");
+    data= JSON.stringify(data);
+    model.destroy({ data:data,contentType:"application:json"});
+  },
   getInitialState: function() {
     return {search:""};
   },
-    render: function() {
+  render: function() {
+        var self=this;
         var itemsList = this.getCollection().map(function(item) {
-            return <ItemViewComponent model={item} />;
+            return <ItemViewComponent model={item} onItemDelete={self.handleItemDelete}/>;
         });
         return (
           <div>
@@ -108,7 +129,7 @@ var ItemsListViewComponent = React.createBackboneClass({
       </p>
       </div>
         );
-    }
+  }
 });
 var itemsList = new ItemList();
 var ItemsListView = React.createFactory(ItemsListViewComponent);
