@@ -47,6 +47,7 @@ var ItemViewComponent = React.createBackboneClass({
   },
   handleEdit:function(){
     console.log("edit");
+    this.props.onItemEdit(this.getModel());
   },
     render: function() {
         return (
@@ -93,6 +94,12 @@ var ItemsListViewComponent = React.createBackboneClass({
     if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
     this.componentDidMount();    
   },
+  handleItemEdit  :function(data_out){
+    console.log("item_edit in itemlist");
+    console.log(data_out);
+    var model=data_out;
+    this._itemform.getModel().set(model.attributes);
+  },
   handleItemDelete:function(data_out){
     console.log("item_delete in box");
     console.log(data_out);
@@ -111,9 +118,10 @@ var ItemsListViewComponent = React.createBackboneClass({
     return {search:""};
   },
   render: function() {
+    //this._itemform = null;
         var self=this;
         var itemsList = this.getCollection().map(function(item) {
-            return <ItemViewComponent model={item} onItemDelete={self.handleItemDelete}/>;
+            return <ItemViewComponent model={item} key={item.get("id")} onItemEdit={self.handleItemEdit}/>;
         });
         return (
           <div>
@@ -130,7 +138,7 @@ var ItemsListViewComponent = React.createBackboneClass({
       <p>
           <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
       </p>
-      <ItemFormComponent onItemSubmit={this.handleItemSubmit} model={new Item()}/>
+      <ItemFormComponent onItemSubmit={this.handleItemSubmit} model={new Item()}  ref={function(ref) {self._itemform = ref;}}/>
       </div>
         );
   }
