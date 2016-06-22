@@ -15,7 +15,7 @@ c = conn.cursor()
 
 # # We can also close the cursor if we are done with it
 # c.close()
-cmds=codecs.open("danju.sql","r",'utf-8').read().split(";")
+cmds=codecs.open("extjs.sql","r",'utf-8').read().split(";")
 print(cmds)
 for cmd in cmds:
 	c.execute(cmd)

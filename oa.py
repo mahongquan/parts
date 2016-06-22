@@ -44,7 +44,7 @@ def getMessages():
 		tds[1].find_element_by_class_name("like-a").click()
 		break
 def login(name,pwd):
-	browser.get("http://oa.ncschina.com/")
+	browser.get("http://oa.ncschina.com/seeyon/index.jsp")#http://oa.ncschina.com/")
 	login_username=mywait_id("login_username")
 	login_username.send_keys(name)
 	browser.find_element_by_id("login_password").send_keys(pwd)
@@ -90,8 +90,7 @@ def setupBrowser(usefirefox):
 def findTodo(title):
 	frame=browser.find_element_by_id("main");
 	browser.switch_to_frame(frame);#switch_to_default_content
-	body=browser.find_element_by_tag_name("body")
-	
+	#body=browser.find_element_by_tag_name("body")
 	#print(body.text)
 	#print(dir(body))
 	loc=(By.CLASS_NAME,"common_search")#by:By.ID, value:"condition"}
@@ -111,6 +110,28 @@ $(m0).trigger("mouseenter");
 	search.find_element_by_class_name('search_input').send_keys(title)
 	search.find_element_by_class_name('search_btn').click()
 	return frame
+def newTodo():
+	menuUL=mywait_id("menuUL")
+	menus=browser.find_elements_by_class_name("main_menu_a")
+	for menu in menus:
+		print(menu.text)
+	browser.execute_script("""
+		var m0=$(".main_menu_a")[0];
+		$(m0).trigger("mouseenter");
+	""")
+	# menus=browser.find_elements_by_class_name("main_menu_a")
+	# for menu in menus:
+	# 	print(menu.text)
+	# co=menus[0]
+	# actions=ActionChains(browser)
+	# actions.move_to_element(co).click(co).move_by_offset(0,50).perform()
+	items=browser.find_elements_by_class_name("second_menu_item")
+	for item in items:
+		print(item.text)
+	items[1].click();#firefox
+	#items[4].find_element_by_tag_name("span").click()#phtomjs
+	#time.sleep(5)
+
 def  showTodo():
 	#second_menu_content
 	menuUL=mywait_id("menuUL")
@@ -184,14 +205,20 @@ def downloadBg():
 		cmd="window.open('%s')" % rt[i]
 		browser.execute_script(cmd)
 		time.sleep(3)
+def checkBG():
+	showTodo()#testMessage()
+	findTodo("标钢")
+	downloadTodofiles()
+def uploadRecord():
+	showTodo()#testMessage()
+	findTodo("3111613497")
+	#downloadTodofiles()
 def main(name,pwd):
 	global browser
 	browser=setupBrowser(False)
 	print(dir(browser))
 	login(name,pwd)
-	showTodo()#testMessage()
-	findTodo("标钢")
-	downloadTodofiles()
+	uploadRecord()
 	return browser
 def  printTodo():
 	time.sleep(5)#todo:how to check new list

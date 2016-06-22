@@ -41,6 +41,11 @@ def react(request):
     c.update(csrf(request))
     r=render_to_response("extjs/react.html",c)
     return(r)
+def reactbackbone(request):
+    c=RequestContext(request,{"user":request.user})
+    c.update(csrf(request))
+    r=render_to_response("extjs/reactbackbone.html",c)    
+    return r
 def ch11(request):
     logging.info("===================")
     logging.info(request)

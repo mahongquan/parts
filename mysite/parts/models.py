@@ -73,6 +73,8 @@ class PackItem(models.Model):
     class Meta:
         verbose_name="备件条目"
         verbose_name_plural=verbose_name
+    def json(self):
+        return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh}
 # class Standard(models.Model):
 #     contact=models.ForeignKey(Contact,verbose_name="合同")#合同
 #     ct=  models.IntegerField(verbose_name="数量",default=1)#数量

@@ -198,10 +198,10 @@ def view_item(request):
     #pack_id=int(request.GET.get("pack"))
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
-    search_bh=request.GET.get("query",'')
-    if search_bh!='':
-        total=Item.objects.filter(name__contains=search_bh).count()
-        objs = Item.objects.filter(name__contains=search_bh)[start:start+limit]
+    search=request.GET.get("query",'')
+    if search!='':
+        total=Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search)).count()
+        objs = Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search))[start:start+limit]
     else:
         total=Item.objects.count()
         objs = Item.objects.all()[start:start+limit]
@@ -822,7 +822,7 @@ def view_packItem(request):
     objs =PackItem.objects.filter(pack=contact)[start:start+limit]
     data=[]
     for rec in objs:
-        data.append({"id":rec.id,"pack":contact,"itemid":rec.item.id,"name":rec.item.name,"ct":rec.ct})
+        data.append(rec.json())
     output={"data":data,"total":total}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_packItem(request):
@@ -840,7 +840,7 @@ def create_packItem(request):
          rec.ct=int(data.get("ct"))
      rec.save()
      output={"success":True,"message":"Created new User" +str(rec.id)}
-     output["data"]={"id":rec.id,"pack":rec.pack.id,"itemid":rec.item.id,"name":rec.item.name,"ct":rec.ct}
+     output["data"]=rec.json()
      return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_packItem(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
@@ -856,7 +856,7 @@ def update_packItem(request):
              rec.ct=int(data.get("ct"))
          rec.save()
          output={"success":True,"message":"update Contact " +str(rec.id)}
-         output["data"]={"id":rec.id,"pack":rec.pack.id,"itemid":rec.item.id,"name":rec.item.name,"ct":rec.ct}
+         output["data"]=rec.json()
          return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     else:
         output={"success":False,"message":"need  id"}

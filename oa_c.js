@@ -66,6 +66,9 @@ casper.then(function check() {
     });
     this.echo("search_input val:"+rt);
 });//$("#objid",document.frames('iframename').document)
+function checkiframe2(r){
+    r="hello";
+}
 casper.wait(2000, function() {
     var rt=this.evaluate(function() {
         var tbody=$('#main')[0].contentWindow.$('#listPending');
@@ -77,7 +80,8 @@ casper.wait(2000, function() {
             //r+=i+" "+tds.text()+"\r\n";//[3].textContent+"\t"+tds[1].textContent+"\r\n";
             var affix=$('#main')[0].contentWindow.$(me).find(".affix_16")
             if(affix.length>0){
-                
+                $($(me).find("td")[1]).trigger("click");
+                setTimeout(checkiframe2(r),5000)
             }
 
         }
@@ -85,7 +89,7 @@ casper.wait(2000, function() {
         // return tds.text();
         return r;
     });
-    this.echo("table text:"+rt);
+    this.echo("return:"+rt);
 });
 casper.run(function() {
     this.capture("exit.png");
