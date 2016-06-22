@@ -213,6 +213,13 @@ def uploadRecord():
 	showTodo()#testMessage()
 	findTodo("3111613497")
 	#downloadTodofiles()
+def mainBG(name,pwd):
+	global browser
+	browser=setupBrowser(False)
+	print(dir(browser))
+	login(name,pwd)
+	checkBG()
+	return browser
 def main(name,pwd):
 	global browser
 	browser=setupBrowser(False)
@@ -254,5 +261,5 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		main(sys.argv[1],sys.argv[2])
+		mainBG(sys.argv[1],sys.argv[2])
 
