@@ -98,7 +98,8 @@ var ItemsListViewComponent = React.createBackboneClass({
     console.log("item_edit in itemlist");
     console.log(data_out);
     var model=data_out;
-    this._itemform.getModel().set(model.attributes);
+    //this._itemform.getModel().set(model.attributes);
+    this._itemform.props.model=model;//readonly
   },
   handleItemDelete:function(data_out){
     console.log("item_delete in box");
@@ -113,6 +114,15 @@ var ItemsListViewComponent = React.createBackboneClass({
   handleItemSubmit: function(item) {
     console.log("item submit");
     console.log(item);
+    item.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          console.log(model.data);
+          context.set(model.data);
+        }
+      });
   },
   getInitialState: function() {
     return {search:""};
@@ -177,6 +187,17 @@ var ItemFormComponent = React.createBackboneClass({
     return (
       <form className="itemForm" onSubmit={this.handleSubmit}>
       <table><tbody>
+      <tr>
+              <td>id</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="id"
+                  value={this.getModel().get("id")}
+                  readonly="true"
+                ></input>
+                </td>
+       </tr>
       <tr>
               <td>bh</td>
               <td>

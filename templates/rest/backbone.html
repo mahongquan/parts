@@ -500,7 +500,7 @@ $(function(){
     },
     afterlogin:function(){
         myglobal.start=0;
-        myglobal.limit=3;
+        myglobal.limit=9;
         myglobal.total=0;
         myglobal.search="";
         this.listenTo(contacts, 'add', this.addOne);
@@ -731,7 +731,7 @@ $(function(){
       console.log("edit");
       var packitemListView = new PackItemListView({model:this.model});
            packitemListView.$el.dialog({
-                width:600,height:500,
+                width:800,height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -1000,11 +1000,9 @@ $(function(){
     <button id="upload" type="button">upload</button>
 </form>
   <div id="todoapp">
-    <p id="current_user_name"></p>
-    <span id="current_user">
-    </span>
-    <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">search</button>
-    <button id="id_bt_new">new</button>
+    <p><span id="current_user_name"></span>    <span id="current_user">    </span>
+    <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">搜索</button>
+    <button id="id_bt_new">新合同</button></p>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -1016,7 +1014,7 @@ $(function(){
       <tbody id="contact-list">
       </tbody>
       </table>
-      <a id="bt_prev">prev</a> <label id="page">page/page</label><a id="bt_next">next</a>
+      <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a>
     </section>
 <!--     <section id="section_edit">
     </section>
@@ -1049,8 +1047,8 @@ $(function(){
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
- <td><a class="contact_edit" data="<%- id %>">edit</a><a  class="contact_delete" data="<%- id %>">delete</a>
-    <a class="contact_usepack" data="<%- id %>">usepack</a>
+ <td><a class="contact_edit" data="<%- id %>">编辑</a><a  class="contact_delete" data="<%- id %>">删除</a>
+    <a class="contact_usepack" data="<%- id %>">包信息</a>
  </td>
   </script>
   <script type="text/template" id="contact-edit-template">
@@ -1140,7 +1138,7 @@ $(function(){
                 <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button id="bt_file">browse</button>
                 </td>
             </tr>        </table>
-        <button id="bt_save">save</button> <button id="bt_clear">clear</button> <button id="bt_clearid">remove id</button>
+        <button id="bt_save">保存</button> <button id="bt_clear">清除</button> <button id="bt_clearid">复制</button>
   </script>
   <script type="text/template" id="login-template">
         <table class="table-condensed">
@@ -1180,10 +1178,10 @@ $(function(){
           </tr>
           <tr>
                 <td>
-                    <button id="id_ok">ok</button>
+                    <button id="id_ok">确定</button>
                 </td>
                 <td>
-                    <button id="id_cancel">cancel</button>
+                    <button id="id_cancel">取消</button>
                 </td>
           </tr>
         </table>
@@ -1191,7 +1189,10 @@ $(function(){
   <script type="text/template" id="usepack-list-template">
   <div class="container">
       <div id="contact-info">
-      <p>id:<%- id %></p>      <p>hetongbh:<%- hetongbh %></p>      
+       <table>
+      <tr><td>id：</td><td><%- id %></td></tr>
+      <tr><td>合同号：</td><td><%- hetongbh %></td></tr>
+      </table>
       </div>
       <table  class="table-bordered" >
     　<thead>
@@ -1209,17 +1210,20 @@ $(function(){
   </div>
   </script>
   <script type="text/template" id="usepack-template">
-    　　　<td><%- id %></td><td><%- name %></td><td hidden="true"><%- contact %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">edit</button><button  class="usepack_delete" data="<%- id %>">remove</button></td>
+    　　　<td><%- id %></td><td><%- name %></td><td hidden="true"><%- contact %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- hetongbh %></td><td><button class="usepack_edit" data="<%- id %>">编辑</button><button  class="usepack_delete" data="<%- id %>">删除</button></td>
   </script>
 <script type="text/template" id="packitem-list-template">
   <div class="container">
       <div id="pack-info">
-      <p>id:<%- id %></p>      <p>name:<%- name %></p>      
+      <table>
+      <tr><td>id：</td><td><%- id %></td></tr>
+      <tr><td>包名称：</td><td><%- name %></td></tr>
+      </table>
       </div>
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>name</td><td>ct</td><td hidden="true">pack</td><td hidden="true">itemid</td><td>actions</td>
+    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td hidden="true">pack</td><td hidden="true">itemid</td><td>actions</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
@@ -1235,7 +1239,7 @@ $(function(){
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- name %></td><td><%- ct %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">edit</button><button  class="packitem_delete" data="<%- id %>">remove</button></td>
+    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
@@ -1257,7 +1261,7 @@ $(function(){
             </tr>
             <tr>
                 <td>
-                    <label>name:</label>
+                    <label>名称:</label>
                 </td>
                 <td>
                     <input type="text" id="name" name="name" value="<%- name %>">
@@ -1265,7 +1269,7 @@ $(function(){
             </tr>        
             <tr>
                 <td>
-                    <label>guige:</label>
+                    <label>规格:</label>
                 </td>
                 <td>
                     <input type="text" id="guige" name="guige" value="<%- guige %>">
@@ -1273,7 +1277,7 @@ $(function(){
             </tr>        
             <tr>
                 <td>
-                    <label>danwei:</label>
+                    <label>单位:</label>
                 </td>
                 <td>
                     <input type="text" id="danwei" name="danwei" value="<%- danwei %>">
@@ -1281,14 +1285,14 @@ $(function(){
             </tr>        
             <tr>
                 <td>
-                    <label>ct:</label>
+                    <label>数量:</label>
                 </td>
                 <td>
                     <input type="text" id="ct" name="ct" value="<%- ct %>">
                 </td>
             </tr>        
             </table>
-        <button id="bt_save_item">save</button>
+        <button id="bt_save_item">保存</button>
     </script>
 {% endblock %} 
 
