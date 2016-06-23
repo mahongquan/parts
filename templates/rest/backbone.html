@@ -9,6 +9,8 @@
      /* background-color:green;*/
     }
     .contact_delete{margin:1px 20px 1px 20px;}
+     .contact_zxd{margin:1px 20px 1px 20px;}
+      .contact_zs{margin:1px 20px 1px 20px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
@@ -287,6 +289,18 @@ $(function(){
       "click .contact_edit" : "edit",
       "click .contact_delete" : "delete",
       "click .contact_usepack" : "usepack",
+      "click .contact_zxd" : "zxd",
+      "click .contact_zs" : "zs",
+      "click .contact_detail" : "detail",
+    },
+    detail:function(){
+      window.open("/parts/showcontact/?id="+this.model.get("id"));
+    },
+    zxd:function(){
+        window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
+    },
+    zs:function(){
+        window.open("/parts/tar?id="+this.model.get("id"));
     },
     usepack:function(){
       var usepackListView = new UsepackListView({model:this.model});
@@ -1048,7 +1062,7 @@ $(function(){
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
  <td><a class="contact_edit" data="<%- id %>">编辑</a><a  class="contact_delete" data="<%- id %>">删除</a>
-    <a class="contact_usepack" data="<%- id %>">包信息</a>
+    <a class="contact_usepack" data="<%- id %>">包信息</a><a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a class="contact_detail" data="<%- id %>">详细</a>
  </td>
   </script>
   <script type="text/template" id="contact-edit-template">
