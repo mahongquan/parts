@@ -2,15 +2,17 @@
 {% block extrahead %}
     <style type="text/css">
     td{ 
-      padding: 5px 5px 5px 5px; 
+      padding: 3px 3px 3px 3px; 
     }
     #page{ 
       padding: 5px 5px 5px 5px;
      /* background-color:green;*/
     }
-    .contact_delete{margin:1px 20px 1px 20px;}
-     .contact_zxd{margin:1px 20px 1px 20px;}
-      .contact_zs{margin:1px 20px 1px 20px;}
+    .contact_edit{margin:1px 20px 1px 1px;}
+    .contact_delete{margin:1px 20px 1px 1px;}
+    .contact_usepack{margin:1px 20px 1px 1px;}
+    .contact_zxd{margin:1px 20px 1px 1px;}
+    .contact_zs{margin:1px 20px 1px 1px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
@@ -401,7 +403,7 @@ $(function(){
     delete:function(){
           //delete-template
            var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           //deleteview.render();
+           deleteview.render();
            deleteview.$el.dialog({
                 modal: true
                 , overlay: {
@@ -492,7 +494,9 @@ $(function(){
     },
     button_next_click:function(){
         myglobal.start=myglobal.start+myglobal.limit;
-        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;//total >limit
+        if(myglobal.start<0)
+          myglobal.start=0;
         App.mysetdata();//contacts.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
         //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
@@ -504,7 +508,8 @@ $(function(){
             success:function(){
                 console.log(contacts.length+" contacts")
                 this.$("#page").empty();
-                var right=myglobal.start+myglobal.limit
+                var right=myglobal.start+myglobal.limit;
+                if (right>myglobal.total) right=myglobal.total;
                 this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
             },
             error:function(){
@@ -1184,11 +1189,9 @@ $(function(){
         <button id="bt_login">提交</button>
   </script>
   <script type="text/template" id="delete-template">
-        <table class="table-condensed">
+        <table >
           <tr>
-                <td>
-                Are you sure?
-                </td>
+                <td>是否确定?</td>
           </tr>
           <tr>
                 <td>
