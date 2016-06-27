@@ -23,6 +23,27 @@
   <script src="/static/backbone_parts/backbone.js"></script>
   <script>
 $(function(){
+function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+{
+    var Days = 30; //此 cookie 将被保存 30 天
+    var exp  = new Date();    //new Date("December 31, 9998");
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)//取cookies函数        
+{
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+     if(arr != null) return unescape(arr[2]); return null;
+
+}
+function delCookie(name)//删除cookie
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+
 //   var object = {};
 //   _.extend(object, Backbone.Events);
 // var object2 = {};
@@ -35,7 +56,7 @@ $(function(){
 //   });
 //   object.trigger("alert", "an event");
 //   object2.trigger("alert", "an event");
-  var user="{{ user }}"; $("#current_user_name").text(user);
+  var user="{{ user }}"; $("#dropdownMenu1_text").text(user);
   var csrf_token="{{ csrf_token }}";
   var cache={};
   var cache_item={};
@@ -429,6 +450,8 @@ $(function(){
      events: {
       "click #id_bt_search" : "mysearch",
       "click #id_bt_new" : "newcontact",
+      "click #id_login" : "showlogin",
+      "click #id_logout" : "showlogout",
     },
     newcontact:function(){
         var editview= new ContactEditView({model: new Contact()});
@@ -517,7 +540,45 @@ $(function(){
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
     },
-    afterlogin:function(){
+    showlogout:function(){
+    	console.log("showlogout");
+    	var self=this;
+	$.ajax({
+	          context: App
+	          , type: 'POST'
+	          , url: "/rest/logout"
+	          , complete: function () {
+	          }
+	          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+	              console.log(errorThrown);
+	          }
+	          , success: function (data) {
+	              console.log("ajax done");
+	              console.log(data);
+	              data=JSON.parse(data);
+	              console.log(data);
+	              $("#dropdownMenu1_text").text("AnonymousUser");
+                  	$("#li_login").attr("hidden",false);
+                  	$("#li_logout").attr("hidden",true);
+                  	self.mysetdata();
+	          }
+	      });
+    },
+    showlogin:function(){
+        this.userv= new UserView({model: new User(),app:this});
+        //this.$("#current_user").append(this.userv.render().el);
+        this.userv.render();
+         this.userv.$el.dialog({
+         	   width:400,height:250,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+           });
+    },
+    initialize: function() {
         myglobal.start=0;
         myglobal.limit=9;
         myglobal.total=0;
@@ -530,17 +591,11 @@ $(function(){
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
-        //this.$("#bt_search").bind("click", {}, this.search);
-        this.mysetdata();
-    },
-    initialize: function() {
       if (user=="AnonymousUser"){
-        console.log("begin login");
-        this.userv= new UserView({model: new User()});
-        this.$("#current_user").append(this.userv.render().el);
+        this.showlogin();
       }
       else{
-        this.afterlogin();
+        this.mysetdata();
       }
     },
     render: function() {
@@ -576,6 +631,7 @@ $(function(){
       "click #bt_login" : "login",
     },
     initialize: function() {
+      this.app=arguments[0].app;
       this.listenTo(this.model, 'change', this.render);
     },
     render: function() {
@@ -601,6 +657,7 @@ $(function(){
              }
        }//for
        console.log(data);
+       var self=this;
         $.ajax({
           context: App
           , type: 'POST'
@@ -617,10 +674,12 @@ $(function(){
               data=JSON.parse(data);
               if (data.success) {
                    user=data.data.name;
-                  $("#current_user_name").text(user);
-                  $("#current_user").attr("hidden",true);
-                  //var app=$(this);
-                  this.afterlogin();
+                   csrf_token=getCookie('csrftoken'); //Ext.util.Cookies.get("csrftoken");
+                  $("#dropdownMenu1_text").text(user);
+                  $("#li_login").attr("hidden",true);
+                  $("#li_logout").attr("hidden",false);
+                  self.$el.dialog("close");
+                  self.app.mysetdata();
               }
           }
       });
@@ -1019,9 +1078,29 @@ $(function(){
     <button id="upload" type="button">upload</button>
 </form>
   <div id="todoapp">
-    <p><span id="current_user_name"></span>    <span id="current_user">    </span>
-    <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">搜索</button>
-    <button id="id_bt_new">新合同</button></p>
+    <div>
+    <table>
+    <tr>
+	 <td>
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		    <span id="dropdownMenu1_text">Dropdown</span>
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		    <li id="li_login"hidden="true"><a href="#" id="id_login" >log in</a></li>
+		    <li id="li_logout"><a href="#" id="id_logout">log out</a></li>
+		  </ul>
+		</div>
+	</td>
+	<td>
+	    	<input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value="">
+	    	<button id="id_bt_search">搜索</button>
+	    	<button id="id_bt_new">新合同</button>
+	</td>
+    </tr>
+    </table>
+    </div>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -1161,7 +1240,7 @@ $(function(){
   </script>
   <script type="text/template" id="login-template">
         <table class="table-condensed">
-        <tr>
+        <tr hidden="true">
                 <td>
                     <label>csrfmiddlewaretoken:</label>
                 </td>

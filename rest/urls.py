@@ -19,6 +19,7 @@ urlpatterns = [
         url(r'^Pack', views.pack),
 
         url(r'^login', views.mylogin),
+        url(r'^logout', views.mylogout),
         url(r'^functions', views.functions),
         url(r'^writer', views.writer),
         url(r'^app.php_users_view$', views.app_users_view),
