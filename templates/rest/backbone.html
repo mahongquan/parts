@@ -261,6 +261,7 @@ $(function(){
     },
     myclearid:function(){//copy
       //this.$("#id").val(undefined);
+      console.log("clearid");
       data={}//copy data from old model
       for(var fname in this.model.attributes){
         if(fname!="id")
@@ -271,6 +272,7 @@ $(function(){
       data["id"]=undefined;//id undefined save use POST,else use PUT
       this.model=new Contact();
       this.model.set(data);
+      this.render();
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
     },
