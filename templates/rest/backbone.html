@@ -328,7 +328,7 @@ function delCookie(name)//删除cookie
         window.open("/parts/tar?id="+this.model.get("id"));
     },
     usepack:function(){
-      var usepackListView = new UsepackListView({model:this.model});
+           var usepackListView = new UsepackListView({model:this.model});
            //usepackListView.render();
            usepackListView.$el.dialog({
                 width:500,height:500,
@@ -338,7 +338,7 @@ function delCookie(name)//删除cookie
                     , opacity: 0.5
                 }
                 , autoOpen: true
-       });
+           });
            usepackListView.$("#auto_pack1").autocomplete({
                 minLength: 1
                 , focus: function (event, ui) {
@@ -370,7 +370,7 @@ function delCookie(name)//删除cookie
     edit:function(){
         console.log("edit");
         console.log(arguments)
-        var editview= new ContactEditView({model: this.model});
+        var editview= new ContactEditView2({model: this.model});
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
         editview.render();//must call because editview has no element now;
@@ -446,6 +446,154 @@ function delCookie(name)//删除cookie
       return this;
     },
   });
+///////////////////////////
+  var ContactEditView2 = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#contact-edit-template').html()),
+    events: {
+      "click #bt_file" : "uploadfile",
+       "click #bt_save" : "save",
+       "click #bt_clear" : "myclear",
+       "click #bt_clearid" : "myclearid",
+    },
+    upload_click:function(event){
+      console.log("upload_click");
+      console.log(event.data);
+      var view=event.data.view;
+      $.ajax({
+        context:view,
+        url: '/rest/upload',
+        type: 'POST',
+        cache: false,
+        data: new FormData($('#uploadForm')[0]),
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          console.log("done");
+          console.log(res);//{"success":True, "files":fullfilepath}
+          data=JSON.parse(res);
+          if(data.success){
+            this.$("#method").val(data.files);
+            $('#uploadForm').dialog('close');
+            console.log(this);
+          }
+          else{
+
+          }
+        }).fail(function(res) {
+
+        });
+    },
+    uploadfile:function(){
+      $("#upload").bind("click",{view:this},this.upload_click);
+      $('#uploadForm').dialog({
+            //bgiframe: true,
+            //resizable: false, height: "530",width:"200",
+            //height:140,
+            modal: true
+            , overlay: {
+                backgroundColor: '#000'
+                , opacity: 0.5
+            }
+            , autoOpen: true, // buttons: {
+            //     Cancel: function() {
+            //         $(this).dialog('close');
+            //     },
+            // }
+      });
+    },
+    save_new:function(){
+      console.log("upload_click");
+      var data=new FormData(this.$('#uploadForm')[0]);
+      $.ajax({
+        context: this,
+        url: "/rest/Contact/",
+        cache: false,
+        data: data,
+        processData: false,
+        contentType: false
+        , error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+        , success: function (data) {
+            console.log("ajax done");
+            console.log(data);
+            // if (data.success) {
+            //     addrow(data.data.id, data.data.name);
+            //     $("#dialog").dialog("close");
+            // }
+        }
+      });
+    },
+    save:function(){
+      var data={};
+      for(var fname in this.model.attributes){
+        if(fname!="id")
+        {
+            //var name=this.$("#"+fname).attr("name");
+            var value=this.$("#"+fname).val();
+            if (value) {
+              var node=this.$("#"+fname);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[fname]=node[0].checked;
+              }
+              else
+              {
+               data[fname]=value;
+              }//else
+             }//if
+        }//if
+       }//for
+      //console.log(data);
+      if(this.model.get("id")==undefined)
+      {
+          contacts.add(this.model);
+      }
+      this.model.set(data);
+      this.model.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+        }
+      });
+    },
+    myclear:function(){
+      //console.log("clear click");
+      this.model=new Contact();
+      this.render();
+    },
+    myclearid:function(){//copy
+      //this.$("#id").val(undefined);
+      console.log("clearid");
+      data={}//copy data from old model
+      for(var fname in this.model.attributes){
+        if(fname!="id")
+        {
+              data[fname]=this.model.get(fname);
+        }
+      }
+      data["id"]=undefined;//id undefined save use POST,else use PUT
+      this.model=new Contact();
+      this.model.set(data);
+      this.render();
+      this.listenTo(this.model, 'change', this.render);//model change must relisten
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+      this.pev=new UsepackListView({model:this.model});
+      this.$el.html(this.template(this.model.toJSON()));
+      var v=this.pev.render().el;
+      this.$("#id_usepacks").append(v);
+    },
+    render: function() {
+      return this;
+    },
+  });
 ////////////////////////////////////////////////////////////////////////////
   var AppView = Backbone.View.extend({
      el: $("#todoapp"),
@@ -456,7 +604,7 @@ function delCookie(name)//删除cookie
       "click #id_logout" : "showlogout",
     },
     newcontact:function(){
-        var editview= new ContactEditView({model: new Contact()});
+        var editview= new ContactEditView2({model: new Contact()});
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
         editview.render();//must call because editview has no element now;
@@ -588,11 +736,12 @@ function delCookie(name)//删除cookie
         this.listenTo(contacts, 'add', this.addOne);
         this.listenTo(contacts, 'reset', this.addAll);
         this.listenTo(contacts, 'all', this.render);
-        this.main = $('#main');
+        this.main = this.$('#main');
         
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
+
       if (user=="AnonymousUser"){
         this.showlogin();
       }
@@ -785,7 +934,7 @@ function delCookie(name)//删除cookie
     render: function() {
       console.log("usepack-list render");//_.template($('#usepack-list-template').html()),
        //this.$el.html(this.template(this.model.toJSON()));
-      //return this;
+      return this;
     },
     addOne: function(usepack) {
       console.log("addOne usepacks");
@@ -1239,6 +1388,7 @@ function delCookie(name)//删除cookie
                 </td>
             </tr>        </table>
         <button id="bt_save">保存</button> <button id="bt_clear">清除</button> <button id="bt_clearid">复制</button>
+        <div id="id_usepacks"></div>
   </script>
   <script type="text/template" id="login-template">
         <table class="table-condensed">
