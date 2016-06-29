@@ -318,7 +318,7 @@ function delCookie(name)//删除cookie
       "click .contact_detail" : "detail",
     },
     detail:function(){
-      window.open("/parts/showcontact/?id="+this.model.get("id"));
+      window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     },
     zxd:function(){
         window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
