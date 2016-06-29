@@ -371,6 +371,16 @@ def destroy_contact(request):
     else:
         output={"success":False,"message":"OK"}
         return HttpResponse(json.dumps(output, ensure_ascii=False))
+def mylogout(request):
+    logging.info("logout/////////////////////////////////////////////////")
+    logging.info(request)
+    logging.info(dir(request.user))
+    logout(request)
+    output={"success":True,"message":"User"}
+    r=HttpResponse(json.dumps(output, ensure_ascii=False))
+    logging.info(r)
+    return r
+
 def mylogin(request):
     logging.info("login/////////////////////////////////////////////////")
     logging.info(request)

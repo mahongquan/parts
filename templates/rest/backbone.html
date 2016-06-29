@@ -10,7 +10,7 @@
     }
     .contact_edit{margin:1px 20px 1px 1px;}
     .contact_delete{margin:1px 20px 1px 1px;}
-    .contact_usepack{margin:1px 20px 1px 1px;}
+    /*.contact_usepack{margin:1px 20px 1px 1px;}*/
     .contact_zxd{margin:1px 20px 1px 1px;}
     .contact_zs{margin:1px 20px 1px 1px;}
     thead tr{ font-weight:bold;}
@@ -23,7 +23,26 @@
   <script src="/static/backbone_parts/backbone.js"></script>
   <script>
 $(function(){
-  //"use strict";
+function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+{
+    var Days = 30; //此 cookie 将被保存 30 天
+    var exp  = new Date();    //new Date("December 31, 9998");
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)//取cookies函数        
+{
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+     if(arr != null) return unescape(arr[2]); return null;
+
+}
+function delCookie(name)//删除cookie
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
 //   var object = {};
 //   _.extend(object, Backbone.Events);
 // var object2 = {};
@@ -36,7 +55,7 @@ $(function(){
 //   });
 //   object.trigger("alert", "an event");
 //   object2.trigger("alert", "an event");
-  var user="{{ user }}"; $("#current_user_name").text(user);
+  var user="{{ user }}"; $("#dropdownMenu1_text").text(user);
   var csrf_token="{{ csrf_token }}";
   var cache={};
   var cache_item={};
@@ -262,6 +281,7 @@ $(function(){
     },
     myclearid:function(){//copy
       //this.$("#id").val(undefined);
+      console.log("clearid");
       data={}//copy data from old model
       for(var fname in this.model.attributes){
         if(fname!="id")
@@ -272,6 +292,7 @@ $(function(){
       data["id"]=undefined;//id undefined save use POST,else use PUT
       this.model=new Contact();
       this.model.set(data);
+      this.render();
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
     },
@@ -306,7 +327,7 @@ $(function(){
         window.open("/parts/tar?id="+this.model.get("id"));
     },
     usepack:function(){
-      var usepackListView = new UsepackListView({model:this.model});
+           var usepackListView = new UsepackListView({model:this.model});
            //usepackListView.render();
            usepackListView.$el.dialog({
                 width:500,height:500,
@@ -316,7 +337,7 @@ $(function(){
                     , opacity: 0.5
                 }
                 , autoOpen: true
-       });
+           });
            usepackListView.$("#auto_pack1").autocomplete({
                 minLength: 1
                 , focus: function (event, ui) {
@@ -348,7 +369,7 @@ $(function(){
     edit:function(){
         console.log("edit");
         console.log(arguments)
-        var editview= new ContactEditView({model: this.model});
+        var editview= new ContactEditView2({model: this.model});
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
         editview.render();//must call because editview has no element now;
@@ -424,15 +445,165 @@ $(function(){
       return this;
     },
   });
+///////////////////////////
+  var ContactEditView2 = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#contact-edit-template').html()),
+    events: {
+      "click #bt_file" : "uploadfile",
+       "click #bt_save" : "save",
+       "click #bt_clear" : "myclear",
+       "click #bt_clearid" : "myclearid",
+    },
+    upload_click:function(event){
+      console.log("upload_click");
+      console.log(event.data);
+      var view=event.data.view;
+      $.ajax({
+        context:view,
+        url: '/rest/upload',
+        type: 'POST',
+        cache: false,
+        data: new FormData($('#uploadForm')[0]),
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          console.log("done");
+          console.log(res);//{"success":True, "files":fullfilepath}
+          data=JSON.parse(res);
+          if(data.success){
+            this.$("#method").val(data.files);
+            $('#uploadForm').dialog('close');
+            console.log(this);
+          }
+          else{
+
+          }
+        }).fail(function(res) {
+
+        });
+    },
+    uploadfile:function(){
+      $("#upload").bind("click",{view:this},this.upload_click);
+      $('#uploadForm').dialog({
+            //bgiframe: true,
+            //resizable: false, height: "530",width:"200",
+            //height:140,
+            modal: true
+            , overlay: {
+                backgroundColor: '#000'
+                , opacity: 0.5
+            }
+            , autoOpen: true, // buttons: {
+            //     Cancel: function() {
+            //         $(this).dialog('close');
+            //     },
+            // }
+      });
+    },
+    save_new:function(){
+      console.log("upload_click");
+      var data=new FormData(this.$('#uploadForm')[0]);
+      $.ajax({
+        context: this,
+        url: "/rest/Contact/",
+        cache: false,
+        data: data,
+        processData: false,
+        contentType: false
+        , error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+        , success: function (data) {
+            console.log("ajax done");
+            console.log(data);
+            // if (data.success) {
+            //     addrow(data.data.id, data.data.name);
+            //     $("#dialog").dialog("close");
+            // }
+        }
+      });
+    },
+    save:function(){
+      var data={};
+      for(var fname in this.model.attributes){
+        if(fname!="id")
+        {
+            //var name=this.$("#"+fname).attr("name");
+            var value=this.$("#"+fname).val();
+            if (value) {
+              var node=this.$("#"+fname);
+              if(node.attr("type")=="checkbox")
+              {
+                  data[fname]=node[0].checked;
+              }
+              else
+              {
+               data[fname]=value;
+              }//else
+             }//if
+        }//if
+       }//for
+      //console.log(data);
+      if(this.model.get("id")==undefined)
+      {
+          contacts.add(this.model);
+      }
+      this.model.set(data);
+      this.model.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          //model.set(resp.success.arguments[0].data);
+          context.set(model.data);
+        }
+      });
+    },
+    myclear:function(){
+      //console.log("clear click");
+      this.model=new Contact();
+      this.render();
+    },
+    myclearid:function(){//copy
+      //this.$("#id").val(undefined);
+      console.log("clearid");
+      data={}//copy data from old model
+      for(var fname in this.model.attributes){
+        if(fname!="id")
+        {
+              data[fname]=this.model.get(fname);
+        }
+      }
+      data["id"]=undefined;//id undefined save use POST,else use PUT
+      this.model=new Contact();
+      this.model.set(data);
+      this.render();
+      this.listenTo(this.model, 'change', this.render);//model change must relisten
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+      this.pev=new UsepackListView({model:this.model});
+      this.$el.html(this.template(this.model.toJSON()));
+      var v=this.pev.render().el;
+      this.$("#id_usepacks").append(v);
+    },
+    render: function() {
+      return this;
+    },
+  });
 ////////////////////////////////////////////////////////////////////////////
   var AppView = Backbone.View.extend({
      el: $("#todoapp"),
      events: {
       "click #id_bt_search" : "mysearch",
       "click #id_bt_new" : "newcontact",
+      "click #id_login" : "showlogin",
+      "click #id_logout" : "showlogout",
     },
     newcontact:function(){
-        var editview= new ContactEditView({model: new Contact()});
+        var editview= new ContactEditView2({model: new Contact()});
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
         editview.render();//must call because editview has no element now;
@@ -518,7 +689,45 @@ $(function(){
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
     },
-    afterlogin:function(){
+    showlogout:function(){
+    	console.log("showlogout");
+    	var self=this;
+	$.ajax({
+	          context: App
+	          , type: 'POST'
+	          , url: "/rest/logout"
+	          , complete: function () {
+	          }
+	          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+	              console.log(errorThrown);
+	          }
+	          , success: function (data) {
+	              console.log("ajax done");
+	              console.log(data);
+	              data=JSON.parse(data);
+	              console.log(data);
+	              $("#dropdownMenu1_text").text("AnonymousUser");
+                  	$("#li_login").attr("hidden",false);
+                  	$("#li_logout").attr("hidden",true);
+                  	self.mysetdata();
+	          }
+	      });
+    },
+    showlogin:function(){
+        this.userv= new UserView({model: new User(),app:this});
+        //this.$("#current_user").append(this.userv.render().el);
+        this.userv.render();
+         this.userv.$el.dialog({
+         	   width:400,height:250,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+           });
+    },
+    initialize: function() {
         myglobal.start=0;
         myglobal.limit=9;
         myglobal.total=0;
@@ -526,22 +735,17 @@ $(function(){
         this.listenTo(contacts, 'add', this.addOne);
         this.listenTo(contacts, 'reset', this.addAll);
         this.listenTo(contacts, 'all', this.render);
-        this.main = $('#main');
+        this.main = this.$('#main');
         
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
-        //this.$("#bt_search").bind("click", {}, this.search);
-        this.mysetdata();
-    },
-    initialize: function() {
+
       if (user=="AnonymousUser"){
-        console.log("begin login");
-        this.userv= new UserView({model: new User()});
-        this.$("#current_user").append(this.userv.render().el);
+        this.showlogin();
       }
       else{
-        this.afterlogin();
+        this.mysetdata();
       }
     },
     render: function() {
@@ -577,6 +781,7 @@ $(function(){
       "click #bt_login" : "login",
     },
     initialize: function() {
+      this.app=arguments[0].app;
       this.listenTo(this.model, 'change', this.render);
     },
     render: function() {
@@ -602,6 +807,7 @@ $(function(){
              }
        }//for
        console.log(data);
+       var self=this;
         $.ajax({
           context: App
           , type: 'POST'
@@ -618,10 +824,12 @@ $(function(){
               data=JSON.parse(data);
               if (data.success) {
                    user=data.data.name;
-                  $("#current_user_name").text(user);
-                  $("#current_user").attr("hidden",true);
-                  //var app=$(this);
-                  this.afterlogin();
+                   csrf_token=getCookie('csrftoken'); //Ext.util.Cookies.get("csrftoken");
+                  $("#dropdownMenu1_text").text(user);
+                  $("#li_login").attr("hidden",true);
+                  $("#li_logout").attr("hidden",false);
+                  self.$el.dialog("close");
+                  self.app.mysetdata();
               }
           }
       });
@@ -725,7 +933,7 @@ $(function(){
     render: function() {
       console.log("usepack-list render");//_.template($('#usepack-list-template').html()),
        //this.$el.html(this.template(this.model.toJSON()));
-      //return this;
+      return this;
     },
     addOne: function(usepack) {
       console.log("addOne usepacks");
@@ -1020,9 +1228,29 @@ $(function(){
     <button id="upload" type="button">upload</button>
 </form>
   <div id="todoapp">
-    <p><span id="current_user_name"></span>    <span id="current_user">    </span>
-    <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value=""><button id="id_bt_search">搜索</button>
-    <button id="id_bt_new">新合同</button></p>
+    <div>
+    <table>
+    <tr>
+	 <td>
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		    <span id="dropdownMenu1_text">Dropdown</span>
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		    <li id="li_login"hidden="true"><a href="#" id="id_login" >log in</a></li>
+		    <li id="li_logout"><a href="#" id="id_logout">log out</a></li>
+		  </ul>
+		</div>
+	</td>
+	<td>
+	    	<input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value="">
+	    	<button id="id_bt_search">搜索</button>
+	    	<button id="id_bt_new">新合同</button>
+	</td>
+    </tr>
+    </table>
+    </div>
       <section id="main">
       <table  class="table-bordered" >
     　<thead>
@@ -1068,7 +1296,7 @@ $(function(){
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
  <td><a class="contact_edit" data="<%- id %>">编辑</a><a  class="contact_delete" data="<%- id %>">删除</a>
-    <a class="contact_usepack" data="<%- id %>">包信息</a><a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a class="contact_detail" data="<%- id %>">详细</a>
+    <!--a class="contact_usepack" data="<%- id %>">包信息</a--><a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a class="contact_detail" data="<%- id %>">详细</a>
  </td>
   </script>
   <script type="text/template" id="contact-edit-template">
@@ -1159,10 +1387,11 @@ $(function(){
                 </td>
             </tr>        </table>
         <button id="bt_save">保存</button> <button id="bt_clear">清除</button> <button id="bt_clearid">复制</button>
+        <div id="id_usepacks"></div>
   </script>
   <script type="text/template" id="login-template">
         <table class="table-condensed">
-        <tr>
+        <tr hidden="true">
                 <td>
                     <label>csrfmiddlewaretoken:</label>
                 </td>
@@ -1206,12 +1435,12 @@ $(function(){
   </script>
   <script type="text/template" id="usepack-list-template">
   <div class="container">
-      <div id="contact-info">
+      <!-- div id="contact-info">
        <table>
       <tr><td>id：</td><td><%- id %></td></tr>
       <tr><td>合同号：</td><td><%- hetongbh %></td></tr>
       </table>
-      </div>
+      </div -->
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
