@@ -78,9 +78,9 @@ function delCookie(name)//删除cookie
   //     };
   //   }
   //   //2发送请求
-  //   console.log("Backbone.ajax");
-  //   console.log(param);
-  //   console.log(param.data);
+  //   //console.log("Backbone.ajax");
+  //   //console.log(param);
+  //   //console.log(param.data);
   //   return $.ajax({
   //     url : param.url,
   //     data : param.data,
@@ -108,7 +108,7 @@ function delCookie(name)//删除cookie
     url : "/rest/Contact/",
     //localStorage: new Backbone.LocalStorage("contacts-backbone"),
    parse: function(data, options) {
-      console.log("parse response");
+      //console.log("parse response");
       if(data.total)
         myglobal.total=data.total;
       return data.data;
@@ -151,7 +151,7 @@ function delCookie(name)//删除cookie
     model: PackItem,
     url : "/rest/PackItem/",
     parse: function(data, options) {
-      console.log("parse response");
+      //console.log("parse response");
       // if(data.total)
       //   myglobal.total=data.total;
       return data.data;
@@ -161,7 +161,7 @@ function delCookie(name)//删除cookie
     model: UsePack,
     url : "/rest/UsePack/",
     parse: function(data, options) {
-      console.log("parse response");
+      //console.log("parse response");
       // if(data.total)
       //   myglobal.total=data.total;
       return data.data;
@@ -178,8 +178,8 @@ function delCookie(name)//删除cookie
        "click #bt_clearid" : "myclearid",
     },
     upload_click:function(event){
-      console.log("upload_click");
-      console.log(event.data);
+      //console.log("upload_click");
+      //console.log(event.data);
       var view=event.data.view;
       $.ajax({
         context:view,
@@ -190,13 +190,13 @@ function delCookie(name)//删除cookie
         processData: false,
         contentType: false
         }).done(function(res) {
-          console.log("done");
-          console.log(res);//{"success":True, "files":fullfilepath}
+          //console.log("done");
+          //console.log(res);//{"success":True, "files":fullfilepath}
           data=JSON.parse(res);
           if(data.success){
             this.$("#method").val(data.files);
             $('#uploadForm').dialog('close');
-            console.log(this);
+            //console.log(this);
           }
           else{
 
@@ -224,7 +224,7 @@ function delCookie(name)//删除cookie
       });
     },
     save_new:function(){
-      console.log("upload_click");
+      //console.log("upload_click");
       var data=new FormData(this.$('#uploadForm')[0]);
       $.ajax({
         context: this,
@@ -234,11 +234,11 @@ function delCookie(name)//删除cookie
         processData: false,
         contentType: false
         , error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(errorThrown);
+            //console.log(errorThrown);
         }
         , success: function (data) {
-            console.log("ajax done");
-            console.log(data);
+            //console.log("ajax done");
+            //console.log(data);
             // if (data.success) {
             //     addrow(data.data.id, data.data.name);
             //     $("#dialog").dialog("close");
@@ -266,29 +266,31 @@ function delCookie(name)//删除cookie
              }//if
         }//if
        }//for
-      //console.log(data);
+      ////console.log(data);
       if(this.model.get("id")==undefined)
       {
           contacts.add(this.model);
       }
       this.model.set(data);
+      var self=this;
       this.model.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
+          //console.log(options);
+          //console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
+          self.parentview.changepev(self.model);
         }
       });
     },
     myclear:function(){
-      //console.log("clear click");
+      ////console.log("clear click");
       this.model=new Contact();
       this.render();
     },
     myclearid:function(){//copy
       //this.$("#id").val(undefined);
-      console.log("clearid");
+      //console.log("clearid");
       data={}//copy data from old model
       for(var fname in this.model.attributes){
         if(fname!="id")
@@ -300,15 +302,49 @@ function delCookie(name)//删除cookie
       this.model=new Contact();
       this.model.set(data);
       this.render();
+      this.parentview.changepev(this.model);
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
     },
     initialize: function() {
+      this.parentview=arguments[0].parentview;
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
+      this.$("#yujifahuo_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+      this.$("#tiaoshi_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
       return this;
     },
   });
@@ -374,80 +410,12 @@ function delCookie(name)//删除cookie
             };
     },
     edit:function(){
-        console.log("edit");
-        console.log(arguments)
+        //console.log("edit");
+        //console.log(arguments)
         var editview= new ContactEditView2({model: this.model});
+        editview.showdialog();
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
-        editview.render();//must call because editview has no element now;
-        editview.$("#yujifahuo_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-       editview.$("#tiaoshi_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-        editview.$el.dialog({
-                width:600,height:600,
-                modal: false
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true
-       });
-            editview.pev.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    editview.pev.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            };
     },
     true_delete:function(){
         var data={};
@@ -482,186 +450,27 @@ function delCookie(name)//删除cookie
 ///////////////////////////
   var ContactEditView2 = Backbone.View.extend({
     tagName:  "div",
-    template: _.template($('#contact-edit-template').html()),
-    events: {
-      "click #bt_file" : "uploadfile",
-       "click #bt_save" : "save",
-       "click #bt_clear" : "myclear",
-       "click #bt_clearid" : "myclearid",
-    },
-    upload_click:function(event){
-      console.log("upload_click");
-      console.log(event.data);
-      var view=event.data.view;
-      $.ajax({
-        context:view,
-        url: '/rest/upload',
-        type: 'POST',
-        cache: false,
-        data: new FormData($('#uploadForm')[0]),
-        processData: false,
-        contentType: false
-        }).done(function(res) {
-          console.log("done");
-          console.log(res);//{"success":True, "files":fullfilepath}
-          data=JSON.parse(res);
-          if(data.success){
-            this.$("#method").val(data.files);
-            $('#uploadForm').dialog('close');
-            console.log(this);
-          }
-          else{
-
-          }
-        }).fail(function(res) {
-
-        });
-    },
-    uploadfile:function(){
-      $("#upload").bind("click",{view:this},this.upload_click);
-      $('#uploadForm').dialog({
-            //bgiframe: true,
-            //resizable: false, height: "530",width:"200",
-            //height:140,
-            modal: true
-            , overlay: {
-                backgroundColor: '#000'
-                , opacity: 0.5
-            }
-            , autoOpen: true, // buttons: {
-            //     Cancel: function() {
-            //         $(this).dialog('close');
-            //     },
-            // }
-      });
-    },
-    save_new:function(){
-      console.log("upload_click");
-      var data=new FormData(this.$('#uploadForm')[0]);
-      $.ajax({
-        context: this,
-        url: "/rest/Contact/",
-        cache: false,
-        data: data,
-        processData: false,
-        contentType: false
-        , error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(errorThrown);
-        }
-        , success: function (data) {
-            console.log("ajax done");
-            console.log(data);
-            // if (data.success) {
-            //     addrow(data.data.id, data.data.name);
-            //     $("#dialog").dialog("close");
-            // }
-        }
-      });
-    },
-    save:function(){
-      var data={};
-      for(var fname in this.model.attributes){
-        if(fname!="id")
-        {
-            //var name=this.$("#"+fname).attr("name");
-            var value=this.$("#"+fname).val();
-            if (value) {
-              var node=this.$("#"+fname);
-              if(node.attr("type")=="checkbox")
-              {
-                  data[fname]=node[0].checked;
-              }
-              else
-              {
-               data[fname]=value;
-              }//else
-             }//if
-        }//if
-       }//for
-      //console.log(data);
-      if(this.model.get("id")==undefined)
-      {
-          contacts.add(this.model);
-      }
-      this.model.set(data);
-      var self=this;
-      this.model.save(null,{
-        success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
-          //model.set(resp.success.arguments[0].data);
-          context.set(model.data);
-          self.render();
-          console.log("id="+self.model.get("id"));
-          if(self.model.get("id")==undefined)
-          {
-            self.$("#id_usepacks").attr("hidden",true);  
-          }
-          else
-          {
-            self.$("#id_usepacks").attr("hidden",false);   
-          }
-        }
-      });
-    },
-    myclear:function(){
-      //console.log("clear click");
-      this.model=new Contact();
-      this.render();
-    },
-    myclearid:function(){//copy
-      //this.$("#id").val(undefined);
-      console.log("clearid");
-      data={}//copy data from old model
-      for(var fname in this.model.attributes){
-        if(fname!="id")
-        {
-              data[fname]=this.model.get(fname);
-        }
-      }
-      data["id"]=undefined;//id undefined save use POST,else use PUT
-      this.model=new Contact();
-      this.model.set(data);
-      this.render();
-      this.listenTo(this.model, 'change', this.render);//model change must relisten
-      this.listenTo(this.model, 'destroy', this.remove);
-    },
+    template: _.template($('#contact-edit2-template').html()),
     initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);
+      this.$el.html(this.template(this.model.toJSON()));
+      this.cev=new ContactEditView({model:this.model,parentview:this});
+      var v=this.cev.render().el;
+      this.$("#id_contact_edit").append(v);
       this.pev=new UsepackListView({model:this.model});
-      
       var v=this.pev.render().el;
       if(this.model.get("id")==undefined)
       {
-        this.$("#id_usepacks").attr("hidden",true);  
+        this.$("#id_usepack_edit").attr("hidden",true);  
       }
       else
       {
-        this.$("#id_usepacks").attr("hidden",false);   
+        this.$("#id_usepack_edit").attr("hidden",false);   
       }
-      this.$("#id_usepacks").append(v);
+      this.$("#id_usepack_edit").append(v);
     },
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
-    },
-  });
-////////////////////////////////////////////////////////////////////////////
-  var AppView = Backbone.View.extend({
-     el: $("#todoapp"),
-     events: {
-      "click #id_bt_search" : "mysearch",
-      "click #id_bt_new" : "newcontact",
-      "click #id_login" : "showlogin",
-      "click #id_logout" : "showlogout",
-    },
-    newcontact:function(){
-        var editview= new ContactEditView2({model: new Contact()});
-        // App.editview.model=this.model;
-        //App.$("#section_edit").show();
-        editview.render();//must call because editview has no element now;
-        editview.$el.dialog({
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        this.$el.dialog({
                 width:600,height:600,
                 modal: false
                 , overlay: {
@@ -670,46 +479,15 @@ function delCookie(name)//删除cookie
                 }
                 , autoOpen: true
        });
-      editview.$("#yujifahuo_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-      editview.$("#tiaoshi_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-      editview.pev.$("#auto_pack1").autocomplete({
+      var self=this;
+      this.pev.$("#auto_pack1").autocomplete({
                 minLength: 1
                 , focus: function (event, ui) {
                     //$( "#auto_pack1" ).val( ui.item.value);
                     return false;
                 }
                 , select: function (event, ui) {
-                    editview.pev.addrow(ui.item.pk, ui.item.value);
+                    self.pev.addrow(ui.item.pk, ui.item.value);
                     return false;
                 }
                 , source: function (request, response) {
@@ -728,12 +506,55 @@ function delCookie(name)//删除cookie
                 return $("<li>")
                     .append("<a>" + item.pk + "_" + item.value + "</a>")
                     .appendTo(ul);
-            };
+            }; 
+
+    },
+    changepev:function(model){
+      console.log("changepev=========================");
+      this.model=model
+      this.pev.model=this.model;
+      this.pev.render();
+      this.pev.mysetdata();//refresh data
+      if(this.model.get("id")==undefined)
+      {
+        this.$("#id_usepack_edit").attr("hidden",true);  
+      }
+      else
+      {
+        this.$("#id_usepack_edit").attr("hidden",false);   
+      }
+    },
+    render: function() {
+      
+      return this;
+    },
+  });
+////////////////////////////////////////////////////////////////////////////
+  var AppView = Backbone.View.extend({
+     el: $("#todoapp"),
+     events: {
+      "click #id_bt_search" : "mysearch",
+      "click #id_bt_new" : "newcontact",
+      "click #id_login" : "showlogin",
+      "click #id_logout" : "showlogout",
+    },
+    newcontact:function(){
+        var editview= new ContactEditView2({model: new Contact()});
+        editview.render();//must call because editview has no element now;
+        editview.$el.dialog({
+                width:600,height:600,
+                modal: false
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true
+       });
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
        myglobal.start=0;
-       console.log("search="+myglobal.search);
+       //console.log("search="+myglobal.search);
        App.mysetdata();
     },
 
@@ -742,7 +563,7 @@ function delCookie(name)//删除cookie
         if(myglobal.start<0) myglobal.start=0;
         //contacts.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
         App.mysetdata();
-        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+        ////console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
     button_next_click:function(){
         myglobal.start=myglobal.start+myglobal.limit;
@@ -750,7 +571,7 @@ function delCookie(name)//删除cookie
         if(myglobal.start<0)
           myglobal.start=0;
         App.mysetdata();//contacts.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
-        //console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+        ////console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
     mysetdata:function(){
         this.$("#contact-list").empty();
@@ -758,7 +579,7 @@ function delCookie(name)//删除cookie
             reset:true,
             data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search},
             success:function(){
-                console.log(contacts.length+" contacts")
+                //console.log(contacts.length+" contacts")
                 this.$("#page").empty();
                 var right=myglobal.start+myglobal.limit;
                 if (right>myglobal.total) right=myglobal.total;
@@ -770,7 +591,7 @@ function delCookie(name)//删除cookie
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
     },
     showlogout:function(){
-    	console.log("showlogout");
+    	//console.log("showlogout");
     	var self=this;
 	$.ajax({
 	          context: App
@@ -779,13 +600,13 @@ function delCookie(name)//删除cookie
 	          , complete: function () {
 	          }
 	          , error: function (XMLHttpRequest, textStatus, errorThrown) {
-	              console.log(errorThrown);
+	              //console.log(errorThrown);
 	          }
 	          , success: function (data) {
-	              console.log("ajax done");
-	              console.log(data);
+	              //console.log("ajax done");
+	              //console.log(data);
 	              data=JSON.parse(data);
-	              console.log(data);
+	              //console.log(data);
 	              $("#dropdownMenu1_text").text("AnonymousUser");
                   	$("#li_login").attr("hidden",false);
                   	$("#li_logout").attr("hidden",true);
@@ -829,7 +650,7 @@ function delCookie(name)//删除cookie
       }
     },
     render: function() {
-       console.log("contact-list render");
+       ////console.log("contact-list render");
        if (contacts.length) {
          this.main.show();
        } else {
@@ -869,10 +690,10 @@ function delCookie(name)//删除cookie
       return this;
     },
     login:function(){
-      console.log("login");
+      //console.log("login");
       var data={};
        for(var name in this.model.attributes){
-            console.log(name);
+            //console.log(name);
             var value=this.$("#"+name).val();
             if (value) {
               var node=this.$("#"+name);
@@ -886,7 +707,7 @@ function delCookie(name)//删除cookie
               }
              }
        }//for
-       console.log(data);
+       //console.log(data);
        var self=this;
         $.ajax({
           context: App
@@ -896,11 +717,11 @@ function delCookie(name)//删除cookie
           , complete: function () {
           }
           , error: function (XMLHttpRequest, textStatus, errorThrown) {
-              console.log(errorThrown);
+              //console.log(errorThrown);
           }
           , success: function (data) {
-              console.log("ajax done");
-              console.log(data);
+              //console.log("ajax done");
+              //console.log(data);
               data=JSON.parse(data);
               if (data.success) {
                    user=data.data.name;
@@ -924,7 +745,7 @@ function delCookie(name)//删除cookie
       "click #id_cancel" : "cancel"
     },
     initialize: function() {
-      console.log(arguments);
+      //console.log(arguments);
       this.callback=arguments[0].callback;
       this.obj=arguments[0].obj;
     },
@@ -933,11 +754,11 @@ function delCookie(name)//删除cookie
       return this;
     },
     cancel:function(){
-      console.log("cancel");
+      //console.log("cancel");
       this.$el.dialog('close');
     },
     ok:function(){
-      console.log("ok");
+      //console.log("ok");
       //var contactlistview=this.model;//ture object is view
       //contactlistview.true_delete();
       //this.callback();
@@ -953,14 +774,14 @@ function delCookie(name)//删除cookie
       "click #id_new_usepack" : "new_usepack",
     },
     new_usepack:function(){
-      console.log("select_usepack");
+      //console.log("select_usepack");
       var p=new Pack();
       var self=this;
       p.set({name:this.$("#new_pack1").val()});
       p.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
+          //console.log(options);
+          //console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           //self.usepacks.add(p);
@@ -976,7 +797,7 @@ function delCookie(name)//删除cookie
             reset:true,
             data: { contact:this.model.get("id")},
             success:function(){
-                //console.log(this.usepacks.length+" usepacks")
+                ////console.log(this.usepacks.length+" usepacks")
                 // this.$("#page").empty();
                 // var right=myglobal.start+myglobal.limit
                 // this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
@@ -995,15 +816,15 @@ function delCookie(name)//删除cookie
        this.mysetdata();
     },
     addrow:function(pk,value){
-      console.log(pk);
-      console.log(value);
+      //console.log(pk);
+      //console.log(value);
       var p=new UsePack();
       var self=this;
       p.set({contact:this.model.get("id"),name:value,pack:pk});
       p.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
+          //console.log(options);
+          //console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.usepacks.add(p);
@@ -1011,19 +832,19 @@ function delCookie(name)//删除cookie
       });
     },
     render: function() {
-      console.log("usepack-list render");//_.template($('#usepack-list-template').html()),
+      //console.log("usepack-list render");//_.template($('#usepack-list-template').html()),
        //this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
     addOne: function(usepack) {
-      console.log("addOne usepacks");
+      //console.log("addOne usepacks");
       var view = new UsepackView({model: usepack});
       var viewc=view.render().el;
-      console.log(viewc);
+      //console.log(viewc);
       this.$("#usepack-list").append(viewc);
     },
     addAll: function() {
-      console.log("addAll usepacks");
+      //console.log("addAll usepacks");
       this.usepacks.each(this.addOne, this);
     },
   });
@@ -1036,7 +857,7 @@ function delCookie(name)//删除cookie
       "click .usepack_delete" : "delete",
     },
     edit:function(){
-      console.log("edit");
+      //console.log("edit");
       var packitemListView = new PackItemListView({model:this.model});
            packitemListView.$el.dialog({
                 width:800,height:500,
@@ -1115,14 +936,14 @@ function delCookie(name)//删除cookie
       "click #id_new_packitem" : "new_packitem",
     },
     new_packitem:function(){
-      console.log("new packitem");
+      //console.log("new packitem");
       var p=new Item();
       var self=this;
       p.set({name:this.$("#new_item1").val()});
       p.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
+          //console.log(options);
+          //console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           //self.usepacks.add(p);
@@ -1138,7 +959,7 @@ function delCookie(name)//删除cookie
             reset:true,
             data: { pack:this.model.get("pack"),start:0,limit:200},
             success:function(){
-                //console.log(this.usepacks.length+" usepacks")
+                ////console.log(this.usepacks.length+" usepacks")
                 // this.$("#page").empty();
                 // var right=myglobal.start+myglobal.limit
                 // this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
@@ -1159,15 +980,15 @@ function delCookie(name)//删除cookie
        this.mysetdata();
     },
     addrow:function(pk,value){
-      console.log(pk);
-      console.log(value);
+      //console.log(pk);
+      //console.log(value);
       var p=new PackItem();
       var self=this;
       p.set({pack:this.model.get("pack"),name:value,itemid:pk,ct:1});
       p.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("save finish");
+          //console.log(options);
+          //console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.packitems.add(p);
@@ -1175,19 +996,19 @@ function delCookie(name)//删除cookie
       });
     },
     render: function() {
-      console.log("packitem-list render");//_.template($('#usepack-list-template').html()),
+      //console.log("packitem-list render");//_.template($('#usepack-list-template').html()),
        //this.$el.html(this.template(this.model.toJSON()));
       //return this;
     },
     addOne: function(packitem) {
-      console.log("addOne usepacks");
+      //console.log("addOne usepacks");
       var view = new PackItemView({model: packitem});
       var viewc=view.render().el;
-      console.log(viewc);
+      //console.log(viewc);
       this.$("#packitem-list").append(viewc);
     },
     addAll: function() {
-      console.log("addAll usepacks");
+      //console.log("addAll usepacks");
       this.packitems.each(this.addOne, this);
     },
   });
@@ -1200,7 +1021,7 @@ function delCookie(name)//删除cookie
       "click .packitem_delete" : "delete",
     },
     edit:function(){
-      console.log("edit");
+      //console.log("edit");
        var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
        packitemedit.$el.dialog({
@@ -1272,8 +1093,8 @@ function delCookie(name)//删除cookie
        item.set({id:data["itemid"]});
        item.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("item save finish");
+          //console.log(options);
+          //console.log("item save finish");
         }
       }); 
        //save PackItem///////////////////////
@@ -1281,8 +1102,8 @@ function delCookie(name)//删除cookie
       var self=this;
       this.model.save(null,{
         success:function(context, model, resp, options){
-          console.log(options);
-          console.log("packitem save finish");
+          //console.log(options);
+          //console.log("packitem save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.$el.dialog("close");
@@ -1378,6 +1199,10 @@ function delCookie(name)//删除cookie
  <td><a class="contact_edit" data="<%- id %>">编辑</a><a  class="contact_delete" data="<%- id %>">删除</a>
     <!--a class="contact_usepack" data="<%- id %>">包信息</a--><a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a class="contact_detail" data="<%- id %>">详细</a>
  </td>
+  </script>
+  <script type="text/template" id="contact-edit2-template">
+  <div id="id_contact_edit"></div>
+  <div id="id_usepack_edit"></div>
   </script>
   <script type="text/template" id="contact-edit-template">
         <table id="table_input" class="table-condensed" >
