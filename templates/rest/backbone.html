@@ -23,6 +23,13 @@
   <script src="/static/backbone_parts/backbone.js"></script>
   <script>
 $(function(){
+function nowDate() {
+    var date=new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    return year + "-" + month + "-" + day ;
+}
 function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
 {
     var Days = 30; //此 cookie 将被保存 30 天
@@ -92,7 +99,7 @@ function delCookie(name)//删除cookie
       var d=new Date();
       var dstr=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
       return {
-        id:undefined,yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:'',tiaoshi_date:'',hetongbh:'',method:''
+        id:undefined,yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:'',tiaoshi_date:nowDate(),hetongbh:'',method:''
       };
     }
   });
@@ -414,6 +421,33 @@ function delCookie(name)//删除cookie
                 }
                 , autoOpen: true
        });
+            editview.pev.$("#auto_pack1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    editview.pev.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            }).autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
     },
     true_delete:function(){
         var data={};
@@ -550,12 +584,23 @@ function delCookie(name)//删除cookie
           contacts.add(this.model);
       }
       this.model.set(data);
+      var self=this;
       this.model.save(null,{
         success:function(context, model, resp, options){
           console.log(options);
           console.log("save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
+          self.render();
+          console.log("id="+self.model.get("id"));
+          if(self.model.get("id")==undefined)
+          {
+            self.$("#id_usepacks").attr("hidden",true);  
+          }
+          else
+          {
+            self.$("#id_usepacks").attr("hidden",false);   
+          }
         }
       });
     },
@@ -585,11 +630,20 @@ function delCookie(name)//删除cookie
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
       this.pev=new UsepackListView({model:this.model});
-      this.$el.html(this.template(this.model.toJSON()));
+      
       var v=this.pev.render().el;
+      if(this.model.get("id")==undefined)
+      {
+        this.$("#id_usepacks").attr("hidden",true);  
+      }
+      else
+      {
+        this.$("#id_usepacks").attr("hidden",false);   
+      }
       this.$("#id_usepacks").append(v);
     },
     render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
   });
@@ -648,7 +702,33 @@ function delCookie(name)//删除cookie
             dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
             dayNamesMin: ['日','一','二','三','四','五','六'],
       });
-
+      editview.pev.$("#auto_pack1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    editview.pev.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            }).autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
