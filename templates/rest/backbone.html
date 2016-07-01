@@ -107,8 +107,8 @@ function delCookie(name)//删除cookie
     url : "/rest/Contact/",
     //localStorage: new Backbone.LocalStorage("contacts-backbone"),
    parse: function(data, options) {
-      //console.log("parse response");
-      if(data.total)
+     console.log("parse response:"+data.total);
+      if(data.total!=undefined)
         myglobal.total=data.total;
       return data.data;
    }
@@ -483,8 +483,9 @@ function delCookie(name)//删除cookie
                 width:600,height:600,
                 modal: false
                 , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
+                    //backgroundColor: '#0F0'
+                    //, 
+                    opacity: 0.5
                 }
                 , autoOpen: true
        });
@@ -574,6 +575,7 @@ function delCookie(name)//删除cookie
     },
     baoxiang:function(event){
         myglobal.baoxiang=event.target.text;
+        myglobal.start=0;
         App.mysetdata();
     },
     button_prev_click:function(){
@@ -601,7 +603,12 @@ function delCookie(name)//删除cookie
                 this.$("#page").empty();
                 var right=myglobal.start+myglobal.limit;
                 if (right>myglobal.total) right=myglobal.total;
-                this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+                if(myglobal.total<1){
+                	this.$("#page").append((0)+"..."+right+" of "+myglobal.total);
+                }
+                else{
+                	this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+                }
             },
             error:function(){
             }
