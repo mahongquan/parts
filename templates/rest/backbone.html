@@ -194,7 +194,9 @@ function delCookie(name)//删除cookie
           //console.log(res);//{"success":True, "files":fullfilepath}
           data=JSON.parse(res);
           if(data.success){
-            this.$("#method").val(data.files);
+            //$("#method").val(data.files);
+            view.model.set({method:data.files});
+
             $('#uploadForm').dialog('close');
             //console.log(this);
           }
@@ -234,10 +236,10 @@ function delCookie(name)//删除cookie
         processData: false,
         contentType: false
         , error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //console.log(errorThrown);
+            console.log(errorThrown);
         }
         , success: function (data) {
-            //console.log("ajax done");
+            console.log("upload done");
             //console.log(data);
             // if (data.success) {
             //     addrow(data.data.id, data.data.name);
@@ -1139,7 +1141,7 @@ function delCookie(name)//删除cookie
 {% block content %}
 <form hidden="true" id="uploadForm" enctype="multipart/form-data">
     <input id="file" type="file" name="file"/>
-    <button id="upload" type="button">upload</button>
+    <button id="upload" type="button">上传</button>
 </form>
   <div id="todoapp">
     <div>
@@ -1170,7 +1172,7 @@ function delCookie(name)//删除cookie
     　<thead>
     　　<tr>
     　　　<td>ID</td><td>用户单位</td><td>客户地址</td><td>通道配置</td><td>仪器型号</td><td>仪器编号</td><td>包箱</td><td>审核</td>
-          <td>预计发货时间</td><td>调试时间</td><td>合同编号</td><td>方法</td><td>actions</td>
+          <td>预计发货时间</td><td>调试时间</td><td>合同编号</td><td>方法</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="contact-list">
@@ -1221,7 +1223,7 @@ function delCookie(name)//删除cookie
         <table id="table_input" class="table-condensed" >
 <tr>
                 <td>
-                    <label>ID:</label>
+                    ID:
                 </td>
                 <td>
                     <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
@@ -1235,14 +1237,14 @@ function delCookie(name)//删除cookie
                 </td>
             </tr><tr>
                 <td>
-                    <label>客户地址:</label>
+                    客户地址:
                 </td>
                 <td>
                     <input type="text" id="addr" name="addr" value="<%- addr %>">
                 </td>
             </tr><tr>
                 <td>
-                    <label>通道配置:</label>
+                    通道配置:
                 </td>
                 <td>
                     <input type="text" id="channels" name="channels" value="<%- channels %>">
@@ -1270,7 +1272,7 @@ function delCookie(name)//删除cookie
                 </td>
             </tr><tr>
                 <td>
-                    <label>审核:</label>
+                    审核:
                 </td>
                 <td>
                     <input type="text" id="shenhe" name="shenhe" value="<%- shenhe %>">
@@ -1284,7 +1286,7 @@ function delCookie(name)//删除cookie
                 </td>
             </tr><tr>
                 <td>
-                    <label>调试时间:</label>
+                    调试时间:
                 </td>
                 <td>
                     <input type="text" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
@@ -1298,10 +1300,10 @@ function delCookie(name)//删除cookie
                 </td>
             </tr><tr>
                 <td>
-                    <label>方法:</label>
+                    方法:
                 </td>
                 <td>
-                <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button id="bt_file">browse</button>
+                <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button id="bt_file">选取文件</button>
                 </td>
             </tr>        </table>
         <button id="bt_save">保存</button> <button id="bt_clear">清除</button> <button id="bt_clearid">复制</button>
@@ -1362,7 +1364,7 @@ function delCookie(name)//删除cookie
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>name</td><td hidden="true">合同</td><td hidden="true">包</td><td hidden="true">合同号</td><td>actions</td>
+    　　　<td>ID</td><td>包名称</td><td hidden="true">合同</td><td hidden="true">包</td><td hidden="true">合同号</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="usepack-list">
