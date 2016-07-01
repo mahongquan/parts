@@ -277,15 +277,23 @@ def view_contact(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
     search=request.GET.get("search",'')
+    baoxiang=request.GET.get("baoxiang",'')
     logging.info("search="+search)
+    logging.info("baoxiang="+baoxiang)
     if search!='':
-        #total=Contact.objects.filter( Q(yiqibh__icontains=search)).count()
-        total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).count()
-        #objs = Contact.objects.filter( Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
-        objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+        if baoxiang!="":
+            total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search) & Q(baoxiang=baoxiang)).count()
+            objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+        else:
+            total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).count()
+            objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
     else:
-        total=Contact.objects.count()
-        objs = Contact.objects.order_by('-yujifahuo_date')[start:start+limit]
+        if baoxiang!="":
+            total=Contact.objects.filter(Q(baoxiang=baoxiang)).count()
+            objs = Contact.objects.filter(Q(baoxiang=baoxiang)).order_by('-yujifahuo_date')[start:start+limit]
+        else:
+            total=Contact.objects.count()
+            objs = Contact.objects.order_by('-yujifahuo_date')[start:start+limit]
     data=[]
     for rec in objs:
         data.append(rec.json())

@@ -8,7 +8,6 @@
       padding: 5px 5px 5px 5px;
      /* background-color:green;*/
     }
-    .contact_edit{margin:1px 20px 1px 1px;}
     .contact_delete{margin:1px 20px 1px 1px;}
     /*.contact_usepack{margin:1px 20px 1px 1px;}*/
     .contact_zxd{margin:1px 20px 1px 1px;}
@@ -552,6 +551,7 @@ function delCookie(name)//删除cookie
       "click #id_bt_new" : "newcontact",
       "click #id_login" : "showlogin",
       "click #id_logout" : "showlogout",
+      "click .baoxiang" : "baoxiang",
     },
     newcontact:function(){
         var editview= new ContactEditView2({model: new Contact()});
@@ -572,7 +572,10 @@ function delCookie(name)//删除cookie
        //console.log("search="+myglobal.search);
        App.mysetdata();
     },
-
+    baoxiang:function(event){
+        myglobal.baoxiang=event.target.text;
+        App.mysetdata();
+    },
     button_prev_click:function(){
         myglobal.start=myglobal.start-myglobal.limit;
         if(myglobal.start<0) myglobal.start=0;
@@ -592,7 +595,7 @@ function delCookie(name)//删除cookie
         this.$("#contact-list").empty();
         contacts.fetch({
             reset:true,
-            data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search},
+            data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search,baoxiang:myglobal.baoxiang},
             success:function(){
                 //console.log(contacts.length+" contacts")
                 this.$("#page").empty();
@@ -666,12 +669,12 @@ function delCookie(name)//删除cookie
     },
     render: function() {
        ////console.log("contact-list render");
-       if (contacts.length) {
-         this.main.show();
-       } else {
-         this.main.hide();
-         //this.$("#section_edit").show();
-       }
+       // if (contacts.length) {
+       //   this.main.show();
+       // } else {
+       //   this.main.hide();
+       //   //this.$("#section_edit").show();
+       // }
     },
     addOne: function(contact) {
       var view = new ContactView({model: contact});
@@ -1164,10 +1167,26 @@ function delCookie(name)//删除cookie
 	    	<button id="id_bt_search">搜索</button>
 	    	<button id="id_bt_new">新合同</button>
 	</td>
-    </tr>
-    </table>
+   <td>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="dropdownMenu2_text">过滤</span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a href="#" class="baoxiang" >马红权</a></li>
+        <li><a href="#" class="baoxiang" >陈旺</a></li>
+        <li><a href="#" class="baoxiang" >吴振宁</a></li>
+        <li><a href="#" class="baoxiang" >周伟</a></li>
+        <li><a href="#" class="baoxiang" >刘银凯</a></li>
+        <li><a href="#" class="baoxiang" ><span class="glyphicon glyphicon-asterisk"></span></a></li>
+      </ul>
     </div>
-      <section id="main">
+  </td>
+  </tr>
+ </table>
+ </div>
+      <div id="main" style="min-height:200px;">
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
@@ -1179,11 +1198,7 @@ function delCookie(name)//删除cookie
       </tbody>
       </table>
       <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a>
-    </section>
-<!--     <section id="section_edit">
-    </section>
-    <section id="section_usepack">
-    </section> -->
+    </div>
   </div>
   <script type="text/template" id="contact-template">
   <td>
@@ -1207,12 +1222,12 @@ function delCookie(name)//删除cookie
  </td><td>
       <%- tiaoshi_date %>
  </td><td>
-      <%- hetongbh %>
+      <a class="contact_edit"><%- hetongbh %></a>
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
- <td><a class="contact_edit" data="<%- id %>">编辑</a><a  class="contact_delete" data="<%- id %>">删除</a>
-    <!--a class="contact_usepack" data="<%- id %>">包信息</a--><a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a class="contact_detail" data="<%- id %>">详细</a>
+ <td><a class="contact_detail" data="<%- id %>">详细</a>
+<a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><a  class="contact_delete" data="<%- id %>">删除</a>
  </td>
   </script>
   <script type="text/template" id="contact-edit2-template">
