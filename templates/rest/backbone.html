@@ -266,20 +266,28 @@ function delCookie(name)//删除cookie
              }//if
         }//if
        }//for
-      ////console.log(data);
+      var newcontact=false
       if(this.model.get("id")==undefined)
       {
           contacts.add(this.model);
+          newcontact=true;
       }
       this.model.set(data);
       var self=this;
       this.model.save(null,{
         success:function(context, model, resp, options){
-          //console.log(options);
-          //console.log("save finish");
-          //model.set(resp.success.arguments[0].data);
-          context.set(model.data);
-          self.parentview.changepev(self.model);
+          console.log(resp);
+          if(model.success){
+            context.set(model.data);
+            if (newcontact)
+            {
+              self.parentview.changeModel(self.model);
+            }
+          }
+          else
+          {
+            console.log(model.message);
+          }
         }
       });
     },
@@ -302,7 +310,7 @@ function delCookie(name)//删除cookie
       this.model=new Contact();
       this.model.set(data);
       this.render();
-      this.parentview.changepev(this.model);
+      this.parentview.changeModel(this.model);
       this.listenTo(this.model, 'change', this.render);//model change must relisten
       this.listenTo(this.model, 'destroy', this.remove);
     },
@@ -509,20 +517,25 @@ function delCookie(name)//删除cookie
             }; 
 
     },
-    changepev:function(model){
-      console.log("changepev=========================");
-      this.model=model
-      this.pev.model=this.model;
-      this.pev.render();
-      this.pev.mysetdata();//refresh data
-      if(this.model.get("id")==undefined)
-      {
-        this.$("#id_usepack_edit").attr("hidden",true);  
-      }
-      else
-      {
-        this.$("#id_usepack_edit").attr("hidden",false);   
-      }
+    changeModel:function(model){
+      console.log("changeModel=========================");
+      console.log(this.model.get("id"));
+      console.log(model.get("id"));
+      // if (this.model.get("id")!=model.get("id"))
+      // {
+        this.model=model
+        this.pev.model=this.model;
+        this.pev.render();
+        this.pev.mysetdata();//refresh data
+        if(this.model.get("id")==undefined)
+        {
+          this.$("#id_usepack_edit").attr("hidden",true);  
+        }
+        else
+        {
+          this.$("#id_usepack_edit").attr("hidden",false);   
+        }
+      // }
     },
     render: function() {
       

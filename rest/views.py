@@ -23,7 +23,8 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from myutil import MyEncoder
-
+import traceback
+import sys
 def writer(request):
     # logging.info(request)
     # output={}
@@ -292,36 +293,45 @@ def view_contact(request):
     output={"total":total,"data":data}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
-    logging.info(request.body)
-    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
-    rec=Contact()
-    if data.get("hetongbh")!=None:
-        rec.hetongbh=data["hetongbh"]
-    if data.get("yujifahuo_date")!=None:
-        dt=datetime.datetime.strptime(data["yujifahuo_date"],'%Y-%m-%d')
-        rec.yujifahuo_date=dt.date()
-    if data.get("yonghu")!=None:
-        rec.yonghu=data.get("yonghu")
-    if data.get("baoxiang")!=None:
-        rec.baoxiang=data.get("baoxiang")
-    if data.get("yiqixinghao")!=None:
-        rec.yiqixinghao=data.get("yiqixinghao")
-    if data.get("yiqibh")!=None:
-        rec.yiqibh=data.get("yiqibh")
-    if data.get("shenhe")!=None:
-        rec.shenhe=data.get("shenhe")
-    if data.get("addr")!=None:
-        rec.addr=data.get("addr")
-    if data.get("channels")!=None:
-        rec.channels=data.get("channels")
-    if data.get("tiaoshi_date")!=None:
-        #rec.tiaoshi_date=datetime.datetime.fromtimestamp(int(data["tiaoshi_date"]))
-        dt=datetime.datetime.strptime(data["tiaoshi_date"],'%Y-%m-%d')
-        rec.tiaoshi_date=dt.date()
-    rec.save()
-    output={"success":True,"message":"Created new User" +str(rec.id)}
-    output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
-    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    try:
+        logging.info(request.body)
+        data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+        rec=Contact()
+        if data.get("hetongbh")!=None:
+            rec.hetongbh=data["hetongbh"]
+        if data.get("yujifahuo_date")!=None:
+            dt=datetime.datetime.strptime(data["yujifahuo_date"],'%Y-%m-%d')
+            rec.yujifahuo_date=dt.date()
+        if data.get("yonghu")!=None:
+            rec.yonghu=data.get("yonghu")
+        if data.get("baoxiang")!=None:
+            rec.baoxiang=data.get("baoxiang")
+        if data.get("yiqixinghao")!=None:
+            rec.yiqixinghao=data.get("yiqixinghao")
+        if data.get("yiqibh")!=None:
+            rec.yiqibh=data.get("yiqibh")
+        if data.get("shenhe")!=None:
+            rec.shenhe=data.get("shenhe")
+        if data.get("addr")!=None:
+            rec.addr=data.get("addr")
+        if data.get("channels")!=None:
+            rec.channels=data.get("channels")
+        if data.get("tiaoshi_date")!=None:
+            #rec.tiaoshi_date=datetime.datetime.fromtimestamp(int(data["tiaoshi_date"]))
+            dt=datetime.datetime.strptime(data["tiaoshi_date"],'%Y-%m-%d')
+            rec.tiaoshi_date=dt.date()
+        rec.save()
+        output={"success":True,"message":"Created new User" +str(rec.id)}
+        output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except ValueError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_contact(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     id1=data.get("id")
