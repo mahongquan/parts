@@ -200,8 +200,8 @@ def view_item(request):
     limit=int(request.GET.get("limit","5"))
     search=request.GET.get("query",'')
     if search!='':
-        total=Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search)).count()
-        objs = Item.objects.filter(Q(name__icontains=search) | Q(bh__icontains=search))[start:start+limit]
+        total=Item.objects.filter(Q(name__icontains=search)).count()# | Q(bh__icontains=search)
+        objs = Item.objects.filter(Q(name__icontains=search))[start:start+limit]
     else:
         total=Item.objects.count()
         objs = Item.objects.all()[start:start+limit]
