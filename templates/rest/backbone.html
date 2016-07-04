@@ -900,24 +900,25 @@ function delCookie(name)//删除cookie
                     return false;
                 }
                 , select: function (event, ui) {
-                    packitemListView.addrow(ui.item.pk, ui.item.value);
+                    packitemListView.addrow(ui.item.id, ui.item.name);
                     return false;
                 }
                 , source: function (request, response) {
                     var term = request.term;
+                    request={ query: term };
                     if (term in cache_item) {
                         data = cache_item[term];
-                        response(data);
+                        response(data.data);
                         return;
                     }
-                    $.getJSON("/admin/lookups/ajax_lookup/item", request, function (data, status, xhr) {
+                    $.getJSON("/rest/Item", request, function (data, status, xhr) {
                         cache_item[term] = data;
-                        response(data);
+                        response(data.data);
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .append("<a>" + item.id + "_" + item.name+ "_" + item.guige + "</a>")
                     .appendTo(ul);
             };
     },
@@ -1050,7 +1051,7 @@ function delCookie(name)//删除cookie
        var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
        packitemedit.$el.dialog({
-              width:300,height:300,
+              width:300,height:400,
                 modal: false
                 , overlay: {
                     backgroundColor: '#000'
@@ -1448,6 +1449,14 @@ function delCookie(name)//删除cookie
                     <input type="text" id="itemid" name="itemid" readonly="true"      value="<%- itemid %>">
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <label>编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="bh" name="bh" value="<%- bh %>">
+                </td>
+            </tr>       
             <tr>
                 <td>
                     <label>名称:</label>
