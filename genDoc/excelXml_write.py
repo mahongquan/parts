@@ -144,7 +144,7 @@ def genJiaozhunO(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
 def genJiaozhunOH(c,fn):
     tree = ET.parse(fn)
@@ -207,7 +207,7 @@ def genJiaozhunOH(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
 def genJiaozhunN(c,fn):
     tree = ET.parse(fn)
@@ -263,7 +263,7 @@ def genJiaozhunN(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
 def genJiaozhunON(c,fn):
     tree = ET.parse(fn)
@@ -326,7 +326,7 @@ def genJiaozhunON(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
 def genJiaozhunCS(c,fn):  
     tree = ET.parse(fn)
@@ -384,7 +384,7 @@ def genJiaozhunCS(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
 def genShujubiao(c,fn):
     tree = ET.parse(fn)
@@ -431,12 +431,8 @@ def genShujubiao(c,fn):
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
     data=s.read()
-    data=data.decode('utf-8')
+    #data=data.decode('utf-8')
     return data
-    # data= data.replace('\n', '\r\n')
-    # f=open(fn+".xml","w",encoding="utf-8")#convert \n  to \r\n. word xml 的特殊之处
-    # f.write(data)
-    # f.close()
 def genJiaozhunONH(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()

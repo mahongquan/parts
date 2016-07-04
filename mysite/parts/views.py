@@ -414,7 +414,7 @@ def tarDict(dict1):
 	ks=dict1.keys()
 	for key in ks:
 		tarinfo=tarfile.TarInfo(name=key)
-		f1=BytesIO(dict1[key].encode())
+		f1=BytesIO(dict1[key])
 		tarinfo.size=len(f1.read())
 		f1.seek(0)
 		tar.addfile(tarinfo,fileobj=f1)
@@ -429,7 +429,7 @@ def tar(request):
     data2=getJiaoZhunFile(c)
     byteio=tarDict({"证书数据表.xml":data,c.yonghu+"_"+c.yiqixinghao+".xml":data2})
     byteio.seek(0)
-    data=byteio.read().decode()
+    data=byteio.read()#.decode()
     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
     tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
     t['Content-Disposition'] = tstr.encode("gb2312")
