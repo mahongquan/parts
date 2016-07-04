@@ -142,10 +142,10 @@ def genJiaozhunO(c,fn):
     setCell(table,21,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")) # setCell(table,21,3).Value="   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
-    data=s.read()
+    #s.seek(0)
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genJiaozhunOH(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -206,9 +206,9 @@ def genJiaozhunOH(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
-    data=s.read()
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genJiaozhunN(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -262,9 +262,9 @@ def genJiaozhunN(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
-    data=s.read()
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genJiaozhunON(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -325,9 +325,9 @@ def genJiaozhunON(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
-    data=s.read()
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genJiaozhunCS(c,fn):  
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -383,9 +383,9 @@ def genJiaozhunCS(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
-    data=s.read()
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genShujubiao(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -430,9 +430,9 @@ def genShujubiao(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     s.seek(0)
-    data=s.read()
+    #data=s.read()
     #data=data.decode('utf-8')
-    return data
+    return s#data
 def genJiaozhunONH(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()

@@ -414,7 +414,7 @@ def tarDict(dict1):
 	ks=dict1.keys()
 	for key in ks:
 		tarinfo=tarfile.TarInfo(name=key)
-		f1=BytesIO(dict1[key])
+		f1=dict1[key]#byteio object
 		tarinfo.size=len(f1.read())
 		f1.seek(0)
 		tar.addfile(tarinfo,fileobj=f1)
