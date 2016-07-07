@@ -15,8 +15,8 @@
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
   </style>
-  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.min.css" />
-  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
@@ -26,8 +26,12 @@ function nowDate() {
     var date=new Date();
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
+    var s_month=""+month;
+    if (s_month.length<2) s_month="0"+s_month;
     var day = date.getDate();
-    return year + "-" + month + "-" + day ;
+    var s_day=""+day;
+    if (s_day.length<2) s_day="0"+s_day;
+    return year + "-" + s_month + "-" + s_day ;
 }
 function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
 {
@@ -98,7 +102,7 @@ function delCookie(name)//删除cookie
       var d=new Date();
       var dstr=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
       return {
-        id:undefined,yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:'',tiaoshi_date:nowDate(),hetongbh:'',method:''
+        id:undefined,yonghu:'',addr:'',channels:'',yiqixinghao:'',yiqibh:'',baoxiang:'',shenhe:'',yujifahuo_date:nowDate(),tiaoshi_date:nowDate(),hetongbh:'',method:''
       };
     }
   });
@@ -171,7 +175,7 @@ function delCookie(name)//删除cookie
     tagName:  "div",
     template: _.template($('#contact-edit-template').html()),
     events: {
-      "click #bt_file" : "uploadfile",
+       "click #bt_file" : "uploadfile",
        "click #bt_save" : "save",
        "click #bt_clear" : "myclear",
        "click #bt_clearid" : "myclearid",
@@ -322,38 +326,22 @@ function delCookie(name)//删除cookie
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$("#yujifahuo_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-      this.$("#tiaoshi_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
+      // this.$(".mydate").datepicker({
+      //       dateFormat: 'yy-mm-dd',
+      //       numberOfMonths:1,//显示几个月
+      //       showButtonPanel:true,//是否显示按钮面板
+      //       clearText:"清除",//清除日期的按钮名称
+      //       closeText:"关闭",//关闭选择框的按钮名称
+      //       yearSuffix: '年', //年的后缀
+      //       showMonthAfterYear:true,//是否把月放在年的后面
+      //       //defaultDate:'2011-03-10',//默认日期
+      //       //minDate:'2011-03-05',//最小日期
+      //       //maxDate:'2011-03-20',//最大日期
+      //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+      //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+      //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+      //       dayNamesMin: ['日','一','二','三','四','五','六'],
+      // });
       return this;
     },
   });
@@ -479,6 +467,7 @@ function delCookie(name)//删除cookie
     },
     showdialog:function(){
         this.render();//must call because editview has no element now;
+        var self=this;
         this.$el.dialog({
                 width:600,//height:800,
                 modal: false
@@ -487,9 +476,50 @@ function delCookie(name)//删除cookie
                     //, 
                     opacity: 0.5
                 }
-                , autoOpen: true
+                , autoOpen: true,
+               open: function (event, ui) {
+                  //console.log("dialog open function");
+                  //$(ui).find('.mydate').datepicker({
+                     $(".mydate").datepicker({
+                          dateFormat: 'yy-mm-dd',
+                          numberOfMonths:1,//显示几个月
+                          showButtonPanel:true,//是否显示按钮面板
+                          clearText:"清除",//清除日期的按钮名称
+                          closeText:"关闭",//关闭选择框的按钮名称
+                          yearSuffix: '年', //年的后缀
+                          showMonthAfterYear:true,//是否把月放在年的后面
+                          //defaultDate:'2011-03-10',//默认日期
+                          //minDate:'2011-03-05',//最小日期
+                          //maxDate:'2011-03-20',//最大日期
+                          monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+                          dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+                          dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+                          dayNamesMin: ['日','一','二','三','四','五','六'],
+                    });
+                 },
+               close: function (event,ui) {
+                //console.log("dialog close function");
+                   //$(ui).find('.mydate').datepicker("destroy");
+                   $('.mydate').datepicker("destroy");
+                   $(this).dialog("destroy");
+               }
        });
-      var self=this;
+      // this.cev.$(".mydate").datepicker({
+      //       dateFormat: 'yy-mm-dd',
+      //       numberOfMonths:1,//显示几个月
+      //       showButtonPanel:true,//是否显示按钮面板
+      //       clearText:"清除",//清除日期的按钮名称
+      //       closeText:"关闭",//关闭选择框的按钮名称
+      //       yearSuffix: '年', //年的后缀
+      //       showMonthAfterYear:true,//是否把月放在年的后面
+      //       //defaultDate:'2011-03-10',//默认日期
+      //       //minDate:'2011-03-05',//最小日期
+      //       //maxDate:'2011-03-20',//最大日期
+      //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+      //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+      //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+      //       dayNamesMin: ['日','一','二','三','四','五','六'],
+      // });
       this.pev.$("#auto_pack1").autocomplete({
                 minLength: 1
                 , focus: function (event, ui) {
@@ -1221,7 +1251,7 @@ function delCookie(name)//删除cookie
  </td><td>
       <%- tiaoshi_date %>
  </td><td>
-      <a class="contact_edit"><%- hetongbh %></a>
+      <a class="contact_edit">[[<%- hetongbh %>]]</a>
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
@@ -1296,14 +1326,14 @@ function delCookie(name)//删除cookie
                     <label>预计发货时间:</label>
                 </td>
                 <td>
-                    <input type="text" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
+                    <input type="text" class="mydate" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
                 </td>
             </tr><tr>
                 <td>
                     调试时间:
                 </td>
                 <td>
-                    <input type="text" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
+                    <input type="text" class="mydate" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
                 </td>
             </tr><tr>
                 <td>
