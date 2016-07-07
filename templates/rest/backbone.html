@@ -556,16 +556,7 @@ function delCookie(name)//删除cookie
     },
     newcontact:function(){
         var editview= new ContactEditView2({model: new Contact()});
-        editview.render();//must call because editview has no element now;
-        editview.$el.dialog({
-                width:600,height:600,
-                modal: false
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true
-       });
+        editview.showdialog();
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
