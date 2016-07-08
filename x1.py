@@ -125,7 +125,13 @@ def readMedia():
 	print(fs)
 	for f in fs:
 		readfile("media",f)
+def readDir(p):
+	fs=mylistdir(p,"*.xls")
+	print(fs)
+	for f in fs:
+		readfile(p,f)		
 if __name__=="__main__":
-	readfile("media","6.3标钢入库清单.xls")
+	#readfile("media","6.3标钢入库清单.xls")
+	readDir(r"C:\Users\group2\Downloads")
 
 
