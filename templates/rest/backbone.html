@@ -496,7 +496,7 @@ function delCookie(name)//删除cookie
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.dialog({
-                width:600,//height:800,
+                width:700,//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1306,7 +1306,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
                 </td>
-            </tr><tr>
+        <!--     </tr><tr> -->
                 <td>
                     <label>用户单位:</label>
                 </td>
@@ -1320,7 +1320,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" id="addr" name="addr" value="<%- addr %>">
                 </td>
-            </tr><tr>
+       <!--      </tr><tr> -->
                 <td>
                     通道配置:
                 </td>
@@ -1334,7 +1334,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" id="yiqixinghao" name="yiqixinghao" value="<%- yiqixinghao %>">
                 </td>
-            </tr><tr>
+  <!--           </tr><tr> -->
                 <td>
                     <label>仪器编号:</label>
                 </td>
@@ -1348,7 +1348,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" id="baoxiang" name="baoxiang" value="<%- baoxiang %>">
                 </td>
-            </tr><tr>
+<!--             </tr><tr> -->
                 <td>
                     审核:
                 </td>
@@ -1362,7 +1362,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" class="mydate" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
                 </td>
-            </tr><tr>
+<!--             </tr><tr> -->
                 <td>
                     调试时间:
                 </td>
@@ -1376,7 +1376,7 @@ function delCookie(name)//删除cookie
                 <td>
                     <input type="text" id="hetongbh" name="hetongbh" value="<%- hetongbh %>">
                 </td>
-            </tr><tr>
+<!--             </tr><tr> -->
                 <td>
                     方法:
                 </td>
@@ -1477,8 +1477,8 @@ function delCookie(name)//删除cookie
       <section id="packitem-edit">
       </section>
       <div style="padding: 5px 5px 50px 5px;min-height:300px">  <!-- leave margin to show autocomplete items -->
-      <p><input id="auto_item1" placeholder="输入Item"></p>
-      <p><input id="new_item1"  placeholder="新Item"><button id="id_new_packitem">新Item</button></p>
+      <p><input id="auto_item1" placeholder="输入备件"></p>
+      <p><input id="new_item1"  placeholder="新备件名称"><button id="id_new_packitem">新备件</button></p>
       </div>
   </div>
   </script>
