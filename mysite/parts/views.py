@@ -409,17 +409,18 @@ def editable_ajax(request):
     #print request
     return HttpResponse(request.POST['value']+' (server updated)')
 def tarDict(dict1):
-	fgz = BytesIO()
-	tar = tarfile.open(mode="w",fileobj=fgz)
-	ks=dict1.keys()
-	for key in ks:
-		tarinfo=tarfile.TarInfo(name=key)
-		f1=dict1[key]#byteio object
-		tarinfo.size=len(f1.read())
-		f1.seek(0)
-		tar.addfile(tarinfo,fileobj=f1)
-	tar.close()
-	return fgz
+    fgz = BytesIO()
+    tar = tarfile.open(mode="w",fileobj=fgz)
+    ks=dict1.keys()
+    for key in ks:
+        tarinfo=tarfile.TarInfo(name=key)
+        f1=dict1[key]#byteio object
+        f1.seek(0)
+        tarinfo.size=len(f1.read())
+        f1.seek(0)
+        tar.addfile(tarinfo,fileobj=f1)
+    tar.close()
+    return fgz
 def tar(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

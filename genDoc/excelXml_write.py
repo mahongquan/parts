@@ -205,7 +205,7 @@ def genJiaozhunOH(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     #data=s.read()
     #data=data.decode('utf-8')
     return s#data
@@ -261,7 +261,7 @@ def genJiaozhunN(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     #data=s.read()
     #data=data.decode('utf-8')
     return s#data
@@ -324,7 +324,7 @@ def genJiaozhunON(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     #data=s.read()
     #data=data.decode('utf-8')
     return s#data
@@ -382,7 +382,7 @@ def genJiaozhunCS(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))# setCell(table,23,3).Value="   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     #data=s.read()
     #data=data.decode('utf-8')
     return s#data
@@ -429,7 +429,7 @@ def genShujubiao(c,fn):
     setCell(table,14,3,c.baoxiang)#setCell(table,13,6).Value =str(d.day)+"日"    
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     #data=s.read()
     #data=data.decode('utf-8')
     return s#data
@@ -492,7 +492,7 @@ def genJiaozhunONH(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    s.seek(0)
+    #s.seek(0)
     data=s.read()
     data=data.decode('utf-8')
     return data
