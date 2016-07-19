@@ -14,13 +14,7 @@
     .contact_zs{margin:1px 20px 1px 1px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
-.ui-widget-overlay
-{
-  opacity: .50 !important; /* Make sure to change both of these, as IE only sees the second one */
-  filter: Alpha(Opacity=50) !important;
-
-  background-color: rgb(50, 50, 50) !important; /* This will make it darker */
-}
+    .newClass { background-color:#8888ff;}
   </style>
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
@@ -199,6 +193,14 @@ function delCookie(name)//删除cookie
        "click #bt_save" : "save",
        "click #bt_clear" : "myclear",
        "click #bt_clearid" : "myclearid",
+       "change input" : "mychange",
+    },
+    mychange:function(event){
+      var fname=$(event.target).attr("id");
+      var fvalue=$(event.target).val();
+      if(this.model.get(fname)!=fvalue){
+        $(event.target).addClass( "newClass"); 
+      }
     },
     upload_click:function(event){
       //console.log("upload_click");
@@ -1220,8 +1222,8 @@ function delCookie(name)//删除cookie
 		    <span class="caret"></span>
 		  </button>
 		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-		    <li id="li_login"hidden="true"><a href="#" id="id_login" >log in</a></li>
-		    <li id="li_logout"><a href="#" id="id_logout">log out</a></li>
+		    <li id="li_login"hidden="true"><a href="#" id="id_login" >登录</a></li>
+		    <li id="li_logout"><a href="#" id="id_logout">注销</a></li>
 		  </ul>
 		</div>
 	</td>
@@ -1384,7 +1386,7 @@ function delCookie(name)//删除cookie
                 <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button class="btn" id="bt_file">选取文件</button>
                 </td>
             </tr>        </table>
-       <div align="center"> <button class="btn btn-primary" id="bt_save">保存</button> <button class="btn" id="bt_clear">清除</button> <button class="btn" id="bt_clearid">复制</button><div>
+       <div align="center"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button><div>
         <div id="id_usepacks"></div>
   </script>
   <script type="text/template" id="login-template">
