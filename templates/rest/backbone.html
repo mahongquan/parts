@@ -201,6 +201,9 @@ function delCookie(name)//删除cookie
       if(this.model.get(fname)!=fvalue){
         $(event.target).addClass( "newClass"); 
       }
+      else{
+        $(event.target).removeClass( "newClass");  
+      }
     },
     upload_click:function(event){
       //console.log("upload_click");
