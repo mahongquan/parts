@@ -223,8 +223,9 @@ function delCookie(name)//删除cookie
           data=JSON.parse(res);
           if(data.success){
             //$("#method").val(data.files);
-            view.model.set({method:data.files});
-
+            //view.model.set({method:data.files});
+            view.$("#method").val(data.files);
+            view.$("#method").trigger("change");
             $('#uploadForm').dialog('close');
             //console.log(this);
           }
@@ -1391,7 +1392,7 @@ function delCookie(name)//删除cookie
                     方法:
                 </td>
                 <td>
-                <input type="text" id="id" name="id" readonly="true" value="<%- method %>"><button class="btn" id="bt_file">选取文件</button>
+                <input type="text" id="method" name="id" readonly="true" value="<%- method %>"><button class="btn" id="bt_file">选取文件</button>
                 </td>
             </tr>        </table>
        <div align="center"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button><div>
