@@ -282,8 +282,8 @@ def view_contact(request):
     logging.info("baoxiang="+baoxiang)
     if search!='':
         if baoxiang!="":
-            total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search) & Q(baoxiang=baoxiang)).count()
-            objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+            total=Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).count()
+            objs = Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).order_by('-yujifahuo_date')[start:start+limit]
         else:
             total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).count()
             objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
