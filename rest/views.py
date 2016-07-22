@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import django
 from django.shortcuts import render_to_response
 import time
 import os
@@ -333,6 +334,14 @@ def create_contact(request):
         output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     except ValueError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except django.db.utils.IntegrityError as e:
         info = sys.exc_info()
         message=""
         for file, lineno, function, text in traceback.extract_tb(info[2]):
