@@ -302,6 +302,10 @@ function delCookie(name)//删除cookie
           contacts.add(this.model);
           newcontact=true;
       }
+      if(data.yiqibh==undefined || data.yiqibh==""){
+        alert("仪器编号不能为空！");
+        return;
+      }
       this.model.set(data);
       var self=this;
       this.model.save(null,{
@@ -1286,7 +1290,7 @@ function delCookie(name)//删除cookie
  </td><td>
       <%- yiqixinghao %>
  </td><td>
-      <%- yiqibh %>
+     <a class="contact_edit"> <%- yiqibh %></a>
  </td><td>
       <%- baoxiang %>
  </td><td>
@@ -1296,7 +1300,7 @@ function delCookie(name)//删除cookie
  </td><td>
       <%- tiaoshi_date %>
  </td><td>
-      <a class="contact_edit">[[<%- hetongbh %>]]</a>
+      <%- hetongbh %></a>
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
