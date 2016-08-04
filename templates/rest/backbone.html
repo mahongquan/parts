@@ -608,6 +608,10 @@ function delCookie(name)//删除cookie
       "click #id_login" : "showlogin",
       "click #id_logout" : "showlogout",
       "click .baoxiang" : "baoxiang",
+      "change #id_input_search":"searchChange",
+    },
+    searchChange:function(){
+      myglobal.search=this.$("#id_input_search").val();
     },
     newcontact:function(){
         var editview= new ContactEditView2({model: new Contact()});
