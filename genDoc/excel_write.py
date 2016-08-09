@@ -5,6 +5,9 @@ import datetime
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
 from genDoc.genData import genTest,genjmd,genTestR
+import os
+from mysite.settings import MEDIA_ROOT
+import logging
 def setCell(table,row,col,value):
     print(row,col,value)
     table.cell(row = row, column = col).value=value
@@ -28,10 +31,9 @@ def genJiaozhunO(c,fn):
     # #page 2
     table=xlBook.worksheets[1] 
     #dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,22,3,["地点","(","LOCATION",")",":","    ",c.yonghu])# setCell(table,22,3).Value=dd
+    setCell(table,22,3,"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=dd
     # #page 3
     table=xlBook.worksheets[2] 
-    table=Worksheet.find("{urn:schemas-microsoft-com:office:spreadsheet}Table")
     eles=[]
     for i in [8,15]:
         print("getCell",13,i)
@@ -71,7 +73,7 @@ def genJiaozhunOH(c,fn):
     #page 2
     table=xlBook.worksheets[1] 
     #dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,23,3,["  ","地点","(","LOCATION",")",":","    ",c.yonghu])# setCell(table,22,3).Value=dd#setCell(table,22,3,dd)setCell(table,23,3,dd)
+    setCell(table,23,3,"  "+"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=dd#setCell(table,22,3,dd)setCell(table,23,3,dd)
     #page 3
     table=xlBook.worksheets[2] 
     eles=[]
@@ -124,7 +126,7 @@ def genJiaozhunN(c,fn):
     #page 2
     table=xlBook.worksheets[1] 
     dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,22,3,["地点","(","LOCATION",")",":","    ",c.yonghu])# setCell(table,22,3).Value=dd#setCell(table,22,3,dd)
+    setCell(table,22,3,"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=dd#setCell(table,22,3,dd)
     #page 3
     table=xlBook.worksheets[2] 
     eles=[]
@@ -170,7 +172,7 @@ def genJiaozhunON(c,fn):
     # #page 2
     table=xlBook.worksheets[1] 
     dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,22,3,["地点","(","LOCATION",")",":","    ",c.yonghu])# setCell(table,22,3).Value=ddsetCell(table,22,3,dd)# setCell(table,26,3,dd
+    setCell(table,22,3,"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=ddsetCell(table,22,3,dd)# setCell(table,26,3,dd
     # #page 3
     table=xlBook.worksheets[2] 
     eles=[]
@@ -217,17 +219,17 @@ def genJiaozhunCS(c,fn):
     d1=d+datetime.timedelta(-1)
     setCell(table,32,8,str(d1.year))# setCell(table,32,8).FormulaR1C1 =d1.year#年
     setCell(table,32,12,str(d1.month))# setCell(table,32,12).Value =d1.month#月
-    setCellWithFont(table,32,16,[str(d1.day)])# setCell(table,32,16).Value =d1.day#日
+    setCell(table,32,16,str(d1.day))# setCell(table,32,16).Value =d1.day#日
     d2=d+datetime.timedelta(364)
     setCell(table,35,8,str(d2.year))# setCell(table,35,8).Value =d2.year#年
     setCell(table,35,12,str(d2.month))# setCell(table,35,12).Value =d2.month#月
-    setCellWithFont(table,35,16,[str(d2.day)])# setCell(table,35,16).Value =d2.day#日
+    setCell(table,35,16,str(d2.day))# setCell(table,35,16).Value =d2.day#日
     # #page 2
     #Worksheet = Worksheets[1]
     #table=Worksheet.find("{urn:schemas-microsoft-com:office:spreadsheet}Table")
     table=xlBook.worksheets[1]  
     #dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,26,3,["地点","(","LOCATION"+")"+":"+"    "+c.yonghu])# setCell(table,22,3).Value=ddsetCell(table,26,3,dd)# setCell(table,26,3,dd
+    setCell(table,26,3,"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=ddsetCell(table,26,3,dd)# setCell(table,26,3,dd
     # #page 3
     #Worksheet = Worksheets[2]
     #table=Worksheet.find("{urn:schemas-microsoft-com:office:spreadsheet}Table")
@@ -260,7 +262,7 @@ def genJiaozhunCS(c,fn):
     return save_virtual_workbook(xlBook)
 def genShujubiao(c,fn):
     xlBook = load_workbook(filename = fn)
-    table=xlBook.worksheets[1] 
+    table=xlBook.worksheets[0] 
     if c.yiqixinghao=="CS-2800":
         setCell(table,4,3,getCell(table,4,3)+"√") #setCell(table,4,3).Value =setCell(table,4,3).Value     +"√"
         setCell(table,8,3,"√")
@@ -317,7 +319,7 @@ def genJiaozhunONH(c,fn):
     # #page 2
     table=xlBook.worksheets[1] 
     dd="  地点（LOCATION）： "+c.yonghu
-    setCellWithFont(table,23,3,["地点","(","LOCATION",")",":","    ",c.yonghu])# setCell(table,22,3).Value=ddsetCell(table,22,3,dd)# setCell(table,26,3,dd
+    setCell(table,23,3,"地点"+"("+"LOCATION"+")"+":"+"    "+c.yonghu)# setCell(table,22,3).Value=ddsetCell(table,22,3,dd)# setCell(table,26,3,dd
     # #page 3
     table=xlBook.worksheets[2] 
     eles=[]
