@@ -36,6 +36,13 @@ $(function(){
           "ON-4000",
           "ONH-3000"
         ];
+        var availableTags_2 = [
+          "1O(低氧)",
+          "2C+1S(低硫)",
+          "2C2S",
+          "2O2N",
+          "2O",
+        ];
 function nowDate() {
     var date=new Date();
     var year = date.getFullYear();
@@ -544,6 +551,10 @@ function delCookie(name)//删除cookie
         this.cev.$("#yiqixinghao" ).autocomplete({
           minLength: 1,
           source: availableTags
+        });
+        this.cev.$("#channels" ).autocomplete({
+          minLength: 1,
+          source: availableTags_2
         });
       this.pev.$("#auto_pack1").autocomplete({
                 minLength: 1
