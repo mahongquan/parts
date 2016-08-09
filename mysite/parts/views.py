@@ -24,45 +24,12 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 #import zhengshu
-from genDoc.excelXml_write import *
+#from genDoc.excelXml_write import *
+from genDoc.excel_write import *
 from lxml import etree as ET
 import datetime
 from genDoc.packXml_write import genPack,genQue
-def getJiaoZhunFile(c):
-    (lx,tmp)=c.yiqixinghao.split("-")
-    print(lx)
-    data=None
-    if lx==u"O":
-        tname="O模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunO(c,fullfilepath)
-    elif lx==u"N":
-        tname="N模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunN(c,fullfilepath)
-    elif lx==u"ON":
-        tname="ON模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunON(c,fullfilepath)
-    elif lx==u"OH":
-        tname="OH模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunOH(c,fullfilepath)
-    elif lx==u"ONH":
-        tname="ONH模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunONH(c,fullfilepath)
-    else:
-        tname="CS模板"#"aveSingle2"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunCS(c,fullfilepath)
-    return data
+
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -471,11 +438,11 @@ def shujubiao(request):
     logging.info(encode)
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xml"
+    t=HttpResponse(data,content_type="application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xlsx"
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def copypack(request):
