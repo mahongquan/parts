@@ -1171,10 +1171,12 @@ function delCookie(name)//删除cookie
     },
     save:function(){
       var data={};
+      //console.log(this.model.attributes);
       for(var fname in this.model.attributes){
-           if(fname!="id"){
+           //console.log(fname);
+           if(fname!="id" ){
                       var value=this.$("#"+fname).val();
-                      if (value) {
+                      if (value!=undefined) {
                         var node=this.$("#"+fname);
                         if(node.attr("type")=="checkbox")
                         {
@@ -1184,20 +1186,22 @@ function delCookie(name)//删除cookie
                         {
                          data[fname]=value;
                         }//else
-                       }//if
+                      }
            }
        }//for
        //save Item///////////////////////
-       var item=new Item();
-       item.set(data);
-       item.set({id:data["itemid"]});
-       item.save(null,{
-        success:function(context, model, resp, options){
-          //console.log(options);
-          //console.log("item save finish");
-        }
-      }); 
+      //  var item=new Item();
+      //  item.set(data);
+      //  item.set({id:data["itemid"]});
+      //  item.save(null,{
+      //   success:function(context, model, resp, options){
+      //     //console.log(options);
+      //     //console.log("item save finish");
+      //   }
+      // }); 
        //save PackItem///////////////////////
+       //console.log("============");
+       //console.log(data);
       this.model.set(data);
       var self=this;
       this.model.save(null,{

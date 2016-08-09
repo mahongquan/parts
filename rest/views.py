@@ -881,14 +881,21 @@ def create_packItem(request):
      return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_packItem(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
     id1=data.get("id")
     if id1!=None:
          id1=int(id1)
+         item=Item.objects.get(id=int(data["itemid"]))
+         item.bh=data.get("bh")
+         item.danwei=data.get("danwei")
+         item.name=data.get("name")
+         item.guige=data.get("guige")
+         item.save()
          rec=PackItem.objects.get(id=id1)
          if data.get("pack")!=None:
              rec.pack=Pack.objects.get(id=int(data["pack"]))
          if data.get("itemid")!=None:
-             rec.item=Item.objects.get(id=int(data["itemid"]))
+             rec.item=item
          if data.get("ct")!=None:
              rec.ct=int(data.get("ct"))
          rec.save()
