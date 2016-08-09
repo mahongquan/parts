@@ -18,7 +18,7 @@ import mysite.parts.models
 from datetime import datetime
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 import json 
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt

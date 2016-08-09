@@ -15,8 +15,11 @@ c = conn.cursor()
 
 # # We can also close the cursor if we are done with it
 # c.close()
-cmds=codecs.open("danju.sql","r",'utf-8').read().split(";")
-print(cmds)
+cmds=codecs.open("tableStruct.sql","r",'utf-8').read().split(";")
 for cmd in cmds:
-	c.execute(cmd)
+	try:
+		print(cmd)
+		c.execute(cmd)
+	except:
+		pass
 conn.commit()
