@@ -968,7 +968,7 @@ function delCookie(name)//删除cookie
 
        });
            packitemListView.$("#auto_item1").autocomplete({
-                minLength: 1
+                minLength: 2
                 , focus: function (event, ui) {
                     //$( "#auto_pack1" ).val( ui.item.value);
                     return false;
@@ -979,7 +979,7 @@ function delCookie(name)//删除cookie
                 }
                 , source: function (request, response) {
                     var term = request.term;
-                    request={ query: term };
+                    request={ query: term,limit:50};
                     if (term in cache_item) {
                         data = cache_item[term];
                         response(data.data);
@@ -1511,7 +1511,7 @@ function delCookie(name)//删除cookie
       </table>
       <section id="packitem-edit">
       </section>
-      <div style="padding: 5px 5px 50px 5px;min-height:300px">  <!-- leave margin to show autocomplete items -->
+      <div style="padding: 5px 5px 50px 5px;min-height:500px">  <!-- leave margin to show autocomplete items -->
       <p><input id="auto_item1" placeholder="输入备件"></p>
       <p><input id="new_item1"  placeholder="新备件名称"><button id="id_new_packitem">新备件</button></p>
       </div>
