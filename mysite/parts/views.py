@@ -26,9 +26,9 @@ from mysite.settings import MEDIA_ROOT,MEDIA_URL
 #import zhengshu
 #from genDoc.excelXml_write import *
 from genDoc.excel_write import *
-from lxml import etree as ET
+#from lxml import etree as ET
 import datetime
-from genDoc.packXml_write import genPack,genQue
+from genDoc.docx_write import genPack,genQue
 
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
@@ -412,21 +412,21 @@ def jiaozhun(request):
 def que(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
     logging.info(fullfilepath)
     data=genQue(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.xml"
+    t=HttpResponse(data,content_type="application/msword")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def zhuangxiangdan(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
     logging.info(fullfilepath)
     data=genPack(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.xml"
+    t=HttpResponse(data,content_type="application/msword")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.docx"
     #t['Content-Length']=len(data)
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
