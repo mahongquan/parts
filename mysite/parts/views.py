@@ -418,16 +418,18 @@ def allfile(request):
     fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
     logging.info(fullfilepath)
     data_zxd=genPack(c,fullfilepath)
-    dir1="证书_"+c.yonghu+"_"+c.yiqixinghao
+    outfilename=c.yiqibh+"_"+c.yonghu
+    outfilename=outfilename[0:40]
+    dir1="证书_"+outfilename
     dict1={dir1+"/证书数据表.xlsx":data
-        ,dir1+"/"+c.yonghu+"_"+c.yiqixinghao+".xlsx":data2
-        ,c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.docx":data_zxd
+        ,dir1+"/证书.xlsx":data2
+        ,outfilename+"_装箱单.docx":data_zxd
         }
     fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
     logging.info(fullfilepath)
     data_que=genQue(c,fullfilepath)
     if len(data_que)!=0:
-        dict1[c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"]=data_que
+        dict1[outfilename+"_短缺物资单.docx"]=data_que
     #
     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
     dict1["标签.lbx"]=data_lbl
