@@ -395,6 +395,10 @@ function delCookie(name)//删除cookie
       "click .contact_quehuo" : "quehuo",
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
+      "click .contact_allfile" : "allfile",
+    },
+    allfile:function(){
+        window.open("/parts/allfile?id="+this.model.get("id"));
     },
     detail:function(){
       window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
@@ -1332,7 +1336,7 @@ function delCookie(name)//删除cookie
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
-<a class="contact_quehuo" data="<%- id %>">缺货单</a>
+<a class="contact_quehuo" data="<%- id %>">缺货单</a><a class="contact_allfile" data="<%- id %>">全部文件</a>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>

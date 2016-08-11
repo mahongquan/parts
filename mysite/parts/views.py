@@ -29,6 +29,7 @@ from genDoc.excel_write import *
 #from lxml import etree as ET
 import datetime
 from genDoc.docx_write import genPack,genQue
+import genDoc.genLabel
 
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
@@ -407,6 +408,37 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
+def allfile(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+    logging.info(fullfilepath)
+    data=genShujubiao(c,fullfilepath)
+    data2=getJiaoZhunFile(c)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+    logging.info(fullfilepath)
+    data_zxd=genPack(c,fullfilepath)
+    dir1="证书_"+c.yonghu+"_"+c.yiqixinghao
+    dict1={dir1+"/证书数据表.xlsx":data
+        ,dir1+"/"+c.yonghu+"_"+c.yiqixinghao+".xlsx":data2
+        ,c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.docx":data_zxd
+        }
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
+    logging.info(fullfilepath)
+    data_que=genQue(c,fullfilepath)
+    if len(data_que)!=0:
+        dict1[c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"]=data_que
+    #
+    data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+    dict1["标签.lbx"]=data_lbl
+    byteio=tarDict(dict1)
+    byteio.seek(0)
+    data=byteio.read()#.decode()
+    t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
+    t['Content-Disposition'] = tstr.encode("gb2312")
+    t['Content-Length']=len(data)
+    return t    
 def jiaozhun(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
@@ -421,10 +453,14 @@ def que(request):
     fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
     logging.info(fullfilepath)
     data=genQue(c,fullfilepath)
-    t=HttpResponse(data,content_type="application/msword")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"
-    t['Content-Disposition'] = tstr.encode("gb2312")
-    return t
+    if len(data)==0:
+        t=HttpResponse("没有短缺物资")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+        return t
+    else:
+        t=HttpResponse(data,content_type="application/msword")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+        tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"
+        t['Content-Disposition'] = tstr.encode("gb2312")
+        return t
 def zhuangxiangdan(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

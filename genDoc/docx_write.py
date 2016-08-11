@@ -127,21 +127,24 @@ def genQue(contact,fn):
                 items=addItem(items,pi.item)
             else:
                 items2=addItem(items2,pi.item)
-    for item in items2:
-        columns= tbl.add_row().cells
-        setCell(columns[0],item.bh)
-        setCell(columns[1],item.name)
-        setCell(columns[2],item.guige)
-        setCell(columns[3],str(item.ct)+item.danwei)
-        if item.beizhu!=None:
-            setCell(columns[5],item.beizhu)
-        else:
-            setCell(columns[5],"")
-        setCell(columns[4],"")
-    s=BytesIO()
-    document.save(s)
-    s.seek(0)
-    data=s.read()
+    if len(items2)>0:
+        for item in items2:
+            columns= tbl.add_row().cells
+            setCell(columns[0],item.bh)
+            setCell(columns[1],item.name)
+            setCell(columns[2],item.guige)
+            setCell(columns[3],str(item.ct)+item.danwei)
+            if item.beizhu!=None:
+                setCell(columns[5],item.beizhu)
+            else:
+                setCell(columns[5],"")
+            setCell(columns[4],"")
+        s=BytesIO()
+        document.save(s)
+        s.seek(0)
+        data=s.read()
+    else:
+        data=""
     return data
 
 if __name__=="__main__":

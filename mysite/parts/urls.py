@@ -26,6 +26,7 @@ urlpatterns = [
 	 url(r'^jiaozhun/',views.jiaozhun),
 	 url(r'^shujubiao/',views.shujubiao),
 	 url(r'^tar/',views.tar),
+	 url(r'^allfile/',views.allfile),
 	 url(r'^zhuangxiangdan/',views.zhuangxiangdan),
 
 	 url(r'^newcontact/',views.newcontact),

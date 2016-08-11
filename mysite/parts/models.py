@@ -75,8 +75,8 @@ class PackItem(models.Model):
         verbose_name="备件条目"
         verbose_name_plural=verbose_name
     def json(self):
-        logging.info("json-------")
-        logging.info(self.quehuo)
+        #logging.info("json-------")
+        #logging.info(self.quehuo)
         if self.quehuo:
             return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh,'quehuo':True}
         else:

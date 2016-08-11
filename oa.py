@@ -131,7 +131,28 @@ def newTodo():
 	items[1].click();#firefox
 	#items[4].find_element_by_tag_name("span").click()#phtomjs
 	#time.sleep(5)
-
+def  showTodoNew():
+	#second_menu_content
+	menuUL=mywait_id("menuUL")
+	menus=browser.find_elements_by_class_name("main_menu_a")
+	for menu in menus:
+		print(menu.text)
+	browser.execute_script("""
+		var m0=$(".main_menu_a")[0];
+		$(m0).trigger("mouseenter");
+	""")
+	# menus=browser.find_elements_by_class_name("main_menu_a")
+	# for menu in menus:
+	# 	print(menu.text)
+	# co=menus[0]
+	# actions=ActionChains(browser)
+	# actions.move_to_element(co).click(co).move_by_offset(0,50).perform()
+	items=browser.find_elements_by_class_name("second_menu_item")
+	for item in items:
+		print(item.text)
+	items[1].click();#firefox
+	#items[4].find_element_by_tag_name("span").click()#phtomjs
+	#time.sleep(5)
 def  showTodo():
 	#second_menu_content
 	menuUL=mywait_id("menuUL")
@@ -209,6 +230,8 @@ def checkBG():
 	showTodo()#testMessage()
 	findTodo("标钢")
 	downloadTodofiles()
+def BJ():
+	showTodoNew()
 def uploadRecord():
 	showTodo()#testMessage()
 	findTodo("3111613497")
@@ -220,6 +243,13 @@ def mainBG(name,pwd):
 	login(name,pwd)
 	checkBG()
 	return browser
+def mainBJ(name,pwd):
+	global browser
+	browser=setupBrowser(False)
+	print(dir(browser))
+	login(name,pwd)
+	BJ()
+	return browser	
 def main(name,pwd):
 	global browser
 	browser=setupBrowser(False)
@@ -261,5 +291,5 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		mainBG(sys.argv[1],sys.argv[2])
+		mainBJ(sys.argv[1],sys.argv[2])
 
