@@ -311,12 +311,18 @@ def showcontact(request):
     dic["user"]=request.user
     dic["contact"]=c
     items=[]
+    items2=[]
     for cp in c.usepack_set.all():
         for pi in cp.pack.packitem_set.all():
             pi.item.ct=pi.ct
-            #items.append(pi.item)
-            items=addItem(items,pi.item)
+            if pi.quehuo:
+                items2=addItem(items2,pi.item)
+            else:
+                items=addItem(items,pi.item)
     dic["items"]=items
+    if len(items2)==0:
+        items2=None
+    dic["items2"]=items2
     dic["new"]=0
     r=render_to_response("parts/t_装箱单.html",dic)
     return(r)

@@ -168,7 +168,7 @@ function delCookie(name)//删除cookie
     urlRoot : "/rest/PackItem/",
     defaults: function() {
       return {
-        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:''
+        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:'',quehuo:false
       };
     }
   });
@@ -392,6 +392,7 @@ function delCookie(name)//删除cookie
       "click .contact_delete" : "delete",
       "click .contact_usepack" : "usepack",
       "click .contact_zxd" : "zxd",
+      "click .contact_quehuo" : "quehuo",
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
     },
@@ -400,6 +401,9 @@ function delCookie(name)//删除cookie
     },
     zxd:function(){
         window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
+    },
+    quehuo:function(){
+        window.open("/parts/que?id="+this.model.get("id"));
     },
     zs:function(){
         window.open("/parts/tar?id="+this.model.get("id"));
@@ -1232,6 +1236,8 @@ function delCookie(name)//删除cookie
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
+      var node =this.$("#quehuo");// document.getElementById("#epaper");
+      node[0].checked=this.model.get("quehuo");
       return this;
     },
   });
@@ -1325,7 +1331,9 @@ function delCookie(name)//删除cookie
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
-<a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a><!-- <a  class="contact_delete" data="<%- id %>">删除</a>
+<a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
+<a class="contact_quehuo" data="<%- id %>">缺货单</a>
+<!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
   <script type="text/template" id="contact-edit2-template">
@@ -1334,7 +1342,7 @@ function delCookie(name)//删除cookie
   </script>
   <script type="text/template" id="contact-edit-template">
         <table id="table_input" class="table-condensed" >
-<tr>
+<tr hidden="true">
                 <td>
                     ID:
                 </td>
@@ -1503,7 +1511,7 @@ function delCookie(name)//删除cookie
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
+    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td>缺货</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
@@ -1519,7 +1527,7 @@ function delCookie(name)//删除cookie
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
+    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><%- quehuo %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
@@ -1577,6 +1585,14 @@ function delCookie(name)//删除cookie
                 </td>
                 <td>
                     <input type="text" id="ct" name="ct" value="<%- ct %>">
+                </td>
+            </tr> 
+             <tr>
+                <td>
+                    <label>缺货:</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="quehuo" name="quehuo" checked="<%- quehuo %>">
                 </td>
             </tr>        
             </table>

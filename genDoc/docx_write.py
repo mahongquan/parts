@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from docx import Document
 from io import BytesIO,StringIO
+import logging
 def changeGrid2(tbl,rowv,colv,value):
     tbl.cell(rowv,colv).text=value
 def setCell(column1,value):
@@ -46,6 +47,7 @@ def addItem(items,item):
 def genPack(contact,fn):
     document = Document(fn)
     tbl=document.tables[0]
+    logging.info(dir(tbl))
     changeGrid2(tbl,0,1,contact.yonghu)
     changeGrid2(tbl,1,1,contact.yiqixinghao)
     changeGrid2(tbl,2,1,contact.yiqibh)
@@ -65,12 +67,67 @@ def genPack(contact,fn):
     tbl=document.tables[2]#配件清单
     print(tbl.cell(0,0).text)
     items=[]
+    items2=[]
     for cp in contact.usepack_set.all():
         for pi in cp.pack.packitem_set.all():
             pi.item.ct=pi.ct
-            items=addItem(items,pi.item)
-    #row0=getGridRow(tbl,0)
+            if not pi.quehuo:
+                items=addItem(items,pi.item)
+            else:
+                items2=addItem(items2,pi.item)
     for item in items:
+        columns= tbl.add_row().cells
+        setCell(columns[0],item.bh)
+        setCell(columns[1],item.name)
+        setCell(columns[2],item.guige)
+        setCell(columns[3],str(item.ct)+item.danwei)
+        if item.beizhu!=None:
+            setCell(columns[5],item.beizhu)
+        else:
+            setCell(columns[5],"")
+        setCell(columns[4],"")
+    # if len(items2)>0:
+    #     document.add_page_break()
+    #     table = document.add_table(rows=1, cols=4)
+    #     hdr_cells = table.rows[0].cells
+    #     hdr_cells[0].text = '编号'
+    #     hdr_cells[1].text = '名称'
+    #     hdr_cells[2].text = '规格'
+    #     hdr_cells[3].text = '数量'
+    #     for item in items2:
+    #         row_cells = table.add_row().cells
+    #         row_cells[0].text = item.bh
+    #         row_cells[1].text = item.name
+    #         row_cells[2].text = item.guige
+    #         row_cells[3].text = str(item.ct)+item.danwei
+    s=BytesIO()
+    document.save(s)
+    s.seek(0)
+    data=s.read()
+    return data
+def genQue(contact,fn):
+    document = Document(fn)
+    tbl=document.tables[0]
+    logging.info(dir(tbl))
+    changeGrid2(tbl,0,1,contact.yonghu)
+    changeGrid2(tbl,1,1,contact.yiqixinghao)
+    changeGrid2(tbl,2,1,contact.yiqibh)
+    changeGrid2(tbl,3,1,contact.baoxiang)
+    changeGrid2(tbl,4,1,contact.shenhe)
+    changeGrid2(tbl,5,1,myformat_date(contact.yujifahuo_date))
+    changeGrid2(tbl,6,1,contact.hetongbh)
+    tbl=document.tables[1]
+    print(tbl.cell(0,0).text)
+    items=[]
+    items2=[]
+    for cp in contact.usepack_set.all():
+        for pi in cp.pack.packitem_set.all():
+            pi.item.ct=pi.ct
+            if not pi.quehuo:
+                items=addItem(items,pi.item)
+            else:
+                items2=addItem(items2,pi.item)
+    for item in items2:
         columns= tbl.add_row().cells
         setCell(columns[0],item.bh)
         setCell(columns[1],item.name)
@@ -86,20 +143,6 @@ def genPack(contact,fn):
     s.seek(0)
     data=s.read()
     return data
-def genQue(contact,fn):
-    document = Document(fn)
-    tbl=document.tables[0]
-    changeGrid2(tbl,0,1,contact.yonghu)
-    changeGrid2(tbl,1,1,contact.yiqixinghao)
-    changeGrid2(tbl,2,1,contact.yiqibh)
-    changeGrid2(tbl,3,1,contact.baoxiang)
-    changeGrid2(tbl,4,1,contact.shenhe)
-    changeGrid2(tbl,5,1,myformat_date(contact.yujifahuo_date))
-    changeGrid2(tbl,6,1,contact.hetongbh)
-    s=BytesIO()
-    document.save(s)
-    s.seek(0)
-    data=s.read()
-    return data
+
 if __name__=="__main__":
     print(genPack("4111533499"))

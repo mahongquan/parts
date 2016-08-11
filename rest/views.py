@@ -898,6 +898,8 @@ def update_packItem(request):
              rec.item=item
          if data.get("ct")!=None:
              rec.ct=int(data.get("ct"))
+         if data.get("quehuo")!=None:
+             rec.quehuo=data.get("quehuo")
          rec.save()
          output={"success":True,"message":"update Contact " +str(rec.id)}
          output["data"]=rec.json()

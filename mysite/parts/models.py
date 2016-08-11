@@ -68,13 +68,19 @@ class PackItem(models.Model):
     pack=models.ForeignKey(Pack,verbose_name="包")#合同
     item=models.ForeignKey(Item,verbose_name="备件")#备件
     ct=  models.IntegerField(verbose_name="数量",default=1)#数量
+    quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
         return self.pack.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
     class Meta:
         verbose_name="备件条目"
         verbose_name_plural=verbose_name
     def json(self):
-        return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh}
+        logging.info("json-------")
+        logging.info(self.quehuo)
+        if self.quehuo:
+            return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh,'quehuo':True}
+        else:
+            return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh,'quehuo':False}
 # class Standard(models.Model):
 #     contact=models.ForeignKey(Contact,verbose_name="合同")#合同
 #     ct=  models.IntegerField(verbose_name="数量",default=1)#数量

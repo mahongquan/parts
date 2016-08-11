@@ -897,7 +897,78 @@ mso-ansi-language:ZH-CN;mso-bidi-font-weight:bold'>配货清单<o:p></o:p></span
 </table>
 
 </div>
+{%if items2 %}
+<p class=MsoNormal align=center style='text-align:center;mso-layout-grid-align:
+none;text-autospace:none'><span style='font-size:16.0pt;font-family:黑体;
+mso-hansi-font-family:"Times New Roman";mso-bidi-font-family:黑体;color:black;
+mso-ansi-language:ZH-CN;mso-bidi-font-weight:bold'>短缺物资清单<o:p></o:p></span></p>
 
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=600
+ style='width:480.0pt;border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+ mso-border-insideh:.5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
+ <thead>
+  <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+   <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>库存编号<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+   <td style='border:solid windowtext 1.0pt;border-left:none;mso-border-left-alt:
+   solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>配件名称<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+   <td style='border:solid windowtext 1.0pt;border-left:none;mso-border-left-alt:
+   solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>规格<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+   <td style='border:solid windowtext 1.0pt;border-left:none;mso-border-left-alt:
+   solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>数量<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+   <td style='border:solid windowtext 1.0pt;border-left:none;mso-border-left-alt:
+   solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>备货<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+   <td style='border:solid windowtext 1.0pt;border-left:none;mso-border-left-alt:
+   solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:.75pt .75pt .75pt .75pt'>
+   <p class=MsoNormal align=left style='text-align:left;mso-pagination:widow-orphan'><span
+   style='font-size:12.0pt;font-family:宋体;mso-bidi-font-family:宋体;mso-font-kerning:
+   0pt'>备注<span lang=EN-US><o:p></o:p></span></span></p>
+   </td>
+  </tr>
+ </thead>
+ {% for item in items2 %}
+    <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>{{ item.bh }}</td>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>{{ item.name }}</td>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>{{ item.guige }}</td>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>{{ item.ct }}{{ item.danwei }}</td>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'></td>
+      <td style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+   padding:.75pt .75pt .75pt .75pt'>{% if item.beizhu %}
+     {{ item.beizhu }}
+{% endif %}</td>
+    </tr>
+  {% endfor %}  
+</table>
+</div>
+{% endif %}
 <p class=MsoNormal style='line-height:150%;mso-layout-grid-align:none;
 text-autospace:none'><span style='mso-bidi-font-size:10.5pt;line-height:150%;
 font-family:宋体;mso-hansi-font-family:Arial;mso-bidi-font-family:宋体;color:black;
