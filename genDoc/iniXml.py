@@ -19,8 +19,57 @@ def getfactors(chanels,factors):
 			dic[chanelName]=factorVs[at]
 		at+=1
 	return dic
-def getFromIni(fn):#仪器编号
-	tree = ET.parse("CS/"+fn+'.ini')
+def getResist(fn):
+	tree = ET.parse(fn)
+	root = tree.getroot()
+	r=root.findall("UseResistance")[0]
+	return r.text
+def getFromIni(yiqixinghao,fn):#仪器编号
+	print(yiqixinghao)
+	if yiqixinghao[0]=="C":
+		return getCSini(fn)
+	elif yiqixinghao[0:2]=="ON":
+		return getONini(fn)
+	elif yiqixinghao[0]=="N":
+		return getNini(fn)
+	elif yiqixinghao[0:2]=="OH":
+		return getOHini(fn)
+	else:
+		return getOini(fn)
+def getOHini(fn):
+	tree = ET.parse(fn)
+	root = tree.getroot()
+	parts=root.getchildren()
+	chanels=parts[12]
+	factors=parts[16]
+	return getfactors(chanels,factors)
+
+def getONini(fn):
+	tree = ET.parse(fn)
+	root = tree.getroot()
+	parts=root.getchildren()
+	chanels=parts[12]
+	factors=parts[16]
+	#showchildren(chanels)
+	#showchildren(factors)
+	return getfactors(chanels,factors)
+def getOini(fn):
+	tree = ET.parse(fn)
+	root = tree.getroot()
+	parts=root.getchildren()
+	chanels=parts[12]
+	factors=parts[16]
+def getNini(fn):
+	tree = ET.parse(fn)
+	root = tree.getroot()
+	parts=root.getchildren()
+	chanels=parts[12]
+	factors=parts[16]
+	#showchildren(chanels)
+	#showchildren(factors)
+	return getfactors(chanels,factors)
+def getCSini(fn):
+	tree = ET.parse(fn)
 	root = tree.getroot()
 	parts=root.getchildren()
 	chanels=parts[12]
@@ -29,4 +78,4 @@ def getFromIni(fn):#仪器编号
 	#showchildren(factors)
 	return getfactors(chanels,factors)
 if __name__=="__main__":
-	print(getFromIni("4111525491"))
+	print(getCSIni("4111525491"))

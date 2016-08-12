@@ -30,7 +30,7 @@ from genDoc.excel_write import *
 import datetime
 from genDoc.docx_write import genPack,genQue
 import genDoc.genLabel
-
+from genDoc.recordXml import genRecord
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -433,6 +433,17 @@ def allfile(request):
     #
     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
     dict1["标签.lbx"]=data_lbl
+    #
+    if c.method!=None:
+        logging.info(dir(c.method))
+        try:
+            fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+            data_record=genRecord(fullfilepath,c)
+            dict1[c.yiqibh+"调试记录.xml"]=data_record
+        except ValueError as e:
+            logging.info(e)
+            pass
+    #
     byteio=tarDict(dict1)
     byteio.seek(0)
     data=byteio.read()#.decode()
