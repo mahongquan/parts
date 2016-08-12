@@ -8,7 +8,7 @@ import re
 import logging
 from io import BytesIO
 #import getkb
-# import genLabel
+import genDoc.genLabel
 # import oa
 def mylistdir(p,f):
     a=os.listdir(p)
@@ -95,13 +95,15 @@ def genRecord(fn,c):
     yiqixinghao=c.yiqixinghao
     chanels=c.channels
     factors=getFromIni(yiqixinghao,fn)
-    logging.info(factors)
-    logging.info(yiqibh,yiqixinghao,chanels)
+    #logging.info(factors)
+    #logging.info(yiqibh,yiqixinghao,chanels)
     if yiqixinghao[0]=="C":
         data=genRecordCS(fn,yiqixinghao,yiqibh,chanels,factors,c.baoxiang)
+        data2=genDoc.genLabel.genXishuCS(yiqibh,chanels,factors)
     else:
         data=genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,c.baoxiang)
-    return data
+        data2=genDoc.genLabel.genXishuONH(yiqibh,chanels,factors)
+    return (data,data2)
 def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
     root = tree.getroot()

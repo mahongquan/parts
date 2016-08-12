@@ -36,7 +36,9 @@ def showtable(table):
             pass
         i+=1
 def genXishuONH(yiqibh,chanels,factors):
-    myzip=ZipFile(initpath+'线性化系数氧氮.lbx')#with ZipFile('线性化系数.lbx') as myzip:
+    #myzip=ZipFile(initpath+'线性化系数氧氮.lbx')#with ZipFile('线性化系数.lbx') as myzip:
+    fullfilepath = os.path.join(MEDIA_ROOT,"线性化系数氧氮.lbx")
+    myzip=ZipFile(fullfilepath)
     print(myzip.namelist())
     print(myzip.infolist())
     fileL=myzip.open('label.xml')
@@ -62,14 +64,16 @@ def genXishuONH(yiqibh,chanels,factors):
     newfileL=io.BytesIO()
     tree.write(newfileL, encoding="utf-8", xml_declaration=True, method="xml")
     newfileL.seek(0)
-    with ZipFile('xishu_gen.lbx', 'w') as myzip:
-        myzip.writestr("label.xml",newfileL.read())
-        myzip.writestr("prop.xml",fileP.read())
-    cmd="start xishu_gen.lbx" 
-    print(cmd)
-    os.system(cmd)
+    out=BytesIO()
+    myzip=ZipFile(out,"w")
+    myzip.writestr("label.xml",newfileL.read())
+    myzip.writestr("prop.xml",fileP.read())
+    out.seek(0)
+    return out.read()
 def genXishuCS(yiqibh,chanels,factors):
-    myzip=ZipFile(initpath+'线性化系数.lbx')#with ZipFile('线性化系数.lbx') as myzip:
+    fullfilepath = os.path.join(MEDIA_ROOT,"线性化系数.lbx")
+    myzip=ZipFile(fullfilepath)
+    #myzip=ZipFile(initpath+'线性化系数.lbx')#with ZipFile('线性化系数.lbx') as myzip:
     print(myzip.namelist())
     print(myzip.infolist())
     fileL=myzip.open('label.xml')
@@ -103,12 +107,12 @@ def genXishuCS(yiqibh,chanels,factors):
     newfileL=io.BytesIO()
     tree.write(newfileL, encoding="utf-8", xml_declaration=True, method="xml")
     newfileL.seek(0)
-    with ZipFile('xishu_gen.lbx', 'w') as myzip:
-        myzip.writestr("label.xml",newfileL.read())
-        myzip.writestr("prop.xml",fileP.read())
-    cmd="start xishu_gen.lbx" 
-    print(cmd)
-    os.system(cmd)
+    out=BytesIO()
+    myzip=ZipFile(out,"w")
+    myzip.writestr("label.xml",newfileL.read())
+    myzip.writestr("prop.xml",fileP.read())
+    out.seek(0)
+    return out.read()
 def genLabel(yiqixinghao,yiqibh,chanels):
     fullfilepath = os.path.join(MEDIA_ROOT,"CS-2800标签.lbx")
     myzip=ZipFile(fullfilepath)#initpath+'CS-2800标签.lbx')#with ZipFile('线性化系数.lbx') as myzip:

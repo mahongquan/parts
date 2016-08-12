@@ -419,7 +419,7 @@ def allfile(request):
     logging.info(fullfilepath)
     data_zxd=genPack(c,fullfilepath)
     outfilename=c.yiqibh+"_"+c.yonghu
-    outfilename=outfilename[0:40]
+    outfilename=outfilename[0:30]
     dir1="证书_"+outfilename
     dict1={dir1+"/证书数据表.xlsx":data
         ,dir1+"/证书.xlsx":data2
@@ -438,8 +438,9 @@ def allfile(request):
         logging.info(dir(c.method))
         try:
             fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
-            data_record=genRecord(fullfilepath,c)
+            (data_record,data_xishu)=genRecord(fullfilepath,c)
             dict1[c.yiqibh+"调试记录.xml"]=data_record
+            dict1["系数.lbx"]=data_xishu
         except ValueError as e:
             logging.info(e)
             pass
