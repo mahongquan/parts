@@ -15,7 +15,7 @@ c = conn.cursor()
 
 # # We can also close the cursor if we are done with it
 # c.close()
-cmds=codecs.open("tableStruct.sql","r",'utf-8').read().split(";")
+cmds=codecs.open("new1.sql","r",'utf-8').read().split(";")
 for cmd in cmds:
 	try:
 		print(cmd)
