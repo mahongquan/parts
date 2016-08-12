@@ -942,18 +942,26 @@ def upload(request):
 
     # the full file path and name
     fullfilepath = os.path.join( filepath, filename )
-
     # clean up filenames & paths:
     fullfilepath = os.path.normpath( fullfilepath )
     fullfilepath = os.path.normcase( fullfilepath )
+    num=1
+    newfilename=filename
 
+    while(os.path.exists(fullfilepath)):
+        logging.info(num)
+        logging.info(fullfilepath)
+        newfilename=str(num)+"_"+filename
+        fullfilepath=os.path.join( filepath, str(num)+"_"+filename )
+        fullfilepath = os.path.normpath( fullfilepath )
+        fullfilepath = os.path.normcase( fullfilepath )
+        num +=1
     # try to write file to the dir.
     try:
         f = open( fullfilepath, 'wb' ) # Writing in binary mode for windows..?
         f.write( data )
         f.close( )
-        res={"success":True, "files":"./"+filename}
+        res={"success":True, "files":"./"+newfilename}
     except e:
         res={"success":False, "files":str(e)}
-        # something went wrong 
     return HttpResponse(json.dumps(res, ensure_ascii=False))
