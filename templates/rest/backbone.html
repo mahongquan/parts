@@ -253,7 +253,7 @@ function delCookie(name)//删除cookie
     //     });
     // },
     uploadfile:function(){
-        var dlg=new UploadView({model:this.model,parent:this});
+        var dlg=new UploadView({parent:this});
         dlg.showdialog();
     },
     // uploadfile_old:function(){
@@ -1257,7 +1257,7 @@ function delCookie(name)//删除cookie
       this.parent=arguments[0].parent;
     },
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html(this.template());
       return this;
     },
   });
