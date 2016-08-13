@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import  include, url
 from rest import views
 urlpatterns = [
         url(r'^upload', views.upload),

@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.template.context import RequestContext
 import datetime
 import json
