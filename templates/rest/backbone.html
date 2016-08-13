@@ -219,79 +219,83 @@ function delCookie(name)//删除cookie
         $(event.target).removeClass( "newClass");  
       }
     },
-    upload_click:function(event){
-      console.log("upload_click");
-      //console.log(event.data);
-      //$("#upload").attr("disabled","disabled");
-      var view=event.data.view;
-      $.ajax({
-        context:view,
-        url: '/rest/upload',
-        type: 'POST',
-        cache: false,
-        data: new FormData($('#uploadForm')[0]),
-        processData: false,
-        contentType: false
-        }).done(function(res) {
-          //console.log("done");
-          //console.log(res);//{"success":True, "files":fullfilepath}
-          data=JSON.parse(res);
-          if(data.success){
-            //$("#method").val(data.files);
-            //view.model.set({method:data.files});
-            view.$("#method").val(data.files);
-            view.$("#method").trigger("change");
-            //$("#upload").removeAttr("disabled");
-            $('#uploadForm').dialog('close');
-            //console.log(this);
-          }
-          else{
+    // upload_click:function(event){
+    //   console.log("upload_click");
+    //   //console.log(event.data);
+    //   //$("#upload").attr("disabled","disabled");
+    //   var view=event.data.view;
+    //   $.ajax({
+    //     context:view,
+    //     url: '/rest/upload',
+    //     type: 'POST',
+    //     cache: false,
+    //     data: new FormData($('#uploadForm')[0]),
+    //     processData: false,
+    //     contentType: false
+    //     }).done(function(res) {
+    //       //console.log("done");
+    //       //console.log(res);//{"success":True, "files":fullfilepath}
+    //       data=JSON.parse(res);
+    //       if(data.success){
+    //         //$("#method").val(data.files);
+    //         //view.model.set({method:data.files});
+    //         view.$("#method").val(data.files);
+    //         view.$("#method").trigger("change");
+    //         //$("#upload").removeAttr("disabled");
+    //         $('#uploadForm').dialog('close');
+    //         //console.log(this);
+    //       }
+    //       else{
 
-          }
-        }).fail(function(res) {
+    //       }
+    //     }).fail(function(res) {
 
-        });
-    },
+    //     });
+    // },
     uploadfile:function(){
-      $("#upload").one("click",{view:this},this.upload_click);//多次绑定会导致函数执行多次
-      $('#uploadForm').dialog({
-            //bgiframe: true,
-            //resizable: false, height: "530",width:"200",
-            //height:140,
-            modal: true
-            , overlay: {
-                backgroundColor: '#000'
-                , opacity: 0.5
-            }
-            , autoOpen: true, 
-            close: function (event,ui) {
-                   $("#uploadForm").dialog("destroy");
-            }
-      });
+        var dlg=new UploadView({model:this.model,parent:this});
+        dlg.showdialog();
     },
-    save_new:function(){
-      //console.log("upload_click");
-      var data=new FormData(this.$('#uploadForm')[0]);
-      $.ajax({
-        context: this,
-        url: "/rest/Contact/",
-        cache: false,
-        data: data,
-        processData: false,
-        contentType: false
-        , error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(errorThrown);
-        }
-        , success: function (data) {
-            console.log("upload done");
-            //console.log(data);
-            // if (data.success) {
-            //     addrow(data.data.id, data.data.name);
-            //     $("#dialog").dialog("close");
-            // }
-        }
-      });
-    },
+    // uploadfile_old:function(){
+    //   $("#upload").one("click",{view:this},this.upload_click);//多次绑定会导致函数执行多次
+    //   $('#uploadForm').dialog({
+    //         //bgiframe: true,
+    //         //resizable: false, height: "530",width:"200",
+    //         //height:140,
+    //         modal: true
+    //         , overlay: {
+    //             backgroundColor: '#000'
+    //             , opacity: 0.5
+    //         }
+    //         , autoOpen: true, 
+    //         close: function (event,ui) {
+    //                $("#uploadForm").dialog("destroy");
+    //         }
+    //   });
+    // },
+    // save_new:function(){
+    //   //console.log("upload_click");
+    //   var data=new FormData(this.$('#uploadForm')[0]);
+    //   $.ajax({
+    //     context: this,
+    //     url: "/rest/Contact/",
+    //     cache: false,
+    //     data: data,
+    //     processData: false,
+    //     contentType: false
+    //     , error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //         console.log(errorThrown);
+    //     }
+    //     , success: function (data) {
+    //         console.log("upload done");
+    //         //console.log(data);
+    //         // if (data.success) {
+    //         //     addrow(data.data.id, data.data.name);
+    //         //     $("#dialog").dialog("close");
+    //         // }
+    //     }
+    //   });
+    // },
     save:function(){
       var data={};
       for(var fname in this.model.attributes){
@@ -1194,6 +1198,70 @@ function delCookie(name)//删除cookie
     },
   });
   //////////////
+    var UploadView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#upload-template').html()),
+    events: {
+       "click #bt_upload" : "uploadfile",
+    },
+    uploadfile:function(){
+      var self=this;
+      $.ajax({
+        context:this.parent,
+        url: '/rest/upload',
+        type: 'POST',
+        cache: false,
+        data: new FormData(this.$('#uploadForm')[0]),
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          //console.log("done");
+          //console.log(res);//{"success":True, "files":fullfilepath}
+          data=JSON.parse(res);
+          if(data.success){
+            //$("#method").val(data.files);
+            //view.model.set({method:data.files});
+            self.parent.$("#method").val(data.files);
+            self.parent.$("#method").trigger("change");
+            //$("#upload").removeAttr("disabled");
+            self.$el.dialog('close');
+          }
+          else{
+          }
+        }).fail(function(res) {
+        });
+    },
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        var self=this;
+        //console.log(this.$el);
+        this.$el.dialog({
+                width:300,//height:800,
+                modal: false
+                , overlay: {
+                    //backgroundColor: '#0F0'
+                    //, 
+                    opacity: 0.5
+                }
+                , autoOpen: true,
+               open: function (event, ui) {
+                 },
+               close: function (event,ui) {
+                   $(this).dialog("destroy");
+               }
+       });
+    },
+    save:function(){
+    },
+    initialize: function() {
+      this.parent=arguments[0].parent;
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
+    //////////////
     var PackItemEditView = Backbone.View.extend({
     tagName:  "div",
     template: _.template($('#packitem-edit-template').html()),
@@ -1220,19 +1288,6 @@ function delCookie(name)//删除cookie
                       }
            }
        }//for
-       //save Item///////////////////////
-      //  var item=new Item();
-      //  item.set(data);
-      //  item.set({id:data["itemid"]});
-      //  item.save(null,{
-      //   success:function(context, model, resp, options){
-      //     //console.log(options);
-      //     //console.log("item save finish");
-      //   }
-      // }); 
-       //save PackItem///////////////////////
-       //console.log("============");
-       //console.log(data);
       this.model.set(data);
       var self=this;
       this.model.save(null,{
@@ -1261,10 +1316,10 @@ function delCookie(name)//删除cookie
   </script>
 {% endblock %} 
 {% block content %}
-<form hidden="true" id="uploadForm" enctype="multipart/form-data">
+<!-- <form hidden="true" id="uploadForm" enctype="multipart/form-data">
     <input id="file" type="file" name="file"/>
     <button id="upload" type="button">上传</button>
-</form>
+</form> -->
   <div id="todoapp">
     <div>
     <table>
@@ -1621,5 +1676,11 @@ function delCookie(name)//删除cookie
             </table>
         <button  class="btn btn-primary" id="bt_save_item">保存</button>
     </script>
+   <script type="text/template" id="upload-template">
+    <form  id="uploadForm" enctype="multipart/form-data">
+    <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
+    <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
+    </form>
+ </script>
 {% endblock %} 
 
