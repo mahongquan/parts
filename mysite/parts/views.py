@@ -439,7 +439,7 @@ def allfile(request):
         try:
             fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
             (data_record,data_xishu)=genRecord(fullfilepath,c)
-            dict1[c.yiqibh+"调试记录.xml"]=data_record
+            dict1[c.yiqibh+"调试记录.docx"]=data_record
             dict1["系数.lbx"]=data_xishu
         except ValueError as e:
             logging.info(e)
