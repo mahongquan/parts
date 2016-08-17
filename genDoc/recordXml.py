@@ -76,10 +76,36 @@ def chanelNums(chanels):
     if "HS" in chanels:
         ss+=1
     return (cs,ss)
+def getElement(chanels,first):
+    print(first)
+    eles=first.split("(")
+    ele=eles[0]#2C
+    if ele[0]=="2":
+        chanels.append("L"+ele[1])
+        chanels.append("H"+ele[1])
+    else:
+        ele_set=eles[1][:-1]#移去括号
+        print(ele_set)
+        if ele_set[0]=="高":
+            chanels.append("H"+ele[1])
+        else:
+            chanels.append("L"+ele[1])
+    pass    
+def getchannels(peizhi):
+    elements=peizhi.split("+")
+    chanels=[]
+    first=elements[0]
+    getElement(chanels,first)
+    if len(elements)==1:#单元素
+        pass
+    else:#two elements
+        second=elements[1]
+        getElement(chanels,second)
+    return chanels
 def genRecord(fn,c):
     yiqibh=c.yiqibh
     yiqixinghao=c.yiqixinghao
-    chanels=c.channels
+    chanels=getchannels(c.channels)
     factors=getFromIni(yiqixinghao,fn)
     #logging.info(factors)
     #logging.info(yiqibh,yiqixinghao,chanels)
@@ -176,7 +202,7 @@ def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     for t in tree.tables:
         print(t.cell(1,1,).text,t.cell(0,1).text)
     tbl=tree.tables[4]
-    changeGrid(tbl,2,3,"4.01")#红外光源电压
+    changeGrid(tbl,2,3,"4.1")#红外光源电压
     if "LC" in chanels:
         changeGrid(tbl,12,3,genOne("1.3"))#低碳前置放大电压
     else:

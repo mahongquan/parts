@@ -9,7 +9,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from mysite.parts.models import *
 def printAllContact():
-    c=Contact.objects.get(id=145)
+    c=Contact.objects.get(id=166)
     c.baoxiang="test"
     data=genRecord("media/4111601534.ini",c)
     f=open("gen.xml","wb")
