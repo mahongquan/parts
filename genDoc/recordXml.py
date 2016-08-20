@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from lxml import etree as ET
+from docx import Document
 from genDoc.iniXml import getFromIni
 import random
 import os
@@ -46,28 +46,14 @@ def genOne(stdconc):
     test_str=fmt % test
     return (test_str)
 def changeGrid(tbl,rowv,colv,value):
-    tbl_childs=tbl.findall("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr")
-    row1=tbl_childs[rowv]
-    columns=row1.findall("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc")
-    column1=columns[colv]
-    cell=column1.getchildren()[1]
-    cellv=cell.getchildren()[1]
-    t=cellv.getchildren()[1]
-    t.text=value
+    print("================changeGrid")
+    print(tbl.cell(rowv,colv).text)
+    print(value)
+    tbl.cell(rowv,colv).text=value
 def changeGridMulti(tbl,rowv,colv,value):
-    print(rowv,colv)
-    tbl_childs=tbl.getchildren()
-    row1=tbl_childs[rowv+2]
-    columns=row1.getchildren()[1:]
-    column1=columns[colv]
-    cell=column1.getchildren()[1]
-    paras=cell.getchildren()[1:]
-    i=0
-    for p in paras:
-        print(i,p.getchildren()[1].text)
-        if len(value)>i:
-            p.getchildren()[1].text=value[i]
-        i+=1
+    changeGrid(tbl,rowv,colv,"".join(value))
+def setCell(column1,value):
+    column1.text=value
 def getchangdu(chanels):
     if "LO" in chanels:
         lofmt="LO(%d)mm" % 100
@@ -90,10 +76,36 @@ def chanelNums(chanels):
     if "HS" in chanels:
         ss+=1
     return (cs,ss)
+def getElement(chanels,first):
+    print(first)
+    eles=first.split("(")
+    ele=eles[0]#2C
+    if ele[0]=="2":
+        chanels.append("L"+ele[1])
+        chanels.append("H"+ele[1])
+    else:
+        ele_set=eles[1][:-1]#移去括号
+        print(ele_set)
+        if ele_set[0]=="高":
+            chanels.append("H"+ele[1])
+        else:
+            chanels.append("L"+ele[1])
+    pass    
+def getchannels(peizhi):
+    elements=peizhi.split("+")
+    chanels=[]
+    first=elements[0]
+    getElement(chanels,first)
+    if len(elements)==1:#单元素
+        pass
+    else:#two elements
+        second=elements[1]
+        getElement(chanels,second)
+    return chanels
 def genRecord(fn,c):
     yiqibh=c.yiqibh
     yiqixinghao=c.yiqixinghao
-    chanels=c.channels
+    chanels=getchannels(c.channels)
     factors=getFromIni(yiqixinghao,fn)
     #logging.info(factors)
     #logging.info(yiqibh,yiqixinghao,chanels)
@@ -105,25 +117,16 @@ def genRecord(fn,c):
         data2=genDoc.genLabel.genXishuONH(yiqibh,chanels,factors)
     return (data,data2)
 def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
-    tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
-    root = tree.getroot()
-    #print (root.tag)
-    parts=[]
-    for c in root:
-        parts.append(c)
-    part2=parts[2]
-    data=part2.find("{http://schemas.microsoft.com/office/2006/xmlPackage}xmlData")
-    document=data.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document")
-    body=document.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body")
-    #红外检测器调试检查
-    tbls=body.findall("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl")
+    #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
+    tree = Document(os.path.join(MEDIA_ROOT,'ONH调试记录.docx'))
+    tbls=tree.tables
     print(tbls)
     tbl=tbls[0]
     changeGrid(tbl,0,1,yiqibh)#
     changeGrid(tbl,0,3,yiqixinghao)#
     tbl=tbls[2]
-    # (k,b)=getkb.getkb()
-    # changeGridMulti(tbl,16,1,["电流","PID","参数：斜率为",str(k),"；截距为",str(b)])#
+    #(k,b)=getkb.getkb()
+    #changeGrid(tbl,16,1,"电流"+"PID"+"参数：斜率为"+str(k)+"；截距为"+str(b))#
     tbl=tbls[3]
     if "LO" in chanels:
         changeGrid(tbl,1,3,genOne("1.3"))#低碳前置放大电压
@@ -154,8 +157,11 @@ def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     changeGrid(tbl,7,2,changdu)
     # #6、    线性化调试结果
     tbl=tbls[4]
-    #factors=getFromIni(yiqixinghao,fn)
-    #print(factors)
+    print("===aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa========")
+    print(chanels)
+    print(yiqixinghao,fn)
+    factors=getFromIni(yiqixinghao,fn)
+    print(factors)
     if "LO" in chanels:
         changeGrid(tbl,1,2,"%0.1f" % (factors["低氧"][0]))#低碳线性化系数
         changeGrid(tbl,1,3,"%0.3f" % (factors["低氧"][1]))#低碳线性化系数
@@ -180,51 +186,23 @@ def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
         changeGrid(tbl,3,2,"-")
         changeGrid(tbl,3,3,"-")
         changeGrid(tbl,3,4,"-")
-    #tree.write(fn+"_调试记录.xml", encoding="utf-8", xml_declaration=True, method="xml")
     s=BytesIO()
-    tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
+    tree.save(s)
     s.seek(0)
     data=s.read()
-    #data=data.decode('utf-8')
     return data
 def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
-    tree = ET.parse(os.path.join(MEDIA_ROOT,'CS调试记录.xml'))
-    root = tree.getroot()
-    #print (root.tag)
-    parts=[]
-    for c in root:
-        parts.append(c)
-    part2=parts[2]
-    data=part2.find("{http://schemas.microsoft.com/office/2006/xmlPackage}xmlData")
-    document=data.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document")
-    body=document.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body")
-    #print(dir(body))
-    cs=body.getchildren()
-    c2=cs[1]#仪器编号
-    bh=c2[2]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=yiqibh
-    xinghao=c2[4]
-    xinghao_text=xinghao.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    xinghao_text.text=yiqixinghao
-    #线路检查执行人
-    c2=cs[3]#para
-    ps=c2.getchildren()#pPr,r,r
-    logging.info(ps)
-    bh=ps[2]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=baoxiang
-    #
-    c2=cs[11]#para
-    ps=c2.getchildren()#pPr,r,r
-    logging.info(ps)
-    bh=ps[5]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=baoxiang
-    
+    #tree = ET.parse(os.path.join(MEDIA_ROOT,'CS调试记录.xml'))
+    tree = Document(os.path.join(MEDIA_ROOT,'CS调试记录.docx'))
+    c2=tree.paragraphs[1]#仪器编号
+    c2.runs[1].text=yiqibh
+    c2.runs[3].text=yiqixinghao
     #红外检测器调试检查
-    tbl=cs[12]
-    changeGrid(tbl,2,2,"4.01")#红外光源电压
+    print(tree.tables)
+    for t in tree.tables:
+        print(t.cell(1,1,).text,t.cell(0,1).text)
+    tbl=tree.tables[4]
+    changeGrid(tbl,2,3,"4.1")#红外光源电压
     if "LC" in chanels:
         changeGrid(tbl,12,3,genOne("1.3"))#低碳前置放大电压
     else:
@@ -243,7 +221,7 @@ def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
         changeGrid(tbl,15,3,"-")#高硫前置放大电压
     #自动调零范围
     if "LC" in chanels:
-        changeGridMulti(tbl,16,3,[genOne("-7.0"),"~",genOne("7.0"),"V"])#低碳前置放大电压
+        changeGrid(tbl,16,3,[genOne("-7.0"),"~",genOne("7.0"),"V"])#低碳前置放大电压
     else:
          changeGridMulti(tbl,16,3,["-","~","-","V"])#低碳前置放大电压
     if "HC" in chanels:
@@ -259,43 +237,29 @@ def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     else:
          changeGridMulti(tbl,19,3,["-","~","-","V"])#低碳前置放大电压
     nums=chanelNums(chanels)
-    changeGridMulti(tbl,20,2,["C","(",str(nums[0]),")","S","(",str(nums[1]),")"])
+    changeGridMulti(tbl,20,3,["C","(",str(nums[0]),")","S","(",str(nums[1]),")"])
     if "LC" in chanels:
-        changeGridMulti(tbl,21,3,["LC","(","180",")","mm"])#低碳前置放大电压
+        changeGridMulti(tbl,21,4,["LC","(","180",")","mm"])#低碳前置放大电压
     else:
-         changeGridMulti(tbl,21,3,["LC","(","-",")","mm"])#低碳前置放大电压
+         changeGridMulti(tbl,21,4,["LC","(","-",")","mm"])#低碳前置放大电压
     if "HC" in chanels:
-        changeGridMulti(tbl,21,2,["HC","(","3",")","mm"])#低碳前置放大电压
+        changeGridMulti(tbl,21,3,["HC","(","3",")","mm"])#低碳前置放大电压
     else:
-         changeGridMulti(tbl,21,2,["HC","(","-",")","mm"])#低碳前置放大电压
+         changeGridMulti(tbl,21,3,["HC","(","-",")","mm"])#低碳前置放大电压
     if "LS" in chanels:
-        changeGridMulti(tbl,22,3,["LS","(","280",")","mm"])#低碳前置放大电压
+        changeGridMulti(tbl,22,4,["LS","(","280",")","mm"])#低碳前置放大电压
     else:
-         changeGridMulti(tbl,22,3,["LS","(","-",")","mm"])#低碳前置放大电压    
+         changeGridMulti(tbl,22,4,["LS","(","-",")","mm"])#低碳前置放大电压    
     if "HS" in chanels:
-        changeGridMulti(tbl,22,2,["HS","(","10",")","mm"])#低碳前置放大电压
+        changeGridMulti(tbl,22,3,["HS","(","10",")","mm"])#低碳前置放大电压
     else:
-         changeGridMulti(tbl,22,2,["HS","(","-",")","mm"])#低碳前置放大电压
-    #
-    c2=cs[13]#para
-    ps=c2.getchildren()#pPr,r,r
-    n=len(ps)
-    bh=ps[n-1]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=baoxiang
+         changeGridMulti(tbl,22,3,["HS","(","-",")","mm"])#低碳前置放大电压
     #5、    整机上电调试结果
-    tbl=cs[14]
+    tbl=tree.tables[5]
     changeGrid(tbl,1,2,"3.4")#空烧电流
     changeGrid(tbl,2,2,"5.0")#样品电流
-    #
-    c2=cs[15]#para
-    ps=c2.getchildren()#pPr,r,r
-    n=len(ps)
-    bh=ps[n-1]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=baoxiang
     #6、    线性化调试结果
-    tbl=cs[16]
+    tbl=tree.tables[6]
     print(fn)
     factors=getFromIni("CS",fn)
     if "LC" in chanels:
@@ -336,19 +300,10 @@ def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
         changeGrid(tbl,4,2,"-")
         changeGrid(tbl,4,3,"-")
         changeGrid(tbl,4,4,"-")
-        #
-    c2=cs[19]#para
-    ps=c2.getchildren()#pPr,r,r
-    n=len(ps)
-    bh=ps[n-1]
-    bh_text=bh.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t")
-    bh_text.text=baoxiang
-    #tree.write(fn+"_调试记录.xml", encoding="utf-8", xml_declaration=True, method="xml")
     s=BytesIO()
-    tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
+    tree.save(s)
     s.seek(0)
     data=s.read()
-    #data=data.decode('utf-8')
     return data
 if __name__=="__main__":
     print(getpath.getpath())
