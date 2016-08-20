@@ -1,0 +1,18 @@
+import _winreg
+def getComPorts():
+    rt=[]
+    k=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\DEVICEMAP\SERIALCOMM")
+    #print k,dir(k)
+    index=0
+    while True:
+        try:
+            v=_winreg.EnumValue(k,index)
+            print index,v[1]#,dir(v),type(v)
+            rt.append(v[1])
+            index+=1
+        except WindowsError,e:
+            break
+    return rt
+if __name__=="__main__":
+    print getComPorts()
+    
