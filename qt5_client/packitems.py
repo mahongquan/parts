@@ -4,8 +4,8 @@ import sys
 import os
 import pickle
 from PyQt5 import QtCore, QtWidgets,QtWidgets
-from ui_packitems import Ui_DialogPack
-import backend  
+from .ui_packitems import Ui_DialogPack
+from . import  backend 
 import logging
 class PackForm(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -26,14 +26,20 @@ class PackForm(QtWidgets.QDialog):
         self.ui.tableWidget.setHorizontalHeaderItem(3,QtWidgets.QTableWidgetItem("ct"))
         for i in range(len(d)):
             one=d[i]
-            #print one
-            theid=one["id"]
-            #print theid
-            adr=one["name"]
-            self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(theid)))
-            self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(adr))
-            self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(str(one["itemid"])))
-            self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(str(one["ct"])))
+            if backend.USEREST:
+                theid=one["id"]
+                adr=one["name"]
+                self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(theid)))
+                self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(adr))
+                self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(str(one["itemid"])))
+                self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(str(one["ct"])))
+            else:
+                theid=one.id
+                adr=one.item.name
+                self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(theid)))
+                self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(adr))
+                self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(str(one.item.id)))
+                self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(str(one.ct)))
             i+=1
     @QtCore.pyqtSlot()
     def add(self):

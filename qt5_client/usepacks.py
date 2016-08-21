@@ -3,10 +3,10 @@
 import sys
 import os
 from PyQt5 import QtCore, QtWidgets,QtWidgets
-from ui_contact import Ui_Form
-import backend  
+from .ui_contact import Ui_Form
+from . import  backend 
 import logging
-import packitems
+from . import packitems
 class ContactForm(QtWidgets.QDialog):
     def __init__(self, parent=None):
         #print "init"
@@ -26,9 +26,14 @@ class ContactForm(QtWidgets.QDialog):
         self.ui.tableWidget.setHorizontalHeaderItem(2,QtWidgets.QTableWidgetItem("名称"))
         for i in range(len(d)):
             one=d[i]
-            self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(one["id"])))
-            self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(str(one["pack"])))
-            self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(one["name"]))
+            if backend.USEREST:
+                self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(one["id"])))
+                self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(str(one["pack"])))
+                self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(one["name"]))
+            else:
+                self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(one.id)))
+                self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(str(one.pack.id)))
+                self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(one.pack.name))
             i+=1
     @QtCore.pyqtSlot()
     def add(self):
