@@ -31,6 +31,8 @@ import datetime
 from genDoc.docx_write import genPack,genQue
 import genDoc.genLabel
 from genDoc.recordXml import genRecord
+from django.db.models import Count
+from django.db import connection,transaction
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -111,6 +113,42 @@ from genDoc.recordXml import genRecord
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def chart(request):
+    logging.info("chart")
+    end_date=datetime.datetime.now()
+    start_date=end_date+datetime.timedelta(-365)
+    # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
+    #                                           'month': "EXTRACT(month from tiaoshi_date)",
+    #                                           'day': "EXTRACT(day from tiaoshi_date)"}
+
+    #                                   ).values('year', 'month', 'day').annotate(Count('id'))
+    # contacts=query.all()
+    #Contact.objects.raw("select * from ");
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd='select baoxiang,count(id) from parts_contact  where tiaoshi_date between "%s" and "%s" group by baoxiang' % (start_date_s,end_date_s)
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    #transaction.commit_unless_managed()     #提交到数据库
+    #查询操作
+    #cursor.execute('select * from other_other2 where id>%s' ,[1])
+
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0])
+        values.append(one[1])
+    #如果连接多个数据库则使用django.db.connections
+    #from django.db import connections
+    #_cursor = connections['other_database'].cursor()
+    #如果执行了更新、删除等操作
+    #transaction.commit_unless_managed(using='other_databases')
+    r=render_to_response("parts/chart.html",{"user":request.user,"lbls":lbls,"values":values})
+    return(r) 
+
 def onepage(request):
     logging.info("onepage")
     objects=Contact.objects.all()

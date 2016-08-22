@@ -8,6 +8,7 @@ urlpatterns = [
 	#url(r'^ajax_select/', include('ajax_select.urls')),
 	url(r'^$',views.index),
 	url(r'^items/',views.items),
+	url(r'^chart/',views.chart),
 	url(r'^onepage/',views.onepage),
 	url(r'^create_pack$',views.create_pack),#ajax
 	url(r'^create_item$',views.create_item),#ajax
