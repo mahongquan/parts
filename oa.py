@@ -291,5 +291,5 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		mainBJ(sys.argv[1],sys.argv[2])
+		mainBG(sys.argv[1],sys.argv[2])
 
