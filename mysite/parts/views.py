@@ -209,6 +209,7 @@ def loginpage(request):
     r=render_to_response("registration/login.html",c)
     return(r)
 def mylogin(request):
+    logging.info(request.POST)
     username = request.POST['username']
     password = request.POST['password']
     #print username,password

@@ -410,7 +410,7 @@ def mylogout(request):
 
 def mylogin(request):
     logging.info("login/////////////////////////////////////////////////")
-    logging.info(request)
+    logging.info(request.POST)
     request2=request#Request(request,(JSONParser(),))
     data = request2.POST
     username = data['username']
