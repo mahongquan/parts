@@ -48,8 +48,9 @@ def newContact(postdata):
     url = "http://localhost:8000/rest/Contact"
     postdata['csrfmiddlewaretoken']=token
     r=session.post(url,data=postdata)
-    #print r.headers
-    #print r.text
+    print(r.headers)
+    print(r.text)
+    return r.text
 def updateContact(postdata):
     url = "http://localhost:8000/rest/Contact"
     postdata['csrfmiddlewaretoken']=token
@@ -103,7 +104,12 @@ def getItem(params={'format':'json','limit':200,'start':0}):
     ct=10
     #params = {'format':'json','limit':200,'start':0}
     c=session.get(url,params=params).text 
+    print(c)
+    f=open("out.html","w")
+    f.write(c)
+    f.close()
     l=json.loads(c)
+
     return l["data"]
 def updateItem(data):
     url = "http://localhost:8000/rest/update_item2"
@@ -120,23 +126,15 @@ def deleteItem(data):
     postdata={}
     postdata["data"]=json.dumps(data)
     postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    #print postdata
     r=session.post(url,data=postdata)
-    #print r.headers
-    #print r  
 def createItem(data):
-    url = "http://localhost:8000/rest/create_item2"
+    url = "http://localhost:8000/rest/Item"
     postdata={}
     postdata["data"]=json.dumps(data)
-    postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    #print postdata
     r=session.post(url,data=postdata)
-    #print r.headers
-    #print r  
 if __name__=="__main__":
     login()
+    #getItem()
     #print getAllContacts()
     # usepacks=getContactPack(9)
     # print usepacks
@@ -148,5 +146,5 @@ if __name__=="__main__":
     #print getItem({'format':'json','limit':2,'start':0})
     #updateItem({'id':148,'name':'test2'})
     #deleteItem({'id':148,'name':'test2'})
-    #createItem({'bh':148,'name':'test2','guige':'','danwei':''})
+    print (newContact({'bh':148,'name':'test2','guige':'','danwei':''}))
 

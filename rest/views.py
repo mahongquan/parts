@@ -345,12 +345,13 @@ def create_contact(request):
         info = sys.exc_info()
         message=""
         for file, lineno, function, text in traceback.extract_tb(info[2]):
-            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
         message+= "** %s: %s" % info[:2]
         output={"success":False,"message":message}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_contact(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
     id1=data.get("id")
     id1=int(id1)
     rec=Contact.objects.get(id=id1)
@@ -470,7 +471,7 @@ def view_item2(request):
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 @login_required
 def create_item2(request):
-    request=Request(request,(JSONParser(),))
+    #request=Request(request,(JSONParser(),))
     logging.info(request.POST)
     datas=request.POST["data"]
     logging.info(datas)

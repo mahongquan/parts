@@ -45,24 +45,19 @@ def testupdate():
     updateContact(d)
 def newContact(postdata):
     url = "http://localhost:8000/rest/Contact"
-    postdata['csrfmiddlewaretoken']=token
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r.text
+    print(postdata)
+    r=session.post(url,data=json.dumps(postdata))
+    l=json.loads(r.text)
+    print(l["message"])
 def updateContact(postdata):
     url = "http://localhost:8000/rest/Contact"
-    postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r.text   
+    r=session.put(url,data=json.dumps(postdata))
+    #print(r.text)
 def deleteContact(id):
     url = "http://localhost:8000/rest/Contact"
     postdata={}
     postdata["id"]=id
-    r=session.delete(url,params=postdata)
-    #print r.headers
-    #print r.text   
+    r=session.delete(url,data=json.dumps(postdata))
 def getAllContacts():
     url = "http://localhost:8000/rest/Contact"
     ct=10
@@ -99,53 +94,26 @@ def getPackItem(packid):
     return r
 def getItem(params={'format':'json','limit':200,'start':0}):
     url = "http://localhost:8000/rest/Item"
-    ct=10
     #params = {'format':'json','limit':200,'start':0}
     c=session.get(url,params=params).text 
     l=json.loads(c)
     return l["data"]
 def updateItem(data):
-    url = "http://localhost:8000/rest/update_item2"
-    postdata={}
-    postdata["data"]=json.dumps(data)
-    postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    #print postdata
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r
+    url = "http://localhost:8000/rest/Item"
+    r=session.put(url,data=json.dumps(data))
 def deleteItem(data):
-    url = "http://localhost:8000/rest/destroy_item2"
-    postdata={}
-    postdata["data"]=json.dumps(data)
-    postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    #print postdata
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r  
+    url = "http://localhost:8000/rest/Item"
+    r=session.delete(url,data=json.dumps(data))
 def createItem(data):
-    url = "http://localhost:8000/rest/create_item2"
-    postdata={}
-    postdata["data"]=json.dumps(data)
-    postdata['csrfmiddlewaretoken']=token
-    #print session.headers
-    #print postdata
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r  
+    url = "http://localhost:8000/rest/Item"
+    r=session.post(url,data=json.dumps(data))
 if __name__=="__main__":
     login()
-    #print getAllContacts()
-    # usepacks=getContactPack(9)
-    # print usepacks
-    # usepack1=usepacks[0]
-    # print usepack1.contact,usepack1.pack
-    # items=getPackItem(usepack1.pack)
-    # for i in items:
-        # print i
     #print getItem({'format':'json','limit':2,'start':0})
-    #updateItem({'id':148,'name':'test2'})
-    #deleteItem({'id':148,'name':'test2'})
+    #updateItem({'id':205,'name':'test21r2r2t'})
+    #deleteItem({'id':205,'name':'test2'})
     #createItem({'bh':148,'name':'test2','guige':'','danwei':''})
+    #newContact({'yujifahuo_date':'2017-01-01','hetongbh':'111111'})
+    #deleteContact(46)
+    updateContact({'id':46,'yonghu':'111zsaaaaaaa1111'})
 

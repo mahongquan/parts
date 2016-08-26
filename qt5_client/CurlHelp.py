@@ -23,24 +23,24 @@ def initCurl():
 def GetData(curl, url):
     '''获得url指定的资源，这里采用了HTTP的GET方法
 '''
-    head = ['Accept:*/*'
-            ,'User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11'
-            ]
+    # head = ['Accept:*/*'
+    #         ,'User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11'
+    #         ]
+    
     buf = BytesIO()
     curl.setopt(pycurl.WRITEFUNCTION, buf.write)
     curl.setopt(pycurl.URL, url)
-    curl.setopt(pycurl.HTTPHEADER,  head)
+    curl.setopt(pycurl.POST, 0)
+    #curl.setopt(pycurl.HTTPHEADER,  head)
     curl.perform()
     the_page =buf.getvalue()
     #return the_page
     r=Response()
     r.ok=True
     buf.seek(0)
-    r.text=buf.read()
+    r.text=buf.read().decode()
     buf.close()
     return r
-
-
 def PostData(curl, url, data):
     '''提交数据到url，这里使用了HTTP的POST方法
 
@@ -61,13 +61,14 @@ def PostData(curl, url, data):
     print(urlencode(data))
     curl.setopt(pycurl.POSTFIELDS, urlencode(data))
     curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.POST, 1)
     #curl.setopt(pycurl.HTTPHEADER,  head)
     curl.perform()
     the_page = buf.getvalue()
     r=Response()
     r.ok=True
     buf.seek(0)
-    r.text=buf.read()
+    r.text=buf.read().decode()
     buf.close()
     return r
 class Response:
@@ -79,7 +80,8 @@ class Session:
     def __init__(self):
         self.curl=initCurl()
         pass
-    def get(self,url):
+    def get(self,url,params=""):
+        url=url+"?"+urlencode(params)
         return GetData(self.curl,url)
     def post(self,url,data):
         return PostData(self.curl,url,data)

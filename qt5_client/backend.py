@@ -6,7 +6,7 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 USEREST=False
 if USEREST:
-    from .backend_curl import *
+    from .backend_rest import *
 else:
     from .backend_django import *
 if __name__=="__main__":
