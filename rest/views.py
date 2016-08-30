@@ -203,10 +203,10 @@ def view_item(request):
     search=request.GET.get("query",'')
     if search!='':
         total=Item.objects.filter(Q(name__icontains=search)).count()# | Q(bh__icontains=search)
-        objs = Item.objects.filter(Q(name__icontains=search))[start:start+limit]
+        objs = Item.objects.filter(Q(name__icontains=search)).order_by('-id')[start:start+limit]
     else:
         total=Item.objects.count()
-        objs = Item.objects.all()[start:start+limit]
+        objs = Item.objects.all().order_by('-id')[start:start+limit]
     data=[]
     for rec in objs:
         data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei})
