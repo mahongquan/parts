@@ -132,6 +132,6 @@ def readDir(p):
 		readfile(p,f)		
 if __name__=="__main__":
 	#readfile("media","6.3标钢入库清单.xls")
-	readDir(r"C:\Users\group2\Downloads")
+	readDir("D:\\")
 
 

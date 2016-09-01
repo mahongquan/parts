@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
-
+import logging
 import os
 import sys
 import codecs
@@ -90,5 +90,10 @@ def genedit():
     f=codecs.open("out.txt","w","utf-8")
     f.write(out)
     f.close()
+def test():
+    r=Contact.objects.annotate(month=TruncMonth('tiaoshi_date')).values('month').annotate(c=Count('id')).values('month', 'c')  
+    logging.info(r)
+    logging.info(dir(r))
 #genedit()
-gentitle()
+#gentitle()
+test()
