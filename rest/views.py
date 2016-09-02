@@ -875,7 +875,7 @@ def create_packItem(request):
      if data.get("itemid")!=None:
          rec.item=Item.objects.get(id=int(data["itemid"]))
      if data.get("ct")!=None:
-         rec.ct=int(data.get("ct"))
+         rec.ct=float(data.get("ct"))
      rec.save()
      output={"success":True,"message":"Created new User" +str(rec.id)}
      output["data"]=rec.json()
@@ -898,7 +898,7 @@ def update_packItem(request):
          if data.get("itemid")!=None:
              rec.item=item
          if data.get("ct")!=None:
-             rec.ct=int(data.get("ct"))
+             rec.ct=float(data.get("ct"))
          if data.get("quehuo")!=None:
              rec.quehuo=data.get("quehuo")
          rec.save()

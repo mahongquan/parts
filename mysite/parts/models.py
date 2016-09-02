@@ -67,7 +67,7 @@ class Item(models.Model):
 class PackItem(models.Model):
     pack=models.ForeignKey(Pack,verbose_name="包")#合同
     item=models.ForeignKey(Item,verbose_name="备件")#备件
-    ct=  models.IntegerField(verbose_name="数量",default=1)#数量
+    ct=  models.FloatField(verbose_name="数量",default=1)#数量
     quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
         return self.pack.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei

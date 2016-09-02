@@ -64,7 +64,7 @@ def deleteContact(id):
     #print r.headers
     #print r.text   
 def getAllContacts():
-     cs=Contact.objects.all()
+     cs=Contact.objects.order_by("-yujifahuo_date").all()
      return cs
 def getAllPack():
     url = "http://localhost:8000/rest/Pack"
