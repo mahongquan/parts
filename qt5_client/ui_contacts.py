@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'contacts.ui'
 #
-# Created: Fri Sep  2 14:15:45 2016
+# Created: Tue Sep  6 08:14:54 2016
 #      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,6 +33,9 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout.addWidget(self.pushButton)
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.horizontalLayout.addWidget(self.pushButton_4)
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -47,6 +50,7 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(MainWindow.change)
         self.pushButton_2.clicked.connect(MainWindow.add)
         self.pushButton_3.clicked.connect(MainWindow.delete)
+        self.pushButton_4.clicked.connect(MainWindow.bj)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -55,4 +59,5 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "add"))
         self.pushButton_3.setText(_translate("MainWindow", "delete"))
         self.pushButton.setText(_translate("MainWindow", "change"))
+        self.pushButton_4.setText(_translate("MainWindow", "比对出库单"))
 

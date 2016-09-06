@@ -1,6 +1,7 @@
 import logging
 import datetime
 import time
+import readChuKu
 logging.basicConfig()
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
@@ -63,6 +64,15 @@ def deleteContact(id):
     r=session.delete(url,params=postdata)
     #print r.headers
     #print r.text   
+def huizong(contactid):
+    contact=Contact.objects.get(id=contactid)
+    (items,items2)=contact.huizong()
+    r=[]
+    for item in items:
+        r.append((item.bh,item.name,item.ct))
+    return r
+    #items_excel=readChuKu.readfile(excelfile)
+
 def getAllContacts():
      cs=Contact.objects.order_by("-yujifahuo_date").all()
      return cs

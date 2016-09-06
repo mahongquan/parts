@@ -7,6 +7,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 import myutil
+def addItem(items,item):
+    find=False
+    for i in items:
+        if i.id==item.id:
+            i.ct +=item.ct
+            find=True
+            break
+    if not find:
+        items.append(item)
+    return items
 class Contact(models.Model,myutil.MyModel):
     #=======销售===========
     yonghu = models.CharField(max_length=30,verbose_name="用户单位")#用户单位
@@ -32,6 +42,17 @@ class Contact(models.Model,myutil.MyModel):
     class Meta:
         verbose_name="合同"
         verbose_name_plural="合同"
+    def huizong(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            for pi in cp.pack.packitem_set.all():
+                pi.item.ct=pi.ct
+                if not pi.quehuo:
+                    items=addItem(items,pi.item)
+                else:
+                    items2=addItem(items2,pi.item)
+        return (items,items2)
 class Pack(models.Model):
     #=======销售===========
     name = models.CharField(max_length=30,verbose_name="包名称")#用户单位
