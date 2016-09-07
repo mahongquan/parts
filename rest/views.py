@@ -26,6 +26,52 @@ from django.db.models import Q
 from myutil import MyEncoder
 import traceback
 import sys
+import xlrd
+def inItems(item,items):
+    inIt=False
+    equal=False
+    v=None
+    for i in range(len(items)):
+        if items[i][0]==item[0]:
+            inIt=True
+            if items[i][2]==item[2]:
+                equal=True
+            v=items[i]
+            items.remove(items[i])
+            break
+    return(inIt,equal,v)
+def printList(items):
+    r=[]
+    for item in items:
+        r1=[]
+        for one in item:
+            r1.append(str(one))
+        r.append(",".join(r1))
+    return "\n".join(r)
+def bjitems(items,items_chuku):
+    #(left,middle,right)bjitems(items,items_chuku)
+    left=[]
+    equal=[]
+    notequal=[]
+    for item in items:
+        (inIt,equalv,v)=inItems(item,items_chuku)
+        if inIt:
+            if equalv:
+                equal.append(item)
+            else:
+                notequal.append(item)
+                notequal.append(v)
+        else:
+            left.append(item)
+    # print("left")
+    # print(printList(left))
+    # print("equal")
+    # print(printList(equal))
+    # print("!equal")
+    # print(printList(notequal))
+    # print("right")
+    # print(printList(items_chuku))
+    return(left,notequal,items_chuku)
 def writer(request):
     # logging.info(request)
     # output={}
@@ -966,3 +1012,42 @@ def upload(request):
     except e:
         res={"success":False, "files":str(e)}
     return HttpResponse(json.dumps(res, ensure_ascii=False))
+def readChuKUfile(content):
+    book = xlrd.open_workbook(file_contents=content)
+    table=book.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    begin=False
+    dan=[]
+    for i in range(nrows-9-3):
+        #print(i,table.row_values(i)[0])
+        cells=table.row_values(9+i)
+        dan.append((cells[0],cells[1],cells[4]))#bh,name,ct
+    return dan    
+def check(request):
+    contactid=int(request.POST.get("id"))
+    contact=Contact.objects.get(id=contactid)
+    #    (fileName,fileType)= QFileDialog.getOpenFileName(None,"Open Excel file", ".","Excel Files ( *.xlsx *.xls)")
+    # where to store files. Probably best defined in settings.py
+    filepath = mysite.settings.MEDIA_ROOT 
+
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+
+    #the uploaded data from the file
+    #f.open()
+    #data=f.read()
+    (items,items2)=contact.huizong()
+    r=[]
+    for item in items:
+        r.append((item.bh,item.name,item.ct))
+    items_chuku=readChuKUfile(f.read())
+    (left,notequal,right)=bjitems(r,items_chuku)
+    # try to write file to the dir.
+    res={"success":True, "result":(left,notequal,right)}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))    

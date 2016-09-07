@@ -12,7 +12,7 @@
     /*.contact_usepack{margin:1px 20px 1px 1px;}*/
     .contact_zxd{margin:1px 20px 1px 1px;}
     .contact_zs{margin:1px 20px 1px 1px;}
-    .contact_quehuo {margin:1px 20px 1px 1px;}
+    .contact_chuku {margin:1px 20px 1px 20px;}
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
     .newClass { background-color:#8888ff;}
@@ -405,10 +405,15 @@ function delCookie(name)//删除cookie
       "click .contact_delete" : "delete",
       "click .contact_usepack" : "usepack",
       "click .contact_zxd" : "zxd",
+      "click .contact_chuku" : "checkchuku",
       "click .contact_quehuo" : "quehuo",
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
+    },
+    checkchuku:function(){
+      check=new CheckChukuView({model:this.model})
+      check.showdialog();
     },
     allfile:function(){
         window.open("/parts/allfile?id="+this.model.get("id"));
@@ -1199,6 +1204,212 @@ function delCookie(name)//删除cookie
       return this;
     },
   });
+  //
+  //   var ResultView = Backbone.View.extend({
+  //    tagName:  "div",//el: $("#section_usepack"),
+  //    template: _.template($('#packitem-list-template').html()),
+  //    events: {
+  //     "click #id_new_packitem" : "new_packitem",
+  //   },
+  //   new_packitem:function(){
+  //     //console.log("new packitem");
+  //     var p=new Item();
+  //     var self=this;
+  //     p.set({name:this.$("#new_item1").val()});
+  //     p.save(null,{
+  //       success:function(context, model, resp, options){
+  //         //console.log(options);
+  //         //console.log("save finish");
+  //         //model.set(resp.success.arguments[0].data);
+  //         context.set(model.data);
+  //         //self.usepacks.add(p);
+  //         //alert("success");
+  //         self.addrow(p.get("id"),p.get("name"));
+  //         self.$("#new_item1").val("");
+  //       }
+  //     });
+  //   },
+  //   mysetdata:function(){
+  //       this.$("#packitem-list").empty();
+  //       this.packitems.fetch({
+  //           reset:true,
+  //           data: { pack:this.model.get("pack"),start:0,limit:200},
+  //           success:function(){
+  //               ////console.log(this.usepacks.length+" usepacks")
+  //               // this.$("#page").empty();
+  //               // var right=myglobal.start+myglobal.limit
+  //               // this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+  //           },
+  //           error:function(){
+  //           }
+  //         }
+  //       );//{ reset: true,data: { start:this.start,limit:this.limit} });
+  //   },
+  //   initialize: function() {
+  //      this.packitems = new PackItemList();
+  //      this.listenTo(this.packitems, 'add', this.addOne);
+  //      this.listenTo(this.packitems, 'reset', this.addAll);
+  //      this.listenTo(this.packitems, 'all', this.render);
+  //      this.$el.html(this.template(this.model.toJSON()));
+  //      // this.pie=new PackItemEditView({model:new PackItem()});
+  //      // this.$("#packitem-edit").append(this.pie.render().el);
+  //      this.mysetdata();
+  //   },
+  //   addrow:function(pk,value){
+  //     //console.log(pk);
+  //     //console.log(value);
+  //     var p=new PackItem();
+  //     var self=this;
+  //     p.set({pack:this.model.get("pack"),name:value,itemid:pk,ct:1});
+  //     p.save(null,{
+  //       success:function(context, model, resp, options){
+  //         //console.log(options);
+  //         //console.log("save finish");
+  //         //model.set(resp.success.arguments[0].data);
+  //         context.set(model.data);
+  //         self.packitems.add(p);
+  //       }
+  //     });
+  //   },
+  //   render: function() {
+  //     //console.log("packitem-list render");//_.template($('#usepack-list-template').html()),
+  //      //this.$el.html(this.template(this.model.toJSON()));
+  //     //return this;
+  //   },
+  //   addOne: function(packitem) {
+  //     //console.log("addOne usepacks");
+  //     var view = new PackItemView({model: packitem});
+  //     var viewc=view.render().el;
+  //     //console.log(viewc);
+  //     this.$("#packitem-list").append(viewc);
+  //   },
+  //   addAll: function() {
+  //     //console.log("addAll usepacks");
+  //     this.packitems.each(this.addOne, this);
+  //   },
+  // });
+  //
+  var CheckChukuView= Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#check-template').html()),
+    events: {
+       "click #bt_upload" : "uploadfile",
+    },
+    uploadfile:function(){
+      var self=this;
+      var data1=new FormData(this.$('#uploadForm')[0]);
+      data1.append("id", this.$('#id').val());
+      console.log(data1);
+      $.ajax({
+        context:this.parent,
+        url: '/rest/check',
+        type: 'POST',
+        cache: false,
+        data: data1,
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          //console.log("done");
+          //console.log(res);//{"success":True, "files":fullfilepath}
+          data=JSON.parse(res);
+          if(data.success){
+            // console.log(data.result);
+            // self.$("#resultlist").empty();
+                        var left=data.result[0];
+            var notequal=data.result[1];
+            var right=data.result[2];
+            var n=left.length;
+            if (n<right.length){
+              n=right.length;
+            }
+            var table=$('<table class="table-bordered">');
+            for(var i=0;i<n;i++){
+              var tr=$("<tr>");
+              if(i<left.length){
+                for(var one in left[i]){
+                    var td=$("<td>"+left[i][one]+"</td>")
+                    tr.append(td);
+                }
+              }
+              else{
+                var td=$("<td></td>");
+                tr.append(td);
+                var td2=$("<td></td>");
+                tr.append(td2);
+                var td3=$("<td></td>");
+                tr.append(td3);
+              }
+              if(i<right.length){
+                for(var one in right[i]){
+                    var td=$("<td>"+right[i][one]+"</td>")
+                    tr.append(td);
+                }
+              }
+              else{
+                var td=$("<td></td>");
+                tr.append(td);
+                var td2=$("<td></td>");
+                tr.append(td2);
+                var td3=$("<td></td>");
+                tr.append(td3);
+              }
+              table.append(tr);
+             }
+            n=notequal.length;
+            for(var i=0;i<n/2;i++){
+              var tr=$("<tr>");
+              var l=2*i+0;
+                for(var one in left[l]){
+                    var td=$("<td>"+notequal[l][one]+"</td>")
+                    tr.append(td);
+                }
+                var r=2*i+1;
+                for(var one in left[r]){
+                    var td=$("<td>"+notequal[r][one]+"</td>")
+                    tr.append(td);
+                }
+              table.append(tr);
+             }
+             //table.dialog();
+            self.$("#resultlist").append(table);
+          }
+          else{
+          }
+        }).fail(function(res) {
+        });
+    },
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        var self=this;
+        //console.log(this.$el);
+        this.$el.dialog({
+                width:800,height:800,
+                modal: false
+                , overlay: {
+                    //backgroundColor: '#0F0'
+                    //, 
+                    opacity: 0.5
+                }
+                , autoOpen: true,
+               open: function (event, ui) {
+                 },
+               close: function (event,ui) {
+                   $(this).dialog("destroy");
+               }
+       });
+    },
+    save:function(){
+    },
+    initialize: function() {
+      console.log("init");
+      console.log(this.model)
+      this.parent=arguments[0].parent;
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+  });
   //////////////
     var UploadView = Backbone.View.extend({
     tagName:  "div",
@@ -1406,7 +1617,7 @@ function delCookie(name)//删除cookie
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
-<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a>
+<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对出库单</a>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
@@ -1683,6 +1894,15 @@ function delCookie(name)//删除cookie
     <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
+ </script>
+    <script type="text/template" id="check-template">
+    <p>仪器编号<%- yiqibh %>出库单核对，请上传出库单导出的Excel文件</p>
+    <form  id="uploadForm" enctype="multipart/form-data">
+    <input style="margin:10px 10px 10px 10px;" disabled="true" id="id" name="id" value="<%- id %>"/>
+    <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
+    <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
+    </form>
+    <div id="resultlist"></div>
  </script>
 {% endblock %} 
 

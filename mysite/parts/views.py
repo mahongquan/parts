@@ -340,16 +340,16 @@ def deletecontact(request):
 def finishcontact(request):
     r=HttpResponseRedirect("/parts/")
     return(r)
-def addItem(items,item):
-    find=False
-    for i in items:
-        if i.id==item.id:
-            i.ct +=item.ct
-            find=True
-            break
-    if not find:
-        items.append(item)
-    return (items,find)
+# def addItem(items,item):
+#     find=False
+#     for i in items:
+#         if i.id==item.id:
+#             i.ct +=item.ct
+#             find=True
+#             break
+#     if not find:
+#         items.append(item)
+#     return (items,find)
 def showcontact(request):
     #print request.GET
     dic = {}
@@ -358,29 +358,17 @@ def showcontact(request):
     c=Contact.objects.get(id=contact_id)
     dic["user"]=request.user
     dic["contact"]=c
-    items=[]
-    items2=[]
-    totalct=0
-    totalid=0
-    for cp in c.usepack_set.all():
-        for pi in cp.pack.packitem_set.all():
-            pi.item.ct=pi.ct
-            if pi.quehuo:
-                items2=addItem(items2,pi.item)
-            else:
-                (items,find)=addItem(items,pi.item)
-                totalct +=pi.ct
-                if(find):
-                    totalid+=0
-                else:
-                    totalid+=1
+    (items,items2)=c.huizong()
     dic["items"]=items
     if len(items2)==0:
         items2=None
     dic["items2"]=items2
     dic["new"]=0
+    totalct=0
+    for i in items:
+        totalct +=i.ct
     dic["totalct"]=totalct
-    dic["totalid"]=totalid
+    dic["totalid"]=len(items)
     r=render_to_response("parts/t_装箱单.html",dic)
     return(r)
 
