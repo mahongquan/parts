@@ -1327,7 +1327,7 @@ function delCookie(name)//删除cookie
               var tr=$("<tr>");
               if(i<left.length){
                 for(var one in left[i]){
-                    var td=$("<td>"+left[i][one]+"</td>")
+                    var td=$("<td  style='color:blue;'>"+left[i][one]+"</td>")
                     tr.append(td);
                 }
               }
@@ -1341,7 +1341,7 @@ function delCookie(name)//删除cookie
               }
               if(i<right.length){
                 for(var one in right[i]){
-                    var td=$("<td>"+right[i][one]+"</td>")
+                    var td=$("<td  style='color:green;'>"+right[i][one]+"</td>")
                     tr.append(td);
                 }
               }
@@ -1357,7 +1357,7 @@ function delCookie(name)//删除cookie
              }
             n=notequal.length;
             for(var i=0;i<n/2;i++){
-              var tr=$("<tr>");
+              var tr=$('<tr style="color:red;">');
               var l=2*i+0;
                 for(var one in left[l]){
                     var td=$("<td>"+notequal[l][one]+"</td>")
