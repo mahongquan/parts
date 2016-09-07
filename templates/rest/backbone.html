@@ -1898,8 +1898,8 @@ function delCookie(name)//删除cookie
     <script type="text/template" id="check-template">
     <p>仪器编号<%- yiqibh %>出库单核对，请上传出库单导出的Excel文件</p>
     <form  id="uploadForm" enctype="multipart/form-data">
-    <input style="margin:10px 10px 10px 10px;" disabled="true" id="id" name="id" value="<%- id %>"/>
-    <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
+    <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value="<%- id %>"/>
+    <input style="margin:10px 10px 10px 10px;" id="file"  accept="application/vnd.ms-excel" type="file" name="file"/>
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
     <div id="resultlist"></div>
