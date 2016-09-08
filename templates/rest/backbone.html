@@ -1314,7 +1314,7 @@ function delCookie(name)//删除cookie
           data=JSON.parse(res);
           if(data.success){
             // console.log(data.result);
-            // self.$("#resultlist").empty();
+            self.$("#resultlist").empty();
                         var left=data.result[0];
             var notequal=data.result[1];
             var right=data.result[2];
@@ -1374,6 +1374,7 @@ function delCookie(name)//删除cookie
             self.$("#resultlist").append(table);
           }
           else{
+            $("<p>仪器编号不一致</p>").dialog();
           }
         }).fail(function(res) {
         });

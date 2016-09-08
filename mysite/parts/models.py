@@ -53,6 +53,18 @@ class Contact(models.Model,myutil.MyModel):
                 else:
                     items2=addItem(items2,pi.item)
         return (items,items2)
+    def huizong2(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            if cp.pack.name!="调试必备":
+                for pi in cp.pack.packitem_set.all():
+                    pi.item.ct=pi.ct
+                    if not pi.quehuo:
+                        items=addItem(items,pi.item)
+                    else:
+                        items2=addItem(items2,pi.item)
+        return (items,items2)        
 class Pack(models.Model):
     #=======销售===========
     name = models.CharField(max_length=30,verbose_name="包名称")#用户单位

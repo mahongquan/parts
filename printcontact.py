@@ -94,6 +94,13 @@ def test():
     r=Contact.objects.annotate(month=TruncMonth('tiaoshi_date')).values('month').annotate(c=Count('id')).values('month', 'c')  
     logging.info(r)
     logging.info(dir(r))
+def updateItem():
+    for i in Item.objects.all():
+        if i.bh[:4]=="0103":
+            print(i.bh)
+            i.bh="01"+i.bh
+            i.save()
 #genedit()
 #gentitle()
-test()
+#test()
+#updateItem()

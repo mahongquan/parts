@@ -1023,7 +1023,8 @@ def readChuKUfile(content):
         #print(i,table.row_values(i)[0])
         cells=table.row_values(9+i)
         dan.append((cells[0],cells[1],cells[4]))#bh,name,ct
-    return dan    
+    yiqibh=str(int(table.row_values(7)[3]))
+    return (dan,yiqibh)
 def check(request):
     contactid=int(request.POST.get("id"))
     contact=Contact.objects.get(id=contactid)
@@ -1042,12 +1043,16 @@ def check(request):
     #the uploaded data from the file
     #f.open()
     #data=f.read()
-    (items,items2)=contact.huizong()
+    (items,items2)=contact.huizong2()
     r=[]
     for item in items:
         r.append((item.bh,item.name,item.ct))
-    items_chuku=readChuKUfile(f.read())
-    (left,notequal,right)=bjitems(r,items_chuku)
-    # try to write file to the dir.
-    res={"success":True, "result":(left,notequal,right)}
+    (items_chuku,yqbh)=readChuKUfile(f.read())
+    logging.info(yqbh)
+    if yqbh!=contact.yiqibh:
+        res={"success":False, "result":""}
+    else:
+        (left,notequal,right)=bjitems(r,items_chuku)
+        # try to write file to the dir.
+        res={"success":True, "result":(left,notequal,right)}
     return HttpResponse(json.dumps(res, ensure_ascii=False))    
