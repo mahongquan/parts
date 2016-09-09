@@ -1618,7 +1618,7 @@ function delCookie(name)//删除cookie
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
-<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对出库单</a>
+<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
@@ -1897,7 +1897,7 @@ function delCookie(name)//删除cookie
     </form>
  </script>
     <script type="text/template" id="check-template">
-    <p>仪器编号<%- yiqibh %>出库单核对，请上传出库单导出的Excel文件</p>
+    <p>仪器编号<%- yiqibh %>备料计划核对，请上传备料计划导出的Excel文件</p>
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value="<%- id %>"/>
     <input style="margin:10px 10px 10px 10px;" id="file"  accept="application/vnd.ms-excel" type="file" name="file"/>
