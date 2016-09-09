@@ -1059,6 +1059,8 @@ def check(request):
     r=[]
     for item in items:
         r.append((item.bh,item.name,item.ct))
+    for item in items2:
+        r.append((item.bh,item.name,item.ct))
     items_chuku=readBeiliaofile(f.read())
     #logging.info(yqbh)
     # if yqbh!=contact.yiqibh:
