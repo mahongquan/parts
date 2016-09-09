@@ -10,6 +10,7 @@ from . import  backend
 #import getpath
 import logging
 from . import usepacks
+from . import contactEdit
 class CalculatorForm(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(CalculatorForm, self).__init__(parent)
@@ -47,6 +48,9 @@ class CalculatorForm(QtWidgets.QMainWindow):
     def add(self):
         row=self.ui.tableWidget.currentRow()
         it=self.ui.tableWidget.item(row,0)
+        calculator = contactEdit.CalculatorForm()
+        #calculator.showdata(int(it.text()))
+        calculator.exec_()
         pass
     @QtCore.pyqtSlot()
     def delete(self):

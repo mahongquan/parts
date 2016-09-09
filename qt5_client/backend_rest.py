@@ -115,5 +115,5 @@ if __name__=="__main__":
     #createItem({'bh':148,'name':'test2','guige':'','danwei':''})
     #newContact({'yujifahuo_date':'2017-01-01','hetongbh':'111111'})
     #deleteContact(46)
-    updateContact({'id':46,'yonghu':'111zsaaaaaaa1111'})
+    updateContact({'id':122,'yiqibh':'111zsaaaaaaa1111'})
 

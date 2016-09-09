@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>编辑仪器信息</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="id"/>
      </item>
      <item row="0" column="2">
       <widget class="QLabel" name="label_3">
@@ -40,7 +40,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QLineEdit" name="lineEdit_4"/>
+      <widget class="QLineEdit" name="yonghu"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="addr"/>
      </item>
      <item row="1" column="2">
       <widget class="QLabel" name="label_4">
@@ -66,10 +66,13 @@
       </widget>
      </item>
      <item row="1" column="3">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="channels"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_5">
+       <property name="styleSheet">
+        <string notr="true">font: 75 9pt &quot;Century Schoolbook L&quot;;</string>
+       </property>
        <property name="text">
         <string>仪器型号:</string>
        </property>
@@ -79,10 +82,13 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_5"/>
+      <widget class="QLineEdit" name="yiqixinghao"/>
      </item>
      <item row="2" column="2">
       <widget class="QLabel" name="label_12">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(82, 82, 255);</string>
+       </property>
        <property name="text">
         <string>仪器编号:	</string>
        </property>
@@ -92,7 +98,7 @@
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QLineEdit" name="lineEdit_12"/>
+      <widget class="QLineEdit" name="yiqibh"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_6">
@@ -105,7 +111,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_6"/>
+      <widget class="QLineEdit" name="baoxiang"/>
      </item>
      <item row="3" column="2">
       <widget class="QLabel" name="label_9">
@@ -118,7 +124,7 @@
       </widget>
      </item>
      <item row="3" column="3">
-      <widget class="QLineEdit" name="lineEdit_11"/>
+      <widget class="QLineEdit" name="shenhe"/>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_7">
@@ -130,9 +136,6 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_7"/>
-     </item>
      <item row="4" column="2">
       <widget class="QLabel" name="label_11">
        <property name="text">
@@ -142,9 +145,6 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-     </item>
-     <item row="4" column="3">
-      <widget class="QLineEdit" name="lineEdit_9"/>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_8">
@@ -157,7 +157,7 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="lineEdit_8"/>
+      <widget class="QLineEdit" name="hetongbh"/>
      </item>
      <item row="5" column="2">
       <widget class="QLabel" name="label_10">
@@ -170,7 +170,27 @@
       </widget>
      </item>
      <item row="5" column="3">
-      <widget class="QLineEdit" name="lineEdit_10"/>
+      <widget class="QLineEdit" name="method"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QDateEdit" name="yujifahuo_date">
+       <property name="displayFormat">
+        <string>yyyy-M-d</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QDateEdit" name="tiaoshi_date">
+       <property name="displayFormat">
+        <string>yyyy-M-d</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -202,12 +222,12 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QTableView" name="table_usepacks"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="auto_usepack">
          <property name="cursor">
           <cursorShape>CrossCursor</cursorShape>
          </property>
@@ -223,7 +243,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="bibei">
          <property name="styleSheet">
           <string notr="true">border-color: rgb(66, 66, 255);</string>
          </property>
@@ -244,10 +264,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_14"/>
+        <widget class="QLineEdit" name="newpack"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_5">
+        <widget class="QPushButton" name="pushButton_newpack">
          <property name="text">
           <string>新包</string>
          </property>
