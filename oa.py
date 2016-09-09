@@ -211,13 +211,15 @@ def  downloadTodofiles():
 		files=mywait_id("attachmentAreashowAttFile")
 		checktitle(title)
 		link=files.find_element_by_tag_name("a")
+		link.click()
 		cmd="window.open('%s')" % link.get_attribute("href")
-		browser.execute_script(cmd)
-		print(cmd)
-		rt.append(link.get_attribute("href"))
+		# browser.execute_script(cmd)
+		# print(cmd)
+		# rt.append(link.get_attribute("href"))
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
+		break
 	return rt
 def downloadBg():
 	rt=downloadTodofiles()#openTodo()

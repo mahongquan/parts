@@ -15,6 +15,10 @@
 <script type="text/babel">
 var myglobal={start:0,limit:5,total:0};
 var ItemBox = React.createClass({
+  handleItemEdit:function(data){
+    console.log(data);
+    this.itemform.setState(data);
+  },
   handleItemDelete:function(data_out){
     console.log("item_delete in box");
     console.log(data_out);
@@ -47,6 +51,28 @@ var ItemBox = React.createClass({
   handleItemSubmit: function(item) {
     console.log("submit");
     console.log(item);
+    if (item.id!=undefined)
+    {
+      $.ajax({
+        url: this.props.url,
+        dataType: 'json',
+        contentType: "application/json",
+        type: 'PUT',
+        data: JSON.stringify(item),//item,
+        success: function(data) {
+          console.log("handleItemSubmit");
+          console.log(data);
+          //this.setState({data: data.data});
+          var data0=this.state.data;
+          data0.push(data.data);
+          this.setState({data:data0});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      return;
+    }
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -89,7 +115,7 @@ var ItemBox = React.createClass({
   handlePrev:function(){
     console.log("prev");
      myglobal.start=myglobal.start-myglobal.limit;
-     if(myglobal.start<0) myglobal.start=0;
+     if( myglobal.start<0 ) {myglobal.start=0;}
      this.componentDidMount();
   },
   handleNext:function(){
@@ -113,11 +139,11 @@ var ItemBox = React.createClass({
           <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
           <button id="id_bt_search" onClick={this.handleSearch}>search</button>
         </p>
-        <ItemList data={this.state.data} onItemDelete={this.handleItemDelete}/>
+        <ItemList data={this.state.data} onItemDelete={this.handleItemDelete} onItemEdit={this.handleItemEdit}/>
         <p>
           <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
         </p>
-        <ItemForm onItemSubmit={this.handleItemSubmit} />
+        <ItemForm onItemSubmit={this.handleItemSubmit} ref={ function(ref){this.itemform = ref;}.bind(this) }/>
       </div>
     );
   }
@@ -129,6 +155,10 @@ var ItemList = React.createClass({
     console.log(data);
     this.props.onItemDelete(data);
   },
+  handleItemEdit:function(data){
+    console.log(data);
+    this.props.onItemEdit(data);
+  },
   render: function() {
     console.log(this.props.data);
     var itemNodes =null;
@@ -139,7 +169,7 @@ var ItemList = React.createClass({
     else{
       itemNodes = this.props.data.map(function(item) {
         return (
-          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei} onItemDelete={self.handleItemDelete}>
+          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei} onItemDelete={self.handleItemDelete} onItemEdit={self.handleItemEdit}>
           </Item>
         );
       });
@@ -156,7 +186,7 @@ var ItemList = React.createClass({
 
 var ItemForm = React.createClass({
   getInitialState: function() {
-    return {name: '', guige: '',bh:'',danwei:''};
+    return {id:undefined,name: '', guige: '',bh:'',danwei:''};
   },
   handleNameChange: function(e) {
     this.setState({name: e.target.value});
@@ -179,13 +209,24 @@ var ItemForm = React.createClass({
     if (!guige || !name) {
       return;
     }
-   this.props.onItemSubmit({name: name, guige: guige,bh:bh,danwei:danwei});
+   this.props.onItemSubmit({id:this.state.id,name: name, guige: guige,bh:bh,danwei:danwei});
    this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
   },
   render: function() {
     return (
       <form className="itemForm" onSubmit={this.handleSubmit}>
       <table><tbody>
+      <tr>
+              <td>id</td>
+              <td>
+                <input
+                  type="text"
+                  readOnly="true"
+                  placeholder="id"
+                  value={this.state.id}
+                ></input>
+                </td>
+       </tr>
       <tr>
               <td>bh</td>
               <td>
@@ -250,6 +291,11 @@ var Item = React.createClass({
   },
   handleEdit:function(){
     console.log("edit");
+    console.log("delete");
+    for(var i in this.props){
+      console.log(i);
+    }
+    this.props.onItemEdit({id:this.props.id,name: this.props.name, guige: this.props.guige,bh:this.props.bh,danwei:this.props.danwei});
   },
   render: function() {
     return (

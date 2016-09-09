@@ -11,6 +11,8 @@
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
 <script src="/static/backbone_parts/react.backbone.js"></script>
+  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 <script>
   $.ajaxSetup({
   data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
@@ -84,7 +86,7 @@ var ItemsListViewComponent = React.createBackboneClass({
   handlePrev:function(){
     console.log("prev");
      myglobal.start=myglobal.start-myglobal.limit;
-     if(myglobal.start<0) myglobal.start=0;
+     if(myglobal.start< 0) myglobal.start=0;
      this.componentDidMount();
   },
   handleNext:function(){
@@ -98,8 +100,21 @@ var ItemsListViewComponent = React.createBackboneClass({
     console.log("item_edit in itemlist");
     console.log(data_out);
     var model=data_out;
-    //this._itemform.getModel().set(model.attributes);
-    this._itemform.props.model=model;//readonly
+    var i_Fac=React.createFactory(ItemFormComponent);
+    var iview = i_Fac({onItemSubmit:this.handleItemSubmit, model:model});
+    ReactDOM.render(iview, document.getElementById('item_form'));
+
+       $("#item_form").dialog({
+             modal: true
+             , overlay: {
+                 backgroundColor: '#000'
+                 , opacity: 0.5
+             }
+             , autoOpen: true, 
+             close: function (event,ui) {
+                    //$("#uploadForm").dialog("destroy");
+             }
+       });
   },
   handleItemDelete:function(data_out){
     console.log("item_delete in box");
@@ -131,17 +146,17 @@ var ItemsListViewComponent = React.createBackboneClass({
     //this._itemform = null;
         var self=this;
         var itemsList = this.getCollection().map(function(item) {
-            return <ItemViewComponent model={item} key={item.get("id")} onItemEdit={self.handleItemEdit}/>;
+            return < ItemViewComponent model={item} key={item.get("id")} onItemEdit={self.handleItemEdit}/>;
         });
         return (
-          <div>
-          <h4>备件</h4>
-        <p>
-          <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
-          <button id="id_bt_search" onClick={this.handleSearch}>search</button>
+          < div>
+          < h4>备件</h4>
+        < p>
+          < input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
+          < button id="id_bt_search" onClick={this.handleSearch}>search</button>
         </p>
-          <table className="itemList table-bordered"><tbody>
-      <tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
+          < table className="itemList table-bordered"><tbody>
+      < tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
         {itemsList}
       </tbody>
       </table>
@@ -249,11 +264,12 @@ var ItemFormComponent = React.createBackboneClass({
   }
 });
 var itemsList = new ItemList();
-var ItemsListView = React.createFactory(ItemsListViewComponent);
-var itemsListView = ItemsListView({collection: itemsList});
+var ItemsListView_Factory = React.createFactory(ItemsListViewComponent);
+var itemsListView = ItemsListView_Factory({collection: itemsList});
 ReactDOM.render(itemsListView, document.getElementById('items'));
 </script>
 {% endblock %}
 {% block content %}
   <div id="items"></div>
+  <div id="item_form"></div>
 {% endblock %}

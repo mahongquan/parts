@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db.models import Q
+#from django.db.models.functions import TruncMonth
 from mysite.parts.models import *
 from django.shortcuts import render_to_response
 import time
@@ -115,6 +116,13 @@ from django.db import connection,transaction
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def chart(request):
     logging.info("chart")
+    # r=Contact.objects
+    # .annotate(month=TruncMonth('tiaoshi_date'))  # Truncate to month and add to select list
+    # .values('month')                          # Group By month
+    # .annotate(c=Count('id'))                  # Select the count of the grouping
+    # .values('month', 'c')  
+    logging.info(r)
+    logging.info(dir(r))
     end_date=datetime.datetime.now()
     start_date=end_date+datetime.timedelta(-365)
     # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
@@ -332,16 +340,16 @@ def deletecontact(request):
 def finishcontact(request):
     r=HttpResponseRedirect("/parts/")
     return(r)
-def addItem(items,item):
-    find=False
-    for i in items:
-        if i.id==item.id:
-            i.ct +=item.ct
-            find=True
-            break
-    if not find:
-        items.append(item)
-    return items
+# def addItem(items,item):
+#     find=False
+#     for i in items:
+#         if i.id==item.id:
+#             i.ct +=item.ct
+#             find=True
+#             break
+#     if not find:
+#         items.append(item)
+#     return (items,find)
 def showcontact(request):
     #print request.GET
     dic = {}
@@ -350,20 +358,17 @@ def showcontact(request):
     c=Contact.objects.get(id=contact_id)
     dic["user"]=request.user
     dic["contact"]=c
-    items=[]
-    items2=[]
-    for cp in c.usepack_set.all():
-        for pi in cp.pack.packitem_set.all():
-            pi.item.ct=pi.ct
-            if pi.quehuo:
-                items2=addItem(items2,pi.item)
-            else:
-                items=addItem(items,pi.item)
+    (items,items2)=c.huizong()
     dic["items"]=items
     if len(items2)==0:
         items2=None
     dic["items2"]=items2
     dic["new"]=0
+    totalct=0
+    for i in items:
+        totalct +=i.ct
+    dic["totalct"]=totalct
+    dic["totalid"]=len(items)
     r=render_to_response("parts/t_装箱单.html",dic)
     return(r)
 
@@ -464,11 +469,11 @@ def allfile(request):
         ,dir1+"/证书.xlsx":data2
         ,outfilename+"_装箱单.docx":data_zxd
         }
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
-    logging.info(fullfilepath)
-    data_que=genQue(c,fullfilepath)
-    if len(data_que)!=0:
-        dict1[outfilename+"_短缺物资单.docx"]=data_que
+    # fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
+    # logging.info(fullfilepath)
+    # data_que=genQue(c,fullfilepath)
+    # if len(data_que)!=0:
+    #     dict1[outfilename+"_短缺物资单.docx"]=data_que
     #
     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
     dict1["标签.lbx"]=data_lbl

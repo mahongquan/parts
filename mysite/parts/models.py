@@ -7,6 +7,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 import myutil
+def addItem(items,item):
+    find=False
+    for i in items:
+        if i.id==item.id:
+            i.ct +=item.ct
+            find=True
+            break
+    if not find:
+        items.append(item)
+    return items
 class Contact(models.Model,myutil.MyModel):
     #=======销售===========
     yonghu = models.CharField(max_length=30,verbose_name="用户单位")#用户单位
@@ -32,6 +42,29 @@ class Contact(models.Model,myutil.MyModel):
     class Meta:
         verbose_name="合同"
         verbose_name_plural="合同"
+    def huizong(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            for pi in cp.pack.packitem_set.all():
+                pi.item.ct=pi.ct
+                if not pi.quehuo:
+                    items=addItem(items,pi.item)
+                else:
+                    items2=addItem(items2,pi.item)
+        return (items,items2)
+    def huizong2(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            if cp.pack.name!="调试必备":
+                for pi in cp.pack.packitem_set.all():
+                    pi.item.ct=pi.ct
+                    if not pi.quehuo:
+                        items=addItem(items,pi.item)
+                    else:
+                        items2=addItem(items2,pi.item)
+        return (items,items2)        
 class Pack(models.Model):
     #=======销售===========
     name = models.CharField(max_length=30,verbose_name="包名称")#用户单位
@@ -67,7 +100,7 @@ class Item(models.Model):
 class PackItem(models.Model):
     pack=models.ForeignKey(Pack,verbose_name="包")#合同
     item=models.ForeignKey(Item,verbose_name="备件")#备件
-    ct=  models.IntegerField(verbose_name="数量",default=1)#数量
+    ct=  models.FloatField(verbose_name="数量",default=1)#数量
     quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
         return self.pack.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
