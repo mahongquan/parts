@@ -96,7 +96,7 @@ def test():
     logging.info(dir(r))
 def updateItem():
     for i in Item.objects.all():
-        if i.bh[:4]=="0103":
+        if i.bh[:5]=="0102d":
             print(i.bh)
             i.bh="01"+i.bh
             i.save()
