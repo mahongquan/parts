@@ -319,7 +319,7 @@ function delCookie(name)//删除cookie
       var newcontact=false
       if(this.model.get("id")==undefined)
       {
-          contacts.add(this.model);
+          contacts.unshift(this.model);
           newcontact=true;
       }
       if(data.yiqibh==undefined || data.yiqibh==""){
