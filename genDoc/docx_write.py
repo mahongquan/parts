@@ -79,8 +79,12 @@ def genPack(contact,fn):
         changeGrid2(tbl,1,2,contact.yiqixinghao+" "+contact.channels)
     if contact.yiqixinghao[0]=='C':
         changeGrid2(tbl,2,3,"1根")
-    else:
+    elif contact.yiqixinghao[0]=='O':
         changeGrid2(tbl,2,3,"3根")
+    elif contact.yiqixinghao[0]=='N':
+        changeGrid2(tbl,2,3,"3根")
+    else :
+        changeGrid2(tbl,2,1,"")
     tbl=document.tables[2]#配件清单
     print(tbl.cell(0,0).text)
     items=[]

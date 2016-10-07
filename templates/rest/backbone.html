@@ -319,7 +319,7 @@ function delCookie(name)//删除cookie
       var newcontact=false
       if(this.model.get("id")==undefined)
       {
-          contacts.add(this.model);
+          contacts.unshift(this.model);
           newcontact=true;
       }
       if(data.yiqibh==undefined || data.yiqibh==""){
@@ -1323,6 +1323,13 @@ function delCookie(name)//删除cookie
               n=right.length;
             }
             var table=$('<table class="table-bordered">');
+            var tr=$("<tr>");
+            var td=$("<td  style='color:blue;' colspan='3'>装箱单</td>")
+            tr.append(td);
+            var td=$("<td  style='color:green;' colspan='3'>用友ERP</td>")
+            tr.append(td);
+            table.append(tr);
+
             for(var i=0;i<n;i++){
               var tr=$("<tr>");
               if(i<left.length){
@@ -1384,7 +1391,7 @@ function delCookie(name)//删除cookie
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:800,height:800,
+                width:800,height:500,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
