@@ -50,6 +50,7 @@ def printList(items):
     return "\n".join(r)
 def bjitems(items,items_chuku):
     #(left,middle,right)bjitems(items,items_chuku)
+    logging.info(items)
     left=[]
     equal=[]
     notequal=[]
