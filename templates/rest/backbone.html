@@ -1366,12 +1366,12 @@ function delCookie(name)//删除cookie
             for(var i=0;i<n/2;i++){
               var tr=$('<tr style="color:red;">');
               var l=2*i+0;
-                for(var one in left[l]){
+                for(var one in notequal[l]){
                     var td=$("<td>"+notequal[l][one]+"</td>")
                     tr.append(td);
                 }
                 var r=2*i+1;
-                for(var one in left[r]){
+                for(var one in notequal[r]){
                     var td=$("<td>"+notequal[r][one]+"</td>")
                     tr.append(td);
                 }
