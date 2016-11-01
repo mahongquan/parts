@@ -1810,7 +1810,7 @@ function delCookie(name)//删除cookie
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td>缺货</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
+    　　　<td>ID</td><td>备件id</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td>缺货</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
@@ -1826,7 +1826,10 @@ function delCookie(name)//删除cookie
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><input type="checkbox" id="quehuo" disabled="disabled" name="quehuo" checked="<%- quehuo %>"></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
+    　　　<td><%- id %></td>
+    <td><%- itemid %></td>
+    <td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><input type="checkbox" id="quehuo" disabled="disabled" name="quehuo" checked="<%- quehuo %>"></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td>
+    <td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
@@ -1838,7 +1841,7 @@ function delCookie(name)//删除cookie
                     <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
                 </td>
             </tr>
-             <tr hidden="true">
+             <tr>
                 <td>
                     <label>备件id:</label>
                 </td>
