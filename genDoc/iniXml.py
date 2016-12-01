@@ -59,6 +59,7 @@ def getOini(fn):
 	parts=root.getchildren()
 	chanels=parts[12]
 	factors=parts[16]
+	return getfactors(chanels,factors)
 def getNini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()

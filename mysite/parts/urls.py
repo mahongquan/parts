@@ -9,6 +9,8 @@ urlpatterns = [
 	url(r'^$',views.index),
 	url(r'^items/',views.items),
 	url(r'^chart/',views.chart),
+	url(r'^month/',views.month),
+
 	url(r'^onepage/',views.onepage),
 	url(r'^create_pack$',views.create_pack),#ajax
 	url(r'^create_item$',views.create_item),#ajax

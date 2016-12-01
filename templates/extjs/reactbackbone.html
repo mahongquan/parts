@@ -104,17 +104,17 @@ var ItemsListViewComponent = React.createBackboneClass({
     var iview = i_Fac({onItemSubmit:this.handleItemSubmit, model:model});
     ReactDOM.render(iview, document.getElementById('item_form'));
 
-       $("#item_form").dialog({
-             modal: true
-             , overlay: {
-                 backgroundColor: '#000'
-                 , opacity: 0.5
-             }
-             , autoOpen: true, 
-             close: function (event,ui) {
-                    //$("#uploadForm").dialog("destroy");
-             }
-       });
+    $("#item_form").dialog({
+         modal: true
+         , overlay: {
+             backgroundColor: '#000'
+             , opacity: 0.5
+         }
+         , autoOpen: true, 
+         close: function (event,ui) {
+                //$("#uploadForm").dialog("destroy");
+         }
+    });
   },
   handleItemDelete:function(data_out){
     console.log("item_delete in box");

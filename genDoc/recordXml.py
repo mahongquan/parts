@@ -105,16 +105,16 @@ def getchannels(peizhi):
 def genRecord(fn,c):
     yiqibh=c.yiqibh
     yiqixinghao=c.yiqixinghao
-    chanels=getchannels(c.channels)
+    channels=getchannels(c.channels)
     factors=getFromIni(yiqixinghao,fn)
-    #logging.info(factors)
+    logging.info(factors)
     #logging.info(yiqibh,yiqixinghao,chanels)
     if yiqixinghao[0]=="C":
-        data=genRecordCS(fn,yiqixinghao,yiqibh,chanels,factors,c.baoxiang)
-        data2=genDoc.genLabel.genXishuCS(yiqibh,c.channels,factors)
+        data=genRecordCS(fn,yiqixinghao,yiqibh,channels,factors,c.baoxiang)
+        data2=genDoc.genLabel.genXishuCS(yiqibh,channels,factors)
     else:
-        data=genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,c.baoxiang)
-        data2=genDoc.genLabel.genXishuONH(yiqibh,c.channels,factors)
+        data=genRecordONH(fn,yiqixinghao, yiqibh,channels,factors,c.baoxiang)
+        data2=genDoc.genLabel.genXishuONH(yiqibh,channels,factors)
     return (data,data2)
 def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
