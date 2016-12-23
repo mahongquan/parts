@@ -1071,6 +1071,8 @@ function delCookie(name)//删除cookie
       //console.log("new packitem");
       var p=new Item();
       var self=this;
+      var nm=this.$("#new_item1").val();
+      if(nm=="") {alert("输入备件名称");return;}
       p.set({name:this.$("#new_item1").val()});
       p.save(null,{
         success:function(context, model, resp, options){
