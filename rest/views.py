@@ -838,7 +838,7 @@ def view_pack1(request):
     search_bh=request.GET.get("search",'')
     if search_bh!='':
         total=Pack.objects.filter(name__contains=search_bh).count()
-        objs =Pack.objects.filter(name__contains=search_bh)[start:start+limit]
+        objs =Pack.objects.filter(name__contains=search_bh).order_by("-id")[start:start+limit]
     else:
         total=Pack.objects.count()
         objs =Pack.objects.all()[start:start+limit]
@@ -1071,3 +1071,67 @@ def check(request):
         # try to write file to the dir.
     res={"success":True, "result":(left,notequal,right)}
     return HttpResponse(json.dumps(res, ensure_ascii=False))    
+def readStandardFile(fn,filename):
+    book = xlrd.open_workbook(file_contents=fn)
+    table=book.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    begin=False
+    dan=[]
+    for i in range(nrows ):
+        cells=table.row_values(i)
+        if cells[0]=="其他入库单":
+            if not begin:
+                begin=True
+                onedan=[]
+            else:
+                #finish
+                dan.append(onedan)
+                onedan=[]
+        else:
+            if begin:
+                onedan.append(cells)
+            else:
+                pass
+    for one in dan:
+        treatOne(one,filename)   
+def treatOne(rows,fn):
+    beizhu=rows[1][7]
+    if beizhu[:2]=="CS" or beizhu[:2]=="ON":
+        try:
+            d=Pack.objects.get(name=rows[0][1])
+        except ObjectDoesNotExist as e2:
+            d=Pack()
+        d.name=rows[1][7]+"_"+fn
+        d.save()
+        n=len(rows)
+        items=rows[4:4+n-4-3]
+        for i in items:
+            #i=DanjuItem()
+            print(i[1],i[2],i[3],i[4],i[5])
+            items=Item.objects.filter(bh=i[1]).all()
+            if len(items)>1:
+                item=items[0]
+            else:
+                item=Item()
+            item.bh=i[1]
+            item.name=str(i[2])+" "+str(i[1])
+            item.guige=i[3]
+            item.danwei=i[4]
+            item.save()
+            di=PackItem()
+            di.pack=d
+            di.item=item
+            di.ct=i[5]
+            di.save()
+def standard(request):
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+    packs=readStandardFile(f.read(),filename)
+    res={"success":True, "result":""}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))        

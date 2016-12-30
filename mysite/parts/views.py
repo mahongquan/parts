@@ -148,7 +148,7 @@ def month(request):
     lbls=[]
     values=[]
     for one in raw:
-        lbls.append(one[0])
+        lbls.append(one[0]+"月")
         values.append(one[1])
     #如果连接多个数据库则使用django.db.connections
     #from django.db import connections
