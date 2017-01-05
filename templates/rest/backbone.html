@@ -156,6 +156,16 @@ function delCookie(name)//删除cookie
       };
     }
   });
+  var PackList = Backbone.Collection.extend({
+    model: Pack,
+    url : "/rest/Pack/",
+    parse: function(data, options) {
+      //console.log("parse response");
+      // if(data.total)
+      //   myglobal.total=data.total;
+      return data.data;
+   }
+  });
   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147},
   var Item= Backbone.Model.extend({
     urlRoot : "/rest/Item/",
@@ -515,6 +525,8 @@ function delCookie(name)//删除cookie
       return this;
     },
   });
+
+////////////////////////////////////////////////////////////////////////////
 ///////////////////////////
   var ContactEditView2 = Backbone.View.extend({
     tagName:  "div",
@@ -643,6 +655,7 @@ function delCookie(name)//删除cookie
      events: {
       "click #id_bt_search" : "mysearch",
       "click #id_bt_new" : "newcontact",
+      "click #id_bt_standard" : "importstandard",
       "click #id_login" : "showlogin",
       "click #id_logout" : "showlogout",
       "click .baoxiang" : "baoxiang",
@@ -650,6 +663,12 @@ function delCookie(name)//删除cookie
     },
     searchChange:function(){
       myglobal.search=this.$("#id_input_search").val();
+    },
+    importstandard:function(){
+       var editview= new ImportStandardView();
+       editview.showdialog();
+       // var dlg=new UploadView({parent:this});
+       //  dlg.showdialog();
     },
     newcontact:function(){
         var editview= new ContactEditView2({model: new Contact()});
@@ -780,6 +799,212 @@ function delCookie(name)//删除cookie
     },
     addAll: function() {
       contacts.each(this.addOne, this);
+    },
+  });
+///////////////////////////
+  var PackView = Backbone.View.extend({
+    tagName:  "tr",
+    template: _.template($('#pack-template').html()),
+    events: {
+      "click .contact_edit" : "edit",
+      "click .contact_delete" : "delete",
+      "click .contact_usepack" : "usepack",
+      "click .contact_zxd" : "zxd",
+      "click .contact_chuku" : "checkchuku",
+      "click .contact_quehuo" : "quehuo",
+      "click .contact_zs" : "zs",
+      "click .contact_detail" : "detail",
+      "click .contact_allfile" : "allfile",
+    },
+    checkchuku:function(){
+      check=new CheckChukuView({model:this.model})
+      check.showdialog();
+    },
+    allfile:function(){
+        window.open("/parts/allfile?id="+this.model.get("id"));
+    },
+    detail:function(){
+      window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+    },
+    zxd:function(){
+        window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
+    },
+    quehuo:function(){
+        window.open("/parts/que?id="+this.model.get("id"));
+    },
+    zs:function(){
+        window.open("/parts/tar?id="+this.model.get("id"));
+    },
+    usepack:function(){
+           var usepackListView = new UsepackListView({model:this.model});
+           //usepackListView.render();
+           usepackListView.$el.dialog({
+                width:500,//height:500,
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true,
+                close: function (event,ui) {
+                   $(this).dialog("destroy");
+                }
+           });
+           usepackListView.$("#auto_pack1").autocomplete({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    usepackListView.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            }).autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+    },
+    edit:function(){
+        //console.log("edit");
+        //console.log(arguments)
+        var editview= new ContactEditView2({model: this.model});
+        editview.showdialog();
+        // App.editview.model=this.model;
+        //App.$("#section_edit").show();
+    },
+    true_delete:function(){
+        var data={};
+        data.id=this.model.get("id");
+        data.csrfmiddlewaretoken=csrf_token;
+        data= JSON.stringify(data);
+        this.model.destroy({ data:data,contentType:"application:json"});
+    },
+    delete:function(){
+          //delete-template
+           var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+           deleteview.render();
+           deleteview.$el.dialog({
+                modal: true
+                , overlay: {
+                    backgroundColor: '#000'
+                    , opacity: 0.5
+                }
+                , autoOpen: true,
+                close: function (event,ui) {
+                       $(this).dialog("destroy");
+                }
+
+           });
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      // this.input = this.$('.edit');
+      return this;
+    },
+  });
+  ///////////////////////////////////
+  var ImportStandardView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#importstandard-template').html()),
+    events: {
+       "click #bt_upload2" : "uploadfile",
+    },
+    uploadfile:function(){
+      var self=this;
+      var data1=new FormData(this.$('#uploadForm')[0]);
+      data1.append("id", this.$('#id').val());
+      console.log(data1);
+      $.ajax({
+        context:this.parent,
+        url: '/rest/standard',
+        type: 'POST',
+        cache: false,
+        data: data1,
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          data=JSON.parse(res);
+          if(data.success){
+            console.log(data.result);
+            self.mysetdata();
+          }
+          else{
+          }
+        }).fail(function(res) {
+        });
+    },
+   initialize: function() {
+      this.$el.html(this.template());
+      this.start=0;
+      this.limit=8;
+      this.packs= new PackList();;
+      this.listenTo(this.packs, 'add', this.addOne);
+      this.listenTo(this.packs, 'reset', this.addAll);
+      this.listenTo(this.packs, 'all', this.render);
+      this.mysetdata();
+    },
+    mysetdata:function(){
+        this.$("#pack-list").empty();
+        this.packs.fetch({
+            reset:true,
+            data: { start:this.start,limit:this.limit,search:"入库"},
+            success:function(){
+            },
+            error:function(){
+            }
+          }
+        );//{ reset: true,data: { start:this.start,limit:this.limit} });
+    },
+    addOne: function(pack) {
+      var view = new PackView({model: pack});
+      this.$("#pack-list").append(view.render().el);
+    },
+    addAll: function() {
+      this.packs.each(this.addOne, this);
+    },
+    render: function() {
+      //this.$el.html(this.template());
+      return this;
+    },
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        var self=this;
+        this.$el.dialog({
+                width:700,//height:800,
+                modal: false
+                , overlay: {
+                    //backgroundColor: '#0F0'
+                    //, 
+                    opacity: 0.5
+                }
+                , autoOpen: true,
+               open: function (event, ui) {
+                },
+               close: function (event,ui) {
+                //console.log("dialog close function");
+                   //$(ui).find('.mydate').datepicker("destroy");
+                   //$('.mydate').datepicker("destroy");
+                   $(this).dialog("destroy");
+               }
+       });
     },
   });
  //////////////////////////////////////////////////////////////////////////
@@ -1071,6 +1296,8 @@ function delCookie(name)//删除cookie
       //console.log("new packitem");
       var p=new Item();
       var self=this;
+      var nm=this.$("#new_item1").val();
+      if(nm=="") {alert("输入备件名称");return;}
       p.set({name:this.$("#new_item1").val()});
       p.save(null,{
         success:function(context, model, resp, options){
@@ -1326,7 +1553,7 @@ function delCookie(name)//删除cookie
             var tr=$("<tr>");
             var td=$("<td  style='color:blue;' colspan='3'>装箱单</td>")
             tr.append(td);
-            var td=$("<td  style='color:green;' colspan='3'>用友ERP</td>")
+            var td=$("<td  style='color:green;' colspan='3'>备料计划</td>")
             tr.append(td);
             table.append(tr);
 
@@ -1366,12 +1593,12 @@ function delCookie(name)//删除cookie
             for(var i=0;i<n/2;i++){
               var tr=$('<tr style="color:red;">');
               var l=2*i+0;
-                for(var one in left[l]){
+                for(var one in notequal[l]){
                     var td=$("<td>"+notequal[l][one]+"</td>")
                     tr.append(td);
                 }
                 var r=2*i+1;
-                for(var one in left[r]){
+                for(var one in notequal[r]){
                     var td=$("<td>"+notequal[r][one]+"</td>")
                     tr.append(td);
                 }
@@ -1563,6 +1790,7 @@ function delCookie(name)//删除cookie
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
 	    	<button id="id_bt_new"  class="btn btn-primary">新仪器</button>
+        <button id="id_bt_standard"  class="btn btn-info">导入标样</button>
 	</td>
    <td>
     <div class="dropdown">
@@ -1790,7 +2018,7 @@ function delCookie(name)//删除cookie
       <tbody id="usepack-list">
       </tbody>
       </table>
-      <div style="padding: 5px 5px 50px 5px;min-height:300px">  <!-- leave margin to show autocomplete items -->
+      <div style="padding: 5px 5px 50px 5px;min-height:350px">  <!-- leave margin to show autocomplete items -->
       <p><input id="auto_pack1" placeholder="输入包" style="border:solid #265a88"><button  id="id_bibei_usepack">必备</button></p>
       <p>新包名称：<input id="new_pack1"  placeholder="新包" value="<%- hetongbh %>_选配"><button class="btn btn-info" id="id_new_usepack">新包</button></p>
       </div>
@@ -1810,7 +2038,7 @@ function delCookie(name)//删除cookie
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td>缺货</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
+    　　　<td>ID</td><td>备件id</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td>缺货</td><td hidden="true">pack</td><td hidden="true">备件id</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
@@ -1826,7 +2054,10 @@ function delCookie(name)//删除cookie
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><input type="checkbox" id="quehuo" disabled="disabled" name="quehuo" checked="<%- quehuo %>"></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
+    　　　<td><%- id %></td>
+    <td><%- itemid %></td>
+    <td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><input type="checkbox" id="quehuo" disabled="disabled" name="quehuo" checked="<%- quehuo %>"></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td>
+    <td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
@@ -1838,7 +2069,7 @@ function delCookie(name)//删除cookie
                     <input type="text" id="id" name="id" readonly="true"      value="<%- id %>">
                 </td>
             </tr>
-             <tr hidden="true">
+             <tr>
                 <td>
                     <label>备件id:</label>
                 </td>
@@ -1912,5 +2143,31 @@ function delCookie(name)//删除cookie
     </form>
     <div id="resultlist"></div>
  </script>
+ <script  type="text/template" id="importstandard-template">
+      <form  id="uploadForm" enctype="multipart/form-data">
+      <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value=""/>
+      <input style="margin:10px 10px 10px 10px;" id="file"  accept="application/vnd.ms-excel" type="file" name="file"/>
+      <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload2" type="button">上传</button>
+      </form>
+      <div style="min-height:200px;">
+      <table  class="table-bordered" >
+    　<thead>
+    　　<tr>
+    　　　<td>ID</td><td>名称</td>
+    　　</tr>
+   　</thead> 
+      <tbody id="pack-list">
+      </tbody>
+      </table>
+      <!-- <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a> -->
+    </div>
+ </script>
+   <script type="text/template" id="pack-template">
+  <td>
+      <%- id %>
+ </td><td>
+      <%- name %>
+ </td>
+  </script>
 {% endblock %} 
 

@@ -5,6 +5,7 @@ import os
 import io
 from io import BytesIO,StringIO
 from mysite.settings import MEDIA_ROOT
+import logging
 def showchildren(r):
     cs=r.getchildren()
     i=0
@@ -88,7 +89,9 @@ def genXishuCS(yiqibh,chanels,factors):
     objects3=sheets[0].find("{http://schemas.brother.info/ptouch/2007/lbx/main}objects")
     tbl=objects3.find("{http://schemas.brother.info/ptouch/2007/lbx/table}table")
     showtable(tbl)
-    print(factors)
+    logging.info("99999999999999999999999999999999")
+    logging.info(factors)
+    logging.info(chanels)
     if "LC" in chanels:
         changeCell(tbl,1,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
     else:

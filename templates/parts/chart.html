@@ -8,29 +8,35 @@ $(function(){
   console.log("ready");
   var ctx = document.getElementById("myChart");
   console.log(ctx);
-  var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: {{lbls|safe}},
-          datasets: [{
-              label: '# of Votes',
-              data: {{values}},
-              backgroundColor: [
+  var values={{values}};
+  var backgroundColor= [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
                   'rgba(255, 206, 86, 0.2)',
                   'rgba(75, 192, 192, 0.2)',
                   'rgba(153, 102, 255, 0.2)',
                   'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
+              ];
+  var bg=new Array();//values.length);
+  for(var i=0;i<values.length;i++){
+    bg.push('rgba(95, 192, 99, 1)');
+  }
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: {{lbls|safe}},
+          datasets: [{
+              label: '调试台数',
+              data: values,
+              backgroundColor:bg,
+              // borderColor: [
+              //     'rgba(255,99,132,1)',
+              //     'rgba(54, 162, 235, 1)',
+              //     'rgba(255, 206, 86, 1)',
+              //     'rgba(75, 192, 192, 1)',
+              //     'rgba(153, 102, 255, 1)',
+              //     'rgba(255, 159, 64, 1)'
+              // ],
               borderWidth: 1
           }]
       },
@@ -49,6 +55,5 @@ $(function(){
 </script>
 {% endblock %}
 {% block content %}
-{{lbls}}{{values}}
   <canvas  style="border:5px solid;" id="myChart" width="100px" height="50px"></canvas>
 {% endblock %}
