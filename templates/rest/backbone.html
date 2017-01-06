@@ -954,7 +954,7 @@ function delCookie(name)//删除cookie
    initialize: function() {
       this.$el.html(this.template());
       this.start=0;
-      this.limit=8;
+      this.limit=10;
       this.packs= new PackList();;
       this.listenTo(this.packs, 'add', this.addOne);
       this.listenTo(this.packs, 'reset', this.addAll);
@@ -988,12 +988,13 @@ function delCookie(name)//删除cookie
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.dialog({
-                width:700,//height:800,
+                title: "导入标样",
+                width:400,//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
                     //, 
-                    opacity: 0.5
+                    opacity: 1
                 }
                 , autoOpen: true,
                open: function (event, ui) {
