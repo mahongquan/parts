@@ -416,10 +416,21 @@ function delCookie(name)//删除cookie
       "click .contact_usepack" : "usepack",
       "click .contact_zxd" : "zxd",
       "click .contact_chuku" : "checkchuku",
+      "click .contact_folder" : "folder",
       "click .contact_quehuo" : "quehuo",
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
+    },
+    folder:function(){
+      $.getJSON("/rest/folder?id="+this.model.get("id"),function(result){
+          console.info(result);
+      });
+
+      // $.getJSON("/rest/folder", request, function (data, status, xhr) {
+      //                   cache[term] = data;
+      //                   response(data);
+      //               });
     },
     checkchuku:function(){
       check=new CheckChukuView({model:this.model})
@@ -1854,7 +1865,7 @@ function delCookie(name)//删除cookie
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
-<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a>
+<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a><a class="contact_folder" data="<%- id %>">资料文件夹</a>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
