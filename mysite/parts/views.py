@@ -539,7 +539,7 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
-def allfile(request):
+def allfile_old(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
@@ -556,12 +556,6 @@ def allfile(request):
         ,dir1+"/证书.xlsx":data2
         ,outfilename+"_装箱单.docx":data_zxd
         }
-    # fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
-    # logging.info(fullfilepath)
-    # data_que=genQue(c,fullfilepath)
-    # if len(data_que)!=0:
-    #     dict1[outfilename+"_短缺物资单.docx"]=data_que
-    #
     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
     dict1["标签.lbx"]=data_lbl
     #
@@ -576,6 +570,10 @@ def allfile(request):
             logging.info(e)
             pass
     #
+    p="d:/parts/media/仪器资料/"+c.yiqibh
+    if not os.path.exists(p):
+        os.makedirs(p)
+    os.system("start "+p)
     byteio=tarDict(dict1)
     byteio.seek(0)
     data=byteio.read()#.decode()
@@ -584,6 +582,59 @@ def allfile(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t    
+def allfile(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+    logging.info(fullfilepath)
+    data=genShujubiao(c,fullfilepath)
+    data2=getJiaoZhunFile(c)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+    logging.info(fullfilepath)
+    data_zxd=genPack(c,fullfilepath)
+    outfilename=c.yiqibh+"_"+c.yonghu
+    outfilename=outfilename[0:30]
+    dir1="证书_"+outfilename
+    data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+    #
+    p="d:/parts/media/仪器资料/"+c.yiqibh
+    #证书
+    dir1=p+"/"+"证书_"+outfilename
+    logging.info(dir1)
+    if not os.path.exists(dir1):
+        os.makedirs(dir1)
+    file1=dir1+"/证书数据表.xlsx"
+    open(file1,"wb").write(data)
+    file2=dir1+"/证书.xlsx"
+    open(file2,"wb").write(data2)
+    file3=p+"/"+outfilename+"_装箱单.docx"
+    open(file3,"wb").write(data_zxd)
+    file4=p+"/"+"标签.lbx"
+    open(file4,"wb").write(data_lbl)
+    if c.method!=None:
+        logging.info(dir(c.method))
+        try:
+            fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+            (data_record,data_xishu)=genRecord(fullfilepath,c)
+            file5=p+"/"+c.yiqibh+"调试记录.docx"
+            open(file5,"wb").write(data_record)
+            file6=p+"/"+"系数.lbx"
+            open(file5,"wb").write(data_xishu)
+        except ValueError as e:
+            logging.info(e)
+            pass
+    os.system("start "+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))
+def folder(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    p="d:/parts/media/仪器资料/"+c.yiqibh
+    if not os.path.exists(p):
+        os.makedirs(p)
+    os.system("start "+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

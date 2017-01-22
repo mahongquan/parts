@@ -422,22 +422,34 @@ function delCookie(name)//删除cookie
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
     },
-    folder:function(){
-      $.getJSON("/rest/folder?id="+this.model.get("id"),function(result){
-          console.info(result);
-      });
+    // folder:function(){
+    //   $.getJSON("/rest/folder?id="+this.model.get("id"),function(result){
+    //       console.info(result);
+    //   });
 
       // $.getJSON("/rest/folder", request, function (data, status, xhr) {
       //                   cache[term] = data;
       //                   response(data);
       //               });
-    },
+    //},
     checkchuku:function(){
       check=new CheckChukuView({model:this.model})
       check.showdialog();
     },
+    folder:function(){
+        $('#waiting').dialog();
+        $.getJSON("/parts/folder?id="+this.model.get("id"), function(result){
+           console.info(result);
+           $('#waiting').dialog('close');
+       });
+    },
     allfile:function(){
-        window.open("/parts/allfile?id="+this.model.get("id"));
+        //window.open("/parts/allfile?id="+this.model.get("id"));
+        $('#waiting').dialog();
+        $.getJSON("/parts/allfile?id="+this.model.get("id"), function(result){
+           console.info(result);
+           $('#waiting').dialog('close');
+       });
     },
     detail:function(){
       window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
@@ -1776,10 +1788,8 @@ function delCookie(name)//删除cookie
   </script>
 {% endblock %} 
 {% block content %}
-<!-- <form hidden="true" id="uploadForm" enctype="multipart/form-data">
-    <input id="file" type="file" name="file"/>
-    <button id="upload" type="button">上传</button>
-</form> -->
+<p hidden="true" id="waiting" >请等待。。。。。
+</p>
   <div id="todoapp">
     <div>
     <table>
@@ -1865,7 +1875,8 @@ function delCookie(name)//删除cookie
  </td>
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
-<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a><a class="contact_folder" data="<%- id %>">资料文件夹</a>
+<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a>
+<a class="contact_folder" data="<%- id %>">资料文件夹</a>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
