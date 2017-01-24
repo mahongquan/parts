@@ -355,8 +355,11 @@ def genJiaozhunONH(c,fn):
     return save_virtual_workbook(xlBook)
 
 def getJiaoZhunFile(c):
-    (lx,tmp)=c.yiqixinghao.split("-")
-    print(lx)
+    if "-" in c.yiqixinghao:
+        (lx,tmp)=c.yiqixinghao.split("-")
+        print(lx)
+    else:
+        lx=c.yiqixinghao
     data=None
     if lx==u"O":
         tname="O模板"

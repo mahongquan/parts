@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 from django.db.models import Q
 #from django.db.models.functions import TruncMonth
 from mysite.parts.models import *
@@ -34,6 +35,7 @@ import genDoc.genLabel
 from genDoc.recordXml import genRecord
 from django.db.models import Count
 from django.db import connection,transaction
+import traceback
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -583,49 +585,64 @@ def allfile_old(request):
     t['Content-Length']=len(data)
     return t    
 def allfile(request):
-    contact_id=request.GET["id"]
-    c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
-    logging.info(fullfilepath)
-    data=genShujubiao(c,fullfilepath)
-    data2=getJiaoZhunFile(c)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
-    logging.info(fullfilepath)
-    data_zxd=genPack(c,fullfilepath)
-    outfilename=c.yiqibh+"_"+c.yonghu
-    outfilename=outfilename[0:30]
-    dir1="证书_"+outfilename
-    data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
-    #
-    p="d:/parts/media/仪器资料/"+c.yiqibh
-    #证书
-    dir1=p+"/"+"证书_"+outfilename
-    logging.info(dir1)
-    if not os.path.exists(dir1):
-        os.makedirs(dir1)
-    file1=dir1+"/证书数据表.xlsx"
-    open(file1,"wb").write(data)
-    file2=dir1+"/证书.xlsx"
-    open(file2,"wb").write(data2)
-    file3=p+"/"+outfilename+"_装箱单.docx"
-    open(file3,"wb").write(data_zxd)
-    file4=p+"/"+"标签.lbx"
-    open(file4,"wb").write(data_lbl)
-    if c.method!=None:
-        logging.info(dir(c.method))
-        try:
-            fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
-            (data_record,data_xishu)=genRecord(fullfilepath,c)
-            file5=p+"/"+c.yiqibh+"调试记录.docx"
-            open(file5,"wb").write(data_record)
-            file6=p+"/"+"系数.lbx"
-            open(file5,"wb").write(data_xishu)
-        except ValueError as e:
-            logging.info(e)
-            pass
-    os.system("start "+p)
-    out={"success":True}
-    return HttpResponse(json.dumps(out, ensure_ascii=False))
+    try:
+        contact_id=request.GET["id"]
+        c=Contact.objects.get(id=contact_id)
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+        logging.info(fullfilepath)
+        data=genShujubiao(c,fullfilepath)
+        data2=getJiaoZhunFile(c)
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+        logging.info(fullfilepath)
+        data_zxd=genPack(c,fullfilepath)
+        outfilename=c.yiqibh+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+        #
+        p="d:/parts/media/仪器资料/"+c.yiqibh
+        #证书
+        dir1=p+"/"+"证书_"+outfilename
+        logging.info(dir1)
+        if not os.path.exists(dir1):
+            os.makedirs(dir1)
+        file1=dir1+"/证书数据表.xlsx"
+        if not os.path.exists(file1):
+            open(file1,"wb").write(data)
+        file2=dir1+"/证书.xlsx"
+        if not os.path.exists(file2):
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            open(file4,"wb").write(data_lbl)
+        if c.method!=None:
+            logging.info(dir(c.method))
+            try:
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file5,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                pass
+        os.system("start "+p)
+        out={"success":True}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    except:
+        message=""
+        info = sys.exc_info()
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        out={"success":False,"message":message}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
 def folder(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

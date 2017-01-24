@@ -451,6 +451,9 @@ function delCookie(name)//删除cookie
         $.getJSON("/parts/allfile?id="+this.model.get("id"), function(result){
            console.info(result);
            s.$el.dialog('close');
+           if (!result.success){
+            $("<p>"+result.message+"</p>").dialog();
+           }
        });
     },
     detail:function(){
