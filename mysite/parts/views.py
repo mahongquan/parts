@@ -595,21 +595,21 @@ def allfile(request):
         fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
         logging.info(fullfilepath)
         data_zxd=genPack(c,fullfilepath)
-        outfilename=c.yiqibh+"_"+c.yonghu
+        outfilename=c.yiqixinghao+"_"+c.yonghu
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
         data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
         #
         p="d:/parts/media/仪器资料/"+c.yiqibh
         #证书
-        dir1=p+"/"+"证书_"+outfilename
+        dir1=p+"/"+outfilename
         logging.info(dir1)
         if not os.path.exists(dir1):
             os.makedirs(dir1)
         file1=dir1+"/证书数据表.xlsx"
         if not os.path.exists(file1):
             open(file1,"wb").write(data)
-        file2=dir1+"/证书.xlsx"
+        file2=dir1+"/"+c.yonghu+"证书.xlsx"
         if not os.path.exists(file2):
             open(file2,"wb").write(data2)
         file3=p+"/"+outfilename+"_装箱单.docx"
@@ -628,7 +628,7 @@ def allfile(request):
                     open(file5,"wb").write(data_record)
                 file6=p+"/"+"系数.lbx"
                 if not os.path.exists(file6):
-                    open(file5,"wb").write(data_xishu)
+                    open(file6,"wb").write(data_xishu)
             except ValueError as e:
                 logging.info(e)
                 pass
