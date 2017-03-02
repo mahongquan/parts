@@ -585,7 +585,7 @@ def allfile_old(request):
     t['Content-Length']=len(data)
     return t    
 def allfile(request):
-    try:
+    #try:
         contact_id=request.GET["id"]
         c=Contact.objects.get(id=contact_id)
         fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
@@ -635,14 +635,14 @@ def allfile(request):
         os.system("start "+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
-    except:
-        message=""
-        info = sys.exc_info()
-        for file, lineno, function, text in traceback.extract_tb(info[2]):
-            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
-        message+= "** %s: %s" % info[:2]
-        out={"success":False,"message":message}
-        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
 def folder(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

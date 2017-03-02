@@ -40,16 +40,16 @@ def getOHini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()
 	parts=root.getchildren()
-	chanels=parts[12]
-	factors=parts[16]
+	chanels=root.find("Channels")
+	factors=root.find("Factors")
 	return getfactors(chanels,factors)
 
 def getONini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()
 	parts=root.getchildren()
-	chanels=parts[12]
-	factors=parts[16]
+	chanels=root.find("Channels")
+	factors=root.find("Factors")
 	#showchildren(chanels)
 	#showchildren(factors)
 	return getfactors(chanels,factors)
@@ -57,26 +57,26 @@ def getOini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()
 	parts=root.getchildren()
-	chanels=parts[12]
-	factors=parts[16]
+	chanels=root.find("Channels")
+	factors=root.find("Factors")
 	return getfactors(chanels,factors)
 def getNini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()
 	parts=root.getchildren()
-	chanels=parts[12]
-	factors=parts[16]
+	chanels=root.find("Channels")
+	factors=root.find("Factors")
 	#showchildren(chanels)
 	#showchildren(factors)
 	return getfactors(chanels,factors)
 def getCSini(fn):
 	tree = ET.parse(fn)
 	root = tree.getroot()
+	print(dir(root))
 	parts=root.getchildren()
-	chanels=parts[12]
-	factors=parts[16]
-	#showchildren(chanels)
-	#showchildren(factors)
+	chanels=root.find("Channels")
+	factors=root.find("Factors")
+
 	return getfactors(chanels,factors)
 if __name__=="__main__":
-	print(getCSIni("4111525491"))
+	print(getCSini("1_4111704589.ini"))
