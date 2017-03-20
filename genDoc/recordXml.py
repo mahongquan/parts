@@ -106,17 +106,26 @@ def genRecord(fn,c):
     yiqibh=c.yiqibh
     yiqixinghao=c.yiqixinghao
     channels=getchannels(c.channels)
-    factors=getFromIni(yiqixinghao,fn)
+    if fn=="":
+        factors=None
+    else:
+        factors=getFromIni(yiqixinghao,fn)
     logging.info(factors)
     #logging.info(yiqibh,yiqixinghao,chanels)
     if yiqixinghao[0]=="C":
-        data=genRecordCS(fn,yiqixinghao,yiqibh,channels,factors,c.baoxiang)
-        data2=genDoc.genLabel.genXishuCS(yiqibh,channels,factors)
+        data=genRecordCS(yiqixinghao,yiqibh,channels,factors,c.baoxiang)
+        if factors!=None:
+            data2=genDoc.genLabel.genXishuCS(yiqibh,channels,factors)
+        else:
+            data2=""
     else:
-        data=genRecordONH(fn,yiqixinghao, yiqibh,channels,factors,c.baoxiang)
-        data2=genDoc.genLabel.genXishuONH(yiqibh,channels,factors)
+        data=genRecordONH(yiqixinghao, yiqibh,channels,factors,c.baoxiang)
+        if factors!=None:
+            data2=genDoc.genLabel.genXishuONH(yiqibh,channels,factors)
+        else:
+            data2=""
     return (data,data2)
-def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
+def genRecordONH(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
     tree = Document(os.path.join(MEDIA_ROOT,'ONH调试记录.docx'))
     tbls=tree.tables
@@ -159,39 +168,38 @@ def genRecordONH(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     tbl=tbls[4]
     print("===aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa========")
     print(chanels)
-    print(yiqixinghao,fn)
-    factors=getFromIni(yiqixinghao,fn)
     print(factors)
-    if "LO" in chanels:
-        changeGrid(tbl,1,2,"%0.1f" % (factors["低氧"][0]))#低碳线性化系数
-        changeGrid(tbl,1,3,"%0.3f" % (factors["低氧"][1]))#低碳线性化系数
-        changeGrid(tbl,1,4,"%0.3f" % (factors["低氧"][2]))#低碳线性化系数
-    else:
-        changeGrid(tbl,1,2,"-")#低碳线性化系数
-        changeGrid(tbl,1,3,"-")#低碳线性化系数
-        changeGrid(tbl,1,4,"-")#低碳线性化系数
-    if "HO" in chanels:
-        changeGrid(tbl,2,2,"%0.1f" % (factors["高氧"][0]))#高碳线性化系数
-        changeGrid(tbl,2,3,"%0.3f" % (factors["高氧"][1]))#高碳线性化系数
-        changeGrid(tbl,2,4,"%0.3f" % (factors["高氧"][2]))#高碳线性化系数
-    else:
-        changeGrid(tbl,2,2,"-")#高碳线性化系数
-        changeGrid(tbl,2,3,"-")#高碳线性化系数
-        changeGrid(tbl,2,4,"-")#高碳线性化系数
-    if "LN" in chanels:
-        changeGrid(tbl,3,2,"∞")#低硫线性化系数
-        changeGrid(tbl,3,3,"%0.3f" % (factors["低氮"][1]))
-        changeGrid(tbl,3,4,"%0.3f" % (factors["低氮"][2]))
-    else:
-        changeGrid(tbl,3,2,"-")
-        changeGrid(tbl,3,3,"-")
-        changeGrid(tbl,3,4,"-")
+    if factors!=None:
+        if "LO" in chanels:
+            changeGrid(tbl,1,2,"%0.1f" % (factors["低氧"][0]))#低碳线性化系数
+            changeGrid(tbl,1,3,"%0.3f" % (factors["低氧"][1]))#低碳线性化系数
+            changeGrid(tbl,1,4,"%0.3f" % (factors["低氧"][2]))#低碳线性化系数
+        else:
+            changeGrid(tbl,1,2,"-")#低碳线性化系数
+            changeGrid(tbl,1,3,"-")#低碳线性化系数
+            changeGrid(tbl,1,4,"-")#低碳线性化系数
+        if "HO" in chanels:
+            changeGrid(tbl,2,2,"%0.1f" % (factors["高氧"][0]))#高碳线性化系数
+            changeGrid(tbl,2,3,"%0.3f" % (factors["高氧"][1]))#高碳线性化系数
+            changeGrid(tbl,2,4,"%0.3f" % (factors["高氧"][2]))#高碳线性化系数
+        else:
+            changeGrid(tbl,2,2,"-")#高碳线性化系数
+            changeGrid(tbl,2,3,"-")#高碳线性化系数
+            changeGrid(tbl,2,4,"-")#高碳线性化系数
+        if "LN" in chanels:
+            changeGrid(tbl,3,2,"∞")#低硫线性化系数
+            changeGrid(tbl,3,3,"%0.3f" % (factors["低氮"][1]))
+            changeGrid(tbl,3,4,"%0.3f" % (factors["低氮"][2]))
+        else:
+            changeGrid(tbl,3,2,"-")
+            changeGrid(tbl,3,3,"-")
+            changeGrid(tbl,3,4,"-")
     s=BytesIO()
     tree.save(s)
     s.seek(0)
     data=s.read()
     return data
-def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
+def genRecordCS(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     #tree = ET.parse(os.path.join(MEDIA_ROOT,'CS调试记录.xml'))
     tree = Document(os.path.join(MEDIA_ROOT,'CS调试记录.docx'))
     c2=tree.paragraphs[1]#仪器编号
@@ -260,35 +268,35 @@ def genRecordCS(fn,yiqixinghao, yiqibh,chanels,factors,baoxiang):
     changeGrid(tbl,2,2,"5.0")#样品电流
     #6、    线性化调试结果
     tbl=tree.tables[6]
-    print(fn)
-    factors=getFromIni("CS",fn)
-    if "LC" in chanels:
-        changeGrid(tbl,1,2,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
-        changeGrid(tbl,1,3,"%0.3f" % (factors["低碳"][1]))#低碳线性化系数
-        changeGrid(tbl,1,4,"%0.3f" % (factors["低碳"][2]))#低碳线性化系数
-    else:
-        changeGrid(tbl,1,2,"-")#低碳线性化系数
-        changeGrid(tbl,1,3,"-")#低碳线性化系数
-        changeGrid(tbl,1,4,"-")#低碳线性化系数
-    if "HC" in chanels:
-        changeGrid(tbl,2,2,"%0.1f" % (factors["高碳"][0]))#高碳线性化系数
-        changeGrid(tbl,2,3,"%0.3f" % (factors["高碳"][1]))#高碳线性化系数
-        changeGrid(tbl,2,4,"%0.3f" % (factors["高碳"][2]))#高碳线性化系数
-    else:
-        changeGrid(tbl,2,2,"-")#高碳线性化系数
-        changeGrid(tbl,2,3,"-")#高碳线性化系数
-        changeGrid(tbl,2,4,"-")#高碳线性化系数
-    if "LS" in chanels:
-        if factors["低硫"][0]>100:
-            changeGrid(tbl,3,2,"∞")#低硫线性化系数
+    logging.info(factors)
+    if factors!=None:
+        if "LC" in chanels:
+            changeGrid(tbl,1,2,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
+            changeGrid(tbl,1,3,"%0.3f" % (factors["低碳"][1]))#低碳线性化系数
+            changeGrid(tbl,1,4,"%0.3f" % (factors["低碳"][2]))#低碳线性化系数
         else:
-            changeGrid(tbl,3,2,"%0.1f" % (factors["低硫"][0]))
-        changeGrid(tbl,3,3,"%0.3f" % (factors["低硫"][1]))
-        changeGrid(tbl,3,4,"%0.3f" % (factors["低硫"][2]))
-    else:
-        changeGrid(tbl,3,2,"-")
-        changeGrid(tbl,3,3,"-")
-        changeGrid(tbl,3,4,"-")
+            changeGrid(tbl,1,2,"-")#低碳线性化系数
+            changeGrid(tbl,1,3,"-")#低碳线性化系数
+            changeGrid(tbl,1,4,"-")#低碳线性化系数
+        if "HC" in chanels:
+            changeGrid(tbl,2,2,"%0.1f" % (factors["高碳"][0]))#高碳线性化系数
+            changeGrid(tbl,2,3,"%0.3f" % (factors["高碳"][1]))#高碳线性化系数
+            changeGrid(tbl,2,4,"%0.3f" % (factors["高碳"][2]))#高碳线性化系数
+        else:
+            changeGrid(tbl,2,2,"-")#高碳线性化系数
+            changeGrid(tbl,2,3,"-")#高碳线性化系数
+            changeGrid(tbl,2,4,"-")#高碳线性化系数
+        if "LS" in chanels:
+            if factors["低硫"][0]>100:
+                changeGrid(tbl,3,2,"∞")#低硫线性化系数
+            else:
+                changeGrid(tbl,3,2,"%0.1f" % (factors["低硫"][0]))
+            changeGrid(tbl,3,3,"%0.3f" % (factors["低硫"][1]))
+            changeGrid(tbl,3,4,"%0.3f" % (factors["低硫"][2]))
+        else:
+            changeGrid(tbl,3,2,"-")
+            changeGrid(tbl,3,3,"-")
+            changeGrid(tbl,3,4,"-")
     if "HS" in chanels:
         if factors["高硫"][0]>100:
             changeGrid(tbl,4,2,"∞")#高硫线性化系数

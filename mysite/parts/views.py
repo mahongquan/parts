@@ -618,10 +618,13 @@ def allfile(request):
         file4=p+"/"+"标签.lbx"
         if not os.path.exists(file4):
             open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
         if c.method!=None:
-            logging.info(dir(c.method))
             try:
+                logging.info("here")
                 fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
                 (data_record,data_xishu)=genRecord(fullfilepath,c)
                 file5=p+"/"+c.yiqibh+"调试记录.docx"
                 if not os.path.exists(file5):
@@ -631,7 +634,17 @@ def allfile(request):
                     open(file6,"wb").write(data_xishu)
             except ValueError as e:
                 logging.info(e)
-                pass
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
         os.system("start "+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
