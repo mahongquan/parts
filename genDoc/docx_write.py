@@ -108,7 +108,7 @@ def genPack(contact,fn):
             setCell(columns[5],"")
         setCell(columns[4],"")
     if len(items2)>0:
-        #document.add_page_break()
+        document.add_page_break()
         p=document.add_paragraph('短缺物资清单')
         print(dir(p))
         p.alignment=1

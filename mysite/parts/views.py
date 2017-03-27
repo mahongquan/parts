@@ -590,15 +590,11 @@ def allfile(request):
         c=Contact.objects.get(id=contact_id)
         fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
         logging.info(fullfilepath)
-        data=genShujubiao(c,fullfilepath)
-        data2=getJiaoZhunFile(c)
         fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
         logging.info(fullfilepath)
-        data_zxd=genPack(c,fullfilepath)
         outfilename=c.yiqixinghao+"_"+c.yonghu
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
-        data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
         #
         p="d:/parts/media/仪器资料/"+c.yiqibh
         #证书
@@ -608,15 +604,19 @@ def allfile(request):
             os.makedirs(dir1)
         file1=dir1+"/证书数据表.xlsx"
         if not os.path.exists(file1):
+            data=genShujubiao(c,fullfilepath)
             open(file1,"wb").write(data)
         file2=dir1+"/"+c.yonghu+"证书.xlsx"
         if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
             open(file2,"wb").write(data2)
         file3=p+"/"+outfilename+"_装箱单.docx"
         if not os.path.exists(file3):
+            data_zxd=genPack(c,fullfilepath)
             open(file3,"wb").write(data_zxd)
         file4=p+"/"+"标签.lbx"
         if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
             open(file4,"wb").write(data_lbl)
         logging.info(c.method)
         logging.info(type(c.method))
