@@ -16,7 +16,7 @@ from django.template.context_processors import csrf
 from django.template.context import RequestContext
 import datetime
 import json
-from extjs.models import *
+from mysite.parts.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
@@ -174,26 +174,26 @@ def destroy_board(request):
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 def contacts(request):
     if request.method == 'GET':
-        rec=Contact.objects.all()
+        rec=Item.objects.all()
         output=[]
         for one in rec:
             output.append(one.json())
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
-        contact=Contact.mycreate(data)
+        contact=Item.mycreate(data)
         contact.save()
         output=contact.json()
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
 def contactOne(request,id=None):
     if request.method == 'GET':
-        rec=Contact.objects.get(id=int(id))
+        rec=Item.objects.get(id=int(id))
         output=rec.json()
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
     if request.method == 'PUT':
         data = json.loads(request.body.decode("utf-8"))
         id=data.get("id")
-        rec=Contact.objects.get(id=int(id))
+        rec=Item.objects.get(id=int(id))
         rec.myupdate(data)
         rec.save()
         output=rec.json()
