@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 from django.db.models import Q
 #from django.db.models.functions import TruncMonth
 from mysite.parts.models import *
@@ -34,6 +35,7 @@ import genDoc.genLabel
 from genDoc.recordXml import genRecord
 from django.db.models import Count
 from django.db import connection,transaction
+import traceback
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -114,6 +116,49 @@ from django.db import connection,transaction
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def month12(request):
+    logging.info("chart")
+    # r=Contact.objects
+    # .annotate(month=TruncMonth('tiaoshi_date'))  # Truncate to month and add to select list
+    # .values('month')                          # Group By month
+    # .annotate(c=Count('id'))                  # Select the count of the grouping
+    # .values('month', 'c')  
+    # logging.info(r)
+    # logging.info(dir(r))
+    end_date=datetime.datetime.now()
+    #start_date=end_date+datetime.timedelta(-365)
+    start_date=datetime.datetime(end_date.year-1,1,1,0,0,0)
+    # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
+    #                                           'month': "EXTRACT(month from tiaoshi_date)",
+    #                                           'day': "EXTRACT(day from tiaoshi_date)"}
+
+    #                                   ).values('year', 'month', 'day').annotate(Count('id'))
+    # contacts=query.all()
+    #Contact.objects.raw("select * from ");
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    #transaction.commit_unless_managed()     #提交到数据库
+    #查询操作
+    #cursor.execute('select * from other_other2 where id>%s' ,[1])
+
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0]+"月")
+        values.append(one[1])
+    #如果连接多个数据库则使用django.db.connections
+    #from django.db import connections
+    #_cursor = connections['other_database'].cursor()
+    #如果执行了更新、删除等操作
+    #transaction.commit_unless_managed(using='other_databases')
+    r=render_to_response("parts/chart.html",{"user":request.user,"lbls":lbls,"values":values})
+    return(r)
 def month(request):
     logging.info("chart")
     # r=Contact.objects
@@ -496,7 +541,7 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
-def allfile(request):
+def allfile_old(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
@@ -513,12 +558,6 @@ def allfile(request):
         ,dir1+"/证书.xlsx":data2
         ,outfilename+"_装箱单.docx":data_zxd
         }
-    # fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
-    # logging.info(fullfilepath)
-    # data_que=genQue(c,fullfilepath)
-    # if len(data_que)!=0:
-    #     dict1[outfilename+"_短缺物资单.docx"]=data_que
-    #
     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
     dict1["标签.lbx"]=data_lbl
     #
@@ -533,6 +572,10 @@ def allfile(request):
             logging.info(e)
             pass
     #
+    p="d:/parts/media/仪器资料/"+c.yiqibh
+    if not os.path.exists(p):
+        os.makedirs(p)
+    os.system("start "+p)
     byteio=tarDict(dict1)
     byteio.seek(0)
     data=byteio.read()#.decode()
@@ -541,6 +584,85 @@ def allfile(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t    
+def allfile(request):
+    #try:
+        contact_id=request.GET["id"]
+        c=Contact.objects.get(id=contact_id)
+        outfilename=c.yiqixinghao+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        #
+        p="d:/parts/media/仪器资料/"+c.yiqibh
+        #证书
+        dir1=p+"/"+outfilename
+        logging.info(dir1)
+        if not os.path.exists(dir1):
+            os.makedirs(dir1)
+        file1=dir1+"/证书数据表.xlsx"
+        if not os.path.exists(file1):
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+            data=genShujubiao(c,fullfilepath)
+            open(file1,"wb").write(data)
+        file2=dir1+"/"+c.yonghu+"证书.xlsx"
+        if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+            data_zxd=genPack(c,fullfilepath)
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+            open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
+        if c.method!=None:
+            try:
+                logging.info("here")
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file6,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
+        os.system("start "+p)
+        out={"success":True}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
+def folder(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    p="d:/parts/media/仪器资料/"+c.yiqibh
+    if not os.path.exists(p):
+        os.makedirs(p)
+    os.system("start "+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

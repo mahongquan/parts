@@ -799,10 +799,13 @@ style='font-size:16.0pt;font-family:"Times New Roman","serif";mso-fareast-font-f
   <p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
   style='font-size:12.0pt;font-family:宋体;mso-hansi-font-family:"Times New Roman";
   mso-bidi-font-family:宋体;mso-ansi-language:ZH-CN'>
-  {% if contact.hetongbh|first in "C" %}
+  {% if contact.hetongbh|first in "CS" %}
   1根
   {% else %}
-  3根
+    {% if contact.hetongbh|first in "ONH" %}
+    3根
+    {% else %}
+    {% endif %}
   {% endif %}<o:p></o:p></span></p>
   </td>
   <td width=52 valign=top style='width:38.75pt;border-top:none;border-left:

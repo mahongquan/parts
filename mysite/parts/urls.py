@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^$',views.index),
 	url(r'^items/',views.items),
 	url(r'^chart/',views.chart),
+	url(r'^month12/',views.month12),
 	url(r'^month/',views.month),
 
 	url(r'^onepage/',views.onepage),
@@ -30,6 +31,8 @@ urlpatterns = [
 	 url(r'^shujubiao/',views.shujubiao),
 	 url(r'^tar/',views.tar),
 	 url(r'^allfile/',views.allfile),
+	 url(r'^folder/',views.folder),
+
 	 url(r'^zhuangxiangdan/',views.zhuangxiangdan),
 
 	 url(r'^newcontact/',views.newcontact),

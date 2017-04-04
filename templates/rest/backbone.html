@@ -416,17 +416,45 @@ function delCookie(name)//删除cookie
       "click .contact_usepack" : "usepack",
       "click .contact_zxd" : "zxd",
       "click .contact_chuku" : "checkchuku",
+      "click .contact_folder" : "folder",
       "click .contact_quehuo" : "quehuo",
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
     },
+    // folder:function(){
+    //   $.getJSON("/rest/folder?id="+this.model.get("id"),function(result){
+    //       console.info(result);
+    //   });
+
+      // $.getJSON("/rest/folder", request, function (data, status, xhr) {
+      //                   cache[term] = data;
+      //                   response(data);
+      //               });
+    //},
     checkchuku:function(){
       check=new CheckChukuView({model:this.model})
       check.showdialog();
     },
+    folder:function(){
+        var s=new WaitingView();
+        s.showdialog();
+        $.getJSON("/parts/folder?id="+this.model.get("id"), function(result){
+           console.info(result);
+           s.$el.dialog('close');
+       });
+    },
     allfile:function(){
-        window.open("/parts/allfile?id="+this.model.get("id"));
+        //window.open("/parts/allfile?id="+this.model.get("id"));
+        var s=new WaitingView();
+        s.showdialog();
+        $.getJSON("/parts/allfile?id="+this.model.get("id"), function(result){
+           console.info(result);
+           s.$el.dialog('close');
+           if (!result.success){
+            $("<p>"+result.message+"</p>").dialog();
+           }
+       });
     },
     detail:function(){
       window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
@@ -805,111 +833,111 @@ function delCookie(name)//删除cookie
   var PackView = Backbone.View.extend({
     tagName:  "tr",
     template: _.template($('#pack-template').html()),
-    events: {
-      "click .contact_edit" : "edit",
-      "click .contact_delete" : "delete",
-      "click .contact_usepack" : "usepack",
-      "click .contact_zxd" : "zxd",
-      "click .contact_chuku" : "checkchuku",
-      "click .contact_quehuo" : "quehuo",
-      "click .contact_zs" : "zs",
-      "click .contact_detail" : "detail",
-      "click .contact_allfile" : "allfile",
-    },
-    checkchuku:function(){
-      check=new CheckChukuView({model:this.model})
-      check.showdialog();
-    },
-    allfile:function(){
-        window.open("/parts/allfile?id="+this.model.get("id"));
-    },
-    detail:function(){
-      window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
-    },
-    zxd:function(){
-        window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
-    },
-    quehuo:function(){
-        window.open("/parts/que?id="+this.model.get("id"));
-    },
-    zs:function(){
-        window.open("/parts/tar?id="+this.model.get("id"));
-    },
-    usepack:function(){
-           var usepackListView = new UsepackListView({model:this.model});
-           //usepackListView.render();
-           usepackListView.$el.dialog({
-                width:500,//height:500,
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                close: function (event,ui) {
-                   $(this).dialog("destroy");
-                }
-           });
-           usepackListView.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    usepackListView.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            };
-    },
-    edit:function(){
-        //console.log("edit");
-        //console.log(arguments)
-        var editview= new ContactEditView2({model: this.model});
-        editview.showdialog();
-        // App.editview.model=this.model;
-        //App.$("#section_edit").show();
-    },
-    true_delete:function(){
-        var data={};
-        data.id=this.model.get("id");
-        data.csrfmiddlewaretoken=csrf_token;
-        data= JSON.stringify(data);
-        this.model.destroy({ data:data,contentType:"application:json"});
-    },
-    delete:function(){
-          //delete-template
-           var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
-           deleteview.$el.dialog({
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                close: function (event,ui) {
-                       $(this).dialog("destroy");
-                }
+    // events: {
+    //   "click .contact_edit" : "edit",
+    //   "click .contact_delete" : "delete",
+    //   "click .contact_usepack" : "usepack",
+    //   "click .contact_zxd" : "zxd",
+    //   "click .contact_chuku" : "checkchuku",
+    //   "click .contact_quehuo" : "quehuo",
+    //   "click .contact_zs" : "zs",
+    //   "click .contact_detail" : "detail",
+    //   "click .contact_allfile" : "allfile",
+    // },
+    // checkchuku:function(){
+    //   check=new CheckChukuView({model:this.model})
+    //   check.showdialog();
+    // },
+    // allfile:function(){
+    //     window.open("/parts/allfile?id="+this.model.get("id"));
+    // },
+    // detail:function(){
+    //   window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+    // },
+    // zxd:function(){
+    //     window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
+    // },
+    // quehuo:function(){
+    //     window.open("/parts/que?id="+this.model.get("id"));
+    // },
+    // zs:function(){
+    //     window.open("/parts/tar?id="+this.model.get("id"));
+    // },
+    // usepack:function(){
+    //        var usepackListView = new UsepackListView({model:this.model});
+    //        //usepackListView.render();
+    //        usepackListView.$el.dialog({
+    //             width:500,//height:500,
+    //             modal: true
+    //             , overlay: {
+    //                 backgroundColor: '#000'
+    //                 , opacity: 0.5
+    //             }
+    //             , autoOpen: true,
+    //             close: function (event,ui) {
+    //                $(this).dialog("destroy");
+    //             }
+    //        });
+    //        usepackListView.$("#auto_pack1").autocomplete({
+    //             minLength: 1
+    //             , focus: function (event, ui) {
+    //                 //$( "#auto_pack1" ).val( ui.item.value);
+    //                 return false;
+    //             }
+    //             , select: function (event, ui) {
+    //                 usepackListView.addrow(ui.item.pk, ui.item.value);
+    //                 return false;
+    //             }
+    //             , source: function (request, response) {
+    //                 var term = request.term;
+    //                 if (term in cache) {
+    //                     data = cache[term];
+    //                     response(data);
+    //                     return;
+    //                 }
+    //                 $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+    //                     cache[term] = data;
+    //                     response(data);
+    //                 });
+    //             }
+    //         }).autocomplete("instance")._renderItem = function (ul, item) {
+    //             return $("<li>")
+    //                 .append("<a>" + item.pk + "_" + item.value + "</a>")
+    //                 .appendTo(ul);
+    //         };
+    // },
+    // edit:function(){
+    //     //console.log("edit");
+    //     //console.log(arguments)
+    //     var editview= new ContactEditView2({model: this.model});
+    //     editview.showdialog();
+    //     // App.editview.model=this.model;
+    //     //App.$("#section_edit").show();
+    // },
+    // true_delete:function(){
+    //     var data={};
+    //     data.id=this.model.get("id");
+    //     data.csrfmiddlewaretoken=csrf_token;
+    //     data= JSON.stringify(data);
+    //     this.model.destroy({ data:data,contentType:"application:json"});
+    // },
+    // delete:function(){
+    //       //delete-template
+    //        var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+    //        deleteview.render();
+    //        deleteview.$el.dialog({
+    //             modal: true
+    //             , overlay: {
+    //                 backgroundColor: '#000'
+    //                 , opacity: 0.5
+    //             }
+    //             , autoOpen: true,
+    //             close: function (event,ui) {
+    //                    $(this).dialog("destroy");
+    //             }
 
-           });
-    },
+    //        });
+    // },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
@@ -954,7 +982,7 @@ function delCookie(name)//删除cookie
    initialize: function() {
       this.$el.html(this.template());
       this.start=0;
-      this.limit=8;
+      this.limit=10;
       this.packs= new PackList();;
       this.listenTo(this.packs, 'add', this.addOne);
       this.listenTo(this.packs, 'reset', this.addAll);
@@ -965,7 +993,7 @@ function delCookie(name)//删除cookie
         this.$("#pack-list").empty();
         this.packs.fetch({
             reset:true,
-            data: { start:this.start,limit:this.limit,search:"入库"},
+            data: { start:this.start,limit:this.limit,search:"xls"},
             success:function(){
             },
             error:function(){
@@ -988,12 +1016,13 @@ function delCookie(name)//删除cookie
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.dialog({
-                width:700,//height:800,
+                title: "导入标样",
+                width:400,//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
                     //, 
-                    opacity: 0.5
+                    opacity: 1
                 }
                 , autoOpen: true,
                open: function (event, ui) {
@@ -1709,6 +1738,35 @@ function delCookie(name)//删除cookie
       return this;
     },
   });
+     //////////////
+    var WaitingView = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#waiting-template').html()),
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        var self=this;
+        //console.log(this.$el);
+        this.$el.dialog({
+                width:300,//height:800,
+                modal: false
+                , overlay: {
+                    //backgroundColor: '#0F0'
+                    //, 
+                    opacity: 0.5
+                }
+                , autoOpen: true,
+               open: function (event, ui) {
+                 },
+               close: function (event,ui) {
+                   $(this).dialog("destroy");
+               }
+       });
+    },
+    render: function() {
+      this.$el.html(this.template());
+      return this;
+    },
+  });
     //////////////
     var PackItemEditView = Backbone.View.extend({
     tagName:  "div",
@@ -1764,10 +1822,7 @@ function delCookie(name)//删除cookie
   </script>
 {% endblock %} 
 {% block content %}
-<!-- <form hidden="true" id="uploadForm" enctype="multipart/form-data">
-    <input id="file" type="file" name="file"/>
-    <button id="upload" type="button">上传</button>
-</form> -->
+
   <div id="todoapp">
     <div>
     <table>
@@ -1854,6 +1909,7 @@ function delCookie(name)//删除cookie
  <td><a class="contact_detail" data="<%- id %>">详细</a>
 <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a>
 <!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a>
+<button class="contact_folder" data="<%- id %>">资料文件夹</button>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
@@ -2169,5 +2225,9 @@ function delCookie(name)//删除cookie
       <%- name %>
  </td>
   </script>
+<script type="text/template" id="waiting-template">
+  <p>请等待。。。。。
+  </p>
+</script>
 {% endblock %} 
 
