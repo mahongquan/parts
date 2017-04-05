@@ -572,7 +572,7 @@ def allfile_old(request):
             logging.info(e)
             pass
     #
-    p="d:/parts/media/仪器资料/"+c.yiqibh
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
     if not os.path.exists(p):
         os.makedirs(p)
     os.system("start "+p)
@@ -592,7 +592,8 @@ def allfile(request):
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
         #
-        p="d:/parts/media/仪器资料/"+c.yiqibh
+        #p="d:/parts/media/仪器资料/"+c.yiqibh
+        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
         #证书
         dir1=p+"/"+outfilename
         logging.info(dir1)
@@ -657,7 +658,8 @@ def allfile(request):
 def folder(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    p="d:/parts/media/仪器资料/"+c.yiqibh
+    #p="d:/parts/media/仪器资料/"+c.yiqibh
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
     if not os.path.exists(p):
         os.makedirs(p)
     os.system("start "+p)
