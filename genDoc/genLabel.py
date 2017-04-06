@@ -17,7 +17,7 @@ def changeCell(table,cellindex,value):
     cells=cells.getchildren()
     cell0=cells[cellindex]
     text=cell0.find("{http://schemas.brother.info/ptouch/2007/lbx/text}text")
-    print(text.getchildren())
+    #print(text.getchildren())
     data=text.find("{http://schemas.brother.info/ptouch/2007/lbx/main}data")
     data.text=value
     stritem=text.find("{http://schemas.brother.info/ptouch/2007/lbx/text}stringItem")
@@ -38,10 +38,11 @@ def showtable(table):
         i+=1
 def genXishuONH(yiqibh,chanels,factors):
     #myzip=ZipFile(initpath+'线性化系数氧氮.lbx')#with ZipFile('线性化系数.lbx') as myzip:
+    print("============genxishuonh===========")
     fullfilepath = os.path.join(MEDIA_ROOT,"线性化系数氧氮.lbx")
     myzip=ZipFile(fullfilepath)
-    print(myzip.namelist())
-    print(myzip.infolist())
+    #print(myzip.namelist())
+    #print(myzip.infolist())
     fileL=myzip.open('label.xml')
     fileP=myzip.open('prop.xml')
     #genLabel.genLabelCS(fileLabel,fileProp,'2800','123','2C')#yiqixinghao,yiqibh,chanels)        
@@ -49,7 +50,7 @@ def genXishuONH(yiqibh,chanels,factors):
     root = tree.getroot()
     body=root.find("{http://schemas.brother.info/ptouch/2007/lbx/main}body")
     sheets=body.getchildren()
-    print(sheets)
+    #print(sheets)
     objects3=sheets[0].find("{http://schemas.brother.info/ptouch/2007/lbx/main}objects")
     tbl=objects3.find("{http://schemas.brother.info/ptouch/2007/lbx/table}table")
     showtable(tbl)
@@ -76,8 +77,8 @@ def genXishuCS(yiqibh,chanels,factors):
     fullfilepath = os.path.join(MEDIA_ROOT,"线性化系数.lbx")
     myzip=ZipFile(fullfilepath)
     #myzip=ZipFile(initpath+'线性化系数.lbx')#with ZipFile('线性化系数.lbx') as myzip:
-    print(myzip.namelist())
-    print(myzip.infolist())
+    #print(myzip.namelist())
+    #print(myzip.infolist())
     fileL=myzip.open('label.xml')
     fileP=myzip.open('prop.xml')
     #genLabel.genLabelCS(fileLabel,fileProp,'2800','123','2C')#yiqixinghao,yiqibh,chanels)        
@@ -85,7 +86,7 @@ def genXishuCS(yiqibh,chanels,factors):
     root = tree.getroot()
     body=root.find("{http://schemas.brother.info/ptouch/2007/lbx/main}body")
     sheets=body.getchildren()
-    print(sheets)
+    #print(sheets)
     objects3=sheets[0].find("{http://schemas.brother.info/ptouch/2007/lbx/main}objects")
     tbl=objects3.find("{http://schemas.brother.info/ptouch/2007/lbx/table}table")
     showtable(tbl)
@@ -121,8 +122,8 @@ def genXishuCS(yiqibh,chanels,factors):
 def genLabel(yiqixinghao,yiqibh,chanels):
     fullfilepath = os.path.join(MEDIA_ROOT,"CS-2800标签.lbx")
     myzip=ZipFile(fullfilepath)#initpath+'CS-2800标签.lbx')#with ZipFile('线性化系数.lbx') as myzip:
-    print(myzip.namelist())
-    print(myzip.infolist())
+    #print(myzip.namelist())
+    #print(myzip.infolist())
     fileL=myzip.open('label.xml')
     fileP=myzip.open('prop.xml')
     #genLabel.genLabelCS(fileLabel,fileProp,'2800','123','2C')#yiqixinghao,yiqibh,chanels)        
@@ -130,7 +131,7 @@ def genLabel(yiqixinghao,yiqibh,chanels):
     root = tree.getroot()
     body=root.find("{http://schemas.brother.info/ptouch/2007/lbx/main}body")
     sheets=body.getchildren()
-    print(sheets)
+    #print(sheets)
     objects3=sheets[3].find("{http://schemas.brother.info/ptouch/2007/lbx/main}objects")
     table=objects3.find("{http://schemas.brother.info/ptouch/2007/lbx/table}table")
     #showtable(table)
