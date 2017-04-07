@@ -13,7 +13,6 @@ from django.forms.models  import modelform_factory
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.context_processors import csrf
-from django.template.context import RequestContext
 import datetime
 import json
 from mysite.parts.models import *
@@ -22,28 +21,23 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
 from myutil import MyEncoder
 def index(request):
-	c=RequestContext(request,{"user":request.user})
-	c.update(csrf(request))
+	c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
 	r=render_to_response("extjs/index.html",c)
 	return(r)
 def backbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/backbone.html",c)
     return(r)
 def angular(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/angular.html",c)
     return(r)
 def react(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/react.html",c)
     return(r)
 def reactbackbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/reactbackbone.html",c)    
     return r
 def ch11(request):

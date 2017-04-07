@@ -14,7 +14,6 @@ from django.forms.models  import modelform_factory
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.context_processors import csrf
-from django.template.context import RequestContext
 import mysite.settings
 import datetime
 import json
@@ -77,8 +76,7 @@ def writer(request):
     # logging.info(request)
     # output={}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/writer.html",c)
     return(r)
 @login_required
@@ -142,35 +140,35 @@ def app_users_create(request):
     output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 def index(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     return render_to_response("rest/index.html",c)
 def backbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    r=csrf(request)["csrf_token"]
+    logging.info(dir(r))
+    logging.info(r)
+    c={"user":request.user,"csrf_token":r}
+    #c.update(csrf(request))
+    logging.info(dir(c))
+    logging.info(c)
     r=render_to_response("rest/backbone.html",c)
     return(r)    
 def restful(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/restful.html",c)
     return(r)
 def jqm(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/jqm.html",c)
     return(r)
 def index_2(request):
     # logging.info(request)
     # output={}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/index_2.html",c)
     return(r) 
 def extjs6(request):
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/extjs6.html",c)
     return(r)   
 @login_required
@@ -194,7 +192,7 @@ def application(request):
     logging.info("===================")
     logging.info(request)
     logging.info("------------------")
-    request2=Request(request,(JSONParser(),))
+    request2=request
     logging.info(request2)
     if request.method == 'GET':
         return view(request2)
