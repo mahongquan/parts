@@ -1,32 +1,25 @@
 import logging
 import datetime
 import time
-import readChuKu
+#import readChuKu
 logging.basicConfig()
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 from mysite.parts.models import *
 from django.db.models import Q
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.models import User,Group
 token=None
 islogin=False
-def login():
-    # global token
-    # global islogin
-    # token=gettoken()
-    # print("token",token)
-    # params = {'username':'mahongquan','password':'333333','csrfmiddlewaretoken':token}
-    # r = session.post("http://localhost:8000/rest/login/", data=params)#,headers=headers)
-    # if r.ok:
-    #     c=r.cookies
-    #     token=c.get("csrftoken")
-    #     session.headers["X_CSRFTOKEN"]=token
-    #     session.headers["CONTENT_TYPE"]="application/json"
-    #     islogin=True
-    #     print("login ok")
-    # else:
-    #     islogin=False
-    #     print("not login")
-    pass
+def login(username,password):
+    user = authenticate(username=username, password=password)
+    if user is None:
+        output={"success":False,"message":"No This User"}
+    else:
+        rec=user
+        output={"success":True,"message":"User" +str(rec.id)}
+        output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
+    return output        
 def gettoken():
     url = "http://localhost:8000/rest/backbone"
     r=session.get(url)
@@ -44,12 +37,45 @@ def testupdate():
     d=int(time.time())#datetime.datetime.now().toordinal()
     d={"id":9,"yonghu":"a","yujifahuo_date":d}
     updateContact(d)
+def removepi(piid):
+    pi=PackItem.objects.get(id=piid)    
+    #print(pi)
+    pi.delete()
+def newpackitem(pid,nm):
+    p=Pack.objects.get(id=pid)
+    print(pid,p)
+    i=Item()
+    i.guige=""
+    i.ct=1
+    i.danwei="个"
+    i.name=nm
+    i.bh=""
+    i.save()
+    pi=PackItem()
+    pi.pack=p
+    pi.item=i
+    pi.save()
+def newpack(c,nm):
+    p=Pack()
+    p.name=nm
+    p.save()
+    up=UsePack()
+    up.contact=c
+    up.pack=p
+    up.save()
+def removeup(c,upid):
+    up=UsePack.objects.get(id=upid)
+    up.delete()
+def addPack(c,pid):
+    p=Pack.objects.get(id=pid)
+    up=UsePack()
+    up.contact=c
+    up.pack=p
+    up.save()
 def newContact(postdata):
-    url = "http://localhost:8000/rest/Contact"
-    postdata['csrfmiddlewaretoken']=token
-    r=session.post(url,data=postdata)
-    #print r.headers
-    #print r.text
+    c=Contact()
+    c.yujifahuo_date=datetime.datetime.now()
+    c.save()
 def updateContact(postdata):
     url = "http://localhost:8000/rest/Contact"
     postdata['csrfmiddlewaretoken']=token
@@ -73,9 +99,9 @@ def huizong(contactid):
     return r
     #items_excel=readChuKu.readfile(excelfile)
 
-def getAllContacts():
-     cs=Contact.objects.order_by("-yujifahuo_date").all()
-     return cs
+def getContact(contactid):
+    contact=Contact.objects.get(id=contactid)
+    return contact
 def getAllPack():
     url = "http://localhost:8000/rest/Pack"
     ct=10
@@ -86,9 +112,31 @@ def getAllPack():
 def getContactPack(contactid):
     r=UsePack.objects.filter(Q(contact=contactid))
     return r
+def getPack(packid):
+    r=Pack.objects.get(Q(id=packid))
+    return r  
+def getPacks(search_bh):
+    r=Pack.objects.filter(name__contains=search_bh)      
+    return r
+def getItems(search_bh):
+    r=Item.objects.filter(name__contains=search_bh)      
+    return r    
+def addItem(pid,iid):   
+    i=Item.objects.get(id=iid)
+    p=Pack.objects.get(id=pid)
+    pi=PackItem()
+    pi.pack=p
+    pi.item=i
+    pi.save()
+def getPackItemOne(packid):
+    r=PackItem.objects.get(id=packid)
+    return r    
 def getPackItem(packid):
     r=PackItem.objects.filter(Q(pack=packid))
     return r
+def getAllContacts():
+     cs=Contact.objects.order_by("-yujifahuo_date").all()
+     return cs    
 def getItem(params={'format':'json','limit':200,'start':0}):
     url = "http://localhost:8000/rest/Item"
     ct=10
@@ -127,8 +175,14 @@ def createItem(data):
     #print r.headers
     #print r  
 if __name__=="__main__":
+    import os
+    import sys
+    import codecs
+    import django
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+    django.setup()
     login()
-    #print getAllContacts()
+    print(getAllContacts())
     # usepacks=getContactPack(9)
     # print usepacks
     # usepack1=usepacks[0]

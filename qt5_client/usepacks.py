@@ -14,8 +14,8 @@ class ContactForm(QtWidgets.QDialog):
         self.ui=Ui_Form()
         self.ui.setupUi(self)
     def showdata(self,contactid):
-        if not backend.islogin:
-            backend.login()
+        # if not backend.islogin:
+        #     backend.login()
         d=backend.getContactPack(contactid)
         self.rows=len(d)
         self.cols=3

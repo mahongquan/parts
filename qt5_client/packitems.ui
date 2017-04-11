@@ -9,40 +9,86 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
-    <height>329</height>
+    <width>568</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QTableWidget" name="tableWidget"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>包id:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_id"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>包名称:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_name"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QTableWidget" name="tableWidget"/>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>编辑</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>删除</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>输入已有备件</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_3"/>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QLineEdit" name="lineEdit_4"/>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
-        <string>add</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>delete</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <string>新备件</string>
        </property>
       </widget>
      </item>
@@ -53,66 +99,18 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>DialogPack</receiver>
-   <slot>ok()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>282</x>
-     <y>318</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>211</x>
-     <y>254</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
    <receiver>DialogPack</receiver>
    <slot>add()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>318</y>
+     <x>77</x>
+     <y>353</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
      <y>234</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>DialogPack</receiver>
-   <slot>delete()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>143</x>
-     <y>318</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>89</x>
-     <y>259</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>clicked(QAbstractButton*)</signal>
-   <receiver>DialogPack</receiver>
-   <slot>cancel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>397</x>
-     <y>307</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>458</x>
-     <y>294</y>
     </hint>
    </hints>
   </connection>

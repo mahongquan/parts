@@ -6,6 +6,6 @@ import codecs
 import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-from qt5_client import contacts,login
-contacts.main()
-#login.main()
+from mysite.parts.models import *
+c=Contact.objects.all()[0]
+print(c.id,c.method)

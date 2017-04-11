@@ -28,17 +28,17 @@
 import sys
 import optparse
 
-from PyQt5 import QtCore
-from PyQt5.uic.driver import Driver
+from PyQt4 import QtCore
+from PyQt4.uic.driver import Driver
 
 
 Version = "Python User Interface Compiler %s for Qt version %s" % (QtCore.PYQT_VERSION_STR, QtCore.QT_VERSION_STR)
 
 
 if sys.hexversion >= 0x03000000:
-    from PyQt5.uic.port_v3.invoke import invoke
+    from PyQt4.uic.port_v3.invoke import invoke
 else:
-    from PyQt5.uic.port_v2.invoke import invoke
+    from PyQt4.uic.port_v2.invoke import invoke
 
 
 parser = optparse.OptionParser(usage="pyuic4 [options] <ui-file>",
