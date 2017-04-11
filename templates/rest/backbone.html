@@ -728,6 +728,16 @@ function delCookie(name)//删除cookie
         App.mysetdata();//contacts.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
         ////console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
     },
+     page_go_click:function(){
+        var pg=$("#page_input").val();
+        var v=parseInt(pg);
+        myglobal.start=v;//myglobal.start+myglobal.limit;
+        if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;//total >limit
+        if(myglobal.start<0)
+          myglobal.start=0;
+        App.mysetdata();//contacts.fetch({ data: { start:myglobal.start,limit:myglobal.limit} });
+        ////console.log(myglobal.start+","+myglobal.limit+","+myglobal.total);
+    },
     mysetdata:function(){
         this.$("#contact-list").empty();
         contacts.fetch({
@@ -740,9 +750,12 @@ function delCookie(name)//删除cookie
                 if (right>myglobal.total) right=myglobal.total;
                 if(myglobal.total<1){
                 	this.$("#page").append((0)+"..."+right+" of "+myglobal.total);
+                  this.$("#page_input").val(0);
                 }
                 else{
-                	this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
+                  var v=myglobal.start+1;
+                  this.$("#page_input").val(v);
+                	this.$("#page").append(v+"..."+right+" of "+myglobal.total);
                 }
             },
             error:function(){
@@ -804,6 +817,7 @@ function delCookie(name)//删除cookie
         //this.$("#section_edit").append(this.editview.render().el);
         this.$("#bt_prev").bind("click", {}, this.button_prev_click);
         this.$("#bt_next").bind("click", {}, this.button_next_click);
+        this.$("#page_go").bind("click", {}, this.page_go_click);
 
       if (user=="AnonymousUser"){
         this.showlogin();
@@ -1877,7 +1891,7 @@ function delCookie(name)//删除cookie
       <tbody id="contact-list">
       </tbody>
       </table>
-      <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a>
+      <a id="bt_prev">前一页</a> <label id="page">page/page</label></input><a id="bt_next">后一页</a><input id="page_input" value="1" maxlength="6" size="6" /><button id="page_go"  class="btn btn-info">跳转</button>
     </div>
   </div>
   <script type="text/template" id="contact-template">

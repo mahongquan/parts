@@ -129,7 +129,13 @@ def genRecordONH(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH调试记录.xml'))
     tree = Document(os.path.join(MEDIA_ROOT,'ONH调试记录.docx'))
     tbls=tree.tables
-    print(tbls)
+    ps=tree.paragraphs
+    p=ps[1]
+    #print(dir(p),p.text)
+    rs=p.runs
+    # for r in rs:
+    #     print(r.text)
+    rs[-1].text=baoxiang
     tbl=tbls[0]
     changeGrid(tbl,0,1,yiqibh)#
     changeGrid(tbl,0,3,yiqixinghao)#
