@@ -13,9 +13,12 @@ class PackForm(QtWidgets.QDialog):
         self.ui =Ui_DialogPack()
         self.ui.setupUi(self)
     def showdata(self,packid):
-        if not backend.islogin:
-            backend.login()
+        # if not backend.islogin:
+        #     backend.login()
         d=backend.getPackItem(packid)
+        p=backend.getPack(packid)
+        self.ui.lineEdit_id.setText(str(packid))
+        self.ui.lineEdit_name.setText(p.name)
         self.rows=len(d)
         self.cols=4
         self.ui.tableWidget.setRowCount(self.rows)

@@ -75,12 +75,13 @@ def readfile(fn):
 	ncols = table.ncols
 	begin=False
 	dan=[]
-	for i in range(nrows-9-3):
+	for i in range(nrows-7):
 		#print(i,table.row_values(i)[0])
-		cells=table.row_values(9+i)
+		cells=table.row_values(7+i)
 		dan.append((cells[0],cells[1],cells[7]))#bh,name,ct
+	print(dan)
 	return dan
 if __name__=="__main__":
-	readfile(".","default.xls")
+	readfile("./"+"636520.xls")
 
 
