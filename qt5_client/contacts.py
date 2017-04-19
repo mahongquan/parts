@@ -104,6 +104,14 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.pushButton_newcontact.clicked.connect(self.newcontact)
         d=backend.getContacts("","")
         self.showdata(d)
+
+        headerGoods = self.ui.tableWidget.horizontalHeader()
+        #SortIndicator为水平标题栏文字旁边的三角指示器
+        headerGoods.setSortIndicator(0, QtCore.Qt.AscendingOrder)
+        headerGoods.setSortIndicatorShown(True);
+        #print(dir(headerGoods))
+        #headerGoods.setClickable(True)
+        headerGoods.sectionClicked.connect(self.ui.tableWidget.sortByColumn)
     def showtree(self,contactid):
         c=backend.getContact(contactid)
         path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
@@ -141,7 +149,10 @@ class CalculatorForm(QtWidgets.QMainWindow):
             val=one.hetongbh
             tm=str(one.yujifahuo_date)
             bx=one.baoxiang
-            self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(theid)))
+            item=QtWidgets.QTableWidgetItem()
+            item.setData(QtCore.Qt.DisplayRole, theid)
+            self.ui.tableWidget.setItem(i, 0,item)
+            
             self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(adr))
             self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(val))
             self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(tm))
