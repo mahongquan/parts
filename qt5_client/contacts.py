@@ -14,6 +14,12 @@ from . import chuku
 import readChuKu
 from . import contact
 import xlrd
+from genDoc.excel_write import *
+import datetime
+from genDoc.docx_write import genPack,genQue
+import genDoc.genLabel
+from genDoc.recordXml import genRecord
+
 def readBeiliaofile(fn):
     book = xlrd.open_workbook(fn)
     table=book.sheets()[0]
@@ -62,14 +68,6 @@ def bjitems(items,items_chuku):
                 notequal.append(v)
         else:
             left.append(item)
-    # print("left")
-    # print(printList(left))
-    # print("equal")
-    # print(printList(equal))
-    # print("!equal")
-    # print(printList(notequal))
-    # print("right")
-    # print(printList(items_chuku))
     return(left,notequal,items_chuku)
 class CalculatorForm(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -79,18 +77,52 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.nm=""
         self.baoxiang=""
+        self.ui.comboBox.addItem("")
         self.ui.comboBox.addItem("马红权")
         self.ui.comboBox.addItem("吴振宁")
         self.ui.comboBox.addItem("陈旺")
-        self.ui.comboBox.addItem("")
         self.ui.comboBox.activated['int'].connect(self.filter)
-        d=backend.getContacts("","")
-        self.showdata(d)
+        
         self.ui.pushButton_chukudan.clicked.connect(self.bj)
         self.ui.pushButton_7.clicked.connect(self.importstand)
+
+        self.model = QtWidgets.QFileSystemModel()
+        self.model.setRootPath(r"D:\parts\media\仪器资料")
+        self.ui.treeView.setModel(self.model)
+        self.ui.treeView.clicked.connect(self.test)
+        index = self.model.index(r"D:\parts\media\仪器资料")
+        self.ui.treeView.setRootIndex(index)
+        self.ui.treeView.expand(index)      #当前项展开
+        self.ui.treeView.scrollTo(index)    #定位到当前项
+        self.ui.treeView.setColumnWidth(0,260)
+        self.ui.treeView.setColumnHidden(1,True)
+        self.ui.treeView.setColumnHidden(2,True)
+        _translate = QtCore.QCoreApplication.translate
+        self.ui.pushButton_4.setText(_translate("MainWindow", "生成文件"))
+        self.ui.pushButton_4.clicked.connect(self.allfile)
+        self.ui.pushButton_folder.clicked.connect(self.folder)
+        self.ui.pushButton_newcontact.clicked.connect(self.newcontact)
+        d=backend.getContacts("","")
+        self.showdata(d)
+    def showtree(self,contactid):
+        c=backend.getContact(contactid)
+        path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+        self.model.setRootPath(path)
+        self.ui.treeView.setModel(self.model)
+        self.ui.treeView.doubleClicked.connect(self.test)
+        index = self.model.index(path)
+        self.ui.treeView.setRootIndex(index)
+        self.ui.treeView.expand(index)      #当前项展开
+        #self.ui.treeView.scrollTo(index)    #定位到当前项
+        #self.ui.treeView.resizeColumnToContents(0)
+    def test(self, signal):
+        file_path=self.model.filePath(signal)
+        cmd='start %s' % file_path
+        print(cmd)
+        os.system(cmd)
     def showdata(self,d):
         self.rows=len(d)
-        self.cols=6
+        self.cols=8
         self.ui.tableWidget.setRowCount(self.rows)
         self.ui.tableWidget.setColumnCount(self.cols)
         self.ui.tableWidget.setHorizontalHeaderItem(0,QtWidgets.QTableWidgetItem("id"))
@@ -99,15 +131,11 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.tableWidget.setHorizontalHeaderItem(3,QtWidgets.QTableWidgetItem("发货时间"))
         self.ui.tableWidget.setHorizontalHeaderItem(4,QtWidgets.QTableWidgetItem("包箱"))
         self.ui.tableWidget.setHorizontalHeaderItem(5,QtWidgets.QTableWidgetItem("仪器编号"))
+        self.ui.tableWidget.setHorizontalHeaderItem(6,QtWidgets.QTableWidgetItem("仪器型号"))
+        self.ui.tableWidget.setHorizontalHeaderItem(7,QtWidgets.QTableWidgetItem("客户地址"))
+        self.ui.tableWidget.setHorizontalHeaderItem(8,QtWidgets.QTableWidgetItem("通道"))
         for i in range(len(d)):
             one=d[i]
-            #print one
-            # if backend.USEREST:
-            #     theid=one["id"]
-            #     adr=one["yonghu"]
-            #     val=one["hetongbh"]
-            #     tm=one["yujifahuo_date"]
-            # else:
             theid=one.id
             adr=one.yonghu
             val=one.hetongbh
@@ -119,24 +147,38 @@ class CalculatorForm(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(tm))
             self.ui.tableWidget.setItem(i, 4, QtWidgets.QTableWidgetItem(bx))
             self.ui.tableWidget.setItem(i, 5, QtWidgets.QTableWidgetItem(one.yiqibh))
+            self.ui.tableWidget.setItem(i, 6, QtWidgets.QTableWidgetItem(one.yiqixinghao))
+            self.ui.tableWidget.setItem(i, 7, QtWidgets.QTableWidgetItem(one.addr))
+            self.ui.tableWidget.setItem(i, 8, QtWidgets.QTableWidgetItem(one.channels))
             i+=1 
+        self.ui.tableWidget.setCurrentCell(0,0)
+        self.ui.tableWidget.setColumnWidth(1,200)
+    def newcontact(self):
+        c=contact.ContactDlg(self)
+        c.showdata(None)
+        c.exec()
+        cs=backend.getContacts(self.nm,self.baoxiang)
+        self.showdata(cs)
     def yiqi(self):
-        #row=self.ui.tableWidget.currentRow()
-        #t=self.ui.tableWidget.item(row,0)
-        #postdata={"htbh":"1"}
-        #backend.newContact(postdata)
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         c=contact.ContactDlg(self)
         if it!=None:
-            c.showdata(int(it.text()))
+            contactid=int(it.text())
+            c.showdata(backend.getContact(contactid))
         else:
-            #c.showdata(-1)
+            c.showdata(None)
             pass
         c.exec()
-
+        #refresh
+        cs=backend.getContacts(self.nm,self.baoxiang)
+        self.showdata(cs)
         pass
     def itemchanged(self,i):
-        #print("itemchanged",i)
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
+        if it!=None:
+            contactid=int(it.text())
+            print(contactid)
+            self.showtree(contactid)
         pass
     def search(self):
         self.nm=self.ui.lineEdit.text()
@@ -182,6 +224,81 @@ class CalculatorForm(QtWidgets.QMainWindow):
         pass
         #d=self.tableTodict()
         #pickle.dump(d,open(getpath.getpath()+"data.pickle","w"))
+    def folder(self):
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)#self.ui.tableWidget.currentColumn()))
+        if it==None:
+            return 
+        contactid=int(it.text())
+        c=backend.getContact(contactid)
+        MEDIA_ROOT="d:\\parts\\media"
+        p=MEDIA_ROOT+"\\仪器资料\\"+c.yiqibh
+        if not os.path.exists(p):
+            os.makedirs(p)
+        cmd="start %s" % p
+        os.system(cmd)
+    def allfile(self):
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)#self.ui.tableWidget.currentColumn()))
+        if it==None:
+            return 
+        contactid=int(it.text())
+        c=backend.getContact(contactid)
+        outfilename=c.yiqixinghao+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        #p="d:/parts/media/仪器资料/"+c.yiqibh
+        MEDIA_ROOT=r"d:/parts/media"
+        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+        #证书
+        dir1=p+"/"+outfilename
+        logging.info(dir1)
+        if not os.path.exists(dir1):
+            os.makedirs(dir1)
+        file1=dir1+"/证书数据表.xlsx"
+        if not os.path.exists(file1):
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+            data=genShujubiao(c,fullfilepath)
+            open(file1,"wb").write(data)
+        file2=dir1+"/"+c.yonghu+"证书.xlsx"
+        if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+            data_zxd=genPack(c,fullfilepath)
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+            open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
+        if c.method!=None:
+            try:
+                logging.info("here")
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file6,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
+        QtWidgets.QMessageBox.information(self, "Title", "完成", QtWidgets.QMessageBox.Ok)
 def main():
     import sys
     from .login import LoginDlg
@@ -194,7 +311,7 @@ def main():
     #     m.show()
     #     sys.exit(app.exec_())
     m = CalculatorForm()
-    m.showMaximized()
+    m.show()#Maximized()
     sys.exit(app.exec_())
 if __name__ == '__main__':
     main()

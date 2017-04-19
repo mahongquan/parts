@@ -8,6 +8,7 @@ from .  import backend
 from . import packitems
 from . import packitem
 import logging
+import datetime
 # yonghu = models.CharField(max_length=30,verbose_name="用户单位")#用户单位
 #     addr = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
 #     channels = models.CharField(max_length=30,verbose_name="通道配置",null=True,blank=True)#用户单位
@@ -54,6 +55,7 @@ class ContactDlg(QtWidgets.QDialog):
         # completer.setModel(self.model)
         self.ui.lineEdit_pack.textChanged['QString'].connect(self.packinput)
         self.ui.lineEdit_pack.setFocus()
+        
     @QtCore.pyqtSlot()
     def bibei(self):
         n="必备"
@@ -83,34 +85,35 @@ class ContactDlg(QtWidgets.QDialog):
         #self.ui.lineEdit_pack.setFocus()
     def textchange(self,text):
         s=self.sender()
+        objn=s.objectName()[:9]
+        print(objn)
+        if objn!="lineEdit_":
+            return 
         fn=s.objectName()[9:]
-        #exec("tmp=self.c."+fn)
+        print(s.objectName())
         if text!=str(eval("self.c."+fn)):
             s.setStyleSheet("background-color:  rgba(124, 200,128, 255)")
         else:
             s.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
-    def showdata(self,contactid):  
-        print(contactid) 
-        contactid=int(contactid)     
-        if contactid>-1:
-            self.c=backend.getContact(contactid)
-            # print(c)
-            # print(dir(self.ui.lineEdit_id))
-            self.ui.lineEdit_id.setText(str(self.c.id))
-            self.ui.lineEdit_yonghu.setText(str(self.c.yonghu))
-            self.ui.lineEdit_addr.setText(str(self.c.addr))
-            self.ui.lineEdit_channels.setText(str(self.c.channels))
-            self.ui.lineEdit_yiqixinghao.setText(str(self.c.yiqixinghao))
-            self.ui.lineEdit_yiqibh.setText(str(self.c.yiqibh))
-            self.ui.lineEdit_baoxiang.setText(str(self.c.baoxiang))
-            self.ui.lineEdit_shenhe.setText(str(self.c.shenhe))
-            self.ui.lineEdit_yujifahuo_date.setText(str(self.c.yujifahuo_date))
-            self.ui.lineEdit_tiaoshi_date.setText(str(self.c.tiaoshi_date))
-            self.ui.lineEdit_hetongbh.setText(str(self.c.hetongbh))
-            self.ui.lineEdit_method.setText(str(self.c.method))
-            self.showpack()
-        else:
-            self.ui.frame.hide()
+    def showdata(self,contact):  
+        if contact==None:
+            contact=backend.newContact()
+        self.c=contact
+        self.ui.lineEdit_id.setText(str(self.c.id))
+        self.ui.lineEdit_yonghu.setText(str(self.c.yonghu))
+        self.ui.lineEdit_addr.setText(str(self.c.addr))
+        self.ui.lineEdit_channels.setText(str(self.c.channels))
+        self.ui.lineEdit_yiqixinghao.setText(str(self.c.yiqixinghao))
+        self.ui.lineEdit_yiqibh.setText(str(self.c.yiqibh))
+        self.ui.lineEdit_baoxiang.setText(str(self.c.baoxiang))
+        self.ui.lineEdit_shenhe.setText(str(self.c.shenhe))
+        self.ui.lineEdit_yujifahuo_date.setText(str(self.c.yujifahuo_date))
+        self.ui.lineEdit_tiaoshi_date.setText(str(self.c.tiaoshi_date))
+        self.ui.lineEdit_hetongbh.setText(str(self.c.hetongbh))
+        self.ui.lineEdit_method.setText(str(self.c.method))
+        self.showpack()
+        # else:
+        #     self.ui.frame.hide()
     def showpack(self):
         d=backend.getContactPack(self.c.id)
         rows=len(d)
@@ -277,8 +280,12 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.lineEdit_shenhe.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
         self.ui.lineEdit_baoxiang.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
         self.ui.lineEdit_hetongbh.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
+        self.ui.lineEdit_tiaoshi_date.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
+        self.ui.lineEdit_yujifahuo_date.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
     def save(self):
         self.ui.pushButton_save.setEnabled(False)
+        if self.c.id==None:
+            self.c=backend.newContact()
         self.c.yonghu=self.ui.lineEdit_yonghu.text()
         self.c.addr=self.ui.lineEdit_addr.text()
         self.c.channels=self.ui.lineEdit_channels.text()
@@ -287,19 +294,35 @@ class ContactDlg(QtWidgets.QDialog):
         self.c.baoxiang=self.ui.lineEdit_baoxiang.text()
         self.c.shenhe=self.ui.lineEdit_shenhe.text()
         self.c.hetongbh=self.ui.lineEdit_hetongbh.text()
+        dt=datetime.datetime.strptime(self.ui.lineEdit_tiaoshi_date.text(),'%Y-%m-%d')
+        self.c.tiaoshi_date=dt
+        dt=datetime.datetime.strptime(self.ui.lineEdit_yujifahuo_date.text(),'%Y-%m-%d')
+        self.c.yujifahuo_date=dt
         self.c.save()
         self.resetbg()
         self.ui.pushButton_save.setEnabled(True)
         pass 
     @QtCore.pyqtSlot()
     def copy(self):
-        print("reject")
-        self.done(0)
+        old=self.c
+        self.c=backend.newContact()
+        if old!=None:
+            self.c.yonghu=old.yonghu
+            self.c.addr=old.addr
+            self.c.channels=old.channels
+            self.c.yiqixinghao=old.yiqixinghao
+            self.c.yiqibh=""
+            self.c.baoxiang=old.baoxiang
+            self.c.shenhe=old.shenhe
+            self.c.hetongbh=""
+            self.c.tiaoshi_date=datetime.datetime.now().date()
+            self.c.yujifahuo_date=datetime.datetime.now().date()
+        self.showdata(self.c)
         pass 
     @QtCore.pyqtSlot()
     def clear(self):
-        print("reject")
-        self.done(0)
+        self.c=backend.newContact()
+        self.showdata(self.c)
         pass                        
     @QtCore.pyqtSlot()
     def method(self):

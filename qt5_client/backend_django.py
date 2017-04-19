@@ -128,7 +128,7 @@ def genDetail(contactid):
     f.close()     
 def getContacts(search,baoxiang):
     start=0
-    limit=10
+    limit=30
     if search!='':
         if baoxiang!="":
             objs = Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).order_by('-yujifahuo_date')[start:start+limit]
@@ -175,10 +175,11 @@ def addPack(c,pid):
     up.contact=c
     up.pack=p
     up.save()
-def newContact(postdata):
+def newContact():
     c=Contact()
-    c.yujifahuo_date=datetime.datetime.now()
-    c.save()
+    c.yujifahuo_date=datetime.datetime.now().date()
+    c.tiaoshi_date=c.yujifahuo_date
+    return c
 def updateContact(postdata):
     url = "http://localhost:8000/rest/Contact"
     postdata['csrfmiddlewaretoken']=token
