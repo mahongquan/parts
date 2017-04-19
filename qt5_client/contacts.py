@@ -80,6 +80,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.nm=""
         self.baoxiang=""
         self.ui.comboBox.addItem("马红权")
+        self.ui.comboBox.addItem("吴振宁")
         self.ui.comboBox.addItem("陈旺")
         self.ui.comboBox.addItem("")
         self.ui.comboBox.activated['int'].connect(self.filter)
