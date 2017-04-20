@@ -55,7 +55,7 @@ class ContactDlg(QtWidgets.QDialog):
         # completer.setModel(self.model)
         self.ui.lineEdit_pack.textChanged['QString'].connect(self.packinput)
         self.ui.lineEdit_pack.setFocus()
-        
+        self.ui.pushButton_deletemethod.clicked.connect(self.deletemethod)
     @QtCore.pyqtSlot()
     def bibei(self):
         n="必备"
@@ -282,6 +282,12 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.lineEdit_hetongbh.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
         self.ui.lineEdit_tiaoshi_date.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
         self.ui.lineEdit_yujifahuo_date.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
+        self.ui.lineEdit_method.setStyleSheet("background-color:  rgba(255, 255,255, 255)")
+    def deletemethod(self):
+        if self.c.method!=None:
+            self.c.method=None
+            self.ui.lineEdit_method.setText(str(self.c.method))
+            self.ui.lineEdit_method.setStyleSheet("background-color:  rgba(124, 200,128, 255)")
     def save(self):
         self.ui.pushButton_save.setEnabled(False)
         if self.c.id==None:
@@ -298,6 +304,15 @@ class ContactDlg(QtWidgets.QDialog):
         self.c.tiaoshi_date=dt
         dt=datetime.datetime.strptime(self.ui.lineEdit_yujifahuo_date.text(),'%Y-%m-%d')
         self.c.yujifahuo_date=dt
+        print(self.c,self.c.method)
+        if str(self.c.method)=="":
+            print("isNone")
+            self.c.method=backend.getIniFile(self.c)
+            self.ui.lineEdit_method.setText(str(self.c.method))
+        else:
+            print("not None")
+            #print(dir(self.c.method))
+            pass
         self.c.save()
         self.resetbg()
         self.ui.pushButton_save.setEnabled(True)

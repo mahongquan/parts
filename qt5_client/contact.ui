@@ -181,15 +181,18 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLineEdit" name="lineEdit_method">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_method">
+        <widget class="QPushButton" name="pushButton_deletemethod">
          <property name="text">
-          <string>选取文件</string>
+          <string>删除方法</string>
          </property>
         </widget>
        </item>
@@ -391,22 +394,6 @@
     <hint type="destinationlabel">
      <x>323</x>
      <y>265</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_method</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>method()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>667</x>
-     <y>163</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>403</x>
-     <y>201</y>
     </hint>
    </hints>
   </connection>

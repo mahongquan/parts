@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt5_client\contact.ui'
 #
-# Created: Wed Apr 19 15:21:37 2017
+# Created: Thu Apr 20 08:48:29 2017
 #      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,12 +103,13 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.lineEdit_method = QtWidgets.QLineEdit(Form)
+        self.lineEdit_method.setEnabled(False)
         self.lineEdit_method.setReadOnly(True)
         self.lineEdit_method.setObjectName("lineEdit_method")
         self.horizontalLayout.addWidget(self.lineEdit_method)
-        self.pushButton_method = QtWidgets.QPushButton(Form)
-        self.pushButton_method.setObjectName("pushButton_method")
-        self.horizontalLayout.addWidget(self.pushButton_method)
+        self.pushButton_deletemethod = QtWidgets.QPushButton(Form)
+        self.pushButton_deletemethod.setObjectName("pushButton_deletemethod")
+        self.horizontalLayout.addWidget(self.pushButton_deletemethod)
         self.gridLayout.addLayout(self.horizontalLayout, 5, 3, 1, 1)
         self.verticalLayout_5.addLayout(self.gridLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -217,7 +218,6 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         self.pushButton_save.clicked.connect(Form.save)
-        self.pushButton_method.clicked.connect(Form.method)
         self.pushButton_clear.clicked.connect(Form.clear)
         self.pushButton_copy.clicked.connect(Form.copy)
         self.pushButton_bibei.clicked.connect(Form.bibei)
@@ -257,7 +257,7 @@ class Ui_Form(object):
         self.label_7.setText(_translate("Form", "调试时间:"))
         self.label_4.setText(_translate("Form", "合同编号:"))
         self.label_12.setText(_translate("Form", "方法:"))
-        self.pushButton_method.setText(_translate("Form", "选取文件"))
+        self.pushButton_deletemethod.setText(_translate("Form", "删除方法"))
         self.pushButton_save.setText(_translate("Form", "保存"))
         self.pushButton_clear.setText(_translate("Form", "清除"))
         self.pushButton_copy.setText(_translate("Form", "复制"))

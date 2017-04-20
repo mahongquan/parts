@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt5_client\contacts.ui'
 #
-# Created: Wed Apr 19 15:21:39 2017
+# Created: Thu Apr 20 08:48:30 2017
 #      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,9 +75,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setStretch(1, 2)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         self.pushButton.clicked.connect(MainWindow.change)

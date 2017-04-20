@@ -112,6 +112,9 @@ class CalculatorForm(QtWidgets.QMainWindow):
         #print(dir(headerGoods))
         #headerGoods.setClickable(True)
         headerGoods.sectionClicked.connect(self.ui.tableWidget.sortByColumn)
+    def mousePressEvent(self, event):
+        print(event)
+        print(event.pos())
     def showtree(self,contactid):
         c=backend.getContact(contactid)
         path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
