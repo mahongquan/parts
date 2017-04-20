@@ -3,7 +3,7 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets,QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from .ui_contacts import Ui_MainWindow
 from . import  backend  
@@ -19,7 +19,7 @@ import datetime
 from genDoc.docx_write import genPack,genQue
 import genDoc.genLabel
 from genDoc.recordXml import genRecord
-
+import traceback
 def readBeiliaofile(fn):
     book = xlrd.open_workbook(fn)
     table=book.sheets()[0]
@@ -69,10 +69,12 @@ def bjitems(items,items_chuku):
         else:
             left.append(item)
     return(left,notequal,items_chuku)
+class MyTreeView(QtWidgets.QTreeView):
+    pass
 class CalculatorForm(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(CalculatorForm, self).__init__(parent)
-        
+        self.enableclick=True
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.nm=""
@@ -89,7 +91,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.model = QtWidgets.QFileSystemModel()
         self.model.setRootPath(r"D:\parts\media\仪器资料")
         self.ui.treeView.setModel(self.model)
-        self.ui.treeView.clicked.connect(self.test)
+        self.ui.treeView.doubleClicked.connect(self.test)
         index = self.model.index(r"D:\parts\media\仪器资料")
         self.ui.treeView.setRootIndex(index)
         self.ui.treeView.expand(index)      #当前项展开
@@ -102,6 +104,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.pushButton_4.clicked.connect(self.allfile)
         self.ui.pushButton_folder.clicked.connect(self.folder)
         self.ui.pushButton_newcontact.clicked.connect(self.newcontact)
+        self.ui.pushButton_export.clicked.connect(self.export)
         d=backend.getContacts("","")
         self.showdata(d)
 
@@ -112,6 +115,12 @@ class CalculatorForm(QtWidgets.QMainWindow):
         #print(dir(headerGoods))
         #headerGoods.setClickable(True)
         headerGoods.sectionClicked.connect(self.ui.tableWidget.sortByColumn)
+
+        #self.ui.tableWidget.installEventFilter(self)
+    def eventFilter(self,target, event):
+        print(target,event)
+        print(self)
+        return QtWidgets.QMainWindow.eventFilter(self, target,event)
     def mousePressEvent(self, event):
         print(event)
         print(event.pos())
@@ -126,12 +135,26 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.treeView.expand(index)      #当前项展开
         #self.ui.treeView.scrollTo(index)    #定位到当前项
         #self.ui.treeView.resizeColumnToContents(0)
+    def export(self):
+        txt="%s\t%s\t%s\t%s\t%s\n" % ("客户名称","地址","仪器型号","仪器编号","合同号")
+        for one in self.data:
+            txt += one.tablerow()
+        mimeData =QtCore.QMimeData()
+        mimeData.setText(txt)
+        QtWidgets.QApplication.clipboard().setMimeData(mimeData)
+    def shootScreen(self):
+        self.enableclick=True
     def test(self, signal):
-        file_path=self.model.filePath(signal)
-        cmd='start %s' % file_path
-        print(cmd)
-        os.system(cmd)
+        print("double clicked",signal)
+        if self.enableclick:
+            self.enableclick=False
+            QtCore.QTimer.singleShot(1000,self.shootScreen)
+            file_path=self.model.filePath(signal)
+            cmd='start %s' % file_path
+            print(cmd)
+            os.system(cmd)
     def showdata(self,d):
+        self.data=d
         self.rows=len(d)
         self.cols=8
         self.ui.tableWidget.setRowCount(self.rows)

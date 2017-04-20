@@ -145,7 +145,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.tableWidget_2.hideColumn(2)
         self.ui.tableWidget_2.setHorizontalHeaderItem(5,QtWidgets.QTableWidgetItem("数量"))
         self.ui.tableWidget_2.setHorizontalHeaderItem(6,QtWidgets.QTableWidgetItem("单位"))
-        
+        theitem=None
         for i in range(len(d)):
             one=d[i]
             if backend.USEREST:
@@ -158,15 +158,16 @@ class ContactDlg(QtWidgets.QDialog):
             else:
                 theid=one.id
                 adr=one.item.name
-                self.ui.tableWidget_2.setItem(i, 0, QtWidgets.QTableWidgetItem(str(theid)))
+                theitem=QtWidgets.QTableWidgetItem(str(theid))
+                self.ui.tableWidget_2.setItem(i, 0, theitem)
                 self.ui.tableWidget_2.setItem(i, 1, QtWidgets.QTableWidgetItem(adr))
                 self.ui.tableWidget_2.setItem(i, 2, QtWidgets.QTableWidgetItem(str(one.item.id)))
                 self.ui.tableWidget_2.setItem(i, 3, QtWidgets.QTableWidgetItem(str(one.item.bh)))                
                 self.ui.tableWidget_2.setItem(i, 4, QtWidgets.QTableWidgetItem(str(one.item.guige)))                
                 self.ui.tableWidget_2.setItem(i, 5, QtWidgets.QTableWidgetItem(str(one.ct)))
                 self.ui.tableWidget_2.setItem(i, 6, QtWidgets.QTableWidgetItem(str(one.item.danwei)))
-                
             i+=1
+        self.ui.tableWidget_2.scrollToItem(theitem)
     @QtCore.pyqtSlot()
     def editpack(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),1)

@@ -30,6 +30,8 @@ class Contact(models.Model,myutil.MyModel):
     tiaoshi_date = models.DateField(null=True,blank=True,verbose_name="调试时间",default=datetime.datetime.now)#预计发货时间
     hetongbh=models.CharField(max_length=30,verbose_name="合同编号")#合同编号
     method=models.FileField(null=True,blank=True,verbose_name="方法")
+    def tablerow(self):
+        return "%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh)
     def myurls(self):
         url0="<p><a href=/parts/showcontactP?id=%s>包信息</a></p>" %(self.id,)
         url1="<p><a href=/parts/showcontact?id=%s>详细</a></p>" %(self.id,)
