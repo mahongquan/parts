@@ -10,3 +10,5 @@ class MyTreeView(QtWidgets.QTreeView):
         i=self.indexAt(event.pos())
         print(self.indexAt(event.pos()))
         print(self.model().filePath(i))
+        return QtWidgets.QTreeView.mousePressEvent(self,event)
+

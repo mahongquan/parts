@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt5_client\contacts.ui'
 #
-# Created: Thu Apr 20 15:42:50 2017
+# Created: Fri Apr 21 13:08:52 2017
 #      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,13 +66,16 @@ class Ui_MainWindow(object):
         self.pushButton_export = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_export.setObjectName("pushButton_export")
         self.verticalLayout.addWidget(self.pushButton_export)
+        self.pushButton_method = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_method.setObjectName("pushButton_method")
+        self.verticalLayout.addWidget(self.pushButton_method)
         self.treeView = MyTreeView(self.centralwidget)
         self.treeView.setObjectName("treeView")
         self.verticalLayout.addWidget(self.treeView)
         self.verticalLayout.setStretch(1, 1)
         self.verticalLayout.setStretch(3, 1)
         self.verticalLayout.setStretch(4, 1)
-        self.verticalLayout.setStretch(7, 1)
+        self.verticalLayout.setStretch(8, 1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.horizontalLayout.setStretch(0, 5)
         self.horizontalLayout.setStretch(1, 2)
@@ -98,5 +101,6 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "导入标样"))
         self.pushButton_chukudan.setText(_translate("MainWindow", "比对出库单"))
         self.pushButton_export.setText(_translate("MainWindow", "导出"))
+        self.pushButton_method.setText(_translate("MainWindow", "更新方法"))
 
 from mytreeview import MyTreeView

@@ -105,6 +105,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.pushButton_folder.clicked.connect(self.folder)
         self.ui.pushButton_newcontact.clicked.connect(self.newcontact)
         self.ui.pushButton_export.clicked.connect(self.export)
+        self.ui.pushButton_method.clicked.connect(self.updatemethod)
         d=backend.getContacts("","")
         self.showdata(d)
 
@@ -117,6 +118,15 @@ class CalculatorForm(QtWidgets.QMainWindow):
         headerGoods.sectionClicked.connect(self.ui.tableWidget.sortByColumn)
 
         #self.ui.tableWidget.installEventFilter(self)
+    def updatemethod(self):
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
+        if it!=None:
+            contactid=int(it.text())
+            c=backend.getContact(contactid)
+            c.method=backend.getIniFile(c)
+            c.save()
+            d=backend.getContacts("","")
+            self.showdata(d)
     def eventFilter(self,target, event):
         print(target,event)
         print(self)
@@ -156,7 +166,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
     def showdata(self,d):
         self.data=d
         self.rows=len(d)
-        self.cols=8
+        self.cols=10
         self.ui.tableWidget.setRowCount(self.rows)
         self.ui.tableWidget.setColumnCount(self.cols)
         self.ui.tableWidget.setHorizontalHeaderItem(0,QtWidgets.QTableWidgetItem("id"))
@@ -168,6 +178,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.tableWidget.setHorizontalHeaderItem(6,QtWidgets.QTableWidgetItem("仪器型号"))
         self.ui.tableWidget.setHorizontalHeaderItem(7,QtWidgets.QTableWidgetItem("客户地址"))
         self.ui.tableWidget.setHorizontalHeaderItem(8,QtWidgets.QTableWidgetItem("通道"))
+        self.ui.tableWidget.setHorizontalHeaderItem(9,QtWidgets.QTableWidgetItem("方法"))
         for i in range(len(d)):
             one=d[i]
             theid=one.id
@@ -187,9 +198,19 @@ class CalculatorForm(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(i, 6, QtWidgets.QTableWidgetItem(one.yiqixinghao))
             self.ui.tableWidget.setItem(i, 7, QtWidgets.QTableWidgetItem(one.addr))
             self.ui.tableWidget.setItem(i, 8, QtWidgets.QTableWidgetItem(one.channels))
+            self.ui.tableWidget.setItem(i, 9, QtWidgets.QTableWidgetItem("..."+str(one.method)[-16:]))
             i+=1 
         self.ui.tableWidget.setCurrentCell(0,0)
+
+        self.ui.tableWidget.setColumnWidth(0,50)
         self.ui.tableWidget.setColumnWidth(1,200)
+        self.ui.tableWidget.setColumnWidth(2,80)
+        self.ui.tableWidget.setColumnWidth(3,80)
+        self.ui.tableWidget.setColumnWidth(4,50)
+        self.ui.tableWidget.setColumnWidth(5,80)
+        self.ui.tableWidget.setColumnWidth(6,70)
+        self.ui.tableWidget.setColumnWidth(7,70)
+        self.ui.tableWidget.setColumnWidth(9,130)
     def newcontact(self):
         c=contact.ContactDlg(self)
         c.showdata(None)

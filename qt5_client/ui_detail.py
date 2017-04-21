@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt5_client\detail.ui'
 #
-# Created: Thu Apr 20 15:42:54 2017
+# Created: Fri Apr 21 13:08:59 2017
 #      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
