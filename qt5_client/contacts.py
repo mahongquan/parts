@@ -118,6 +118,12 @@ class CalculatorForm(QtWidgets.QMainWindow):
         headerGoods.sectionClicked.connect(self.ui.tableWidget.sortByColumn)
 
         #self.ui.tableWidget.installEventFilter(self)
+    def treat_delete(self,fp):
+        print("treat delete")
+        print(fp)
+    def treat_paste(self,fp):
+        print("treat paste")
+        print(fp)
     def updatemethod(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         if it!=None:
