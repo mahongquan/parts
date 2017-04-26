@@ -121,9 +121,37 @@ class CalculatorForm(QtWidgets.QMainWindow):
     def treat_delete(self,fp):
         print("treat delete")
         print(fp)
-    def treat_paste(self,fp):
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
+        if it!=None:
+            contactid=int(it.text())
+            c=backend.getContact(contactid)
+            path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+            if fp[:len(path)]==path:
+                os.remove(fp)
+            print(path)    
+    def treat_paste(self,topath):
         print("treat paste")
-        print(fp)
+        print(topath,type(topath))
+        it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
+        if it!=None:
+            contactid=int(it.text())
+            c=backend.getContact(contactid)
+            if topath=="":
+                topath="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+            else:
+                if os.path.isdir(topath):
+                    pass
+                else:
+                    topath=os.path.split(topath)[0]
+            print(topath)
+            clipboard = QtWidgets.QApplication.clipboard()
+            data=clipboard.mimeData()
+            if data.hasFormat('text/uri-list'):
+                for frompath in data.urls():
+                    print(dir(frompath))
+                    cmd="xcopy %s %s" %(os.path.normpath(frompath.toLocalFile()),os.path.normpath(topath+"/"))
+                    print(cmd)
+                    os.system(cmd)
     def updatemethod(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         if it!=None:
