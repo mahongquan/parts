@@ -13,6 +13,8 @@ from django.contrib.auth.models import User,Group
 import codecs
 import xlrd
 import os
+yqzl=os.path.split(__file__)[0]+r"\..\media\仪器资料"
+print(yqzl)
 token=None
 islogin=False
 def readStandardFile(fn):

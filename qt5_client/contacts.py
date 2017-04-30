@@ -89,10 +89,10 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.pushButton_7.clicked.connect(self.importstand)
 
         self.model = QtWidgets.QFileSystemModel()
-        self.model.setRootPath(r"D:\parts\media\仪器资料")
+        self.model.setRootPath(backend.yqzl)
         self.ui.treeView.setModel(self.model)
         self.ui.treeView.doubleClicked.connect(self.test)
-        index = self.model.index(r"D:\parts\media\仪器资料")
+        index = self.model.index(backend.yqzl)
         self.ui.treeView.setRootIndex(index)
         self.ui.treeView.expand(index)      #当前项展开
         self.ui.treeView.scrollTo(index)    #定位到当前项
@@ -125,7 +125,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         if it!=None:
             contactid=int(it.text())
             c=backend.getContact(contactid)
-            path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+            path=backend.yqzl+"%s" % str(c.yiqibh)
             if fp[:len(path)]==path:
                 os.remove(fp)
             print(path)    
@@ -137,7 +137,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
             contactid=int(it.text())
             c=backend.getContact(contactid)
             if topath=="":
-                topath="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+                topath=backend.yqzl+"/%s" % str(c.yiqibh)
             else:
                 if os.path.isdir(topath):
                     pass
@@ -170,7 +170,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         print(event.pos())
     def showtree(self,contactid):
         c=backend.getContact(contactid)
-        path="D:/parts/media/仪器资料/%s" % str(c.yiqibh)
+        path=backend.yqzl+"/%s" % str(c.yiqibh)
         self.model.setRootPath(path)
         self.ui.treeView.setModel(self.model)
         self.ui.treeView.doubleClicked.connect(self.test)
@@ -322,8 +322,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
             return 
         contactid=int(it.text())
         c=backend.getContact(contactid)
-        MEDIA_ROOT="d:\\parts\\media"
-        p=MEDIA_ROOT+"\\仪器资料\\"+c.yiqibh
+        p=backend.yqzl+"\\"+c.yiqibh
         if not os.path.exists(p):
             os.makedirs(p)
         cmd="start %s" % p
@@ -337,9 +336,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         outfilename=c.yiqixinghao+"_"+c.yonghu
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
-        #p="d:/parts/media/仪器资料/"+c.yiqibh
-        MEDIA_ROOT=r"d:/parts/media"
-        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+        p=os.path.join(backend.yqzl,c.yiqibh)
         #证书
         dir1=p+"/"+outfilename
         logging.info(dir1)
