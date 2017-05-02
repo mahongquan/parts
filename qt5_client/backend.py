@@ -26,6 +26,11 @@ def myfind(l,p):
            lr.append(a)
        #print "append"
     return lr
+def genSfx(c,p):
+    os.chdir(p)
+    cmd=r"D:\licenseManager\bin\Debug\LicenseManager.exe"+" "+c.yiqibh[-8:]+" 80"
+    print(cmd)
+    os.system(cmd)
 def getIniFile(contact):
     path="D:/parts/media/仪器资料/%s" % (contact.yiqibh)
     try:

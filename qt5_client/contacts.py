@@ -21,6 +21,7 @@ import genDoc.genLabel
 from genDoc.recordXml import genRecord
 import traceback
 from . import exportstds
+import shutil
 def readBeiliaofile(fn):
     book = xlrd.open_workbook(fn)
     table=book.sheets()[0]
@@ -121,15 +122,20 @@ class CalculatorForm(QtWidgets.QMainWindow):
         #self.ui.tableWidget.installEventFilter(self)
     def treat_delete(self,fp):
         print("treat delete")
-        print(fp)
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         if it!=None:
             contactid=int(it.text())
             c=backend.getContact(contactid)
-            path=backend.yqzl+"%s" % str(c.yiqibh)
+            path=backend.yqzl+"/%s" % str(c.yiqibh)
+            path=os.path.normpath(path)
+            fp=os.path.normpath(fp)
             if fp[:len(path)]==path:
-                os.remove(fp)
-            print(path)    
+                print("remove "+fp)
+                if os.path.isdir(fp):
+                    shutil.rmtree(fp)#os.removedirs(fp)#rmdir
+                else:
+                    os.remove(fp)
+            print(fp,path)    
     def treat_paste(self,topath):
         print("treat paste")
         print(topath,type(topath))
@@ -355,6 +361,9 @@ class CalculatorForm(QtWidgets.QMainWindow):
         if not os.path.exists(file2):
             data2=getJiaoZhunFile(c)
             open(file2,"wb").write(data2)
+        filesn=p+"/sfx.db3"
+        if not os.path.exists(filesn):
+            backend.genSfx(c,p)
         file3=p+"/"+outfilename+"_装箱单.docx"
         if not os.path.exists(file3):
             fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
@@ -391,7 +400,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
             except:
                 traceback.print_exc()
                 logging.info("except")
-        QtWidgets.QMessageBox.information(self, "Title", "完成", QtWidgets.QMessageBox.Ok)
+        #QtWidgets.QMessageBox.information(self, "Title", "完成", QtWidgets.QMessageBox.Ok)
 def main():
     import sys
     from .login import LoginDlg
