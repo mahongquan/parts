@@ -220,7 +220,7 @@ def getPack(packid):
     r=Pack.objects.get(Q(id=packid))
     return r  
 def getPacks(search_bh):
-    r=Pack.objects.filter(name__contains=search_bh)      
+    r=Pack.objects.filter(name__contains=search_bh).order_by('-id')[:20]  
     return r
 def getItems(search_bh):
     r=Item.objects.filter(name__contains=search_bh)      

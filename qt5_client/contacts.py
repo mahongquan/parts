@@ -20,6 +20,7 @@ from genDoc.docx_write import genPack,genQue
 import genDoc.genLabel
 from genDoc.recordXml import genRecord
 import traceback
+from . import exportstds
 def readBeiliaofile(fn):
     book = xlrd.open_workbook(fn)
     table=book.sheets()[0]
@@ -186,6 +187,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         mimeData =QtCore.QMimeData()
         mimeData.setText(txt)
         QtWidgets.QApplication.clipboard().setMimeData(mimeData)
+        
     def shootScreen(self):
         self.enableclick=True
     def test(self, signal):
@@ -293,8 +295,10 @@ class CalculatorForm(QtWidgets.QMainWindow):
             pass
         c.exec()
     def importstand(self):
-        (fileName,fileType)= QFileDialog.getOpenFileName(None,"Open Excel file", r"C:\Users\group2\Desktop","Excel Files ( *.xlsx *.xls)")
-        backend.readStandardFile(fileName)
+        c=exportstds.ExportStdsDlg(self)
+        c.exec()
+        #(fileName,fileType)= QFileDialog.getOpenFileName(None,"Open Excel file", r"C:\Users\group2\Desktop","Excel Files ( *.xlsx *.xls)")
+        #backend.readStandardFile(fileName)
     def bj(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)#self.ui.tableWidget.currentColumn()))
         if it==None:

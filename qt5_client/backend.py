@@ -27,17 +27,27 @@ def myfind(l,p):
        #print "append"
     return lr
 def getIniFile(contact):
-	xhp=contact.yiqixinghao.split("-")[0]
-	path="D:/parts/media/仪器资料/%s/%s" % (contact.yiqibh,xhp)
-	try:
-		fs=mylistdir(path,"*.ini")
-		out="./仪器资料/%s/%s" % (contact.yiqibh,xhp)
-		if len(fs)>0:
-			return  out+"/"+fs[0]
-		else:
-			return None
-	except FileNotFoundError as e:
-		return None
+    path="D:/parts/media/仪器资料/%s" % (contact.yiqibh)
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s" % (contact.yiqibh)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            pass
+    except FileNotFoundError as e:
+        pass
+    xhp=contact.yiqixinghao.split("-")[0]
+    path="D:/parts/media/仪器资料/%s/%s" % (contact.yiqibh,xhp)
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s/%s" % (contact.yiqibh,xhp)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            return None
+    except FileNotFoundError as e:
+        return None
 if USEREST:
     from .backend_rest import *
 else:

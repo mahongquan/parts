@@ -10,3 +10,5 @@ os.system(cmd)
 cmd=r"qt5_client\pyuic5 qt5_client\detail.ui >qt5_client\ui_detail.py"
 os.system(cmd)
 cmd=r"qt5_client\pyuic5 qt5_client\chuku.ui >qt5_client\ui_chuku.py"
+os.system(cmd)
+cmd=r"qt5_client\pyuic5 qt5_client\exportstds.ui >qt5_client\ui_exportstds.py"
