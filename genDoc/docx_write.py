@@ -89,13 +89,14 @@ def genPack(contact,fn):
     print(tbl.cell(0,0).text)
     items=[]
     items2=[]
-    for cp in contact.usepack_set.all():
-        for pi in cp.pack.packitem_set.all():
-            pi.item.ct=pi.ct
-            if not pi.quehuo:
-                items=addItem(items,pi.item)
-            else:
-                items2=addItem(items2,pi.item)
+    # for cp in contact.usepack_set.all():
+    #     for pi in cp.pack.packitem_set.all():
+    #         pi.item.ct=pi.ct
+    #         if not pi.quehuo:
+    #             items=addItem(items,pi.item)
+    #         else:
+    #             items2=addItem(items2,pi.item)
+    (items,items2)=contact.huizong()
     for item in items:
         columns= tbl.add_row().cells
         setCell(columns[0],item.bh)

@@ -73,7 +73,6 @@ class ContactDlg(QtWidgets.QDialog):
         #self.ui.lineEdit_pack.clear()
         print("packinput",n)
         r=backend.getPacks(n)
-        print(r.count())
         self.ui.comboBox.clear()
         at=0
         for p in r:
@@ -117,7 +116,7 @@ class ContactDlg(QtWidgets.QDialog):
         #     self.ui.frame.hide()
     def showpack(self):
         d=backend.getContactPack(self.c.id)
-        rows=d.count()
+        rows=len(d)
         cols=3
         self.ui.tableWidget.setRowCount(rows)
         self.ui.tableWidget.setColumnCount(cols)
@@ -125,8 +124,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.tableWidget.setHorizontalHeaderItem(1,QtWidgets.QTableWidgetItem("包id"))
         self.ui.tableWidget.hideColumn(1)
         self.ui.tableWidget.setHorizontalHeaderItem(2,QtWidgets.QTableWidgetItem("名称"))
-        i=0
-        for one in d:#i in range(len(d)):
+        for i in range(len(d)):
             one=d[i]
             self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(one.id)))
             self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(str(one.pack.id)))
@@ -135,7 +133,7 @@ class ContactDlg(QtWidgets.QDialog):
     def showpackitems(self,packid):        
         d=backend.getPackItem(packid)
         p=backend.getPack(packid)
-        rows=d.count()
+        rows=len(d)
         cols=7
         self.ui.tableWidget_2.setRowCount(rows)
         self.ui.tableWidget_2.setColumnCount(cols)
@@ -148,9 +146,8 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.tableWidget_2.setHorizontalHeaderItem(5,QtWidgets.QTableWidgetItem("数量"))
         self.ui.tableWidget_2.setHorizontalHeaderItem(6,QtWidgets.QTableWidgetItem("单位"))
         theitem=None
-        i=0
-        for one in d:# i in range(len(d)):
-            #one=d[i]
+        for i in range(len(d)):
+            one=d[i]
             if backend.USEREST:
                 theid=one["id"]
                 adr=one["name"]
@@ -317,8 +314,7 @@ class ContactDlg(QtWidgets.QDialog):
             print("not None")
             #print(dir(self.c.method))
             pass
-        #self.c.save()
-        backend.saveObject(self.c)
+        self.c.save()
         self.resetbg()
         self.ui.pushButton_save.setEnabled(True)
         pass 

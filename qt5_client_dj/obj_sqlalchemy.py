@@ -3,16 +3,7 @@ from sqlalchemy import Boolean, Column, Date, DateTime, Float, ForeignKey, Integ
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.ext.declarative import declarative_base
-def addItem(items,item):
-    find=False
-    for i in items:
-        if i.id==item.id:
-            i.ct +=item.ct
-            find=True
-            break
-    if not find:
-        items.append(item)
-    return items
+
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -171,29 +162,7 @@ class PartsContact(Base):
     channels = Column(Text(30))
     tiaoshi_date = Column(Date)
     method = Column(Text(200))
-    def huizong(self):
-        items=[]
-        items2=[]
-        for cp in self.usepacks:
-            for pi in cp.pack.packitems:
-                pi.item.ct=pi.ct
-                if not pi.quehuo:
-                    items=addItem(items,pi.item)
-                else:
-                    items2=addItem(items2,pi.item)
-        return (items,items2)
-    def huizong2(self):
-        items=[]
-        items2=[]
-        for cp in self.usepacks:
-            if cp.pack.name!="调试必备":
-                for pi in cp.pack.packitems:
-                    pi.item.ct=pi.ct
-                    if not pi.quehuo:
-                        items=addItem(items,pi.item)
-                    else:
-                        items2=addItem(items2,pi.item)
-        return (items,items2)       
+
 
 class PartsDanju(Base):
     __tablename__ = 'parts_danju'
@@ -276,15 +245,12 @@ class PartsUsepack(Base):
 
     id = Column(Integer, primary_key=True)
     contact_id = Column(ForeignKey('parts_contact.id'), nullable=False, index=True)
-    pack_id = Column(ForeignKey('parts_pack.id'), nullable=False, index=True)
+    pack_id = Column(ForeignKey('parts_usepack.id'), nullable=False, index=True)
 
     contact = relationship('PartsContact')
-    pack = relationship('PartsPack')
+    pack = relationship('PartsUsepack', remote_side=[id])
 
-PartsContact.usepacks = relationship(
-    "PartsUsepack", order_by=PartsUsepack.id, back_populates="contact")
-PartsPack.packitems = relationship(
-    "PartsPackitem", order_by=PartsPackitem.id, back_populates="pack")
+
 t_sqlite_sequence = Table(
     'sqlite_sequence', metadata,
     Column('name', NullType),
