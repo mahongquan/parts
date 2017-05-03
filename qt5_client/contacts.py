@@ -207,7 +207,8 @@ class CalculatorForm(QtWidgets.QMainWindow):
             os.system(cmd)
     def showdata(self,d):
         self.data=d
-        self.rows=len(d)
+        #self.rows=len(d)
+        self.rows=d.count()
         self.cols=10
         self.ui.tableWidget.setRowCount(self.rows)
         self.ui.tableWidget.setColumnCount(self.cols)
@@ -221,8 +222,8 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.ui.tableWidget.setHorizontalHeaderItem(7,QtWidgets.QTableWidgetItem("客户地址"))
         self.ui.tableWidget.setHorizontalHeaderItem(8,QtWidgets.QTableWidgetItem("通道"))
         self.ui.tableWidget.setHorizontalHeaderItem(9,QtWidgets.QTableWidgetItem("方法"))
-        for i in range(len(d)):
-            one=d[i]
+        i=0
+        for one in d:
             theid=one.id
             adr=one.yonghu
             val=one.hetongbh
