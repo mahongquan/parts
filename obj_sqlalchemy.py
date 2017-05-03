@@ -245,10 +245,10 @@ class PartsUsepack(Base):
 
     id = Column(Integer, primary_key=True)
     contact_id = Column(ForeignKey('parts_contact.id'), nullable=False, index=True)
-    pack_id = Column(ForeignKey('parts_usepack.id'), nullable=False, index=True)
+    pack_id = Column(ForeignKey('parts_pack.id'), nullable=False, index=True)
 
     contact = relationship('PartsContact')
-    pack = relationship('PartsUsepack', remote_side=[id])
+    pack = relationship('PartsPack')
 
 
 t_sqlite_sequence = Table(

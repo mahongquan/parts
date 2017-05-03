@@ -38,10 +38,12 @@ class ContactDlg(QtWidgets.QDialog):
         self.c.item.bh=self.ui.lineEdit_bh.text()
         self.c.item.guige=self.ui.lineEdit_guige.text()
         self.c.item.danwei=self.ui.lineEdit_danwei.text()
-        self.c.item.save()
+        #self.c.item.save()
+        backend.saveItem(self.c.item)
         if self.c.ct!=int(self.ui.lineEdit_ct.text()):
             self.c.ct=int(self.ui.lineEdit_ct.text())
-            self.c.save()
+            #self.c.save()
+            backend.savePackItem(self.c)
         self.done(0)
     def reject(self):
         print("reject")

@@ -9,7 +9,7 @@ log.setLevel(logging.DEBUG)
 import codecs
 import xlrd
 import os
-from sqlalchemy import create_engine,desc
+from sqlalchemy import create_engine,desc,or_,and_
 from sqlalchemy.orm import sessionmaker
 import getpath
 print(getpath.getpath())
@@ -136,7 +136,9 @@ def getContacts(search,baoxiang):
     start=0
     limit=30
     if search!='':
+        search="%"+search+"%"
         if baoxiang!="":
+            baoxiang="%"+baoxiang+"%"
             #objs = Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).order_by('-yujifahuo_date')[start:start+limit]
             objs=session.query(PartsContact).filter(
                     and_(
@@ -150,6 +152,7 @@ def getContacts(search,baoxiang):
                 ).order_by(desc(PartsContact.yujifahuo_date))#[start:start+limit] # Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
     else:
         if baoxiang!="":
+            baoxiang="%"+baoxiang+"%"
             objs=session.query(PartsContact).filter(
                         PartsContact.baoxiang.like(baoxiang)
                 ).order_by(desc(PartsContact.yujifahuo_date))#[start:start+limit]
@@ -157,40 +160,58 @@ def getContacts(search,baoxiang):
             objs=session.query(PartsContact).order_by(desc(PartsContact.yujifahuo_date))#[start:start+limit]
     return objs
 def removepi(piid):
-    pi=PackItem.objects.get(id=piid)    
+    pi=session.query(PartsPackitem).filter(PartsPackitem.id==piid).one() 
     #print(pi)
-    pi.delete()
+    #pi.delete()
+    session.delete(pi)
+    session.commit()
 def newpackitem(pid,nm):
-    p=Pack.objects.get(id=pid)
+    p=session.query(PartsPack).filter(PartsPack.id==pid).one()
     print(pid,p)
-    i=Item()
+    i=PartsItem()
     i.guige=""
     i.ct=1
     i.danwei="个"
     i.name=nm
     i.bh=""
-    i.save()
-    pi=PackItem()
+    session.add(i)#i.save()
+    pi=PartsPackitem()
     pi.pack=p
     pi.item=i
-    pi.save()
+    pi.ct=1
+    #pi.save()
+    session.add(pi)
+    session.commit()
 def newpack(c,nm):
-    p=Pack()
+    p=PartsPack()
     p.name=nm
-    p.save()
-    up=UsePack()
+    session.add(p)#p.save()
+    up=PartsUsepack()
     up.contact=c
     up.pack=p
-    up.save()
+    session.add(up)
+    session.commit()#up.save()
+def saveItem(i):
+    session.add(i)
+    session.commit()
+def savePackItem(pi):
+    session.add(pi)
+    session.commit()
+def saveObject(pi):
+    session.add(pi)
+    session.commit()
+
 def removeup(c,upid):
-    up=UsePack.objects.get(id=upid)
-    up.delete()
+    up=session.query(PartsUsepack).filter(PartsUsepack.id==upid).one()
+    session.delete(up)
 def addPack(c,pid):
-    p=Pack.objects.get(id=pid)
-    up=UsePack()
+    p=session.query(PartsPack).filter(PartsPack.id==pid).one()#Pack.objects.get(id=pid)
+    up=PartsUsepack()
     up.contact=c
     up.pack=p
-    up.save()
+    #up.save()
+    session.add(up)
+    session.commit()
 def newContact():
     c=Contact()
     c.yujifahuo_date=datetime.datetime.now().date()
@@ -235,26 +256,34 @@ def getContactPack(contactid):
     r=session.query(PartsUsepack).filter(PartsUsepack.contact_id==contactid)
     return r
 def getPack(packid):
-    r=Pack.objects.get(Q(id=packid))
+    #r=Pack.objects.get(Q(id=packid))
+    r=session.query(PartsPack).filter(PartsPack.id==packid).one()
     return r  
 def getPacks(search_bh):
-    r=Pack.objects.filter(name__contains=search_bh).order_by('-id')[:20]  
+    search_bh="%"+search_bh+"%"
+    r=session.query(PartsPack).filter(PartsPack.name.like(search_bh))#Pack.objects.filter(name__contains=search_bh).order_by('-id')[:20]  
     return r
 def getItems(search_bh):
-    r=Item.objects.filter(name__contains=search_bh)      
+    search_bh="%"+search_bh+"%"
+    r=session.query(PartsItem).filter(PartsItem.name.like(search_bh))#Item.objects.filter(name__contains=search_bh)      
     return r    
 def addItem(pid,iid):   
-    i=Item.objects.get(id=iid)
-    p=Pack.objects.get(id=pid)
-    pi=PackItem()
-    pi.pack=p
-    pi.item=i
-    pi.save()
+    logging.info("add pack item===========")
+    #i=session.query(PartsItem).filter(PartsItem.id==iid).one()
+    #p=session.query(PartsPack).filter(PartsPack.id==pid).one()
+    pi=PartsPackitem()
+    pi.pack_id=pid
+    pi.item_id=iid
+    pi.ct=1
+    session.add(pi)
+    session.commit()
 def getPackItemOne(packid):
-    r=PackItem.objects.get(id=packid)
+    r=session.query(PartsPackitem).filter(PartsPackitem.id==packid).one()
+    #r=PackItem.objects.get(id=packid)
     return r    
 def getPackItem(packid):
-    r=PackItem.objects.filter(Q(pack=packid))
+    #r=PackItem.objects.filter(Q(pack=packid))
+    r=session.query(PartsPackitem).filter(PartsPackitem.pack_id==packid)
     return r
 def getAllContacts():
     cs=session.query(PartsContact).order_by(PartsContact.yujifahuo_date)
@@ -304,8 +333,8 @@ if __name__=="__main__":
     #cs=getContacts("CS","")
     #print(dir(cs))
     #print(cs.count())
-    for p in getContactPack(274):
-        print(p)
+    cs=getPacks("%17%")
+    print(cs.count())
     # for c in cs:
     #     print(c,c.id)
     # usepacks=getContactPack(9)
