@@ -304,7 +304,8 @@ if __name__=="__main__":
     #cs=getContacts("CS","")
     #print(dir(cs))
     #print(cs.count())
-    print(getContactPack(274))
+    for p in getContactPack(274):
+        print(p)
     # for c in cs:
     #     print(c,c.id)
     # usepacks=getContactPack(9)
