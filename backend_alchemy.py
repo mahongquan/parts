@@ -49,32 +49,40 @@ def readStandardFile(fn):
 def treatOne(rows,fn):
     beizhu=rows[1][7]
     if beizhu[:2]=="CS" or beizhu[:2]=="ON":
-        try:
-            d=Pack.objects.get(name=rows[0][1])
-        except ObjectDoesNotExist as e2:
-            d=Pack()
+        #try:
+        ds=sesssion.query(PartsPack).filter(PartsPack.name==rows[0][1])
+        if ds.count()==0:
+        #except ObjectDoesNotExist as e2:
+            d=PartsPack()
+        else:
+            d=ds[0]
         d.name=rows[1][7]+"_"+fn
-        d.save()
+        #d.save()
+        session.add(d)
         n=len(rows)
         items=rows[4:4+n-4-3]
         for i in items:
             #i=DanjuItem()
             print(i[1],i[2],i[3],i[4],i[5])
-            items=Item.objects.filter(bh=i[1]).all()
-            if len(items)>1:
+            #items=Item.objects.filter(bh=i[1]).all()
+            items=session.query(PartsItem).filter(PartsItembh==i[1])
+            if items.count()>1:
                 item=items[0]
             else:
-                item=Item()
+                item=PartsItem()
             item.bh=i[1]
             item.name=str(i[2])+" "+str(i[1])
             item.guige=i[3]
             item.danwei=i[4]
-            item.save()
-            di=PackItem()
+            #item.save()
+            session.add(item)
+            di=PartsPackitem()
             di.pack=d
             di.item=item
             di.ct=i[5]
-            di.save()
+            #di.save()
+            session.add(di)
+        session.commit()
 def login(username,password):
     user = authenticate(username=username, password=password)
     if user is None:
@@ -102,7 +110,7 @@ def testupdate():
     d={"id":9,"yonghu":"a","yujifahuo_date":d}
     updateContact(d)
 def getContactItems(contactid):
-    contact=Contact.objects.get(id=contactid)
+    contact=session.query(PartsContact).filter(PartsContact.id==contactid).one()
     (items,items2)=contact.huizong()
     r=[]
     for item in items:
@@ -112,7 +120,7 @@ def getContactItems(contactid):
     print(r)
     return r
 def genDetail(contactid):    
-    c=Contact.objects.get(id=contactid)
+    c=session.query(PartsContact).filter(PartsContact.id==contactid).one()
     dic = {}
     dic["contact"]=c
     (items,items2)=c.huizong()
@@ -213,7 +221,7 @@ def addPack(c,pid):
     session.add(up)
     session.commit()
 def newContact():
-    c=Contact()
+    c=PartsContact()
     c.yujifahuo_date=datetime.datetime.now().date()
     c.tiaoshi_date=c.yujifahuo_date
     return c
@@ -232,7 +240,7 @@ def deleteContact(id):
     #print r.headers
     #print r.text   
 def huizong(contactid):
-    contact=Contact.objects.get(id=contactid)
+    contact=session.query(PartsContact).filter(PartsContact.id==contactid).one()
     (items,items2)=contact.huizong()
     r=[]
     for item in items:
@@ -261,7 +269,7 @@ def getPack(packid):
     return r  
 def getPacks(search_bh):
     search_bh="%"+search_bh+"%"
-    r=session.query(PartsPack).filter(PartsPack.name.like(search_bh))#Pack.objects.filter(name__contains=search_bh).order_by('-id')[:20]  
+    r=session.query(PartsPack).filter(PartsPack.name.like(search_bh)).order_by(desc(PartsPack.id))  
     return r
 def getItems(search_bh):
     search_bh="%"+search_bh+"%"

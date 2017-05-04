@@ -18,142 +18,142 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class AuthGroup(Base):
-    __tablename__ = 'auth_group'
+# class AuthGroup(Base):
+#     __tablename__ = 'auth_group'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(80), nullable=False)
-
-
-class AuthGroupPermission(Base):
-    __tablename__ = 'auth_group_permissions'
-    __table_args__ = (
-        UniqueConstraint('group_id', 'permission_id'),
-    )
-
-    id = Column(Integer, primary_key=True)
-    group_id = Column(Integer, nullable=False, index=True)
-    permission_id = Column(ForeignKey('auth_permission.id'), nullable=False, index=True)
-
-    permission = relationship('AuthPermission')
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(80), nullable=False)
 
 
-class AuthPermission(Base):
-    __tablename__ = 'auth_permission'
-    __table_args__ = (
-        UniqueConstraint('content_type_id', 'codename'),
-    )
+# class AuthGroupPermission(Base):
+#     __tablename__ = 'auth_group_permissions'
+#     __table_args__ = (
+#         UniqueConstraint('group_id', 'permission_id'),
+#     )
 
-    id = Column(Integer, primary_key=True)
-    content_type_id = Column(ForeignKey('django_content_type.id'), nullable=False, index=True)
-    codename = Column(String(100), nullable=False)
-    name = Column(String(255), nullable=False)
+#     id = Column(Integer, primary_key=True)
+#     group_id = Column(Integer, nullable=False, index=True)
+#     permission_id = Column(ForeignKey('auth_permission.id'), nullable=False, index=True)
 
-    content_type = relationship('DjangoContentType')
-
-
-class AuthUser(Base):
-    __tablename__ = 'auth_user'
-
-    id = Column(Integer, primary_key=True)
-    password = Column(String(128), nullable=False)
-    last_login = Column(DateTime)
-    is_superuser = Column(Boolean, nullable=False)
-    first_name = Column(String(30), nullable=False)
-    last_name = Column(String(30), nullable=False)
-    email = Column(String(254), nullable=False)
-    is_staff = Column(Boolean, nullable=False)
-    is_active = Column(Boolean, nullable=False)
-    date_joined = Column(DateTime, nullable=False)
-    username = Column(String(150), nullable=False)
+#     permission = relationship('AuthPermission')
 
 
-class AuthUserGroup(Base):
-    __tablename__ = 'auth_user_groups'
-    __table_args__ = (
-        UniqueConstraint('user_id', 'group_id'),
-    )
+# class AuthPermission(Base):
+#     __tablename__ = 'auth_permission'
+#     __table_args__ = (
+#         UniqueConstraint('content_type_id', 'codename'),
+#     )
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False, index=True)
-    group_id = Column(ForeignKey('auth_group.id'), nullable=False, index=True)
+#     id = Column(Integer, primary_key=True)
+#     content_type_id = Column(ForeignKey('django_content_type.id'), nullable=False, index=True)
+#     codename = Column(String(100), nullable=False)
+#     name = Column(String(255), nullable=False)
 
-    group = relationship('AuthGroup')
-
-
-class AuthUserUserPermission(Base):
-    __tablename__ = 'auth_user_user_permissions'
-    __table_args__ = (
-        UniqueConstraint('user_id', 'permission_id'),
-    )
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False, index=True)
-    permission_id = Column(ForeignKey('auth_permission.id'), nullable=False, index=True)
-
-    permission = relationship('AuthPermission')
+#     content_type = relationship('DjangoContentType')
 
 
-class DjangoAdminLog(Base):
-    __tablename__ = 'django_admin_log'
+# class AuthUser(Base):
+#     __tablename__ = 'auth_user'
 
-    id = Column(Integer, primary_key=True)
-    object_id = Column(Text)
-    object_repr = Column(String(200), nullable=False)
-    action_flag = Column(Integer, nullable=False)
-    change_message = Column(Text, nullable=False)
-    content_type_id = Column(ForeignKey('django_content_type.id'), index=True)
-    user_id = Column(ForeignKey('auth_user.id'), nullable=False, index=True)
-    action_time = Column(DateTime, nullable=False)
-
-    content_type = relationship('DjangoContentType')
-    user = relationship('AuthUser')
-
-
-class DjangoContentType(Base):
-    __tablename__ = 'django_content_type'
-    __table_args__ = (
-        UniqueConstraint('app_label', 'model'),
-    )
-
-    id = Column(Integer, primary_key=True)
-    app_label = Column(String(100), nullable=False)
-    model = Column(String(100), nullable=False)
+#     id = Column(Integer, primary_key=True)
+#     password = Column(String(128), nullable=False)
+#     last_login = Column(DateTime)
+#     is_superuser = Column(Boolean, nullable=False)
+#     first_name = Column(String(30), nullable=False)
+#     last_name = Column(String(30), nullable=False)
+#     email = Column(String(254), nullable=False)
+#     is_staff = Column(Boolean, nullable=False)
+#     is_active = Column(Boolean, nullable=False)
+#     date_joined = Column(DateTime, nullable=False)
+#     username = Column(String(150), nullable=False)
 
 
-class DjangoMigration(Base):
-    __tablename__ = 'django_migrations'
+# class AuthUserGroup(Base):
+#     __tablename__ = 'auth_user_groups'
+#     __table_args__ = (
+#         UniqueConstraint('user_id', 'group_id'),
+#     )
 
-    id = Column(Integer, primary_key=True)
-    app = Column(String(255), nullable=False)
-    name = Column(String(255), nullable=False)
-    applied = Column(DateTime, nullable=False)
+#     id = Column(Integer, primary_key=True)
+#     user_id = Column(Integer, nullable=False, index=True)
+#     group_id = Column(ForeignKey('auth_group.id'), nullable=False, index=True)
 
-
-class DjangoSession(Base):
-    __tablename__ = 'django_session'
-
-    session_key = Column(String(40), primary_key=True)
-    session_data = Column(Text, nullable=False)
-    expire_date = Column(DateTime, nullable=False, index=True)
+#     group = relationship('AuthGroup')
 
 
-class DjangoSite(Base):
-    __tablename__ = 'django_site'
+# class AuthUserUserPermission(Base):
+#     __tablename__ = 'auth_user_user_permissions'
+#     __table_args__ = (
+#         UniqueConstraint('user_id', 'permission_id'),
+#     )
 
-    id = Column(Integer, primary_key=True)
-    domain = Column(String(100), nullable=False)
-    name = Column(String(50), nullable=False)
+#     id = Column(Integer, primary_key=True)
+#     user_id = Column(Integer, nullable=False, index=True)
+#     permission_id = Column(ForeignKey('auth_permission.id'), nullable=False, index=True)
+
+#     permission = relationship('AuthPermission')
 
 
-class ExtjsCh11(Base):
-    __tablename__ = 'extjs_ch11'
+# class DjangoAdminLog(Base):
+#     __tablename__ = 'django_admin_log'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
-    gender = Column(String(1), nullable=False)
-    dob = Column(Date, nullable=False)
-    epaper = Column(Boolean, nullable=False)
+#     id = Column(Integer, primary_key=True)
+#     object_id = Column(Text)
+#     object_repr = Column(String(200), nullable=False)
+#     action_flag = Column(Integer, nullable=False)
+#     change_message = Column(Text, nullable=False)
+#     content_type_id = Column(ForeignKey('django_content_type.id'), index=True)
+#     user_id = Column(ForeignKey('auth_user.id'), nullable=False, index=True)
+#     action_time = Column(DateTime, nullable=False)
+
+#     content_type = relationship('DjangoContentType')
+#     user = relationship('AuthUser')
+
+
+# class DjangoContentType(Base):
+#     __tablename__ = 'django_content_type'
+#     __table_args__ = (
+#         UniqueConstraint('app_label', 'model'),
+#     )
+
+#     id = Column(Integer, primary_key=True)
+#     app_label = Column(String(100), nullable=False)
+#     model = Column(String(100), nullable=False)
+
+
+# class DjangoMigration(Base):
+#     __tablename__ = 'django_migrations'
+
+#     id = Column(Integer, primary_key=True)
+#     app = Column(String(255), nullable=False)
+#     name = Column(String(255), nullable=False)
+#     applied = Column(DateTime, nullable=False)
+
+
+# class DjangoSession(Base):
+#     __tablename__ = 'django_session'
+
+#     session_key = Column(String(40), primary_key=True)
+#     session_data = Column(Text, nullable=False)
+#     expire_date = Column(DateTime, nullable=False, index=True)
+
+
+# class DjangoSite(Base):
+#     __tablename__ = 'django_site'
+
+#     id = Column(Integer, primary_key=True)
+#     domain = Column(String(100), nullable=False)
+#     name = Column(String(50), nullable=False)
+
+
+# class ExtjsCh11(Base):
+#     __tablename__ = 'extjs_ch11'
+
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(30), nullable=False)
+#     gender = Column(String(1), nullable=False)
+#     dob = Column(Date, nullable=False)
+#     epaper = Column(Boolean, nullable=False)
 
 
 class PartsContact(Base):
@@ -171,6 +171,8 @@ class PartsContact(Base):
     channels = Column(Text(30))
     tiaoshi_date = Column(Date)
     method = Column(Text(200))
+    def tablerow(self):
+        return "%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh)
     def huizong(self):
         items=[]
         items2=[]

@@ -22,15 +22,16 @@ class ExportStdsDlg(QtWidgets.QDialog):
         self.showpack()
     def showpack(self):
         d=backend.getPacks("xls")
-        rows=len(d)
+        rows=d.count()
         cols=2
         self.ui.tableWidget.setRowCount(rows)
         self.ui.tableWidget.setColumnCount(cols)
         self.ui.tableWidget.setColumnWidth(1,260)
         self.ui.tableWidget.setHorizontalHeaderItem(0,QtWidgets.QTableWidgetItem("包id"))
         self.ui.tableWidget.setHorizontalHeaderItem(1,QtWidgets.QTableWidgetItem("名称"))
-        for i in range(len(d)):
-            one=d[i]
+        i=0
+        for one in d:# i in range(len(d)):
+            #one=d[i]
             self.ui.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(one.id)))
             self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(one.name))
             i+=1
