@@ -353,6 +353,9 @@ function delCookie(name)//删除cookie
           {
             alert(model.message);
           }
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },

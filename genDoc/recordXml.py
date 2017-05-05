@@ -92,6 +92,7 @@ def getElement(chanels,first):
             chanels.append("L"+ele[1])
     pass    
 def getchannels(peizhi):
+    print(peizhi)
     elements=peizhi.split("+")
     chanels=[]
     first=elements[0]
@@ -110,8 +111,10 @@ def genRecord(fn,c):
         factors=None
     else:
         factors=getFromIni(yiqixinghao,fn)
-    logging.info(factors)
-    #logging.info(yiqibh,yiqixinghao,chanels)
+    logging.info("===================")
+    print(yiqibh,yiqixinghao)
+    print(factors)
+    print(channels)
     if yiqixinghao[0]=="C":
         data=genRecordCS(yiqixinghao,yiqibh,channels,factors,c.baoxiang)
         if factors!=None:
@@ -130,12 +133,14 @@ def genRecordONH(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     tree = Document(os.path.join(MEDIA_ROOT,'ONH调试记录.docx'))
     tbls=tree.tables
     ps=tree.paragraphs
-    p=ps[1]
-    #print(dir(p),p.text)
-    rs=p.runs
-    # for r in rs:
-    #     print(r.text)
-    rs[-1].text=baoxiang
+    ps[1].runs[-1].text=baoxiang
+    ps[4].runs[-1].text=baoxiang
+    # i=0
+    # for p in tree.paragraphs:
+    #     print(i)
+    #     print(p.text)
+    #     i+=1
+    # input("hi")
     tbl=tbls[0]
     changeGrid(tbl,0,1,yiqibh)#
     changeGrid(tbl,0,3,yiqixinghao)#
@@ -211,6 +216,23 @@ def genRecordCS(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     c2=tree.paragraphs[1]#仪器编号
     c2.runs[1].text=yiqibh
     c2.runs[3].text=yiqixinghao
+    c2=tree.paragraphs[3]#仪器编号
+    c2.runs[-1].text=baoxiang
+    c2=tree.paragraphs[7]#仪器编号
+    c2.runs[-1].text=baoxiang
+    c2=tree.paragraphs[8]#仪器编号
+    c2.runs[-1].text=baoxiang
+    c2=tree.paragraphs[9]#仪器编号
+    c2.runs[-1].text=baoxiang
+    c2=tree.paragraphs[12]#仪器编号
+    c2.runs[-1].text=baoxiang
+    #print(c2.text)
+    # i=0
+    # for p in tree.paragraphs:
+    #     print(i)
+    #     print(p.text)
+    #     i+=1
+    #input("hi")
     #红外检测器调试检查
     print(tree.tables)
     for t in tree.tables:
