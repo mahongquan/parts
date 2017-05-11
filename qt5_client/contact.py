@@ -251,7 +251,7 @@ class ContactDlg(QtWidgets.QDialog):
         at=0
         for p in r:
             #print(dir(self.ui.comboBox))
-            self.ui.comboBox_2.addItem(p.name)
+            self.ui.comboBox_2.addItem(p.name+"("+p.guige+")")
             self.ui.comboBox_2.setItemData(at,p.id)
             at+=1
         #self.ui.comboBox_2.showPopup()
@@ -296,6 +296,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.pushButton_save.setEnabled(False)
         if self.c.id==None:
             self.c=backend.newContact()
+            self.ui.lineEdit_id.setText(str(self.c.id))
         self.c.yonghu=self.ui.lineEdit_yonghu.text()
         self.c.addr=self.ui.lineEdit_addr.text()
         self.c.channels=self.ui.lineEdit_channels.text()

@@ -1180,6 +1180,9 @@ function delCookie(name)//删除cookie
           //alert("success");
           self.addrow(p.get("id"),p.get("name"));
           self.$("#new_pack1").val("");
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },
@@ -1222,6 +1225,9 @@ function delCookie(name)//删除cookie
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.usepacks.add(p);
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },
@@ -1355,6 +1361,9 @@ function delCookie(name)//删除cookie
           //alert("success");
           self.addrow(p.get("id"),p.get("name"));
           self.$("#new_item1").val("");
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },
@@ -1397,6 +1406,9 @@ function delCookie(name)//删除cookie
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.packitems.add(p);
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },
@@ -1820,6 +1832,9 @@ function delCookie(name)//删除cookie
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
           self.$el.dialog("close");
+        },
+        error: function(model, response) {
+          alert(response.statusText);
         }
       });
     },

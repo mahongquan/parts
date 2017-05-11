@@ -93,7 +93,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         self.model = QtWidgets.QFileSystemModel()
         self.model.setRootPath(backend.yqzl)
         self.ui.treeView.setModel(self.model)
-        self.ui.treeView.doubleClicked.connect(self.test)
+        self.ui.treeView.doubleClicked.connect(self.startfile)
         index = self.model.index(backend.yqzl)
         self.ui.treeView.setRootIndex(index)
         self.ui.treeView.expand(index)      #当前项展开
@@ -180,7 +180,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         path=backend.yqzl+"/%s" % str(c.yiqibh)
         self.model.setRootPath(path)
         self.ui.treeView.setModel(self.model)
-        self.ui.treeView.doubleClicked.connect(self.test)
+        #self.ui.treeView.doubleClicked.connect(self.test)
         index = self.model.index(path)
         self.ui.treeView.setRootIndex(index)
         self.ui.treeView.expand(index)      #当前项展开
@@ -196,13 +196,13 @@ class CalculatorForm(QtWidgets.QMainWindow):
         
     def shootScreen(self):
         self.enableclick=True
-    def test(self, signal):
+    def startfile(self, signal):
         print("double clicked",signal)
         if self.enableclick:
             self.enableclick=False
             QtCore.QTimer.singleShot(1000,self.shootScreen)
             file_path=self.model.filePath(signal)
-            cmd='start %s' % file_path
+            cmd='start "" "%s"' % file_path
             print(cmd)
             os.system(cmd)
     def showdata(self,d):
@@ -407,6 +407,7 @@ def main():
     #return
     import sys
     from .login import LoginDlg
+    #QtWidgets.QApplication.addLibraryPath(getpath.getpath()+"PyQt5/plugins")
     app = QtWidgets.QApplication(sys.argv)
     # calculator = LoginDlg()
     # r=calculator.exec_()
