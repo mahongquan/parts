@@ -453,7 +453,10 @@ def mylogout(request):
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
     logging.info(r)
     return r
-
+def login_index(request):
+    output={"success":True,"user":str(request.user),"csrf_token":str(csrf(request)["csrf_token"])}
+    r=HttpResponse(json.dumps(output, ensure_ascii=False))
+    return(r)
 def mylogin(request):
     logging.info("login/////////////////////////////////////////////////")
     logging.info(request.POST)
