@@ -1,1 +1,1 @@
-python3 qt5_client/contacts.py
+python3 runqt.py

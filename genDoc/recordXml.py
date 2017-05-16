@@ -325,17 +325,17 @@ def genRecordCS(yiqixinghao, yiqibh,chanels,factors,baoxiang):
             changeGrid(tbl,3,2,"-")
             changeGrid(tbl,3,3,"-")
             changeGrid(tbl,3,4,"-")
-    if "HS" in chanels:
-        if factors["高硫"][0]>100:
-            changeGrid(tbl,4,2,"∞")#高硫线性化系数
+        if "HS" in chanels:
+            if factors["高硫"][0]>100:
+                changeGrid(tbl,4,2,"∞")#高硫线性化系数
+            else:
+                changeGrid(tbl,4,2,"%0.1f" % (factors["高硫"][0]))#高硫线性化系数
+            changeGrid(tbl,4,3,"%0.3f" % (factors["高硫"][1]))#高硫线性化系数
+            changeGrid(tbl,4,4,"%0.3f" % (factors["高硫"][2]))#高硫线性化系数
         else:
-            changeGrid(tbl,4,2,"%0.1f" % (factors["高硫"][0]))#高硫线性化系数
-        changeGrid(tbl,4,3,"%0.3f" % (factors["高硫"][1]))#高硫线性化系数
-        changeGrid(tbl,4,4,"%0.3f" % (factors["高硫"][2]))#高硫线性化系数
-    else:
-        changeGrid(tbl,4,2,"-")
-        changeGrid(tbl,4,3,"-")
-        changeGrid(tbl,4,4,"-")
+            changeGrid(tbl,4,2,"-")
+            changeGrid(tbl,4,3,"-")
+            changeGrid(tbl,4,4,"-")
     s=BytesIO()
     tree.save(s)
     s.seek(0)

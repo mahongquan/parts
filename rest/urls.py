@@ -20,6 +20,7 @@ urlpatterns = [
         url(r'^PackItem', views.packItem),
         url(r'^Pack', views.pack),
 
+        url(r'^login_index', views.login_index),
         url(r'^login', views.mylogin),
         url(r'^logout', views.mylogout),
         url(r'^functions', views.functions),
