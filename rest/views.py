@@ -7,7 +7,6 @@ import logging
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User,Group
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
@@ -306,7 +305,7 @@ def destroy_item(request):
     rec.delete()
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def contact(request):
     logging.info("=contact==========")
     logging.info(request)
@@ -486,7 +485,7 @@ def functions(request):
         return update(request2)
     if request.method == 'DELETE':
         return destroy(request2)
-@login_required
+#@login_required
 def view_item2(request):
     logging.info("here")
     start=int(request.GET.get("start","0"))
@@ -514,7 +513,7 @@ def view_item2(request):
     logging.info(data)
     out={"total":total,"data":data}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
-@login_required
+#@login_required
 def create_item2(request):
     #request=Request(request,(JSONParser(),))
     logging.info(request.POST)
@@ -554,7 +553,7 @@ def create_item2(request):
     # output={"success":True,"message":"Created new User" +str(rec.id)}
     # output["data"]={"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def update_item2(request):
     request=Request(request,(JSONParser(),))
     datas=request.POST["data"]
@@ -595,7 +594,7 @@ def update_item2(request):
     #     data.append({"id":rec.id,"hetongbh":rec.hetongbh,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang})
     # output={"data":data}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def destroy_item2(request):
     request=Request(request,(JSONParser(),))
     datas=request.POST["data"]
@@ -670,7 +669,7 @@ def geticons(request):
     #     }
     # ]
     # return HttpResponse(json.dumps(output, ensure_ascii=False))    
-@login_required
+#@login_required
 def view_pack(request):
     logging.info("here")
     logging.info(request.GET)
@@ -691,7 +690,7 @@ def view_pack(request):
     logging.info(data)
     out={"total":total,"data":data}
     return HttpResponse(json.dumps(out, ensure_ascii=False))
-@login_required
+#@login_required
 def create_pack(request):
     #request=Request(request,(JSONParser(),))
     datas = json.loads(request.body.decode("utf-8"))#extjs read data from body
@@ -714,7 +713,7 @@ def create_pack(request):
         rec.save()
         output["data"]={"id":rec.id,"name":rec.name}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def update_pack(request):
     request=Request(request,(JSONParser(),))
     datas=request.POST["data"]
@@ -737,7 +736,7 @@ def update_pack(request):
         rec.save()
         output["data"]={"clientId":data["id"],"id":rec.id,"name":rec.name}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def destroy_pack(request):
     request=Request(request,(JSONParser(),))
     datas=request.POST["data"]
@@ -754,7 +753,7 @@ def destroy_pack(request):
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 #contact pack##################
-@login_required
+#@login_required
 def usepack(request):
     logging.info("===================")
     logging.info(request)
@@ -815,7 +814,7 @@ def destroy_usepack(request):
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 #pack##################
-@login_required
+#@login_required
 def pack(request):
     logging.info("===================")
     logging.info(request)
@@ -879,7 +878,7 @@ def destroy_pack1(request):
     rec.delete()
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
+#@login_required
 def packItem(request):
     if request.method == 'GET':
         return view_packItem(request)
