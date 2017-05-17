@@ -1,1 +1,1 @@
-python manage.py runserver 0.0.0.0:8000
+d:\python34\python.exe manage.py runserver 0.0.0.0:8000

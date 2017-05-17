@@ -297,6 +297,7 @@ def genRecordCS(yiqixinghao, yiqibh,chanels,factors,baoxiang):
     #6、    线性化调试结果
     tbl=tree.tables[6]
     logging.info(factors)
+    logging.info(chanels)
     if factors!=None:
         if "LC" in chanels:
             changeGrid(tbl,1,2,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
