@@ -45,9 +45,6 @@ def createView(title, model):
     return view
 
 
-def createRelationalTables():
-    pass
-
 if __name__ == '__main__':
 
     import sys
@@ -56,7 +53,6 @@ if __name__ == '__main__':
     if not createConnection():
         sys.exit(1)
 
-    createRelationalTables()
 
     model = QSqlRelationalTableModel()
 

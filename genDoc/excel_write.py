@@ -8,6 +8,33 @@ from genDoc.genData import genTest,genjmd,genTestR
 import os
 from mysite.settings import MEDIA_ROOT
 import logging
+def getElement(chanels,first):
+    print(first)
+    eles=first.split("(")
+    ele=eles[0]#2C
+    if ele[0]=="2":
+        chanels.append("L"+ele[1])
+        chanels.append("H"+ele[1])
+    else:
+        ele_set=eles[1][:-1]#移去括号
+        print(ele_set)
+        if ele_set[0]=="高":
+            chanels.append("H"+ele[1])
+        else:
+            chanels.append("L"+ele[1])
+    pass    
+def getchannels(peizhi):
+    print(peizhi)
+    elements=peizhi.split("+")
+    chanels=[]
+    first=elements[0]
+    getElement(chanels,first)
+    if len(elements)==1:#单元素
+        pass
+    else:#two elements
+        second=elements[1]
+        getElement(chanels,second)
+    return chanels
 def setCell(table,row,col,value):
     print(row,col,value)
     table.cell(row = row, column = col).value=value
@@ -263,11 +290,17 @@ def genJiaozhunCS(c,fn):
 def genShujubiao(c,fn):
     xlBook = load_workbook(filename = fn)
     table=xlBook.worksheets[0] 
+    channels=getchannels(c.channels)
     if c.yiqixinghao=="CS-2800":
         setCell(table,4,3,getCell(table,4,3)+"√") #setCell(table,4,3).Value =setCell(table,4,3).Value     +"√"
-        setCell(table,8,3,"√")
-        setCell(table,8,5,"√")
-        setCell(table,8,6,"√")
+        if "LC" in channels:
+            setCell(table,8,5,"√")
+        if "LS" in channels:
+            setCell(table,8,6,"√")
+        if "HC" in channels:
+            setCell(table,8,3,"√")
+        if "HS" in channels:
+            setCell(table,8,4,"√")
     elif c.yiqixinghao=="CS-3000":
         setCell(table,4,4,getCell(table,4,4)+"√") #setCell(table,4,3).Value =setCell(table,4,3).Value     +"√"
         setCell(table,8,3,"√")

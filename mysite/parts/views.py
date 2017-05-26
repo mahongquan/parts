@@ -13,7 +13,6 @@ from django.http import HttpResponse,HttpResponseRedirect,FileResponse
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
 import mysite.parts.models
@@ -588,6 +587,7 @@ def allfile(request):
     #try:
         contact_id=request.GET["id"]
         c=Contact.objects.get(id=contact_id)
+        
         outfilename=c.yiqixinghao+"_"+c.yonghu
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
@@ -610,6 +610,9 @@ def allfile(request):
             open(file2,"wb").write(data2)
         file3=p+"/"+outfilename+"_装箱单.docx"
         if not os.path.exists(file3):
+            if c.yujifahuo_date<datetime.datetime.now().date():
+                c.yujifahuo_date=datetime.datetime.now().date()
+                c.save()
             fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
             data_zxd=genPack(c,fullfilepath)
             open(file3,"wb").write(data_zxd)
