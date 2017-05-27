@@ -430,6 +430,8 @@ function delCookie(name)//删除cookie
         $.getJSON(host+"/parts/folder?id="+this.model.get("id"), function(result){
            console.info(result);
            s.$el.dialog('close');
+       }).fail(function() {
+          alert( "error" );
        });
     },
     allfile:function(){
@@ -442,6 +444,8 @@ function delCookie(name)//删除cookie
            if (!result.success){
             $("<p>"+result.message+"</p>").dialog();
            }
+       }).fail(function() {
+        alert( "error" );
        });
     },
     detail:function(){
@@ -491,6 +495,8 @@ function delCookie(name)//删除cookie
                     $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
                         cache[term] = data;
                         response(data);
+                    }).fail(function() {
+                      alert( "error" );
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
@@ -631,6 +637,8 @@ function delCookie(name)//删除cookie
                     $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
                         cache[term] = data;
                         response(data);
+                    }).fail(function() {
+                      alert( "error" );
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
@@ -747,6 +755,7 @@ function delCookie(name)//删除cookie
                 }
             },
             error:function(){
+              alert("error");
             }
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
@@ -1019,6 +1028,7 @@ function delCookie(name)//删除cookie
             success:function(){
             },
             error:function(){
+                alert("error");
             }
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
@@ -1205,6 +1215,7 @@ function delCookie(name)//删除cookie
             },
             error:function(context, model, resp, options){
               console.log("error");
+              alert("error");
             }
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
@@ -1298,6 +1309,8 @@ function delCookie(name)//删除cookie
                     $.getJSON(host+"/rest/Item", request, function (data, status, xhr) {
                         cache_item[term] = data;
                         response(data.data);
+                    }).fail(function() {
+                      alert( "error" );
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
@@ -1384,6 +1397,7 @@ function delCookie(name)//删除cookie
                 // this.$("#page").append((myglobal.start+1)+"..."+right+" of "+myglobal.total);
             },
             error:function(){
+              alert("error");
             }
           }
         );//{ reset: true,data: { start:this.start,limit:this.limit} });
