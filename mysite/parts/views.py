@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 import time
 import tarfile
 import os
+import platform
 from io import BytesIO,StringIO
 import logging
 from django.http import HttpResponse,HttpResponseRedirect,FileResponse
@@ -574,7 +575,10 @@ def allfile_old(request):
     p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
     if not os.path.exists(p):
         os.makedirs(p)
-    os.system("start "+p)
+    if platform.system()=="Linux":
+        os.system("xdg-open "+p)
+    else:
+        os.system("start "+p)
     byteio=tarDict(dict1)
     byteio.seek(0)
     data=byteio.read()#.decode()
@@ -647,7 +651,10 @@ def allfile(request):
             except:
                 traceback.print_exc()
                 logging.info("except")
-        os.system("start "+p)
+        if platform.system()=="Linux":
+            os.system("xdg-open "+p)
+        else:
+            os.system("start "+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
     # except:
@@ -665,7 +672,10 @@ def folder(request):
     p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
     if not os.path.exists(p):
         os.makedirs(p)
-    os.system("start "+p)
+    if platform.system()=="Linux":
+        os.system("xdg-open "+p)
+    else:
+        os.system("start "+p)
     out={"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
