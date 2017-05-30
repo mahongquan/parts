@@ -14,11 +14,44 @@
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 <script>
-  $.ajaxSetup({
-  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-  });
+  // $.ajaxSetup({
+  // data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  // });\
+  var user="{{ user }}";var csrf_token="{{ csrf_token }}";
+  function nowDate() {
+    var date=new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var s_month=""+month;
+    if (s_month.length<2) s_month="0"+s_month;
+    var day = date.getDate();
+    var s_day=""+day;
+    if (s_day.length<2) s_day="0"+s_day;
+    return year + "-" + s_month + "-" + s_day ;
+}
+function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+{
+    var Days = 30; //此 cookie 将被保存 30 天
+    var exp  = new Date();    //new Date("December 31, 9998");
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)//取cookies函数        
+{
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+     if(arr != null) return unescape(arr[2]); return null;
+
+}
+function delCookie(name)//删除cookie
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+
 </script>
-<script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
+<!-- <script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script> -->
 <script type="text/babel">
 var myglobal={start:0,limit:5,total:0,search:""};
 var Item= Backbone.Model.extend({
@@ -66,6 +99,7 @@ var ItemsListViewComponent = React.createBackboneClass({
       var itemsList = this.getCollection();
       console.log(myglobal);
       console.log("start="+myglobal.start);
+      var self=this;
       itemsList.fetch({
          reset:true,
          data: { start:myglobal.start,limit:myglobal.limit,query:this.state.search},
@@ -75,10 +109,29 @@ var ItemsListViewComponent = React.createBackboneClass({
               // myglobal.total=data.total;
          },
         error:function(e){
-          alert(e);
+          //alert(e);
+          self.showlogin();
         }
       });
     },
+  showlogin:function(){
+    console.log("login ");
+    var i_Fac=React.createFactory(LoginFormComponent);
+    var iview = i_Fac({onLoginSubmit:this.handleLoginSubmit});
+    ReactDOM.render(iview, document.getElementById('login_form'));
+
+    $("#login_form").dialog({
+         modal: true
+         , overlay: {
+             backgroundColor: '#000'
+             , opacity: 0.5
+         }
+         , autoOpen: true, 
+         close: function (event,ui) {
+                $("#login_form").dialog("destroy");
+         }
+    });
+  },
   handleSearch:function(){
     myglobal.start=0;
     this.componentDidMount();    
@@ -128,6 +181,32 @@ var ItemsListViewComponent = React.createBackboneClass({
     data.id=data_out.get("id");
     data= JSON.stringify(data);
     model.destroy({ data:data,contentType:"application:json"});
+  },
+  handleLoginSubmit: function(data) {
+    console.log("login submit");
+    
+      var self=this;
+        $.ajax({
+          type: 'POST'
+          , url: "/rest/login"
+          , data: data
+          , complete: function () {
+          }
+          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log(errorThrown);
+          }
+          , success: function (data) {
+              //console.log("ajax done");
+              //console.log(data);
+              data=JSON.parse(data);
+              if (data.success) {
+                   user=data.data.name;
+                   csrf_token=getCookie('csrftoken');
+                  $("#login_form").dialog("destroy");
+                  self.componentDidMount();
+              }
+          }
+      });
   },
   handleItemSubmit: function(item) {
     console.log("item submit");
@@ -267,6 +346,68 @@ var ItemFormComponent = React.createBackboneClass({
     );
   }
 });
+var LoginFormComponent = React.createClass({
+  getInitialState: function(){
+    return {
+      name: "",
+      pwd:""
+    };
+  },
+  handleNameChange:function(e) {
+    this.setState({name: e.target.value});
+  },
+  handlePwdChange:function(e) {
+    this.setState({pwd: e.target.value});
+  },
+  handleSubmit:function(e) {
+      e.preventDefault();
+      var data={};
+      data["username"]=this.state.name;
+      data["password"]=this.state.pwd;
+      data["csrfmiddlewaretoken"]={csrf_token};
+      this.props.onLoginSubmit(data);
+  },
+  render:function() {
+    return (
+      <form className="loginForm" onSubmit={this.handleSubmit}>
+      <table class="table-condensed">
+        <tbody>
+        <tr >
+                <td>
+                    <label>csrfmiddlewaretoken:</label>
+                </td>
+                <td>
+                    <input type="text" id="csrfmiddlewaretoken"  defaultValue={csrf_token}
+                    ></input>
+                </td>
+          </tr>
+          <tr>
+                <td>
+                    <label>用户名:</label>
+                </td>
+                <td>
+                    <input type="text" id="username"  value={this.state.name}
+                    onChange={this.handleNameChange}
+                    ></input>
+                </td>
+          </tr>
+          <tr>
+                <td>
+                    <label>密码:</label>
+                </td>
+                <td>
+                    <input type="text" id="password"  value={this.state.pwd}
+                    onChange={this.handlePwdChange}
+                    ></input>
+                </td>
+          </tr>
+        </tbody>
+        </table>
+        <input type="submit" value="save" />
+      </form>
+    );
+  }
+});
 var itemsList = new ItemList();
 var ItemsListView_Factory = React.createFactory(ItemsListViewComponent);
 var itemsListView = ItemsListView_Factory({collection: itemsList});
@@ -276,4 +417,5 @@ ReactDOM.render(itemsListView, document.getElementById('items'));
 {% block content %}
   <div id="items"></div>
   <div id="item_form" hidden="true"></div>
+  <div id="login_form" hidden="true"></div>
 {% endblock %}
