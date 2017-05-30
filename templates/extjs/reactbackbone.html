@@ -39,7 +39,7 @@ var ItemList = Backbone.Collection.extend({
   }
 });
 var ItemViewComponent = React.createBackboneClass({
-  changeOptions: "change:name", // DEFAULT is "change",
+  changeOptions: "change", // DEFAULT is "change",
   handleDelete:function(){
     var model=this.getModel();
     var data={}
@@ -74,6 +74,9 @@ var ItemsListViewComponent = React.createBackboneClass({
               // console.log(data);
               // myglobal.total=data.total;
          },
+        error:function(e){
+          alert(e);
+        }
       });
     },
   handleSearch:function(){
@@ -129,11 +132,11 @@ var ItemsListViewComponent = React.createBackboneClass({
   handleItemSubmit: function(item) {
     console.log("item submit");
     console.log(item);
+    var item1=item;
     item.save(null,{
         success:function(context, model, resp, options){
           console.log(options);
           console.log("save finish");
-          //model.set(resp.success.arguments[0].data);
           console.log(model.data);
           context.set(model.data);
         }
@@ -163,7 +166,7 @@ var ItemsListViewComponent = React.createBackboneClass({
       <p>
           <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
       </p>
-      <ItemFormComponent onItemSubmit={this.handleItemSubmit} model={new Item()}  ref={function(ref) {self._itemform = ref;}}/>
+
       </div>
         );
   }
@@ -196,6 +199,7 @@ var ItemFormComponent = React.createBackboneClass({
    //    return;
    //  }
    this.props.onItemSubmit(this.getModel());
+   $("#item_form").dialog("destroy");
    // this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
   },
   render: function() {
@@ -208,7 +212,7 @@ var ItemFormComponent = React.createBackboneClass({
                 <input
                   type="text"
                   placeholder="id"
-                  value={this.getModel().get("id")}
+                  defaultValue={this.getModel().get("id")}
                   readonly="true"
                 ></input>
                 </td>
@@ -271,5 +275,5 @@ ReactDOM.render(itemsListView, document.getElementById('items'));
 {% endblock %}
 {% block content %}
   <div id="items"></div>
-  <div id="item_form"></div>
+  <div id="item_form" hidden="true"></div>
 {% endblock %}
