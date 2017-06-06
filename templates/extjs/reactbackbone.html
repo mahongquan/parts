@@ -3,6 +3,8 @@
 <style type="text/css">
     .item_delete{margin:1px 20px 1px 20px;}
 </style>
+ <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
@@ -11,13 +13,13 @@
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
 <script src="/static/backbone_parts/react.backbone.js"></script>
-  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
-  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+ 
 <script>
   // $.ajaxSetup({
   // data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
   // });\
   var user="{{ user }}";var csrf_token="{{ csrf_token }}";
+  //$("#dropdownMenu1_text").text(user);
   function nowDate() {
     var date=new Date();
     var year = date.getFullYear();
@@ -110,27 +112,12 @@ var ItemsListViewComponent = React.createBackboneClass({
          },
         error:function(e){
           //alert(e);
-          self.showlogin();
+          //self.showlogin();
         }
       });
     },
   showlogin:function(){
-    console.log("login ");
-    var i_Fac=React.createFactory(LoginFormComponent);
-    var iview = i_Fac({onLoginSubmit:this.handleLoginSubmit});
-    ReactDOM.render(iview, document.getElementById('login_form'));
-
-    $("#login_form").dialog({
-         modal: true
-         , overlay: {
-             backgroundColor: '#000'
-             , opacity: 0.5
-         }
-         , autoOpen: true, 
-         close: function (event,ui) {
-                $("#login_form").dialog("destroy");
-         }
-    });
+    showLogin();
   },
   handleSearch:function(){
     myglobal.start=0;
@@ -232,7 +219,7 @@ var ItemsListViewComponent = React.createBackboneClass({
         });
         return (
           < div>
-          < h4>备件</h4>
+        <UserComponent user={user}></UserComponent>
         < p>
           < input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
           < button id="id_bt_search" onClick={this.handleSearch}>search</button>
@@ -250,6 +237,10 @@ var ItemsListViewComponent = React.createBackboneClass({
         );
   }
 });
+var showLogin=function(){
+  console.log("login ");
+    
+};
 var ItemFormComponent = React.createBackboneClass({
   // getInitialState: function() {
   //   return {name: '', guige: '',bh:'',danwei:''};
@@ -346,6 +337,100 @@ var ItemFormComponent = React.createBackboneClass({
     );
   }
 });
+
+var UserComponent = React.createClass({
+  getInitialState: function(){
+     if(this.props.user=="AnonymousUser"){
+      return {
+        name: user,
+        logined:false,
+      }
+    }
+    else{
+      return {
+        name: user,
+        logined:true,
+      }
+    }
+  },
+  handleLoginSubmit: function(data) {
+    console.log("login submit");
+    
+      var self=this;
+        $.ajax({
+          type: 'POST'
+          , url: "/rest/login"
+          , data: data
+          , complete: function () {
+          }
+          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log(errorThrown);
+          }
+          , success: function (data) {
+              //console.log("ajax done");
+              //console.log(data);
+              data=JSON.parse(data);
+              if (data.success) {
+                   user=data.data.name;
+                   csrf_token=getCookie('csrftoken');
+                  $("#login_form").dialog("destroy");
+                  self.setState({name:user,logined:true});
+              }
+          }
+      });
+  },
+  handleLogin:function(e) {
+    var i_Fac=React.createFactory(LoginFormComponent);
+    var iview = i_Fac({onLoginSubmit:this.handleLoginSubmit});
+    ReactDOM.render(iview, document.getElementById('login_form'));
+
+    $("#login_form").dialog({
+         modal: true
+         , overlay: {
+             backgroundColor: '#000'
+             , opacity: 0.5
+         }
+         , autoOpen: true, 
+         close: function (event,ui) {
+                $("#login_form").dialog("destroy");
+         }
+    });
+  },
+  handleLogout:function(e) {
+   var self=this;
+   $.ajax({
+            type: 'POST'
+            , url:"/rest/logout"
+            , complete: function () {
+            }
+            , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //console.log(errorThrown);
+            }
+            , success: function (data) {
+                //console.log("ajax done");
+                //console.log(data);
+                data=JSON.parse(data);
+                //console.log(data);
+                self.setState({name:"AnonymousUser",logined:false});
+            }
+        });
+  },
+  render:function() {
+    return (
+      <div className="dropdown">
+      <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="dropdownMenu1_text">{this.state.name}</span>
+        <span className="caret"> </span>
+      </button>
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li id="li_login" hidden={this.state.logined}><a href="#" id="id_login"  onClick={this.handleLogin}>登录</a></li>
+        <li id="li_logout" hidden={!this.state.logined}><a href="#" id="id_logout" onClick={this.handleLogout}>注销</a></li>
+      </ul>
+    </div>
+    );
+  }
+});
+
 var LoginFormComponent = React.createClass({
   getInitialState: function(){
     return {
@@ -359,6 +444,7 @@ var LoginFormComponent = React.createClass({
   handlePwdChange:function(e) {
     this.setState({pwd: e.target.value});
   },
+
   handleSubmit:function(e) {
       e.preventDefault();
       var data={};
@@ -370,7 +456,7 @@ var LoginFormComponent = React.createClass({
   render:function() {
     return (
       <form className="loginForm" onSubmit={this.handleSubmit}>
-      <table class="table-condensed">
+      <table className="table-condensed">
         <tbody>
         <tr >
                 <td>
@@ -415,7 +501,12 @@ ReactDOM.render(itemsListView, document.getElementById('items'));
 </script>
 {% endblock %}
 {% block content %}
-  <div id="items"></div>
+  <table>
+  <tbody>
+  <tr><td><div id="user_div"></div></td></tr>
+  <tr><td><div id="items"></div></td></tr>
+  </tbody>
+  </table>
   <div id="item_form" hidden="true"></div>
   <div id="login_form" hidden="true"></div>
 {% endblock %}

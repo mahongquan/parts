@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^custom_editor$', mainview.custom_editor),
     url(r'^getImages.php$', mainview.getImages),
     url(r'^data_writer_test.php$', mainview.data_writer_test),
+    url(r'^service-worker.js$', mainview.service_worker),
     url(r'^dtable_test.php$', mainview.dtable_test),
     url(r'^searching_test.php$', mainview.searching_test),
     url(r'^sorting_test.php$', mainview.sorting_test),

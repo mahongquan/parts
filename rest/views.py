@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import django
 from django.shortcuts import render_to_response
 import time
@@ -25,6 +26,50 @@ from myutil import MyEncoder
 import traceback
 import sys
 import xlrd
+def mylistdir(p,f):
+    a=os.listdir(p)
+    fs=myfind(a,f)
+    return(fs)
+def myfind(l,p):
+    lr=[];
+    #print p
+    p1=p.replace(".",r"\.")
+    p2=p1.replace("*",".*")
+    p2=p2+"$"
+    p2="^"+p2
+    for a in l:
+        #print a
+        if  re.search(p2,a,re.IGNORECASE)==None :
+           pass
+           #print "pass"
+        else:
+           lr.append(a)
+       #print "append"
+    return lr
+def getIniFile(contact):
+    filepath = mysite.settings.MEDIA_ROOT 
+    path=os.path.join(filepath, "仪器资料/%s" % (contact.yiqibh))
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s" % (contact.yiqibh)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            pass
+    except FileNotFoundError as e:
+        pass
+    xhp=contact.yiqixinghao.split("-")[0]
+    path=os.path.join(filepath,"仪器资料/%s/%s" % (contact.yiqibh,xhp))
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s/%s" % (contact.yiqibh,xhp)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            return None
+    except FileNotFoundError as e:
+        return None
+       
 def inItems(item,items):
     inIt=False
     equal=False
@@ -305,7 +350,7 @@ def destroy_item(request):
     rec.delete()
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-#@login_required
+@login_required
 def contact(request):
     logging.info("=contact==========")
     logging.info(request)
@@ -318,6 +363,14 @@ def contact(request):
         return update_contact(request)
     if request.method == 'DELETE':
         return destroy_contact(request)
+def updateMethod(request): 
+    id1=request.GET.get("id")
+    id1=int(id1)
+    c=Contact.objects.get(id=id1)       
+    c.method=getIniFile(c)
+    c.save()
+    output={"success":True,"message":"","data":c.json()}
+    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def view_contact(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
@@ -343,7 +396,7 @@ def view_contact(request):
     for rec in objs:
         data.append(rec.json())
     logging.info(data)
-    output={"total":total,"data":data}
+    output={"total":total,"data":data,"user":request.user.username }
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
     try:

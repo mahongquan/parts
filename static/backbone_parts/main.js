@@ -409,6 +409,7 @@ function delCookie(name)//删除cookie
       "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
+      "click .contact_updatemethod" : "updatemethod",
     },
     // folder:function(){
     //   $.getJSON("/rest/folder?id="+this.model.get("id"),function(result){
@@ -423,6 +424,20 @@ function delCookie(name)//删除cookie
     checkchuku:function(){
       check=new CheckChukuView({model:this.model})
       check.showdialog();
+    },
+    updatemethod:function(){
+        var s=new WaitingView();
+        s.showdialog();
+        var self=this;
+        $.getJSON(host+"/rest/updateMethod?id="+this.model.get("id"), function(result){
+           console.info(result);
+           if (result.success){
+              self.model.set(result.data)
+           }
+           s.$el.dialog('close');
+       }).fail(function() {
+          alert( "error" );
+       });
     },
     folder:function(){
         var s=new WaitingView();
