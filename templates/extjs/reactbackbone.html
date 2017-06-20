@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% block extrahead %}
+<html><head>
 <style type="text/css">
     .item_delete{margin:1px 20px 1px 20px;}
 </style>
@@ -13,6 +12,7 @@
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
 <script src="/static/backbone_parts/react.backbone.js"></script>
+<script src="./require.js"></script>
  
 <script>
   // $.ajaxSetup({
@@ -51,9 +51,10 @@ function delCookie(name)//删除cookie
     var cval=getCookie(name);
     if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
-
 </script>
-<!-- <script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script> -->
+<script type="text/babel">
+  import a from './app'
+</script>
 <script type="text/babel">
 var myglobal={start:0,limit:5,total:0,search:""};
 var Item= Backbone.Model.extend({
@@ -499,8 +500,8 @@ var ItemsListView_Factory = React.createFactory(ItemsListViewComponent);
 var itemsListView = ItemsListView_Factory({collection: itemsList});
 ReactDOM.render(itemsListView, document.getElementById('items'));
 </script>
-{% endblock %}
-{% block content %}
+</head>
+<body>
   <table>
   <tbody>
   <tr><td><div id="user_div"></div></td></tr>
@@ -509,4 +510,4 @@ ReactDOM.render(itemsListView, document.getElementById('items'));
   </table>
   <div id="item_form" hidden="true"></div>
   <div id="login_form" hidden="true"></div>
-{% endblock %}
+</body></html>
