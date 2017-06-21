@@ -53,7 +53,7 @@ def myfind(l,p):
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from mysite.parts.models import *
-def treatOne(rows,fn):
+def treatOne_old(rows,fn):
 	beizhu=rows[1][7]
 	if beizhu[:2]=="CS" or beizhu[:2]=="ON":
 		try:
@@ -93,6 +93,35 @@ def treatOne(rows,fn):
 			di.item=item
 			di.ct=i[5]
 			di.danju=d
+			di.save()
+def treatOne(rows,fn):
+	beizhu=rows[1][7]
+	if beizhu[:2]=="CS" or beizhu[:2]=="ON":
+		try:
+			d=Pack.objects.get(name=rows[0][1])
+		except ObjectDoesNotExist as e2:
+			d=Pack()
+		d.name=rows[1][7]+"_"+fn
+		d.save()
+		n=len(rows)
+		items=rows[4:4+n-4-3]
+		for i in items:
+			#i=DanjuItem()
+			print(i[1],i[2],i[3],i[4],i[5])
+			items=Item.objects.filter(bh=i[1]).all()
+			if len(items)>1:
+				item=items[0]
+			else:
+				item=Item()
+			item.bh=i[1]
+			item.name=str(i[2])+" "+str(i[1])
+			item.guige=i[3]
+			item.danwei=i[4]
+			item.save()
+			di=PackItem()
+			di.pack=d
+			di.item=item
+			di.ct=i[5]
 			di.save()
 
 def readfile(path,fn):

@@ -496,5 +496,40 @@ def genJiaozhunONH(c,fn):
     data=s.read()
     data=data.decode('utf-8')
     return data
+def getJiaoZhunFile(c):
+    (lx,tmp)=c.yiqixinghao.split("-")
+    print(lx)
+    data=None
+    if lx==u"O":
+        tname="O模板"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunO(c,fullfilepath)
+    elif lx==u"N":
+        tname="N模板"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunN(c,fullfilepath)
+    elif lx==u"ON":
+        tname="ON模板"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunON(c,fullfilepath)
+    elif lx==u"OH":
+        tname="OH模板"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunOH(c,fullfilepath)
+    elif lx==u"ONH":
+        tname="ONH模板"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunONH(c,fullfilepath)
+    else:
+        tname="CS模板"#"aveSingle2"
+        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
+        logging.info(fullfilepath)
+        data=genJiaozhunCS(c,fullfilepath)
+    return data
 if __name__=="__main__":
     print(genPack("4111533499"))

@@ -7,19 +7,31 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 import myutil
+def addItem(items,item):
+    find=False
+    for i in items:
+        if i.id==item.id:
+            i.ct +=item.ct
+            find=True
+            break
+    if not find:
+        items.append(item)
+    return items
 class Contact(models.Model,myutil.MyModel):
     #=======销售===========
     yonghu = models.CharField(max_length=30,verbose_name="用户单位")#用户单位
     addr = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
     channels = models.CharField(max_length=30,verbose_name="通道配置",null=True,blank=True)#用户单位
     yiqixinghao=models.CharField(max_length=30,verbose_name="仪器型号")#仪器型号
-    yiqibh=models.CharField(max_length=30,verbose_name="仪器编号")#仪器编号
+    yiqibh=models.CharField(unique=True,max_length=30,verbose_name="仪器编号")#仪器编号
     baoxiang =  models.CharField(max_length=30,verbose_name="包箱")#包箱
     shenhe =  models.CharField(max_length=30,verbose_name="审核")#审核
     yujifahuo_date = models.DateField(verbose_name="预计发货时间")#预计发货时间
     tiaoshi_date = models.DateField(null=True,blank=True,verbose_name="调试时间",default=datetime.datetime.now)#预计发货时间
     hetongbh=models.CharField(max_length=30,verbose_name="合同编号")#合同编号
     method=models.FileField(null=True,blank=True,verbose_name="方法")
+    def tablerow(self):
+        return "%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh)
     def myurls(self):
         url0="<p><a href=/parts/showcontactP?id=%s>包信息</a></p>" %(self.id,)
         url1="<p><a href=/parts/showcontact?id=%s>详细</a></p>" %(self.id,)
@@ -32,6 +44,29 @@ class Contact(models.Model,myutil.MyModel):
     class Meta:
         verbose_name="合同"
         verbose_name_plural="合同"
+    def huizong(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            for pi in cp.pack.packitem_set.all():
+                pi.item.ct=pi.ct
+                if not pi.quehuo:
+                    items=addItem(items,pi.item)
+                else:
+                    items2=addItem(items2,pi.item)
+        return (items,items2)
+    def huizong2(self):
+        items=[]
+        items2=[]
+        for cp in self.usepack_set.all():
+            if cp.pack.name!="调试必备":
+                for pi in cp.pack.packitem_set.all():
+                    pi.item.ct=pi.ct
+                    if not pi.quehuo:
+                        items=addItem(items,pi.item)
+                    else:
+                        items2=addItem(items2,pi.item)
+        return (items,items2)        
 class Pack(models.Model):
     #=======销售===========
     name = models.CharField(max_length=30,verbose_name="包名称")#用户单位
@@ -59,6 +94,32 @@ class Item(models.Model):
     danwei =  models.CharField(max_length=30,verbose_name="单位",default="个")#数量单位
     image=models.ImageField(null=True,blank=True,upload_to="item")
     beizhu = models.CharField(max_length=30,verbose_name="备注",blank=True,null=True)#用户单位
+    def json(self):
+        fields=type(self)._meta.fields
+        dic1={}
+        for f in fields:
+            if f.name in ["image"]:
+                pass
+            else:
+                exec("dic1['%s']=self.%s" %(f.name,f.name))
+        dic1["_id"]=self.id
+        return dic1    
+    @classmethod
+    def mycreate(type1,data):
+        logging.info(data)
+        logging.info(type1)
+        fields=type1._meta.fields
+        c=Item()     
+        for f in fields:
+            if data.get(f.name)!=None:
+                exec("c.%s=data['%s']" %(f.name,f.name))
+        return c    
+    def myupdate(self,data):
+        fields=type(self)._meta.fields
+        logging.info(data)
+        for f in fields:
+            if data.get(f.name)!=None:
+                exec("self.%s=data['%s']" %(f.name,f.name))        
     def __str__(self):
         return str(self.id)+":"+str(self.bh)+"_"+str(self.name)+"_"+str(self.guige)+"_"+str(self.danwei)
     class Meta:
@@ -67,14 +128,20 @@ class Item(models.Model):
 class PackItem(models.Model):
     pack=models.ForeignKey(Pack,verbose_name="包")#合同
     item=models.ForeignKey(Item,verbose_name="备件")#备件
-    ct=  models.IntegerField(verbose_name="数量",default=1)#数量
+    ct=  models.FloatField(verbose_name="数量",default=1)#数量
+    quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
         return self.pack.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
     class Meta:
         verbose_name="备件条目"
         verbose_name_plural=verbose_name
     def json(self):
-        return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh}
+        #logging.info("json-------")
+        #logging.info(self.quehuo)
+        if self.quehuo:
+            return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh,'quehuo':True}
+        else:
+            return {"id":self.id,"pack":self.pack.id,"itemid":self.item.id,"ct":self.ct,"name":self.item.name,"guige":self.item.guige,"danwei":self.item.danwei,'bh':self.item.bh,'quehuo':False}
 # class Standard(models.Model):
 #     contact=models.ForeignKey(Contact,verbose_name="合同")#合同
 #     ct=  models.IntegerField(verbose_name="数量",default=1)#数量

@@ -1,68 +1,41 @@
 # -*- coding: utf-8 -*-
+import sys
 from django.db.models import Q
+#from django.db.models.functions import TruncMonth
 from mysite.parts.models import *
 from django.shortcuts import render_to_response
 import time
 import tarfile
 import os
+import platform
 from io import BytesIO,StringIO
 import logging
 from django.http import HttpResponse,HttpResponseRedirect,FileResponse
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
 import mysite.parts.models
 from datetime import datetime
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 import json 
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 #import zhengshu
-from genDoc.excelXml_write import *
-from lxml import etree as ET
+#from genDoc.excelXml_write import *
+from genDoc.excel_write import *
+#from lxml import etree as ET
 import datetime
-from genDoc.packXml_write import genPack,genQue
-def getJiaoZhunFile(c):
-    (lx,tmp)=c.yiqixinghao.split("-")
-    print(lx)
-    data=None
-    if lx==u"O":
-        tname="O模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunO(c,fullfilepath)
-    elif lx==u"N":
-        tname="N模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunN(c,fullfilepath)
-    elif lx==u"ON":
-        tname="ON模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunON(c,fullfilepath)
-    elif lx==u"OH":
-        tname="OH模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunOH(c,fullfilepath)
-    elif lx==u"ONH":
-        tname="ONH模板"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunONH(c,fullfilepath)
-    else:
-        tname="CS模板"#"aveSingle2"
-        fullfilepath = os.path.join(MEDIA_ROOT,"t_"+tname+".xml")
-        logging.info(fullfilepath)
-        data=genJiaozhunCS(c,fullfilepath)
-    return data
+from genDoc.docx_write import genPack,genQue
+import genDoc.genLabel
+from genDoc.recordXml import genRecord
+from django.db.models import Count
+from django.db import connection,transaction
+import traceback
 # #@api_view(['GET', 'POST','DELETE'])
 # def user_list(request, format=None):
 #     """
@@ -143,6 +116,136 @@ def getJiaoZhunFile(c):
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def month12(request):
+    logging.info("chart")
+    # r=Contact.objects
+    # .annotate(month=TruncMonth('tiaoshi_date'))  # Truncate to month and add to select list
+    # .values('month')                          # Group By month
+    # .annotate(c=Count('id'))                  # Select the count of the grouping
+    # .values('month', 'c')  
+    # logging.info(r)
+    # logging.info(dir(r))
+    end_date=datetime.datetime.now()
+    #start_date=end_date+datetime.timedelta(-365)
+    start_date=datetime.datetime(end_date.year-1,1,1,0,0,0)
+    # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
+    #                                           'month': "EXTRACT(month from tiaoshi_date)",
+    #                                           'day': "EXTRACT(day from tiaoshi_date)"}
+
+    #                                   ).values('year', 'month', 'day').annotate(Count('id'))
+    # contacts=query.all()
+    #Contact.objects.raw("select * from ");
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    #transaction.commit_unless_managed()     #提交到数据库
+    #查询操作
+    #cursor.execute('select * from other_other2 where id>%s' ,[1])
+
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0]+"月")
+        values.append(one[1])
+    #如果连接多个数据库则使用django.db.connections
+    #from django.db import connections
+    #_cursor = connections['other_database'].cursor()
+    #如果执行了更新、删除等操作
+    #transaction.commit_unless_managed(using='other_databases')
+    r=render_to_response("parts/chart.html",{"user":request.user,"lbls":lbls,"values":values})
+    return(r)
+def month(request):
+    logging.info("chart")
+    # r=Contact.objects
+    # .annotate(month=TruncMonth('tiaoshi_date'))  # Truncate to month and add to select list
+    # .values('month')                          # Group By month
+    # .annotate(c=Count('id'))                  # Select the count of the grouping
+    # .values('month', 'c')  
+    # logging.info(r)
+    # logging.info(dir(r))
+    end_date=datetime.datetime.now()
+    #start_date=end_date+datetime.timedelta(-365)
+    start_date=datetime.datetime(end_date.year,1,1,0,0,0)
+    # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
+    #                                           'month': "EXTRACT(month from tiaoshi_date)",
+    #                                           'day': "EXTRACT(day from tiaoshi_date)"}
+
+    #                                   ).values('year', 'month', 'day').annotate(Count('id'))
+    # contacts=query.all()
+    #Contact.objects.raw("select * from ");
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd="select strftime('%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    #transaction.commit_unless_managed()     #提交到数据库
+    #查询操作
+    #cursor.execute('select * from other_other2 where id>%s' ,[1])
+
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0]+"月")
+        values.append(one[1])
+    #如果连接多个数据库则使用django.db.connections
+    #from django.db import connections
+    #_cursor = connections['other_database'].cursor()
+    #如果执行了更新、删除等操作
+    #transaction.commit_unless_managed(using='other_databases')
+    r=render_to_response("parts/chart.html",{"user":request.user,"lbls":lbls,"values":values})
+    return(r)
+  
+def chart(request):
+    logging.info("chart")
+    # r=Contact.objects
+    # .annotate(month=TruncMonth('tiaoshi_date'))  # Truncate to month and add to select list
+    # .values('month')                          # Group By month
+    # .annotate(c=Count('id'))                  # Select the count of the grouping
+    # .values('month', 'c')  
+    # logging.info(r)
+    # logging.info(dir(r))
+    end_date=datetime.datetime.now()
+    start_date=end_date+datetime.timedelta(-365)
+    # query = Contact.objects.filter(tiaoshi_date__range=(start_date, end_date)).extra(select={'year': "EXTRACT(year FROM tiaoshi_date)",
+    #                                           'month': "EXTRACT(month from tiaoshi_date)",
+    #                                           'day': "EXTRACT(day from tiaoshi_date)"}
+
+    #                                   ).values('year', 'month', 'day').annotate(Count('id'))
+    # contacts=query.all()
+    #Contact.objects.raw("select * from ");
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd='select baoxiang,count(id) from parts_contact  where tiaoshi_date between "%s" and "%s" group by baoxiang' % (start_date_s,end_date_s)
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    #transaction.commit_unless_managed()     #提交到数据库
+    #查询操作
+    #cursor.execute('select * from other_other2 where id>%s' ,[1])
+
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0])
+        values.append(one[1])
+    #如果连接多个数据库则使用django.db.connections
+    #from django.db import connections
+    #_cursor = connections['other_database'].cursor()
+    #如果执行了更新、删除等操作
+    #transaction.commit_unless_managed(using='other_databases')
+    r=render_to_response("parts/chart.html",{"user":request.user,"lbls":lbls,"values":values})
+    return(r) 
+
 def onepage(request):
     logging.info("onepage")
     objects=Contact.objects.all()
@@ -203,6 +306,7 @@ def loginpage(request):
     r=render_to_response("registration/login.html",c)
     return(r)
 def mylogin(request):
+    logging.info(request.POST)
     username = request.POST['username']
     password = request.POST['password']
     #print username,password
@@ -325,16 +429,16 @@ def deletecontact(request):
 def finishcontact(request):
     r=HttpResponseRedirect("/parts/")
     return(r)
-def addItem(items,item):
-    find=False
-    for i in items:
-        if i.id==item.id:
-            i.ct +=item.ct
-            find=True
-            break
-    if not find:
-        items.append(item)
-    return items
+# def addItem(items,item):
+#     find=False
+#     for i in items:
+#         if i.id==item.id:
+#             i.ct +=item.ct
+#             find=True
+#             break
+#     if not find:
+#         items.append(item)
+#     return (items,find)
 def showcontact(request):
     #print request.GET
     dic = {}
@@ -343,14 +447,17 @@ def showcontact(request):
     c=Contact.objects.get(id=contact_id)
     dic["user"]=request.user
     dic["contact"]=c
-    items=[]
-    for cp in c.usepack_set.all():
-        for pi in cp.pack.packitem_set.all():
-            pi.item.ct=pi.ct
-            #items.append(pi.item)
-            items=addItem(items,pi.item)
+    (items,items2)=c.huizong()
     dic["items"]=items
+    if len(items2)==0:
+        items2=None
+    dic["items2"]=items2
     dic["new"]=0
+    totalct=0
+    for i in items:
+        totalct +=i.ct
+    dic["totalct"]=totalct
+    dic["totalid"]=len(items)
     r=render_to_response("parts/t_装箱单.html",dic)
     return(r)
 
@@ -414,21 +521,19 @@ def tarDict(dict1):
     ks=dict1.keys()
     for key in ks:
         tarinfo=tarfile.TarInfo(name=key)
-        f1=dict1[key]#byteio object
-        f1.seek(0)
-        tarinfo.size=len(f1.read())
-        f1.seek(0)
+        f1=BytesIO(dict1[key])#byteio object
+        tarinfo.size=len(dict1[key])#f1.read())
         tar.addfile(tarinfo,fileobj=f1)
     tar.close()
     return fgz
 def tar(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
     data2=getJiaoZhunFile(c)
-    byteio=tarDict({"证书数据表.xml":data,c.yonghu+"_"+c.yiqixinghao+".xml":data2})
+    byteio=tarDict({"证书数据表.xlsx":data,c.yonghu+"_"+c.yiqixinghao+".xlsx":data2})
     byteio.seek(0)
     data=byteio.read()#.decode()
     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
@@ -436,6 +541,143 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
+def allfile_old(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+    logging.info(fullfilepath)
+    data=genShujubiao(c,fullfilepath)
+    data2=getJiaoZhunFile(c)
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+    logging.info(fullfilepath)
+    data_zxd=genPack(c,fullfilepath)
+    outfilename=c.yiqibh+"_"+c.yonghu
+    outfilename=outfilename[0:30]
+    dir1="证书_"+outfilename
+    dict1={dir1+"/证书数据表.xlsx":data
+        ,dir1+"/证书.xlsx":data2
+        ,outfilename+"_装箱单.docx":data_zxd
+        }
+    data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+    dict1["标签.lbx"]=data_lbl
+    #
+    if c.method!=None:
+        logging.info(dir(c.method))
+        try:
+            fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+            (data_record,data_xishu)=genRecord(fullfilepath,c)
+            dict1[c.yiqibh+"调试记录.docx"]=data_record
+            dict1["系数.lbx"]=data_xishu
+        except ValueError as e:
+            logging.info(e)
+            pass
+    #
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+    if not os.path.exists(p):
+        os.makedirs(p)
+    if platform.system()=="Linux":
+        os.system("xdg-open "+p)
+    else:
+        os.system("start "+p)
+    byteio=tarDict(dict1)
+    byteio.seek(0)
+    data=byteio.read()#.decode()
+    t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
+    t['Content-Disposition'] = tstr.encode("gb2312")
+    t['Content-Length']=len(data)
+    return t    
+def allfile(request):
+    #try:
+        contact_id=request.GET["id"]
+        c=Contact.objects.get(id=contact_id)
+        
+        outfilename=c.yiqixinghao+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        #
+        #p="d:/parts/media/仪器资料/"+c.yiqibh
+        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+        #证书
+        dir1=p+"/"+outfilename
+        logging.info(dir1)
+        if not os.path.exists(dir1):
+            os.makedirs(dir1)
+        file1=dir1+"/证书数据表.xlsx"
+        if not os.path.exists(file1):
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+            data=genShujubiao(c,fullfilepath)
+            open(file1,"wb").write(data)
+        file2=dir1+"/"+c.yonghu+"证书.xlsx"
+        if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            if c.yujifahuo_date<datetime.datetime.now().date():
+                c.yujifahuo_date=datetime.datetime.now().date()
+                c.save()
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+            data_zxd=genPack(c,fullfilepath)
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+            open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
+        if c.method!=None:
+            try:
+                logging.info("here")
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file6,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
+        if platform.system()=="Linux":
+            os.system("xdg-open "+p)
+        else:
+            os.system("start "+p)
+        out={"success":True}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
+def folder(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    #p="d:/parts/media/仪器资料/"+c.yiqibh
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+    if not os.path.exists(p):
+        os.makedirs(p)
+    if platform.system()=="Linux":
+        os.system("xdg-open "+p)
+    else:
+        os.system("start "+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
@@ -447,21 +689,25 @@ def jiaozhun(request):
 def que(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_短缺物资单.docx")
     logging.info(fullfilepath)
     data=genQue(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.xml"
-    t['Content-Disposition'] = tstr.encode("gb2312")
-    return t
+    if len(data)==0:
+        t=HttpResponse("没有短缺物资")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+        return t
+    else:
+        t=HttpResponse(data,content_type="application/msword")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+        tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_短缺物资单.docx"
+        t['Content-Disposition'] = tstr.encode("gb2312")
+        return t
 def zhuangxiangdan(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
     logging.info(fullfilepath)
     data=genPack(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.xml"
+    t=HttpResponse(data,content_type="application/msword")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yiqibh+"_"+c.yiqixinghao+"_"+c.yonghu+"_装箱单.docx"
     #t['Content-Length']=len(data)
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
@@ -471,11 +717,11 @@ def shujubiao(request):
     logging.info(encode)
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xml"
+    t=HttpResponse(data,content_type="application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xlsx"
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def copypack(request):

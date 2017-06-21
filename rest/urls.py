@@ -1,7 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import  include, url
 from rest import views
 urlpatterns = [
         url(r'^upload', views.upload),
+        url(r'^check', views.check),
+        url(r'^standard', views.standard),
 
         url(r'^$',views.index),
         url(r'^restful',views.restful),
@@ -13,11 +15,14 @@ urlpatterns = [
         url(r'^application', views.application),
 
         url(r'^Item', views.item),
+        url(r'^BothPackItem', views.BothPackItem),
         url(r'^UsePack', views.usepack),
+        url(r'^updateMethod', views.updateMethod),
         url(r'^Contact', views.contact),
         url(r'^PackItem', views.packItem),
         url(r'^Pack', views.pack),
 
+        url(r'^login_index', views.login_index),
         url(r'^login', views.mylogin),
         url(r'^logout', views.mylogout),
         url(r'^functions', views.functions),

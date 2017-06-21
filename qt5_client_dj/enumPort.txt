@@ -1,0 +1,45 @@
+     int m_nSerialPortNum(0);// 串口计数 
+      CString          strSerialList[256];  // 临时定义 256 个字符串组 
+      LPBYTE pBite  = NULL; 
+ 
+      DWORD pcbNeeded = 0;  // bytes received or required 
+ 
+      DWORD pcReturned = 0;  // number of ports received 
+ 
+      m_nSerialPortNum = 0; 
+ 
+      // 获取端口信息，能得到端口信息的大小 pcbNeeded 
+ 
+      EnumPorts(NULL, 2, pBite, 0, &pcbNeeded, &pcReturned); 
+ 
+      pBite = new BYTE[pcbNeeded]; 
+ 
+      // 枚举端口，能得到端口的具体信息 pBite 以及端口的的个数 pcReturned 
+ 
+      EnumPorts(NULL, 2, pBite, pcbNeeded, &pcbNeeded, &pcReturned); 
+ 
+      PORT_INFO_2 *pPort; 
+ 
+      pPort = (PORT_INFO_2*)pBite; 
+ 
+      for ( i = 0; i < pcReturned; i++) 
+ 
+      { 
+ 
+             CString str = pPort[i].pPortName; 
+ 
+             // 串口信息的具体确定 
+             if (str.Left(3) == "COM") 
+ 
+             {                   
+ 
+                    strSerialList[m_nSerialPortNum] = str.Left(strlen(str) - 1); 
+ 
+                    //CString temp = str.Right(strlen(str) - 3);// 下面两行注释获取串口序号用 
+                    //m_nSerialPortNo[m_nSerialPortNum] = atoi(temp.Left(strlen(temp) - 1)); 
+ 
+                    m_nSerialPortNum++;                 
+ 
+             } 
+ 
+      }

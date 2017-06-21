@@ -13,7 +13,7 @@ from django.forms.models  import modelform_factory
 from datetime import datetime
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 import mysite.settings
 import json
 root_path=mysite.settings.STATICFILES_DIRS[0]

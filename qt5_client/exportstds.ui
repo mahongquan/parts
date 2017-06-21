@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>610</width>
+    <height>523</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>仪器信息</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>导入</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>save()</slot>
+  <slot>add()</slot>
+  <slot>method()</slot>
+  <slot>clear()</slot>
+  <slot>copy()</slot>
+  <slot>bibei()</slot>
+  <slot>newpack()</slot>
+  <slot>editpack()</slot>
+  <slot>deletepack()</slot>
+  <slot>itemselect()</slot>
+  <slot>deletepackitem()</slot>
+  <slot>editpackitem()</slot>
+  <slot>newpackitem()</slot>
+  <slot>iteminput()</slot>
+  <slot>packinput()</slot>
+  <slot>selectpack()</slot>
+  <slot>selectpack2()</slot>
+  <slot>selectitem()</slot>
+  <slot>textchange()</slot>
+ </slots>
+</ui>

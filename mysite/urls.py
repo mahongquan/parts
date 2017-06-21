@@ -1,21 +1,20 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import  include, url
 from django.contrib import admin
 from mysite import settings
 from mysite import mainview
-#import xadmin
-#xadmin.autodiscover()
 admin.autodiscover()
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from ajax_select import urls as ajax_select_urls
+import django
 urlpatterns = [
     url(r'^$', mainview.index),
-    
     url(r'^favicon.ico', mainview.favicon),
     url(r'^editor_index$', mainview.editor_index),
     url(r'^custom_editor$', mainview.custom_editor),
     url(r'^getImages.php$', mainview.getImages),
     url(r'^data_writer_test.php$', mainview.data_writer_test),
+    url(r'^service-worker.js$', mainview.service_worker),
     url(r'^dtable_test.php$', mainview.dtable_test),
     url(r'^searching_test.php$', mainview.searching_test),
     url(r'^sorting_test.php$', mainview.sorting_test),
@@ -43,4 +42,4 @@ urlpatterns = [
     url(r'^afterlogin/',mainview.afterlogin),
 ]
 urlpatterns += staticfiles_urlpatterns()
-urlpatterns +=static(settings.MEDIA_URL,view='django.contrib.staticfiles.views.serve')
+urlpatterns +=static(settings.MEDIA_URL,django.contrib.staticfiles.views.serve)

@@ -62,25 +62,43 @@ def setupBrowser(usefirefox):
 	if usefirefox:
 		profile=webdriver.FirefoxProfile()
 		print(dir(profile))
-		profile.set_preference("permissions.default.image", 2);
-		#禁用浏览器缓存
-		profile.set_preference("network.http.use-cache", False);
-		profile.set_preference("browser.cache.memory.enable", False);
-		profile.set_preference("browser.cache.disk.enable", False);
-		profile.set_preference("browser.sessionhistory.max_total_viewers", 3);
-		profile.set_preference("network.dns.disableIPv6", True);
-		profile.set_preference("Content.notify.interval", 750000);
-		profile.set_preference("content.notify.backoffcount", 3);
-		#有的网站支持   有的不支持
-		profile.set_preference("network.http.pipelining", True);
-		profile.set_preference("network.http.proxy.pipelining", True);
-		profile.set_preference("network.http.pipelining.maxrequests", 32);
+		# 		# 下面几个是核心参数  
+		# prof.set_preference("browser.download.folderList", 2) # 2表示自定义文件夹 0表示保存到桌面  
+		# prof.set_preference("browser.download.manager.showWhenStarting",False) # 没什么用  
+		# prof.set_preference("browser.download.dir","D:\\selenium\\") # 设置默认的保存文件夹  
+		# # 设置自动保存的文件类型，如果firefox不能自动保存，一定是文件类型不对</span>  
+		# prof.set_preference("browser.helperApps.neverAsk.saveToDisk", 'application/a-gzip,application/x-gzip')  
+		# # 其他可选文件类型"application/x-gzip;application/zip,application/x-gtar,text/plain,application/x-compressed,application/octet-stream,application/pdf")   
+		# # 下面这些参数是从别的地方看到的  
+		# prof.set_preference("browser.helperApps.alwaysAsk.force", False)   
+		# prof.set_preference("browser.download.manager.alertOnEXEOpen", False)   
+		# prof.set_preference("browser.download.manager.focusWhenStarting", False)  
+		# prof.set_preference("browser.download.useDownloadDir", True)   
+		# prof.set_preference("browser.download.manager.alertOnEXEOpen", False)   
+		# prof.set_preference("browser.download.manager.closeWhenDone", True)   
+		# prof.set_preference("browser.download.manager.showAlertOnComplete", False)   
+		# prof.set_preference("browser.download.manager.useWindow", False) #  
+		# #disable Firefox's built-in PDF viewer   
+		# prof.set_preference("pdfjs.disabled",True)  
+  
+		# profile.set_preference("permissions.default.image", 2);
+		# #禁用浏览器缓存
+		# profile.set_preference("network.http.use-cache", False);
+		# profile.set_preference("browser.cache.memory.enable", False);
+		# profile.set_preference("browser.cache.disk.enable", False);
+		# profile.set_preference("browser.sessionhistory.max_total_viewers", 3);
+		# profile.set_preference("network.dns.disableIPv6", True);
+		# profile.set_preference("Content.notify.interval", 750000);
+		# profile.set_preference("content.notify.backoffcount", 3);
+		# #有的网站支持   有的不支持
+		# profile.set_preference("network.http.pipelining", True);
+		# profile.set_preference("network.http.proxy.pipelining", True);
+		# profile.set_preference("network.http.pipelining.maxrequests", 32);
 
 		profile.set_preference("browser.download.folderList",2);
 		profile.set_preference("browser.download.manager.showWhenStarting",	False);
 		profile.set_preference("browser.download.dir","~/Downloads");
-		profile.set_preference("browser.helperApps.neverAsk.saveToDisk","application/octet-stream")
-		#profile.set_preference("browser.helperApps.neverAsk.saveToDisk","text/csv");
+		profile.set_preference("browser.helperApps.neverAsk.saveToDisk","application/octet-stream,application/pdf,text/csv")
 		browser = webdriver.Firefox(profile)
 		return browser
 	else:
@@ -99,16 +117,23 @@ def findTodo(title):
 	loc=(By.CLASS_NAME,"common_drop_list_text")#by:By.ID, value:"condition"}
 	ec=EC.presence_of_element_located(loc)
 	condition=WebDriverWait(browser,10).until(ec)#browser.find_element_by_id('condition')#bodyIDmessageList')
-	#actions=ActionChains(browser)
-	#actions.move_to_element(condition).perform()
+	time.sleep(0.5)
 	browser.execute_script("""
 m0=$(".common_drop_list_text");
 $(m0).trigger("mouseenter");
 """)
-	items=search.find_elements_by_class_name("text_overflow")
-	items[1].click()
-	search.find_element_by_class_name('search_input').send_keys(title)
-	search.find_element_by_class_name('search_btn').click()
+	try:
+		items=search.find_elements_by_class_name("text_overflow")
+		items[1].click()
+		search.find_element_by_class_name('search_input').send_keys(title)
+		search.find_element_by_class_name('search_btn').click()
+	except	selenium.common.exceptions.ElementNotInteractableException as e:
+		# items=search.find_elements_by_class_name("text_overflow")
+		# items[1].click()
+		# search.find_element_by_class_name('search_input').send_keys(title)
+		# search.find_element_by_class_name('search_btn').click()
+		# pass
+
 	return frame
 def newTodo():
 	menuUL=mywait_id("menuUL")
@@ -131,8 +156,7 @@ def newTodo():
 	items[1].click();#firefox
 	#items[4].find_element_by_tag_name("span").click()#phtomjs
 	#time.sleep(5)
-
-def  showTodo():
+def  showTodoNew():
 	#second_menu_content
 	menuUL=mywait_id("menuUL")
 	menus=browser.find_elements_by_class_name("main_menu_a")
@@ -151,6 +175,29 @@ def  showTodo():
 	items=browser.find_elements_by_class_name("second_menu_item")
 	for item in items:
 		print(item.text)
+	items[1].click();#firefox
+	#items[4].find_element_by_tag_name("span").click()#phtomjs
+	#time.sleep(5)
+def  showTodo():
+	#second_menu_content
+	menuUL=mywait_id("menuUL")
+	menus=browser.find_elements_by_class_name("main_menu_a")
+	for menu in menus:
+		print(menu.text)
+	browser.execute_script("""
+		var m0=$(".main_menu_a")[0];
+		$(m0).trigger("mouseenter");
+	""")
+	# menus=browser.find_elements_by_class_name("main_menu_a")
+	# for menu in menus:
+	# 	print(menu.text)
+	# co=menus[0]
+	# actions=ActionChains(browser)
+	# actions.move_to_element(co).click(co).move_by_offset(0,50).perform()
+	items=browser.find_elements_by_class_name("second_menu_item")
+	print("items")
+	for item in items:
+		print(item.text)
 	items[4].click();#firefox
 	#items[4].find_element_by_tag_name("span").click()#phtomjs
 	#time.sleep(5)
@@ -167,21 +214,22 @@ def checktitle(title):
 		time.sleep(3)
 def  downloadTodofiles():
 	tbody=mywait_id("listPending")
+	time.sleep(1)
 	mes=tbody.find_elements_by_tag_name("tr")#here error selenium.common.exceptions.StaleElementReferenceException
 	rt=[]
 	i=0
 	maxtime=None
 	for me in mes:
 		tds=me.find_elements_by_tag_name("td")
-		todotime=datetime.strptime(tds[3].text,"%Y-%m-%d %H:%M")
-		print(objSave["lasttime"],todotime)
-		if todotime<=objSave["lasttime"]:
-			objSave["lasttime"]=maxtime
-			save()
-			break
-		else:
-			if maxtime==None:
-				maxtime=todotime
+		# todotime=datetime.strptime(tds[3].text,"%Y-%m-%d %H:%M")
+		# print(objSave["lasttime"],todotime)
+		# if todotime<=objSave["lasttime"]:
+		# 	objSave["lasttime"]=maxtime
+		# 	save()
+		# 	break
+		# else:
+		# 	if maxtime==None:
+		# 		maxtime=todotime
 		title=tds[1].text
 		tds[1].click()
 		time.sleep(3)#wait new summary
@@ -189,11 +237,14 @@ def  downloadTodofiles():
 		browser.switch_to_frame(summary);
 		files=mywait_id("attachmentAreashowAttFile")
 		checktitle(title)
-		link=files.find_element_by_tag_name("a")
-		cmd="window.open('%s')" % link.get_attribute("href")
-		browser.execute_script(cmd)
-		print(cmd)
-		rt.append(link.get_attribute("href"))
+		try:
+			link=files.find_element_by_tag_name("a")
+			link.click()
+			cmd="window.open('%s')" % link.get_attribute("href")
+			# browser.execute_script(cmd)
+			print(cmd)
+		except selenium.common.exceptions.NoSuchElementException as e:
+			pass
 		browser.switch_to_default_content()
 		frame=browser.find_element_by_id("main");
 		browser.switch_to_frame(frame);
@@ -209,17 +260,36 @@ def checkBG():
 	showTodo()#testMessage()
 	findTodo("标钢")
 	downloadTodofiles()
+def checkTongZhi():
+	showTodo()#testMessage()
+	findTodo("通知")
+	downloadTodofiles()
+def BJ():
+	showTodoNew()
 def uploadRecord():
 	showTodo()#testMessage()
 	findTodo("3111613497")
 	#downloadTodofiles()
 def mainBG(name,pwd):
 	global browser
-	browser=setupBrowser(False)
+	browser=setupBrowser(True)
 	print(dir(browser))
 	login(name,pwd)
 	checkBG()
 	return browser
+def mainBJ(name,pwd):
+	global browser
+	browser=setupBrowser(False)
+	print(dir(browser))
+	login(name,pwd)
+	BJ()
+	return browser
+def mainTongZhi(name,pwd):
+	global browser
+	browser=setupBrowser(True)
+	login(name,pwd)
+	checkTongZhi()
+	return browser		
 def main(name,pwd):
 	global browser
 	browser=setupBrowser(False)
@@ -261,5 +331,7 @@ if __name__ == "__main__":
 		objSave["lasttime"]=t
 	print(sys.argv)
 	if len(sys.argv)>2:
-		mainBG(sys.argv[1],sys.argv[2])
+		mainTongZhi(sys.argv[1],sys.argv[2])
+	else:
+		mainTongZhi("mahongquan","mhq730208")
 

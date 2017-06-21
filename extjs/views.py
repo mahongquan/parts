@@ -12,38 +12,32 @@ from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
-from django.template.context import RequestContext
+from django.template.context_processors import csrf
 import datetime
 import json
-from extjs.models import *
+from mysite.parts.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import Group
 from myutil import MyEncoder
 def index(request):
-	c=RequestContext(request,{"user":request.user})
-	c.update(csrf(request))
+	c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
 	r=render_to_response("extjs/index.html",c)
 	return(r)
 def backbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/backbone.html",c)
     return(r)
 def angular(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/angular.html",c)
     return(r)
 def react(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/react.html",c)
     return(r)
 def reactbackbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("extjs/reactbackbone.html",c)    
     return r
 def ch11(request):
@@ -174,26 +168,26 @@ def destroy_board(request):
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 def contacts(request):
     if request.method == 'GET':
-        rec=Contact.objects.all()
+        rec=Item.objects.all()
         output=[]
         for one in rec:
             output.append(one.json())
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
-        contact=Contact.mycreate(data)
+        contact=Item.mycreate(data)
         contact.save()
         output=contact.json()
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
 def contactOne(request,id=None):
     if request.method == 'GET':
-        rec=Contact.objects.get(id=int(id))
+        rec=Item.objects.get(id=int(id))
         output=rec.json()
         return HttpResponse(json.dumps(output, ensure_ascii=False)) 
     if request.method == 'PUT':
         data = json.loads(request.body.decode("utf-8"))
         id=data.get("id")
-        rec=Contact.objects.get(id=int(id))
+        rec=Item.objects.get(id=int(id))
         rec.myupdate(data)
         rec.save()
         output=rec.json()

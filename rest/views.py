@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+import django
 from django.shortcuts import render_to_response
 import time
 import os
@@ -6,14 +8,12 @@ import logging
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User,Group
 from django.core.exceptions import ObjectDoesNotExist#,DoesNotExist
 from django.forms.models  import modelform_factory
 from django.forms import ModelForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
-from django.template.context import RequestContext
+from django.template.context_processors import csrf
 import mysite.settings
 import datetime
 import json
@@ -25,12 +25,102 @@ from django.db.models import Q
 from myutil import MyEncoder
 import traceback
 import sys
+import xlrd
+def mylistdir(p,f):
+    a=os.listdir(p)
+    fs=myfind(a,f)
+    return(fs)
+def myfind(l,p):
+    lr=[];
+    #print p
+    p1=p.replace(".",r"\.")
+    p2=p1.replace("*",".*")
+    p2=p2+"$"
+    p2="^"+p2
+    for a in l:
+        #print a
+        if  re.search(p2,a,re.IGNORECASE)==None :
+           pass
+           #print "pass"
+        else:
+           lr.append(a)
+       #print "append"
+    return lr
+def getIniFile(contact):
+    filepath = mysite.settings.MEDIA_ROOT 
+    path=os.path.join(filepath, "仪器资料/%s" % (contact.yiqibh))
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s" % (contact.yiqibh)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            pass
+    except FileNotFoundError as e:
+        pass
+    xhp=contact.yiqixinghao.split("-")[0]
+    path=os.path.join(filepath,"仪器资料/%s/%s" % (contact.yiqibh,xhp))
+    try:
+        fs=mylistdir(path,"*.ini")
+        out="./仪器资料/%s/%s" % (contact.yiqibh,xhp)
+        if len(fs)>0:
+            return  out+"/"+fs[0]
+        else:
+            return None
+    except FileNotFoundError as e:
+        return None
+       
+def inItems(item,items):
+    inIt=False
+    equal=False
+    v=None
+    for i in range(len(items)):
+        if items[i][0]==item[0]:
+            inIt=True
+            if items[i][2]==item[2]:
+                equal=True
+            v=items[i]
+            items.remove(items[i])
+            break
+    return(inIt,equal,v)
+def printList(items):
+    r=[]
+    for item in items:
+        r1=[]
+        for one in item:
+            r1.append(str(one))
+        r.append(",".join(r1))
+    return "\n".join(r)
+def bjitems(items,items_chuku):
+    #(left,middle,right)bjitems(items,items_chuku)
+    logging.info(items)
+    left=[]
+    equal=[]
+    notequal=[]
+    for item in items:
+        (inIt,equalv,v)=inItems(item,items_chuku)
+        if inIt:
+            if equalv:
+                equal.append(item)
+            else:
+                notequal.append(item)
+                notequal.append(v)
+        else:
+            left.append(item)
+    # print("left")
+    # print(printList(left))
+    # print("equal")
+    # print(printList(equal))
+    # print("!equal")
+    # print(printList(notequal))
+    # print("right")
+    # print(printList(items_chuku))
+    return(left,notequal,items_chuku)
 def writer(request):
     # logging.info(request)
     # output={}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/writer.html",c)
     return(r)
 @login_required
@@ -94,35 +184,35 @@ def app_users_create(request):
     output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 def index(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     return render_to_response("rest/index.html",c)
 def backbone(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    r=csrf(request)["csrf_token"]
+    logging.info(dir(r))
+    logging.info(r)
+    c={"user":request.user,"csrf_token":r}
+    #c.update(csrf(request))
+    logging.info(dir(c))
+    logging.info(c)
     r=render_to_response("rest/backbone.html",c)
     return(r)    
 def restful(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/restful.html",c)
     return(r)
 def jqm(request):
-    c=RequestContext(request,{"user":request.user})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/jqm.html",c)
     return(r)
 def index_2(request):
     # logging.info(request)
     # output={}
     # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/index_2.html",c)
     return(r) 
 def extjs6(request):
-    c=RequestContext(request,{})
-    c.update(csrf(request))
+    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
     r=render_to_response("rest/extjs6.html",c)
     return(r)   
 @login_required
@@ -146,7 +236,7 @@ def application(request):
     logging.info("===================")
     logging.info(request)
     logging.info("------------------")
-    request2=Request(request,(JSONParser(),))
+    request2=request
     logging.info(request2)
     if request.method == 'GET':
         return view(request2)
@@ -202,10 +292,10 @@ def view_item(request):
     search=request.GET.get("query",'')
     if search!='':
         total=Item.objects.filter(Q(name__icontains=search)).count()# | Q(bh__icontains=search)
-        objs = Item.objects.filter(Q(name__icontains=search))[start:start+limit]
+        objs = Item.objects.filter(Q(name__icontains=search)).order_by('-id')[start:start+limit]
     else:
         total=Item.objects.count()
-        objs = Item.objects.all()[start:start+limit]
+        objs = Item.objects.all().order_by('-id')[start:start+limit]
     data=[]
     for rec in objs:
         data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei})
@@ -273,6 +363,14 @@ def contact(request):
         return update_contact(request)
     if request.method == 'DELETE':
         return destroy_contact(request)
+def updateMethod(request): 
+    id1=request.GET.get("id")
+    id1=int(id1)
+    c=Contact.objects.get(id=id1)       
+    c.method=getIniFile(c)
+    c.save()
+    output={"success":True,"message":"","data":c.json()}
+    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def view_contact(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","5"))
@@ -282,8 +380,8 @@ def view_contact(request):
     logging.info("baoxiang="+baoxiang)
     if search!='':
         if baoxiang!="":
-            total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search) & Q(baoxiang=baoxiang)).count()
-            objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
+            total=Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).count()
+            objs = Contact.objects.filter((Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)) & Q(baoxiang=baoxiang)).order_by('-yujifahuo_date')[start:start+limit]
         else:
             total=Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).count()
             objs = Contact.objects.filter(Q(hetongbh__icontains=search) | Q(yiqibh__icontains=search)).order_by('-yujifahuo_date')[start:start+limit]
@@ -298,7 +396,7 @@ def view_contact(request):
     for rec in objs:
         data.append(rec.json())
     logging.info(data)
-    output={"total":total,"data":data}
+    output={"total":total,"data":data,"user":request.user.username }
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
     try:
@@ -340,8 +438,17 @@ def create_contact(request):
         message+= "** %s: %s" % info[:2]
         output={"success":False,"message":message}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except django.db.utils.IntegrityError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_contact(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
     id1=data.get("id")
     id1=int(id1)
     rec=Contact.objects.get(id=id1)
@@ -398,10 +505,13 @@ def mylogout(request):
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
     logging.info(r)
     return r
-
+def login_index(request):
+    output={"success":True,"user":str(request.user),"csrf_token":str(csrf(request)["csrf_token"])}
+    r=HttpResponse(json.dumps(output, ensure_ascii=False))
+    return(r)
 def mylogin(request):
     logging.info("login/////////////////////////////////////////////////")
-    logging.info(request)
+    logging.info(request.POST)
     request2=request#Request(request,(JSONParser(),))
     data = request2.POST
     username = data['username']
@@ -461,7 +571,7 @@ def view_item2(request):
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 @login_required
 def create_item2(request):
-    request=Request(request,(JSONParser(),))
+    #request=Request(request,(JSONParser(),))
     logging.info(request.POST)
     datas=request.POST["data"]
     logging.info(datas)
@@ -760,6 +870,50 @@ def destroy_usepack(request):
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 #pack##################
+def BothPackItem(request):
+    if request.method == 'POST':
+        return create_BothPackItem(request)
+    if request.method == 'PUT':
+        return update_BothPackItem(request)
+def create_BothPackItem(request):
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
+    if(data.get("name")!=None):
+        rec1=Item()
+        rec1.name=data["name"]
+        rec1.save()
+        
+        rec=PackItem()
+        rec.item=rec1
+        packid=int(data.get("pack"))
+        pack=Pack.objects.get(id=packid)
+        rec.pack=pack
+        rec.ct=1
+        rec.save()
+        output={"success":True,"message":"Created new User" +str(rec.id)}
+        output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    else:
+        output={"success":False,"message":"No enough parameters"}
+        output["data"]={}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))        
+def update_BothPackItem(request):          
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    id1=int(data["id"])
+    rec=PackItem.objects.get(id=id1)
+    rec1=rec.item;
+    if data.get("name")!=None:
+        rec1.name=data["name"]
+    if data.get("guige")!=None:
+        rec1.guige=data["guige"]
+    if data.get("ct")!=None:
+        rec1.ct=data["ct"]
+    if data.get("bh")!=None:
+        rec1.bh=data["bh"]
+    rec1.save()
+    output={"success":True,"message":"update UsePack " +str(rec.id)}
+    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
     logging.info("===================")
@@ -781,7 +935,7 @@ def view_pack1(request):
     search_bh=request.GET.get("search",'')
     if search_bh!='':
         total=Pack.objects.filter(name__contains=search_bh).count()
-        objs =Pack.objects.filter(name__contains=search_bh)[start:start+limit]
+        objs =Pack.objects.filter(name__contains=search_bh).order_by("-id")[start:start+limit]
     else:
         total=Pack.objects.count()
         objs =Pack.objects.all()[start:start+limit]
@@ -806,6 +960,7 @@ def create_pack1(request):
         output={"success":False,"message":"No enough parameters"}
         output["data"]={}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+
 def update_pack1(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     id1=int(data["id"])
@@ -865,23 +1020,32 @@ def create_packItem(request):
      if data.get("itemid")!=None:
          rec.item=Item.objects.get(id=int(data["itemid"]))
      if data.get("ct")!=None:
-         rec.ct=int(data.get("ct"))
+         rec.ct=float(data.get("ct"))
      rec.save()
      output={"success":True,"message":"Created new User" +str(rec.id)}
      output["data"]=rec.json()
      return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_packItem(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
     id1=data.get("id")
     if id1!=None:
          id1=int(id1)
+         item=Item.objects.get(id=int(data["itemid"]))
+         item.bh=data.get("bh")
+         item.danwei=data.get("danwei")
+         item.name=data.get("name")
+         item.guige=data.get("guige")
+         item.save()
          rec=PackItem.objects.get(id=id1)
          if data.get("pack")!=None:
              rec.pack=Pack.objects.get(id=int(data["pack"]))
          if data.get("itemid")!=None:
-             rec.item=Item.objects.get(id=int(data["itemid"]))
+             rec.item=item
          if data.get("ct")!=None:
-             rec.ct=int(data.get("ct"))
+             rec.ct=float(data.get("ct"))
+         if data.get("quehuo")!=None:
+             rec.quehuo=data.get("quehuo")
          rec.save()
          output={"success":True,"message":"update Contact " +str(rec.id)}
          output["data"]=rec.json()
@@ -924,18 +1088,148 @@ def upload(request):
 
     # the full file path and name
     fullfilepath = os.path.join( filepath, filename )
-
     # clean up filenames & paths:
     fullfilepath = os.path.normpath( fullfilepath )
     fullfilepath = os.path.normcase( fullfilepath )
+    num=1
+    newfilename=filename
 
+    while(os.path.exists(fullfilepath)):
+        logging.info(num)
+        logging.info(fullfilepath)
+        newfilename=str(num)+"_"+filename
+        fullfilepath=os.path.join( filepath, str(num)+"_"+filename )
+        fullfilepath = os.path.normpath( fullfilepath )
+        fullfilepath = os.path.normcase( fullfilepath )
+        num +=1
     # try to write file to the dir.
     try:
         f = open( fullfilepath, 'wb' ) # Writing in binary mode for windows..?
         f.write( data )
         f.close( )
-        res={"success":True, "files":"./"+filename}
+        res={"success":True, "files":"./"+newfilename}
     except e:
         res={"success":False, "files":str(e)}
-        # something went wrong 
     return HttpResponse(json.dumps(res, ensure_ascii=False))
+def readChuKUfile(content):
+    book = xlrd.open_workbook(file_contents=content)
+    table=book.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    begin=False
+    dan=[]
+    for i in range(nrows-9-3):
+        #print(i,table.row_values(i)[0])
+        cells=table.row_values(9+i)
+        dan.append((cells[0],cells[1],cells[4]))#bh,name,ct
+    yiqibh=str(int(table.row_values(7)[3]))
+    return (dan,yiqibh)
+def readBeiliaofile(fn):
+    book = xlrd.open_workbook(file_contents=fn)
+    table=book.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    begin=False
+    dan=[]
+    for i in range(nrows-7):
+        #print(i,table.row_values(i)[0])
+        cells=table.row_values(7+i)
+        dan.append((cells[0],cells[1],cells[7]))#bh,name,ct
+    return dan
+def check(request):
+    contactid=int(request.POST.get("id"))
+    contact=Contact.objects.get(id=contactid)
+    #    (fileName,fileType)= QFileDialog.getOpenFileName(None,"Open Excel file", ".","Excel Files ( *.xlsx *.xls)")
+    # where to store files. Probably best defined in settings.py
+    filepath = mysite.settings.MEDIA_ROOT 
+
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+
+    #the uploaded data from the file
+    #f.open()
+    #data=f.read()
+    (items,items2)=contact.huizong()
+    r=[]
+    for item in items:
+        r.append((item.bh,item.name,item.ct))
+    for item in items2:
+        r.append((item.bh,item.name,item.ct))
+    items_chuku=readBeiliaofile(f.read())
+    #logging.info(yqbh)
+    # if yqbh!=contact.yiqibh:
+    #     res={"success":False, "result":""}
+    # else:
+    (left,notequal,right)=bjitems(r,items_chuku)
+        # try to write file to the dir.
+    res={"success":True, "result":(left,notequal,right)}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))    
+def readStandardFile(fn,filename):
+    book = xlrd.open_workbook(file_contents=fn)
+    table=book.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    begin=False
+    dan=[]
+    for i in range(nrows ):
+        cells=table.row_values(i)
+        if cells[0]=="其他入库单":
+            if not begin:
+                begin=True
+                onedan=[]
+            else:
+                #finish
+                dan.append(onedan)
+                onedan=[]
+        else:
+            if begin:
+                onedan.append(cells)
+            else:
+                pass
+    for one in dan:
+        treatOne(one,filename)   
+def treatOne(rows,fn):
+    beizhu=rows[1][7]
+    if beizhu[:2]=="CS" or beizhu[:2]=="ON":
+        try:
+            d=Pack.objects.get(name=rows[0][1])
+        except ObjectDoesNotExist as e2:
+            d=Pack()
+        d.name=rows[1][7]+"_"+fn
+        d.save()
+        n=len(rows)
+        items=rows[4:4+n-4-3]
+        for i in items:
+            #i=DanjuItem()
+            print(i[1],i[2],i[3],i[4],i[5])
+            items=Item.objects.filter(bh=i[1]).all()
+            if len(items)>1:
+                item=items[0]
+            else:
+                item=Item()
+            item.bh=i[1]
+            item.name=str(i[2])+" "+str(i[1])
+            item.guige=i[3]
+            item.danwei=i[4]
+            item.save()
+            di=PackItem()
+            di.pack=d
+            di.item=item
+            di.ct=i[5]
+            di.save()
+def standard(request):
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+    packs=readStandardFile(f.read(),filename)
+    res={"success":True, "result":""}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))        
