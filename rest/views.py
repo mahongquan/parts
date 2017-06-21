@@ -870,6 +870,50 @@ def destroy_usepack(request):
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 #pack##################
+def BothPackItem(request):
+    if request.method == 'POST':
+        return create_BothPackItem(request)
+    if request.method == 'PUT':
+        return update_BothPackItem(request)
+def create_BothPackItem(request):
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
+    if(data.get("name")!=None):
+        rec1=Item()
+        rec1.name=data["name"]
+        rec1.save()
+        
+        rec=PackItem()
+        rec.item=rec1
+        packid=int(data.get("pack"))
+        pack=Pack.objects.get(id=packid)
+        rec.pack=pack
+        rec.ct=1
+        rec.save()
+        output={"success":True,"message":"Created new User" +str(rec.id)}
+        output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    else:
+        output={"success":False,"message":"No enough parameters"}
+        output["data"]={}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))        
+def update_BothPackItem(request):          
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    id1=int(data["id"])
+    rec=PackItem.objects.get(id=id1)
+    rec1=rec.item;
+    if data.get("name")!=None:
+        rec1.name=data["name"]
+    if data.get("guige")!=None:
+        rec1.guige=data["guige"]
+    if data.get("ct")!=None:
+        rec1.ct=data["ct"]
+    if data.get("bh")!=None:
+        rec1.bh=data["bh"]
+    rec1.save()
+    output={"success":True,"message":"update UsePack " +str(rec.id)}
+    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
     logging.info("===================")
@@ -916,6 +960,7 @@ def create_pack1(request):
         output={"success":False,"message":"No enough parameters"}
         output["data"]={}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+
 def update_pack1(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     id1=int(data["id"])
