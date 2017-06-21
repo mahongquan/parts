@@ -172,7 +172,7 @@ class PartsContact(Base):
     tiaoshi_date = Column(Date)
     method = Column(Text(200))
     def tablerow(self):
-        return "%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh)
+        return "%s\t%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh,self.yujifahuo_date)
     def huizong(self):
         items=[]
         items2=[]
