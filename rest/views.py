@@ -305,7 +305,7 @@ def destroy_item(request):
     rec.delete()
     output={"success":True,"message":"OK"}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-#@login_required
+@login_required
 def contact(request):
     logging.info("=contact==========")
     logging.info(request)
@@ -343,7 +343,7 @@ def view_contact(request):
     for rec in objs:
         data.append(rec.json())
     logging.info(data)
-    output={"total":total,"data":data}
+    output={"total":total,"data":data,"user":request.user.username}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
     try:
