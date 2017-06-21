@@ -126,7 +126,7 @@ def writer(request):
 @login_required
 def app_users_view(request):
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     total=User.objects.count()
     objs =User.objects.all()[start:start+limit]
     data=[]
@@ -288,7 +288,7 @@ def view_item(request):
     logging.info("here")
     #pack_id=int(request.GET.get("pack"))
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search=request.GET.get("query",'')
     if search!='':
         total=Item.objects.filter(Q(name__icontains=search)).count()# | Q(bh__icontains=search)
@@ -373,7 +373,7 @@ def updateMethod(request):
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def view_contact(request):
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search=request.GET.get("search",'')
     baoxiang=request.GET.get("baoxiang",'')
     logging.info("search="+search)
@@ -545,7 +545,7 @@ def functions(request):
 def view_item2(request):
     logging.info("here")
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search=request.GET.get("search",'')
     search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
@@ -675,7 +675,7 @@ def organize(request):
 def geticons(request):
     logging.info("here")
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search=request.GET.get("search",'')
     search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
@@ -730,7 +730,7 @@ def view_pack(request):
     logging.info("here")
     logging.info(request.GET)
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search=request.GET.get("search",'')
     search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
@@ -828,7 +828,7 @@ def view_usepack(request):
     logging.info("view_usepack")
     contact=int(request.GET.get("contact","0"))
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     total=UsePack.objects.filter(contact=contact).count()
     objs = UsePack.objects.filter(contact=contact)[start:start+limit]
     data=[]
@@ -875,6 +875,43 @@ def BothPackItem(request):
         return create_BothPackItem(request)
     if request.method == 'PUT':
         return update_BothPackItem(request)
+def UsePackEx(request):
+    if request.method == 'POST':
+        return create_UsePackEx(request)
+    if request.method == 'PUT':
+        return update_UsePackEx(request)      
+def create_UsePackEx(request):
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    logging.info(data)
+    if(data.get("name")!=None):
+        rec1=Pack()
+        rec1.name=data["name"]
+        rec1.save()
+        
+        rec=UsePack()
+        rec.pack=rec1
+        contactid=int(data.get("contact"))
+        contact=Contact.objects.get(id=contactid)
+        rec.contact=contact
+        rec.save()
+        output={"success":True,"message":"Created new User" +str(rec.id)}
+        output["data"]={"id":rec.id,"name":rec1.name,"contact":rec.contact.id,"pack":rec.pack.id,"hetongbh":rec.contact.hetongbh}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    else:
+        output={"success":False,"message":"No enough parameters"}
+        output["data"]={}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))        
+def update_UsePackEx(request):          
+    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+    id1=int(data["id"])
+    rec=UsePack.objects.get(id=id1)
+    rec1=rec.item;
+    if data.get("name")!=None:
+        rec1.name=data["name"]
+    rec1.save()
+    output={"success":True,"message":"update UsePack " +str(rec.id)}
+    output["data"]={"id":rec.id,"name":rec1.name,"contact":rec.contact.id}
+    return HttpResponse(json.dumps(output, ensure_ascii=False))          
 def create_BothPackItem(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     logging.info(data)
@@ -931,7 +968,7 @@ def pack(request):
         return destroy_pack1(request)
 def view_pack1(request):
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     search_bh=request.GET.get("search",'')
     if search_bh!='':
         total=Pack.objects.filter(name__contains=search_bh).count()
@@ -993,7 +1030,7 @@ def view_packItem(request):
     logging.info("view_packitem")
     contact=int(request.GET.get("pack","0"))
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","5"))
+    limit=int(request.GET.get("limit","20"))
     # search_bh=request.GET.get("search",'')
     # if search_bh!='':
     #     total=PackItem.objects.filter(name__contains=search_bh).count()
