@@ -1221,7 +1221,7 @@ function delCookie(name)//删除cookie
         this.usepacks.fetch({
             timeout:8000,
             reset:true,
-            data: { contact:this.model.get("id")},
+            data: { contact:this.model.get("id"),"limit":30},
             success:function(){
                 ////console.log(this.usepacks.length+" usepacks")
                 // this.$("#page").empty();

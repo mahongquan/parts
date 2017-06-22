@@ -31,7 +31,7 @@ class Contact(models.Model,myutil.MyModel):
     hetongbh=models.CharField(max_length=30,verbose_name="合同编号")#合同编号
     method=models.FileField(null=True,blank=True,verbose_name="方法")
     def tablerow(self):
-        return "%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh)
+        return "%s\t%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh,self.yujifahuo_date)
     def myurls(self):
         url0="<p><a href=/parts/showcontactP?id=%s>包信息</a></p>" %(self.id,)
         url1="<p><a href=/parts/showcontact?id=%s>详细</a></p>" %(self.id,)
