@@ -943,11 +943,12 @@ def update_BothPackItem(request):
         rec1.name=data["name"]
     if data.get("guige")!=None:
         rec1.guige=data["guige"]
-    if data.get("ct")!=None:
-        rec1.ct=data["ct"]
     if data.get("bh")!=None:
         rec1.bh=data["bh"]
     rec1.save()
+    if data.get("ct")!=None:
+        rec.ct=data["ct"]
+        rec.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
     output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
