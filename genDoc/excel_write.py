@@ -9,6 +9,8 @@ import os
 from mysite.settings import MEDIA_ROOT
 import logging
 def getElement(chanels,first):
+    if first=="":
+        return 
     print(first)
     eles=first.split("(")
     ele=eles[0]#2C
