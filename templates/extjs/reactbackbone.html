@@ -1,8 +1,9 @@
-{% extends "base.html" %}
-{% block extrahead %}
+<html><head>
 <style type="text/css">
     .item_delete{margin:1px 20px 1px 20px;}
 </style>
+ <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
+  <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
@@ -11,6 +12,7 @@
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
 <script src="/static/backbone_parts/react.backbone.js"></script>
+<<<<<<< HEAD
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.11.4.custom/jquery-ui.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
  <script type="text/javascript">
@@ -213,6 +215,455 @@
   <script type="text/template" id="login-template">
         <table class="table-condensed">
         <tr hidden="true">
+=======
+<script src="./require.js"></script>
+ 
+<script>
+  // $.ajaxSetup({
+  // data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  // });\
+  var user="{{ user }}";var csrf_token="{{ csrf_token }}";
+  //$("#dropdownMenu1_text").text(user);
+  function nowDate() {
+    var date=new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var s_month=""+month;
+    if (s_month.length<2) s_month="0"+s_month;
+    var day = date.getDate();
+    var s_day=""+day;
+    if (s_day.length<2) s_day="0"+s_day;
+    return year + "-" + s_month + "-" + s_day ;
+}
+function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+{
+    var Days = 30; //此 cookie 将被保存 30 天
+    var exp  = new Date();    //new Date("December 31, 9998");
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)//取cookies函数        
+{
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+     if(arr != null) return unescape(arr[2]); return null;
+
+}
+function delCookie(name)//删除cookie
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+</script>
+<script type="text/babel">
+  import a from './app'
+</script>
+<script type="text/babel">
+var myglobal={start:0,limit:5,total:0,search:""};
+var Item= Backbone.Model.extend({
+  urlRoot : "/rest/Item/",
+  defaults: function() {
+    return {
+      id:undefined,name:'',guige:'',bh:'',danwei:''
+    };
+  }
+});
+var ItemList = Backbone.Collection.extend({
+  model: Item,
+  url : "/rest/Item/",
+  parse: function(data, options) {
+    console.log("parse response");
+    myglobal.total=data.total;
+    return data.data;
+  }
+});
+var ItemViewComponent = React.createBackboneClass({
+  changeOptions: "change", // DEFAULT is "change",
+  handleDelete:function(){
+    var model=this.getModel();
+    var data={}
+    data.id=model.get("id");
+    data= JSON.stringify(data);
+    model.destroy({ data:data,contentType:"application:json"}); //this.props.onItemDelete(this.getModel());
+  },
+  handleEdit:function(){
+    console.log("edit");
+    this.props.onItemEdit(this.getModel());
+  },
+    render: function() {
+        return (
+          // <div>
+          //     <h1>{this.getModel().get("name")}</h1>
+          // </div>
+          <tr><td>{this.getModel().get("id")}</td><td>{this.getModel().get("bh")}</td><td><h5>{this.getModel().get("name")}</h5></td><td><h5>{this.getModel().get("guige")}</h5></td><td>{this.getModel().get("danwei")}</td><td><a className="item_edit" onClick={this.handleEdit}>edit</a><a className="item_delete" onClick={this.handleDelete}>delete</a></td></tr>
+        );
+    }
+});
+var ItemsListViewComponent = React.createBackboneClass({
+    componentDidMount: function() {
+      console.log("ItemsListViewComponent did mount");  
+      var itemsList = this.getCollection();
+      console.log(myglobal);
+      console.log("start="+myglobal.start);
+      var self=this;
+      itemsList.fetch({
+         reset:true,
+         data: { start:myglobal.start,limit:myglobal.limit,query:this.state.search},
+         success:function(data){
+              // console.log(itemsList.length+" items")
+              // console.log(data);
+              // myglobal.total=data.total;
+         },
+        error:function(e){
+          //alert(e);
+          //self.showlogin();
+        }
+      });
+    },
+  showlogin:function(){
+    showLogin();
+  },
+  handleSearch:function(){
+    myglobal.start=0;
+    this.componentDidMount();    
+  },
+  handleSearchChange:function(e){
+     this.setState({search: e.target.value});
+  },    
+  handlePrev:function(){
+    console.log("prev");
+     myglobal.start=myglobal.start-myglobal.limit;
+     if(myglobal.start< 0) myglobal.start=0;
+     this.componentDidMount();
+  },
+  handleNext:function(){
+    console.log("next");
+    myglobal.start=myglobal.start+myglobal.limit;
+    console.log("start="+myglobal.start);
+    if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
+    this.componentDidMount();    
+  },
+  handleItemEdit  :function(data_out){
+    console.log("item_edit in itemlist");
+    console.log(data_out);
+    var model=data_out;
+    var i_Fac=React.createFactory(ItemFormComponent);
+    var iview = i_Fac({onItemSubmit:this.handleItemSubmit, model:model});
+    ReactDOM.render(iview, document.getElementById('item_form'));
+
+    $("#item_form").dialog({
+         modal: true
+         , overlay: {
+             backgroundColor: '#000'
+             , opacity: 0.5
+         }
+         , autoOpen: true, 
+         close: function (event,ui) {
+                //$("#uploadForm").dialog("destroy");
+         }
+    });
+  },
+  handleItemDelete:function(data_out){
+    console.log("item_delete in box");
+    console.log(data_out);
+    //data_out.destroy();
+    var model=data_out;
+    var data={}
+    data.id=data_out.get("id");
+    data= JSON.stringify(data);
+    model.destroy({ data:data,contentType:"application:json"});
+  },
+  handleLoginSubmit: function(data) {
+    console.log("login submit");
+    
+      var self=this;
+        $.ajax({
+          type: 'POST'
+          , url: "/rest/login"
+          , data: data
+          , complete: function () {
+          }
+          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log(errorThrown);
+          }
+          , success: function (data) {
+              //console.log("ajax done");
+              //console.log(data);
+              data=JSON.parse(data);
+              if (data.success) {
+                   user=data.data.name;
+                   csrf_token=getCookie('csrftoken');
+                  $("#login_form").dialog("destroy");
+                  self.componentDidMount();
+              }
+          }
+      });
+  },
+  handleItemSubmit: function(item) {
+    console.log("item submit");
+    console.log(item);
+    var item1=item;
+    item.save(null,{
+        success:function(context, model, resp, options){
+          console.log(options);
+          console.log("save finish");
+          console.log(model.data);
+          context.set(model.data);
+        }
+      });
+  },
+  getInitialState: function() {
+    return {search:""};
+  },
+  render: function() {
+    //this._itemform = null;
+        var self=this;
+        var itemsList = this.getCollection().map(function(item) {
+            return < ItemViewComponent model={item} key={item.get("id")} onItemEdit={self.handleItemEdit}/>;
+        });
+        return (
+          < div>
+        <UserComponent user={user}></UserComponent>
+        < p>
+          < input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
+          < button id="id_bt_search" onClick={this.handleSearch}>search</button>
+        </p>
+          < table className="itemList table-bordered"><tbody>
+      < tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
+        {itemsList}
+      </tbody>
+      </table>
+      <p>
+          <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
+      </p>
+
+      </div>
+        );
+  }
+});
+var showLogin=function(){
+  console.log("login ");
+    
+};
+var ItemFormComponent = React.createBackboneClass({
+  // getInitialState: function() {
+  //   return {name: '', guige: '',bh:'',danwei:''};
+  // },
+  handleNameChange: function(e) {
+    //this.setState({name: e.target.value});
+    this.getModel().set({name:e.target.value})
+  },
+  handleTextChange: function(e) {
+    this.getModel().set({guige: e.target.value});
+  },
+  handleBhChange: function(e) {
+    this.getModel().set({bh: e.target.value});
+  },
+  handleDanweiChange: function(e) {
+    this.getModel().set({danwei: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+
+   //  var name = this.state.name.trim();
+   //  var guige = this.state.guige.trim();
+   //  var bh=this.state.bh.trim();
+   //  var danwei=this.state.danwei.trim();
+   //  if (!guige || !name) {
+   //    return;
+   //  }
+   this.props.onItemSubmit(this.getModel());
+   $("#item_form").dialog("destroy");
+   // this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
+  },
+  render: function() {
+    return (
+      <form className="itemForm" onSubmit={this.handleSubmit}>
+      <table><tbody>
+      <tr>
+              <td>id</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="id"
+                  defaultValue={this.getModel().get("id")}
+                  readonly="true"
+                ></input>
+                </td>
+       </tr>
+      <tr>
+              <td>bh</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="bh"
+                  value={this.getModel().get("bh")}
+                  onChange={this.handleBhChange}
+                ></input>
+                </td>
+       </tr>
+      <tr>
+                <td>name</td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="name"
+                    value={this.getModel().get("name")}
+                    onChange={this.handleNameChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                  <td>guige</td>
+                  <td>
+                  <input
+                    type="text"
+                    placeholder="Say something..."
+                    value={this.getModel().get("guige")}
+                    onChange={this.handleTextChange}
+                  ></input>
+                  </td>
+        </tr>
+        <tr>
+                <td>danwei</td>
+                <td>
+                <input
+                  type="text"
+                  placeholder="Say something..."
+                  value={this.getModel().get("danwei")}
+                  onChange={this.handleDanweiChange}
+                ></input>
+                </td>
+        </tr>
+        </tbody></table>
+        <input type="submit" value="save" />
+      </form>
+    );
+  }
+});
+
+var UserComponent = React.createClass({
+  getInitialState: function(){
+     if(this.props.user=="AnonymousUser"){
+      return {
+        name: user,
+        logined:false,
+      }
+    }
+    else{
+      return {
+        name: user,
+        logined:true,
+      }
+    }
+  },
+  handleLoginSubmit: function(data) {
+    console.log("login submit");
+    
+      var self=this;
+        $.ajax({
+          type: 'POST'
+          , url: "/rest/login"
+          , data: data
+          , complete: function () {
+          }
+          , error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log(errorThrown);
+          }
+          , success: function (data) {
+              //console.log("ajax done");
+              //console.log(data);
+              data=JSON.parse(data);
+              if (data.success) {
+                   user=data.data.name;
+                   csrf_token=getCookie('csrftoken');
+                  $("#login_form").dialog("destroy");
+                  self.setState({name:user,logined:true});
+              }
+          }
+      });
+  },
+  handleLogin:function(e) {
+    var i_Fac=React.createFactory(LoginFormComponent);
+    var iview = i_Fac({onLoginSubmit:this.handleLoginSubmit});
+    ReactDOM.render(iview, document.getElementById('login_form'));
+
+    $("#login_form").dialog({
+         modal: true
+         , overlay: {
+             backgroundColor: '#000'
+             , opacity: 0.5
+         }
+         , autoOpen: true, 
+         close: function (event,ui) {
+                $("#login_form").dialog("destroy");
+         }
+    });
+  },
+  handleLogout:function(e) {
+   var self=this;
+   $.ajax({
+            type: 'POST'
+            , url:"/rest/logout"
+            , complete: function () {
+            }
+            , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //console.log(errorThrown);
+            }
+            , success: function (data) {
+                //console.log("ajax done");
+                //console.log(data);
+                data=JSON.parse(data);
+                //console.log(data);
+                self.setState({name:"AnonymousUser",logined:false});
+            }
+        });
+  },
+  render:function() {
+    return (
+      <div className="dropdown">
+      <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="dropdownMenu1_text">{this.state.name}</span>
+        <span className="caret"> </span>
+      </button>
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li id="li_login" hidden={this.state.logined}><a href="#" id="id_login"  onClick={this.handleLogin}>登录</a></li>
+        <li id="li_logout" hidden={!this.state.logined}><a href="#" id="id_logout" onClick={this.handleLogout}>注销</a></li>
+      </ul>
+    </div>
+    );
+  }
+});
+
+var LoginFormComponent = React.createClass({
+  getInitialState: function(){
+    return {
+      name: "",
+      pwd:""
+    };
+  },
+  handleNameChange:function(e) {
+    this.setState({name: e.target.value});
+  },
+  handlePwdChange:function(e) {
+    this.setState({pwd: e.target.value});
+  },
+
+  handleSubmit:function(e) {
+      e.preventDefault();
+      var data={};
+      data["username"]=this.state.name;
+      data["password"]=this.state.pwd;
+      data["csrfmiddlewaretoken"]={csrf_token};
+      this.props.onLoginSubmit(data);
+  },
+  render:function() {
+    return (
+      <form className="loginForm" onSubmit={this.handleSubmit}>
+      <table className="table-condensed">
+        <tbody>
+        <tr >
                 <td>
                     <label>csrfmiddlewaretoken:</label>
                 </td>
@@ -427,4 +878,3 @@
   </p>
 </script>
 {% endblock %} 
-

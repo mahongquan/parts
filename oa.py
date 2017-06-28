@@ -128,11 +128,11 @@ $(m0).trigger("mouseenter");
 		search.find_element_by_class_name('search_input').send_keys(title)
 		search.find_element_by_class_name('search_btn').click()
 	except	selenium.common.exceptions.ElementNotInteractableException as e:
-		items=search.find_elements_by_class_name("text_overflow")
-		items[1].click()
-		search.find_element_by_class_name('search_input').send_keys(title)
-		search.find_element_by_class_name('search_btn').click()
-		pass
+		# items=search.find_elements_by_class_name("text_overflow")
+		# items[1].click()
+		# search.find_element_by_class_name('search_input').send_keys(title)
+		# search.find_element_by_class_name('search_btn').click()
+		# pass
 
 	return frame
 def newTodo():

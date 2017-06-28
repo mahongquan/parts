@@ -187,7 +187,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         #self.ui.treeView.scrollTo(index)    #定位到当前项
         #self.ui.treeView.resizeColumnToContents(0)
     def export(self):
-        txt="%s\t%s\t%s\t%s\t%s\n" % ("客户名称","地址","仪器型号","仪器编号","合同号")
+        txt="%s\t%s\t%s\t%s\t%s\t%s\n" % ("客户名称","地址","仪器型号","仪器编号","合同号","入库时间")
         for one in self.data:
             txt += one.tablerow()
         mimeData =QtCore.QMimeData()

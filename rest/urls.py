@@ -15,7 +15,10 @@ urlpatterns = [
         url(r'^application', views.application),
 
         url(r'^Item', views.item),
+        url(r'^BothPackItem', views.BothPackItem),
+        url(r'^UsePackEx', views.UsePackEx),
         url(r'^UsePack', views.usepack),
+        url(r'^updateMethod', views.updateMethod),
         url(r'^Contact', views.contact),
         url(r'^PackItem', views.packItem),
         url(r'^Pack', views.pack),

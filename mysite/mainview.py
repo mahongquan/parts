@@ -450,7 +450,14 @@ def getImages(request):
     output["images"]=objs
     return HttpResponse(json.dumps(output, ensure_ascii=False))#,cls=MyEncoder))
 def favicon(request):
-    return HttpResponseRedirect("/static/images/item.png")    
+    return HttpResponseRedirect("/static/images/item.png")   
+def service_worker(request): 
+    filepath = mysite.settings.MEDIA_ROOT 
+    fullfilepath = os.path.join( filepath, "../static/service-worker.js")
+    f = open( fullfilepath, 'r' ) # Writing in binary mode for windows..?
+    data=f.read()
+    f.close( )
+    return HttpResponse(data,content_type="application/javascript")
 def search(request):
     request2=request#Request(request,(JSONParser(),))
     search=request2.GET.get("term",'')
