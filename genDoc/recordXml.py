@@ -78,6 +78,8 @@ def chanelNums(chanels):
     return (cs,ss)
 def getElement(chanels,first):
     print(first)
+    if first=="":
+        return
     eles=first.split("(")
     ele=eles[0]#2C
     if ele[0]=="2":

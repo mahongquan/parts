@@ -943,13 +943,14 @@ def update_BothPackItem(request):
         rec1.name=data["name"]
     if data.get("guige")!=None:
         rec1.guige=data["guige"]
-    if data.get("ct")!=None:
-        rec1.ct=data["ct"]
     if data.get("bh")!=None:
         rec1.bh=data["bh"]
     rec1.save()
+    if data.get("ct")!=None:
+        rec.ct=data["ct"]
+        rec.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
-    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
@@ -1228,37 +1229,47 @@ def readStandardFile(fn,filename):
                 onedan.append(cells)
             else:
                 pass
+    rs=[]
     for one in dan:
-        treatOne(one,filename)   
+        r=treatOne(one,filename)
+        if r!=None: 
+            rs.append(r)
+    return rs
 def treatOne(rows,fn):
+    r=None
     beizhu=rows[1][7]
     if beizhu[:2]=="CS" or beizhu[:2]=="ON":
-        try:
-            d=Pack.objects.get(name=rows[0][1])
-        except ObjectDoesNotExist as e2:
+        name=rows[1][7]+"_"+fn
+        d=Pack.objects.filter(name=name)
+        logging.info(d)
+        if len(d)>0:
+            pass
+        else:
             d=Pack()
-        d.name=rows[1][7]+"_"+fn
-        d.save()
-        n=len(rows)
-        items=rows[4:4+n-4-3]
-        for i in items:
-            #i=DanjuItem()
-            print(i[1],i[2],i[3],i[4],i[5])
-            items=Item.objects.filter(bh=i[1]).all()
-            if len(items)>1:
-                item=items[0]
-            else:
-                item=Item()
-            item.bh=i[1]
-            item.name=str(i[2])+" "+str(i[1])
-            item.guige=i[3]
-            item.danwei=i[4]
-            item.save()
-            di=PackItem()
-            di.pack=d
-            di.item=item
-            di.ct=i[5]
-            di.save()
+            d.name=rows[1][7]+"_"+fn
+            d.save()
+            n=len(rows)
+            items=rows[4:4+n-4-3]
+            for i in items:
+                #i=DanjuItem()
+                print(i[1],i[2],i[3],i[4],i[5])
+                items=Item.objects.filter(bh=i[1]).all()
+                if len(items)>1:
+                    item=items[0]
+                else:
+                    item=Item()
+                item.bh=i[1]
+                item.name=str(i[2])+" "+str(i[1])
+                item.guige=i[3]
+                item.danwei=i[4]
+                item.save()
+                di=PackItem()
+                di.pack=d
+                di.item=item
+                di.ct=i[5]
+                di.save()
+            r={"id":d.id,"name":d.name}
+    return r
 def standard(request):
     # right, so 'file' is the name of the file upload field
     #print request.FILES
@@ -1268,5 +1279,5 @@ def standard(request):
     filename = f.name
     filetype = f.content_type
     packs=readStandardFile(f.read(),filename)
-    res={"success":True, "result":""}
+    res={"success":True, "result":packs}
     return HttpResponse(json.dumps(res, ensure_ascii=False))        
