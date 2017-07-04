@@ -950,7 +950,7 @@ def update_BothPackItem(request):
         rec.ct=data["ct"]
         rec.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
-    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
