@@ -26,6 +26,7 @@ from myutil import MyEncoder
 import traceback
 import sys
 import xlrd
+from django.db import connection,transaction
 def mylistdir(p,f):
     a=os.listdir(p)
     fs=myfind(a,f)
@@ -1281,3 +1282,22 @@ def standard(request):
     packs=readStandardFile(f.read(),filename)
     res={"success":True, "result":packs}
     return HttpResponse(json.dumps(res, ensure_ascii=False))        
+def month12(request):
+    logging.info("chart")
+    end_date=datetime.datetime.now()
+    start_date=datetime.datetime(end_date.year-1,1,1,0,0,0)
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0]+"月")
+        values.append(one[1])
+    res={"success":True, "lbls":lbls,"values":values}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))      
