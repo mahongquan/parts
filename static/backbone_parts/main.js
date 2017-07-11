@@ -373,6 +373,7 @@ function delCookie(name)//删除cookie
       this.listenTo(this.model, 'destroy', this.remove);
     },
     render: function() {
+      console.log("render")
       this.$(".mydate").datepicker("destroy");
       this.$el.html(this.template(this.model.toJSON()));
       this.$(".mydate").datepicker({
@@ -479,7 +480,7 @@ function delCookie(name)//删除cookie
            var usepackListView = new UsepackListView({model:this.model});
            //usepackListView.render();
            usepackListView.$el.dialog({
-                width:500,//height:500,
+                width:"100%",//height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -589,7 +590,7 @@ function delCookie(name)//删除cookie
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.dialog({
-                width:700,//height:800,
+                width:"100%",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -816,7 +817,7 @@ function delCookie(name)//删除cookie
             self.userv= new UserView({model: new User(),app:self});
           self.userv.render();
           self.userv.$el.dialog({
-               width:400,height:250,
+               width:"100%",height:250,
                   modal: true
                   , overlay: {
                       backgroundColor: '#000'
@@ -1064,7 +1065,7 @@ function delCookie(name)//删除cookie
         var self=this;
         this.$el.dialog({
                 title: "导入标样",
-                width:400,//height:800,
+                width:"100%",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1291,7 +1292,7 @@ function delCookie(name)//删除cookie
       //console.log("edit");
       var packitemListView = new PackItemListView({model:this.model});
            packitemListView.$el.dialog({
-                width:800,//height:500,
+                width:"100%",//height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -1476,7 +1477,7 @@ function delCookie(name)//删除cookie
        var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
        packitemedit.$el.dialog({
-              width:300,height:400,
+              width:"100%",height:500,
                 modal: false
                 , overlay: {
                     backgroundColor: '#000'
@@ -1710,7 +1711,7 @@ function delCookie(name)//删除cookie
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:800,height:500,
+                width:"100%",height:500,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1776,7 +1777,7 @@ function delCookie(name)//删除cookie
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:300,//height:800,
+                width:"100%",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1810,7 +1811,7 @@ function delCookie(name)//删除cookie
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:300,//height:800,
+                width:"100%",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'

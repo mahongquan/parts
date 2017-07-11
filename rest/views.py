@@ -397,7 +397,7 @@ def view_contact(request):
     for rec in objs:
         data.append(rec.json())
     logging.info(data)
-    output={"total":total,"data":data,"user":request.user.username }
+    output={"total":total,"data":data,"user":request.user.username}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
     try:
