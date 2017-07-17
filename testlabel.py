@@ -9,10 +9,10 @@ from genDoc.genLabel import genLabel
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from mysite.parts.models import *
-def printAllContact():
-    c=Contact.objects.get(id=188)
+def t():
+    c=Contact.objects.get(id=310)
     data=genLabel(c.yiqixinghao,c.yiqibh,c.channels)
-    f=open("gen.lbl","wb")
+    f=open("gen.lbx","wb")
     f.write(data)
     f.close()
-printAllContact()    
+t()    
