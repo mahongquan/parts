@@ -1301,3 +1301,35 @@ def month12(request):
         values.append(one[1])
     res={"success":True, "lbls":lbls,"values":values}
     return HttpResponse(json.dumps(res, ensure_ascii=False))      
+def copypack(request):
+    logging.info(request.POST)
+    oldid=int(request.POST.get('oldid'))
+    newname=request.POST.get('newname')
+    logging.info(oldid)
+    logging.info(newname)
+    old=None
+    new=None
+    try:
+        old=Pack.objects.get(id=oldid) 
+    except ObjectDoesNotExist as e:
+        pass
+    try:
+        new=Pack.objects.get(name=newname) 
+    except ObjectDoesNotExist as e:
+        new=Pack()
+        new.name=newname
+        new.save()
+    #copy items
+    content=""
+    if old==None:
+        content="old is None"
+    else:
+        for pi in old.packitem_set.all():
+            n=PackItem()
+            n.pack=new
+            n.item=pi.item
+            n.ct=pi.ct
+            n.save()
+        content="ok"
+    res={"success":True, "message":content}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))   

@@ -1,7 +1,7 @@
 from django.conf.urls import  include, url
 from rest import views
 urlpatterns = [
-
+        url(r'^copypack/',views.copypack),
         url(r'^month12/',views.month12),
         url(r'^upload', views.upload),
         url(r'^check', views.check),
