@@ -45,5 +45,7 @@ class MyEncoder(json.JSONEncoder):
             #logging.info(dir(obj))
             return obj.name
         if isinstance(obj,mysite.parts.models.Contact):
-            return obj.hetongbh        
+            return obj.json() 
+        if isinstance(obj,mysite.parts.models.Item):
+            return obj.json() 
         return json.JSONEncoder.default(self, obj)

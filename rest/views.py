@@ -1333,3 +1333,20 @@ def copypack(request):
         content="ok"
     res={"success":True, "message":content}
     return HttpResponse(json.dumps(res, ensure_ascii=False))   
+def showcontact(request):
+    #print request.GET
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    dic={}
+    dic["contact"]=c
+    (items,items2)=c.huizong()
+    dic["items"]=items
+    if len(items2)==0:
+        items2=None
+    dic["items2"]=items2
+    totalct=0
+    for i in items:
+        totalct +=i.ct
+    dic["totalct"]=totalct
+    dic["totalid"]=len(items)
+    return HttpResponse(json.dumps(dic, ensure_ascii=False,cls=MyEncoder))     
