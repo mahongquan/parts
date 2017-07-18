@@ -1,8 +1,8 @@
 from django.conf.urls import  include, url
-from django.contrib import admin
+#from django.contrib import admin
 from mysite import settings
 from mysite import mainview
-admin.autodiscover()
+#admin.autodiscover()
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from ajax_select import urls as ajax_select_urls
@@ -27,14 +27,14 @@ urlpatterns = [
     url(r'^fetch_brands.php$', mainview.fetch_brands),
     url(r'^fetch_products.php$', mainview.fetch_products),
     url(r'^search.php$', mainview.search),
-   url(r'^welcome$', mainview.welcome),
+    url(r'^welcome$', mainview.welcome),
     url(r'^extjs/',include('extjs.urls')),
     url(r'^rest/',include('rest.urls')),   
     url(r'^parts/',include('mysite.parts.urls')),   
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
-    url(r'^admin/lookups/', include(ajax_select_urls)),
-     url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/lookups/', include(ajax_select_urls)),
+    #url(r'^admin/', include(admin.site.urls)),
     url(r'^explore/',include('explore.urls')), 
     url(r'^accounts/login/$', mainview.loginpage),
     url(r'^login/',mainview.mylogin),  

@@ -385,7 +385,7 @@ def fetch_brands(request):
     output=[b1,b2,b3]
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 def index(request):
-    r=HttpResponseRedirect("/rest/backbone")
+    r=HttpResponseRedirect("/static/index.html")
     return(r)
 def welcome(request):
     #print "welcome"
