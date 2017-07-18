@@ -299,7 +299,7 @@ def view_item(request):
         objs = Item.objects.all().order_by('-id')[start:start+limit]
     data=[]
     for rec in objs:
-        data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei})
+        data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei,"image":rec.image})
     logging.info(data)
     out={"total":total,"data":data}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
