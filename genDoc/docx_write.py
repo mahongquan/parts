@@ -101,7 +101,8 @@ def genPack(contact,fn):
         columns= tbl.add_row().cells
         setCell(columns[0],item.bh)
         setCell(columns[1],item.name)
-        setCell(columns[2],item.guige)
+        if item.guige!=None:
+            setCell(columns[2],item.guige)
         setCell(columns[3],str(item.ct)+item.danwei)
         if item.beizhu!=None:
             setCell(columns[5],item.beizhu)
