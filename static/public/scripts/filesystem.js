@@ -129,7 +129,7 @@ function buildGetParentUrl(path) {
 }
 
 function buildRenameUrl(path, name) {
-        return  "/fs/rename?path="+path+"&name="+name;
+        return  "/fs/rename2?path="+path+"&name="+name;
 }
 
 function buildRemoveUrl(path) {
@@ -144,7 +144,7 @@ function buildUploadUrl(path, name) {
 }
 
 function buildMkdirUrl(path, name) {
-        return "mkdir?path="+path+"&name="+name;
+        return "/fs/mkdir?path="+path+"&name="+name;
 }
 
 function hideLogin() {

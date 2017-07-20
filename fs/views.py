@@ -2,8 +2,7 @@ from django.shortcuts import render
 import logging
 from django.http import HttpResponse,HttpResponseRedirect
 import mysite.settings
-import json
-import os
+import os, os.path, json, shutil
 app_root=os.path.normpath(mysite.settings.STATICFILES_DIRS[0])
 def toPath(p):
     return {"path": os.path.relpath(p, app_root),
@@ -40,30 +39,30 @@ def parent(request):
 def content(request):
 	p = toWebPath(request.GET["path"])
 	return HttpResponseRedirect(p)
-def remove():
+def remove(request):
     p = toLocalPath(request.GET["path"])
     if os.path.isdir(p):
         shutil.rmtree(p)
     else:
         os.remove(p)
     return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) )
-def rename():
-    p = toLocalPath(request.GET["path"])
-    
-    name = request.GET["name"]
-    parent = os.path.dirname(p)
-    updated = os.path.join(parent, name)
-    os.rename(p, updated)
-    return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
-def upload_file():
+def rename2(request):
+	logging.info("rename==============")
+	p = toLocalPath(request.GET["path"])
+	name = request.GET["name"]
+	parent = os.path.dirname(p)
+	updated = os.path.join(parent, name)
+	os.rename(p, updated)
+	return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
+def upload(request):
     p = toLocalPath(request.GET["path"])
     name = request.GET["name"]
     uploaded = request.files["file"]
     uploadedPath = os.path.join(path, name)
     uploaded.save(uploadedPath)
     return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
-def mkdir():
+def mkdir(request):
     p = toLocalPath(request.GET["path"])
     name = request.GET["name"]
-    os.mkdir(os.path.join(path, name))
+    os.mkdir(os.path.join(p, name))
     return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
