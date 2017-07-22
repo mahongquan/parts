@@ -3,7 +3,7 @@ import logging
 from django.http import HttpResponse,HttpResponseRedirect
 import mysite.settings
 import os, os.path, json, shutil
-app_root=os.path.normpath(mysite.settings.STATICFILES_DIRS[0])
+app_root=os.path.normpath(mysite.settings.MEDIA_ROOT)
 def toPath(p):
     return {"path": os.path.relpath(p, app_root),
             "name": os.path.basename(p),
@@ -18,15 +18,19 @@ def toLocalPath(path):
 def toWebPath(path):
     return "/static/"+path
 def children(request):
-	logging.info(request.GET)
-	p = toLocalPath(request.GET["path"])
-	children = map(lambda x : os.path.join(p, x), os.listdir(p))
-	children = filter(lambda x : os.path.isfile(x) or os.path.isdir(x), children) 
-	children = map(lambda x : toPath(x), children)
-	print(p)
-	print(children,dir(children))
-	dic={"path": p,"children": list(children)}
-	return HttpResponse(json.dumps(dic, ensure_ascii=False)) 
+    logging.info(request.GET)
+    p = toLocalPath(request.GET["path"])
+    if os.path.exists(p):
+        pass
+    else:
+        p= toLocalPath(".")
+    children = map(lambda x : os.path.join(p, x), os.listdir(p))
+    children = filter(lambda x : os.path.isfile(x) or os.path.isdir(x), children) 
+    children = map(lambda x : toPath(x), children)
+    print(p)
+    print(children,dir(children))
+    dic={"path": p,"children": list(children)}
+    return HttpResponse(json.dumps(dic, ensure_ascii=False)) 
 def parent(request):
 	logging.info(request.GET)
 	p = toLocalPath(request.GET["path"])
@@ -56,11 +60,20 @@ def rename2(request):
 	return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
 def upload(request):
     p = toLocalPath(request.GET["path"])
+
     name = request.GET["name"]
-    uploaded = request.files["file"]
-    uploadedPath = os.path.join(path, name)
-    uploaded.save(uploadedPath)
-    return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
+    pweb = toWebPath(request.GET["path"])+"/"+name
+    uploaded = request.FILES[ 'file' ]
+    data=uploaded.read()
+    uploadedPath = os.path.join(p, name)
+    try:
+        f = open(uploadedPath, 'wb' ) # Writing in binary mode for windows..?
+        f.write( data )
+        f.close( )
+        res={"status":"success", "files":"./"+pweb}
+    except e:
+        res={"status":"fail", "files":str(e)}
+    return HttpResponse(	json.dumps(res, ensure_ascii=False) ) 
 def mkdir(request):
     p = toLocalPath(request.GET["path"])
     name = request.GET["name"]

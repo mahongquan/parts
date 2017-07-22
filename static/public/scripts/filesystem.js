@@ -340,6 +340,7 @@ var Browser = React.createClass({
             this.loadFilesFromServer(path);
     },
     getContent: function(path) {
+            console.log("getContent");
             var url = buildGetContentUrl(path);
             location.href=url;
     },
@@ -360,19 +361,34 @@ var Browser = React.createClass({
                     }.bind(this)
             });
     },
-
+    onClick:function(f){
+        console.log("onClick");
+        if (f.isdir){
+          this.updatePath(f.path);
+        }
+        else{
+           this.getContent(f.path);
+        }
+    },
+    mapfunc:function(f, idx){
+      var id  =  File.id(f.name);
+      return (<File id={id} gridView={this.state.gridView} onClick={this.onClick} 
+      path={f.path} name={f.name} isdir={f.isdir} size={f.size} time={f.time} browser={this}
+      />)
+    }
     render: function() {
-            var files = this.state.files.map(function(f) {
-                    var id  =  File.id(f.name);
-                    var onClick = f.isdir ? function(event){
-                            this.updatePath(f.path);
-                    }.bind(this) :
-                            function(event) {
-                                    this.getContent(f.path);
-                            }.bind(this)
-                            return (<File id={id} gridView={this.state.gridView} onClick={onClick} path={f.path} name={f.name} isdir={f.isdir} size={f.size} time={f.time} browser={this}/>)
-            }.bind(this));
+            // var files = this.state.files.map(function(f) {
+            //         var id  =  File.id(f.name);
+            //         var onClick = f.isdir ? function(event){
+            //                 this.updatePath(f.path);
+            //         }.bind(this) :
+            //                 function(event) {
+            //                         this.getContent(f.path);
+            //                 }.bind(this)
+            //                 return (<File id={id} gridView={this.state.gridView} onClick={onClick} path={f.path} name={f.name} isdir={f.isdir} size={f.size} time={f.time} browser={this}/>)
+            // }.bind(this));
 
+    const files = this.state.files.map(this.mapfunc);
             var gridGlyph = "glyphicon glyphicon-th-large";
             var listGlyph = "glyphicon glyphicon-list";
             var element = document.getElementById("altViewSpan");
