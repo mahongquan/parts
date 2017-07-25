@@ -1290,13 +1290,17 @@ def standard(request):
     return HttpResponse(json.dumps(res, ensure_ascii=False))        
 def month12(request):
     logging.info("chart")
+    baoxiang=request.GET.get("baoxiang")
     end_date=datetime.datetime.now()
     start_date=datetime.datetime(end_date.year-1,1,1,0,0,0)
     cursor = connection.cursor()            #获得一个游标(cursor)对象
     #更新操作
     start_date_s=start_date.strftime("%Y-%m-%d")
     end_date_s=end_date.strftime("%Y-%m-%d")
-    cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    if baoxiang==None:
+        cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"
+    else:
+        cmd="select strftime('%Y-%m',tiaoshi_date) as month,count(id) from parts_contact  where baoxiang like '"+baoxiang+"'  and tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by month"            
     logging.info(cmd)
     cursor.execute(cmd)    #执行sql语句
     raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()

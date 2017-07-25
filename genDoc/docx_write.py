@@ -99,11 +99,13 @@ def genPack(contact,fn):
     (items,items2)=contact.huizong()
     for item in items:
         columns= tbl.add_row().cells
-        setCell(columns[0],item.bh)
+        if item.bh!=None:
+            setCell(columns[0],item.bh)
         setCell(columns[1],item.name)
         if item.guige!=None:
             setCell(columns[2],item.guige)
-        setCell(columns[3],str(item.ct)+item.danwei)
+        if item.danwei!=None:
+            setCell(columns[3],str(item.ct)+item.danwei)
         if item.beizhu!=None:
             setCell(columns[5],item.beizhu)
         else:
@@ -136,9 +138,11 @@ def genPack(contact,fn):
         for item in items2:
             row_cells = table.add_row().cells
             borderCells(row_cells)
-            row_cells[0].text = item.bh
+            if item.bh!=None:
+                row_cells[0].text = item.bh
             row_cells[1].text = item.name
-            row_cells[2].text = item.guige
+            if item.guige!=None:
+                row_cells[2].text = item.guige
             row_cells[3].text = str(item.ct)+item.danwei
     s=BytesIO()
     document.save(s)
