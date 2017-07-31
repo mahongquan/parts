@@ -5,6 +5,20 @@ if(host==undefined )
     var host="http://127.0.0.1:8000";   
 }
 $(function(){
+$(document).on('show.bs.modal', function (event) {
+    if (!event.relatedTarget) {
+        //$('.modal').not(event.target).modal('hide');
+    };
+    if ($(event.relatedTarget).parents('.modal').length > 0) {
+        //$(event.relatedTarget).parents('.modal').modal('hide');
+    };
+});
+
+$(document).on('shown.bs.modal', function (event) {
+    if ($('body').hasClass('modal-open') == false) {
+        $('body').addClass('modal-open');
+    };
+});
         var availableTags = [
           "CS-1011C",
           "CS-2800",
@@ -18,7 +32,7 @@ $(function(){
           "ON-4000",
           "ONH-3000"
         ];
-        $('#search').typeahead({source: availableTags})
+        
         var availableTags_2 = [
           "1O(低氧)",
           "1O(高氧)",
@@ -299,15 +313,18 @@ function delCookie(name)//删除cookie
       this.parentview=arguments[0].parentview;
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
-      this.$("channels_new").typeahead({ 
-            source:  availableTags_2,
-            autoSelect: true
-        });
       },
     render: function() {
       console.log("render")
       this.$(".mydate").datepicker("destroy");
       this.$el.html(this.template(this.model.toJSON()));
+
+      this.$("#channels").typeahead('destroy')
+      this.$("#channels").typeahead({source: availableTags_2});
+
+      this.$("#yiqixinghao").typeahead('destroy')
+      this.$("#yiqixinghao").typeahead({source: availableTags});
+
       this.$(".mydate").datepicker({
             dateFormat: 'yy-mm-dd',
             numberOfMonths:1,//显示几个月
@@ -423,35 +440,36 @@ function delCookie(name)//删除cookie
                    $(this).dialog("destroy");
                 }
            });
-           usepackListView.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    usepackListView.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            };
+           usepackListView.$("#auto_pack1").typeahead({});
+           // usepackListView.$("#auto_pack1").autocomplete({
+           //      minLength: 1
+           //      , focus: function (event, ui) {
+           //          //$( "#auto_pack1" ).val( ui.item.value);
+           //          return false;
+           //      }
+           //      , select: function (event, ui) {
+           //          usepackListView.addrow(ui.item.pk, ui.item.value);
+           //          return false;
+           //      }
+           //      , source: function (request, response) {
+           //          var term = request.term;
+           //          if (term in cache) {
+           //              data = cache[term];
+           //              response(data);
+           //              return;
+           //          }
+           //          $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+           //              cache[term] = data;
+           //              response(data);
+           //          }).fail(function() {
+           //            alert( "error" );
+           //          });
+           //      }
+           //  }).autocomplete("instance")._renderItem = function (ul, item) {
+           //      return $("<li>")
+           //          .append("<a>" + item.pk + "_" + item.value + "</a>")
+           //          .appendTo(ul);
+           //  };
     },
     edit:function(){
         //console.log("edit");
@@ -471,19 +489,7 @@ function delCookie(name)//删除cookie
     delete:function(){
           //delete-template
            var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
-           deleteview.$el.dialog({
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                close: function (event,ui) {
-                       $(this).dialog("destroy");
-                }
-
-           });
+           deleteview.showdialog();
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -498,12 +504,13 @@ function delCookie(name)//删除cookie
 
 ////////////////////////////////////////////////////////////////////////////
 var ContactEditView3 = Backbone.View.extend({
-    tagName:  "div",
+    el: $("#contact_edit"),
     template: _.template($('#contact-edit2-template').html()),
     initialize: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      //this.$el.html(this.template(this.model.toJSON()));
       this.cev=new ContactEditView({model:this.model,parentview:this});
       var v=this.cev.render().el;
+      this.$("#id_contact_edit").empty();
       this.$("#id_contact_edit").append(v);
       this.pev=new UsepackListView({model:this.model});
       var v=this.pev.render().el;
@@ -515,84 +522,64 @@ var ContactEditView3 = Backbone.View.extend({
       {
         this.$("#id_usepack_edit").attr("hidden",false);   
       }
+      this.$("#id_usepack_edit").empty();
       this.$("#id_usepack_edit").append(v);
     },
     showdialog:function(){
         this.render();//must call because editview has no element now;
+        $("#contact_edit").modal("show");
         var self=this;
-        this.$el.dialog({
-                width:"100%",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                  //console.log("dialog open function");
-                  //$(ui).find('.mydate').datepicker({
-                    //  $(".mydate").datepicker({
-                    //       dateFormat: 'yy-mm-dd',
-                    //       numberOfMonths:1,//显示几个月
-                    //       showButtonPanel:true,//是否显示按钮面板
-                    //       clearText:"清除",//清除日期的按钮名称
-                    //       closeText:"关闭",//关闭选择框的按钮名称
-                    //       yearSuffix: '年', //年的后缀
-                    //       showMonthAfterYear:true,//是否把月放在年的后面
-                    //       //defaultDate:'2011-03-10',//默认日期
-                    //       //minDate:'2011-03-05',//最小日期
-                    //       //maxDate:'2011-03-20',//最大日期
-                    //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-                    //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-                    //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-                    //       dayNamesMin: ['日','一','二','三','四','五','六'],
-                    // });
-                 },
-               close: function (event,ui) {
-                //console.log("dialog close function");
-                   //$(ui).find('.mydate').datepicker("destroy");
-                   //$('.mydate').datepicker("destroy");
-                   $(this).dialog("destroy");
-               }
-       });
-        this.cev.$("#yiqixinghao" ).autocomplete({
-          minLength: 1,
-          source: availableTags
-        });
-        this.cev.$("#channels" ).autocomplete({
-          minLength: 1,
-          source: availableTags_2
-        });
-      this.pev.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    self.pev.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
+        this.pev.$("#auto_pack1").typeahead("destroy");
+        this.pev.$("#auto_pack1").typeahead({
+          source: function (query, process) {
+                    if (query in cache) {
+                         data = cache[term];
+                         process(data);
+                         return;
+                     }
+                    var request={search:query}
+                    $.getJSON(host+"/rest/Pack", request, function (data, status, xhr) {
+                        cache[query] = data.data;
+                        process(data.data);
                     }).fail(function() {
                       alert( "error" );
                     });
+                },
+                items: 8,
+                afterSelect: function (item) {
+                   self.pev.addrow(item.id, item.name);
+                   console.log(item);//打印对应的id
                 }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            }; 
+              });
+      // this.pev.$("#auto_pack1").autocomplete({
+      //           minLength: 1
+      //           , focus: function (event, ui) {
+      //               //$( "#auto_pack1" ).val( ui.item.value);
+      //               return false;
+      //           }
+      //           , select: function (event, ui) {
+      //               self.pev.addrow(ui.item.pk, ui.item.value);
+      //               return false;
+      //           }
+      //           , source: function (request, response) {
+      //               var term = request.term;
+      //               if (term in cache) {
+      //                   data = cache[term];
+      //                   response(data);
+      //                   return;
+      //               }
+      //               $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+      //                   cache[term] = data;
+      //                   response(data);
+      //               }).fail(function() {
+      //                 alert( "error" );
+      //               });
+      //           }
+      //       }).autocomplete("instance")._renderItem = function (ul, item) {
+      //           return $("<li>")
+      //               .append("<a>" + item.pk + "_" + item.value + "</a>")
+      //               .appendTo(ul);
+      //       }; 
 
     },
     changeModel:function(model){
@@ -616,135 +603,134 @@ var ContactEditView3 = Backbone.View.extend({
       // }
     },
     render: function() {
-      
       return this;
     },
   });
 ///////////////////////
 ///////////////////////////
-  var ContactEditView2 = Backbone.View.extend({
-    tagName:  "div",
-    template: _.template($('#contact-edit2-template').html()),
-    initialize: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      this.cev=new ContactEditView({model:this.model,parentview:this});
-      var v=this.cev.render().el;
-      this.$("#id_contact_edit").append(v);
-      this.pev=new UsepackListView({model:this.model});
-      var v=this.pev.render().el;
-      if(this.model.get("id")==undefined)
-      {
-        this.$("#id_usepack_edit").attr("hidden",true);  
-      }
-      else
-      {
-        this.$("#id_usepack_edit").attr("hidden",false);   
-      }
-      this.$("#id_usepack_edit").append(v);
-    },
-    showdialog:function(){
-        this.render();//must call because editview has no element now;
-        var self=this;
-        this.$el.dialog({
-                width:"100%",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                  //console.log("dialog open function");
-                  //$(ui).find('.mydate').datepicker({
-                    //  $(".mydate").datepicker({
-                    //       dateFormat: 'yy-mm-dd',
-                    //       numberOfMonths:1,//显示几个月
-                    //       showButtonPanel:true,//是否显示按钮面板
-                    //       clearText:"清除",//清除日期的按钮名称
-                    //       closeText:"关闭",//关闭选择框的按钮名称
-                    //       yearSuffix: '年', //年的后缀
-                    //       showMonthAfterYear:true,//是否把月放在年的后面
-                    //       //defaultDate:'2011-03-10',//默认日期
-                    //       //minDate:'2011-03-05',//最小日期
-                    //       //maxDate:'2011-03-20',//最大日期
-                    //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-                    //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-                    //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-                    //       dayNamesMin: ['日','一','二','三','四','五','六'],
-                    // });
-                 },
-               close: function (event,ui) {
-                //console.log("dialog close function");
-                   //$(ui).find('.mydate').datepicker("destroy");
-                   //$('.mydate').datepicker("destroy");
-                   $(this).dialog("destroy");
-               }
-       });
-        this.cev.$("#yiqixinghao" ).autocomplete({
-          minLength: 1,
-          source: availableTags
-        });
-        this.cev.$("#channels" ).autocomplete({
-          minLength: 1,
-          source: availableTags_2
-        });
-      this.pev.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    self.pev.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            }; 
+  // var ContactEditView2 = Backbone.View.extend({
+  //   tagName:  "div",
+  //   template: _.template($('#contact-edit2-template').html()),
+  //   initialize: function() {
+  //     this.$el.html(this.template(this.model.toJSON()));
+  //     this.cev=new ContactEditView({model:this.model,parentview:this});
+  //     var v=this.cev.render().el;
+  //     this.$("#id_contact_edit").append(v);
+  //     this.pev=new UsepackListView({model:this.model});
+  //     var v=this.pev.render().el;
+  //     if(this.model.get("id")==undefined)
+  //     {
+  //       this.$("#id_usepack_edit").attr("hidden",true);  
+  //     }
+  //     else
+  //     {
+  //       this.$("#id_usepack_edit").attr("hidden",false);   
+  //     }
+  //     this.$("#id_usepack_edit").append(v);
+  //   },
+  //   showdialog:function(){
+  //       this.render();//must call because editview has no element now;
+  //       var self=this;
+  //       this.$el.dialog({
+  //               width:"100%",//height:800,
+  //               modal: false
+  //               , overlay: {
+  //                   //backgroundColor: '#0F0'
+  //                   //, 
+  //                   opacity: 0.5
+  //               }
+  //               , autoOpen: true,
+  //              open: function (event, ui) {
+  //                 //console.log("dialog open function");
+  //                 //$(ui).find('.mydate').datepicker({
+  //                   //  $(".mydate").datepicker({
+  //                   //       dateFormat: 'yy-mm-dd',
+  //                   //       numberOfMonths:1,//显示几个月
+  //                   //       showButtonPanel:true,//是否显示按钮面板
+  //                   //       clearText:"清除",//清除日期的按钮名称
+  //                   //       closeText:"关闭",//关闭选择框的按钮名称
+  //                   //       yearSuffix: '年', //年的后缀
+  //                   //       showMonthAfterYear:true,//是否把月放在年的后面
+  //                   //       //defaultDate:'2011-03-10',//默认日期
+  //                   //       //minDate:'2011-03-05',//最小日期
+  //                   //       //maxDate:'2011-03-20',//最大日期
+  //                   //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+  //                   //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+  //                   //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+  //                   //       dayNamesMin: ['日','一','二','三','四','五','六'],
+  //                   // });
+  //                },
+  //              close: function (event,ui) {
+  //               //console.log("dialog close function");
+  //                  //$(ui).find('.mydate').datepicker("destroy");
+  //                  //$('.mydate').datepicker("destroy");
+  //                  $(this).dialog("destroy");
+  //              }
+  //      });
+  //       this.cev.$("#yiqixinghao" ).autocomplete({
+  //         minLength: 1,
+  //         source: availableTags
+  //       });
+  //       this.cev.$("#channels" ).autocomplete({
+  //         minLength: 1,
+  //         source: availableTags_2
+  //       });
+  //     this.pev.$("#auto_pack1").autocomplete({
+  //               minLength: 1
+  //               , focus: function (event, ui) {
+  //                   //$( "#auto_pack1" ).val( ui.item.value);
+  //                   return false;
+  //               }
+  //               , select: function (event, ui) {
+  //                   self.pev.addrow(ui.item.pk, ui.item.value);
+  //                   return false;
+  //               }
+  //               , source: function (request, response) {
+  //                   var term = request.term;
+  //                   if (term in cache) {
+  //                       data = cache[term];
+  //                       response(data);
+  //                       return;
+  //                   }
+  //                   $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+  //                       cache[term] = data;
+  //                       response(data);
+  //                   }).fail(function() {
+  //                     alert( "error" );
+  //                   });
+  //               }
+  //           }).autocomplete("instance")._renderItem = function (ul, item) {
+  //               return $("<li>")
+  //                   .append("<a>" + item.pk + "_" + item.value + "</a>")
+  //                   .appendTo(ul);
+  //           }; 
 
-    },
-    changeModel:function(model){
-      console.log("changeModel=========================");
-      console.log(this.model.get("id"));
-      console.log(model.get("id"));
-      // if (this.model.get("id")!=model.get("id"))
-      // {
-        this.model=model
-        this.pev.model=this.model;
-        this.pev.render();
-        this.pev.mysetdata();//refresh data
-        if(this.model.get("id")==undefined)
-        {
-          this.$("#id_usepack_edit").attr("hidden",true);  
-        }
-        else
-        {
-          this.$("#id_usepack_edit").attr("hidden",false);   
-        }
-      // }
-    },
-    render: function() {
+  //   },
+  //   changeModel:function(model){
+  //     console.log("changeModel=========================");
+  //     console.log(this.model.get("id"));
+  //     console.log(model.get("id"));
+  //     // if (this.model.get("id")!=model.get("id"))
+  //     // {
+  //       this.model=model
+  //       this.pev.model=this.model;
+  //       this.pev.render();
+  //       this.pev.mysetdata();//refresh data
+  //       if(this.model.get("id")==undefined)
+  //       {
+  //         this.$("#id_usepack_edit").attr("hidden",true);  
+  //       }
+  //       else
+  //       {
+  //         this.$("#id_usepack_edit").attr("hidden",false);   
+  //       }
+  //     // }
+  //   },
+  //   render: function() {
       
-      return this;
-    },
-  });
+  //     return this;
+  //   },
+  // });
 ////////////////////////////////////////////////////////////////////////////
   var AppView = Backbone.View.extend({
      el: $("#todoapp"),
@@ -1212,11 +1198,14 @@ var ContactEditView3 = Backbone.View.extend({
   });  
 /////////////////////////////////////////////////////////////////////////////
   var DeleteView = Backbone.View.extend({
-    tagName:  "div",
-    template: _.template($('#delete-template').html()),
+    el: $("#dlg_delete"),
     events: {
-      "click #id_ok" : "ok",
-      "click #id_cancel" : "cancel"
+      "click #delete_ok" : "ok",
+      "click #delete_cancel" : "cancel"
+    },
+    showdialog:function(){
+      this.render();
+      $("#dlg_delete").modal("show");
     },
     initialize: function() {
       //console.log(arguments);
@@ -1224,20 +1213,20 @@ var ContactEditView3 = Backbone.View.extend({
       this.obj=arguments[0].obj;
     },
     render: function() {
-      this.$el.html(this.template());
       return this;
     },
     cancel:function(){
       //console.log("cancel");
-      this.$el.dialog('close');
+      //this.$el.dialog('close');
+      $("#dlg_delete").modal("hide");
     },
     ok:function(){
-      //console.log("ok");
+      console.log("ok");
       //var contactlistview=this.model;//ture object is view
       //contactlistview.true_delete();
       //this.callback();
       this.callback.apply(this.obj, []);
-      this.$el.dialog("close");
+      $("#dlg_delete").modal("hide");
     }
   });  
   /////////////////////////////////////////////////////////usepackListView
@@ -1400,19 +1389,7 @@ var ContactEditView3 = Backbone.View.extend({
     },
     delete:function(){
       var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
-           deleteview.$el.dialog({
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                            close: function (event,ui) {
-                   $(this).dialog("destroy");
-            }
-
-           });
+      deleteview.showdialog();
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);

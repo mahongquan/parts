@@ -16,6 +16,7 @@
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
     .newClass { background-color:#8888ff;}
+
   </style>
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
@@ -33,7 +34,44 @@
 {% block content %}
 
   <div id="todoapp">
-  <input type="text" class="span3" id="search" data-provide="typeahead" data-items="4" />
+ <div class="modal fade" id="dlg_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">标题</h4>
+                </div>
+                <div class="modal-body">  
+            <table >
+              <tr>
+                    <td>是否确定?</td>
+              </tr>
+              <tr>
+                    <td>
+                        <button id="delete_ok">确定</button>
+                    </td>
+                    <td>
+                        <button id="delete_cancel">取消</button>
+                    </td>
+              </tr>
+            </table>
+            </div>
+            </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+</div>  
+<div class="modal fade" id="contact_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">标题</h4>
+            </div>
+            <div class="modal-body">  
+            <div id="id_contact_edit"></div>
+            <div id="id_usepack_edit"></div></div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
     <div>
     <table>
     <tr>
@@ -156,15 +194,14 @@
                     通道配置:
                 </td>
                 <td>
-                    <input type="text" id="channels" name="channels" value="<%- channels %>">
-                    <input type="text" id="channels_new" name="channels" value="<%- channels %>" data-provide="typeahead">
+                    <input type="text" id="channels"  value="<%- channels %>" data-provide="typeahead" data-items="4" />  
                 </td>
             </tr><tr>
                 <td>
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <input type="text" id="yiqixinghao" name="yiqixinghao" value="<%- yiqixinghao %>">
+                <input type="text" id="yiqixinghao"  value="<%- yiqixinghao %>" data-provide="typeahead" data-items="3" />  
                 </td>
   <!--           </tr><tr> -->
                 <td>
@@ -254,21 +291,6 @@
         </table>
         <button id="bt_login">提交</button>
   </script>
-  <script type="text/template" id="delete-template">
-        <table >
-          <tr>
-                <td>是否确定?</td>
-          </tr>
-          <tr>
-                <td>
-                    <button id="id_ok">确定</button>
-                </td>
-                <td>
-                    <button id="id_cancel">取消</button>
-                </td>
-          </tr>
-        </table>
-  </script>
   <script type="text/template" id="usepack-list-template">
   <div >
       <!-- div id="contact-info">
@@ -287,7 +309,10 @@
       </tbody>
       </table>
       <div style="padding: 5px 5px 50px 5px;min-height:350px">  <!-- leave margin to show autocomplete items -->
-      <p><input id="auto_pack1" placeholder="输入包" style="border:solid #265a88"><button  id="id_bibei_usepack">必备</button></p>
+      <p>
+      <!-- input id="auto_pack1" placeholder="输入包" style="border:solid #265a88" -->
+      <input type="text" id="auto_pack1"  placeholder="输入包"  style="border:solid #265a88" data-provide="typeahead" data-items="5" />  
+      <button  id="id_bibei_usepack">必备</button></p>
       <p>新包名称：<input id="new_pack1"  placeholder="新包" value="<%- hetongbh %>_选配"><button class="btn btn-info" id="id_new_usepack">新包</button></p>
       </div>
   </div>
