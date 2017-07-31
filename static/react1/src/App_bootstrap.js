@@ -20,6 +20,7 @@ class App extends Component {
   mystate = {
     start:0,
     limit:10,
+    total:0,
     baoxiang:"",
     logined: false,
     search:""
@@ -45,13 +46,13 @@ class App extends Component {
         if(user===undefined){
           user="AnonymousUser"
         }
+        this.mystate.total=contacts.total;//because async ,mystate set must before state;
         this.setState({
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total:contacts.total,
           start:this.mystate.start
         });
-        this.mystate.total=contacts.total;
     });
   };
   handleContactChange = (idx,contact) => {
@@ -169,6 +170,7 @@ class App extends Component {
     this.refs.contactedit.open2(idx);
   }
   render() {
+    console.log("render=========================");
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
@@ -199,6 +201,30 @@ class App extends Component {
         </td>
       </tr>
     ));
+    var hasprev=true;
+    var hasnext=true;
+    let prev;
+    let next;
+    console.log(this.mystate);
+    console.log(this.state);
+    if(this.state.start===0){
+      hasprev=false;
+    }
+    if(this.state.start+this.state.limit>=this.state.total){
+      hasnext=false;
+    }
+    if (hasprev){
+      prev=(<a onClick={this.handlePrev}>前一页</a>);
+    }
+    else{
+      prev=null;
+    }
+    if(hasnext){
+      next=(<a onClick={this.handleNext}>后一页</a>);
+    }
+    else{
+      next=null;
+    }
     return (
     <div id="todoapp" className="table-responsive">
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
@@ -253,10 +279,8 @@ class App extends Component {
  </table>
 <table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
-</table>
-      <a onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}/{this.state.total}</label>
-      <a onClick={this.handleNext}>后一页</a>
+</table>{prev}
+<label id="page">{this.state.start+1}..{this.state.total}</label>{next}
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
   </div>
