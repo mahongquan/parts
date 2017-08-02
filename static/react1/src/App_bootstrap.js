@@ -194,9 +194,10 @@ class App extends Component {
          <DlgWait contact_id={contact.id} title="全部文件" />
          <DlgCheck contact_id={contact.id} title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
- {       
-  //<DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
- }
+    
+    { 
+      //<DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
+    }
                 </div>
         </td>
       </tr>
@@ -280,7 +281,7 @@ class App extends Component {
 <table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>{prev}
-<label id="page">{this.state.start+1}..{this.state.total}</label>{next}
+<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
   </div>

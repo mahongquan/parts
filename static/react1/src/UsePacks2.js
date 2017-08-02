@@ -33,13 +33,21 @@ class UsePacks2 extends React.Component {
     auto_loading: false,
     release:true,
   };
-  componentDidMount=()=> {
-    if(this.props.contact_id){
-      Client.UsePacks(this.props.contact_id, (usepacks) => {
+   componentWillReceiveProps(nextProps) {
+    if(nextProps.contact_id){
+      this.load_data(nextProps.contact_id);
+    }
+  }
+  load_data=(contact_id)=>{
+      Client.UsePacks(contact_id, (usepacks) => {
         this.setState({
           usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
+  }
+  componentDidMount=()=> {
+    if(this.props.contact_id){
+      this.load_data(this.props.contact_id);
     }
   };
   auto_change=(event, value)=>{

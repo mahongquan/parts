@@ -2,7 +2,7 @@ import React from 'react';
 import './react-contextmenu.css'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "./contextmenu2";
 import Client from "./Client";
-var createReactClass = require('create-react-class');
+//var createReactClass = require('create-react-class');
 
 function buildGetChildrenUrl(path) {
         return  "/fs/children?path="+path;
@@ -36,47 +36,47 @@ function getParent(path, onSuccess) {
     Client.getRaw(buildGetParentUrl(path), onSuccess);
 }
 
-var File = createReactClass({
+class File extends React.Component {
 
-    glyphClass: function() {
+    glyphClass=()=>{
             var className = "glyphicon ";
             className += this.props.isdir ? "glyphicon-folder-open" : "glyphicon-file";
             return className;
-    },
+    }
 
 
 
-    remove: function() {
+    remove=()=> {
             Client.getRaw(
               buildRemoveUrl(this.props.path),
               ()=>{this.props.browser.reloadFilesFromServer();}
             );
-    },
+    }
 
-    rename: function(updatedName) {
+    rename=(updatedName)=> {
             Client.getRaw(
               buildRenameUrl(this.props.path,  updatedName),
               ()=>{this.props.browser.reloadFilesFromServer();}
             );
-    },
+    }
 
-    onRemove: function(e,data) {
+    onRemove=(e,data)=>{
             console.log("onRemove");
             var type = this.props.isdir ? "folder" : "file";
             var remove =window.confirm("Remove "+type +" '"+ this.props.path +"' ?");
             if (remove)
                     this.remove();
-    },
+    }
 
-    onRename: function(e,data) {
+    onRename=(e,data)=>{
             console.log("onRename");
             var type = this.props.isdir ? "folder" : "file";
             var updatedName = prompt("Enter new name for "+type +" "+this.props.name);
             if (updatedName != null)
                     this.rename(updatedName);
-    },
+    }
 
-    renderList: function() {
+    renderList=()=>{
             var dateString =  new Date(this.props.time*1000).toLocaleString();//toGMTString()
             var glyphClass = this.glyphClass();
             return (<tr id={this.props.id} ref={this.props.path}>
@@ -92,8 +92,8 @@ var File = createReactClass({
                             <td>{File.sizeString(this.props.size)}</td>
                             <td>{dateString}</td>
                             </tr>);
-    },
-    renderGrid: function() {
+    }
+    renderGrid=()=>{
             var glyphClass = this.glyphClass();
             return (
                 <div ref={this.props.path} >
@@ -110,24 +110,22 @@ var File = createReactClass({
                     <h4 >{this.props.name}</h4>
 
                 </div>);
-    },
+    }
 
-    render: function() {
+    render=()=>{
             return this.props.gridView ? this.renderGrid() : this.renderList();
     }
-});
+    static id = ()=>{return (Math.pow(2,31) * Math.random())|0; }
 
-File.id = function() {return (Math.pow(2,31) * Math.random())|0; }
+    static timeSort =(left, right)=>{return left.time - right.time;}
 
-File.timeSort = function(left, right){return left.time - right.time;}
+    static sizeSort = (left, right)=>{return left.size - right.size;}
 
-File.sizeSort = function(left, right){return left.size - right.size;}
+    static pathSort = (left, right)=>{return left.path.localeCompare(right.path);}
 
-File.pathSort = function(left, right){return left.path.localeCompare(right.path);}
+    static sizes = [{count : 1, unit:"bytes"}, {count : 1024, unit: "kB"}, {count: 1048576 , unit : "MB"}, {count: 1073741824, unit:"GB" } ]
 
-File.sizes = [{count : 1, unit:"bytes"}, {count : 1024, unit: "kB"}, {count: 1048576 , unit : "MB"}, {count: 1073741824, unit:"GB" } ]
-
-File.sizeString =  function(sizeBytes){
+    static sizeString = (sizeBytes)=>{
         var iUnit=0;
         var count=0;
         for (iUnit=0; iUnit < File.sizes.length;iUnit++) {
@@ -136,21 +134,19 @@ File.sizeString =  function(sizeBytes){
                         break;
         }
         return "" + (count|0) +" "+ File.sizes[iUnit].unit;
-}
-var Browser = createReactClass({
-        getInitialState: function() {
-            console.log("get init ");
-            return {
+    }
+};
+class  Browser extends React.Component {
+     state= {
               paths : ["."],
               files: [],
               sort: File.pathSort,
               gridView: false,
               current_path:"",
               displayUpload:"none",
-          };
-        },
+          }
 
-    loadFilesFromServer: function(path) {
+    loadFilesFromServer=(path)=>{
         var self=this;
            Client.getRaw(
               buildGetChildrenUrl(path),
@@ -167,22 +163,22 @@ var Browser = createReactClass({
                     self.updateNavbarPath(self.currentPath());
               }
             );
-    },
-    updateNavbarPath:function(path){
+    }
+    updateNavbarPath=(path)=>{
          // var elem  = document.getElementById("pathSpan");
         // elem.innerHTML = '<span class="glyphicon glyphicon-chevron-right"/>' +path;
         this.setState({current_path:path});
 
-    },
-    reloadFilesFromServer: function() {
+    }
+    reloadFilesFromServer=()=> {
         this.loadFilesFromServer(this.currentPath())
-    },
+    }
 
-    currentPath : function() {
+    currentPath =()=>{
             return this.state.paths[this.state.paths.length-1]
-    },
+    }
 
-    onBack : function() {
+    onBack =()=>{
             if (this.state.paths.length <2) {
                     alert("Cannot go back from "+ this.currentPath());
                     return;
@@ -190,31 +186,31 @@ var Browser = createReactClass({
             var paths2=this.state.paths.slice(0,-1);
             this.setState({paths:paths2});
             this.loadFilesFromServer(paths2[paths2.length-1])
-    },
+    }
 
-    onUpload: function() {
+    onUpload=()=>{
             this.setState({displayUpload:""});
-    },
+    }
 
-    onParent: function() {
+    onParent=()=>{
             var onSuccess = function(data) {
                     var parentPath = data.path;
                     this.updatePath(parentPath);
             }.bind(this);
             getParent(this.currentPath(), onSuccess);
-    },
+    }
 
-    alternateView: function() {
+    alternateView=()=>{
             var updatedView = !  this.state.gridView;
 
             this.setState(
               {
                     gridView: updatedView
               });
-    },
+    }
 
 
-    uploadFile: function() {
+    uploadFile=()=>{
             return function (evt) {
                     var path = this.currentPath();
                     var readFile = evt.target.files[0];
@@ -240,19 +236,19 @@ var Browser = createReactClass({
                     }.bind(this);
                     xhr.send(formData);
             }.bind(this)
-    },
+    }
 
 
-    componentDidMount: function() {
+    componentDidMount=()=>{
         console.log("mount======");
         console.log(this.props.initpath);
         if (this.props.initpath)
             this.state.paths.push(this.props.initpath);
         var path = this.currentPath();
         this.loadFilesFromServer(path);
-    },
+    }
 
-    updateSort: function(sort) {
+    updateSort=(sort)=>{
             var files  = this.state.files
                     var lastSort = this.state.sort;
             if  (lastSort === sort)
@@ -261,28 +257,28 @@ var Browser = createReactClass({
                     files = files.sort(sort);
 
             this.setState({files: files, sort: sort,  paths: this.state.paths, gridView: this.state.gridView});
-    },
+    }
 
-    timeSort: function() {
+    timeSort=()=>{
             this.updateSort(File.timeSort);
-    },
-    pathSort: function() {
+    }
+    pathSort=()=>{
             this.updateSort(File.pathSort);
-    },
-    sizeSort: function() {
+    }
+    sizeSort=()=>{
             this.updateSort(File.sizeSort);
-    },
-    updatePath: function(path) {
+    }
+    updatePath=(path)=>{
             this.loadFilesFromServer(path);
-    },
-    getContent: function(path) {
+    }
+    getContent=(path)=>{
         console.log("getContent");
         var url = buildGetContentUrl(path);
         console.log(url);
         window.open(url, url, 'height=800,width=800,resizable=yes,scrollbars=yes');
-    },
+    }
 
-    mkdir: function() {
+    mkdir=()=>{
 
             var newFolderName = prompt("Enter new folder name");
             if (newFolderName == null)
@@ -291,8 +287,8 @@ var Browser = createReactClass({
               buildMkdirUrl(this.currentPath(),newFolderName),
               this.reloadFilesFromServer
             );
-    },
-    onClick:function(f){
+    }
+    onClick=(f)=>{
         console.log("onClick");
         console.log(f);
         if (f.isdir){
@@ -301,14 +297,14 @@ var Browser = createReactClass({
         else{
            this.getContent(f.path);
         }
-    },
-    mapfunc:function(f, idx){
+    }
+    mapfunc=(f, idx)=>{
       var id  =  File.id(f.name);
       return (<File key={idx}  id={id} gridView={this.state.gridView} onClick={()=>this.onClick(f)} 
       path={f.path} name={f.name} isdir={f.isdir} size={f.size} time={f.time} browser={this}
       />)
-    },
-    render: function() {
+    }
+    render=()=>{
         const files = this.state.files.map(this.mapfunc);
 
             var gridGlyph = "glyphicon glyphicon-th-large";
@@ -396,6 +392,6 @@ var Browser = createReactClass({
                 </div>)
             }
     }
-});
+}
 
 export default Browser;
