@@ -8,7 +8,6 @@ import './react-datetime.css';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
-var createReactClass = require('create-react-class');
 let styles = {
   item: {
     padding: '2px 6px',
@@ -26,9 +25,8 @@ let styles = {
     border: 'solid 1px #ccc'
   }
 }
-const ContactEdit2 = createReactClass({
-  getInitialState() {
-    return { 
+class ContactEdit2  extends React.Component {
+   state={ 
       showModal: false,
       contact:{
         yujifahuo_date:moment(),
@@ -37,14 +35,13 @@ const ContactEdit2 = createReactClass({
       hiddenPacks:true,
       bg:{},
       date_open:false,
-    };
-  },
+    }
 
-  close() {
+  close=()=>{
     this.setState({ showModal: false });
-  },
+  }
 
-  open() {
+  open=()=>{
     this.setState({ showModal: true });
     this.setState({bg:{}});
     this.parent=this.props.parent;
@@ -67,20 +64,20 @@ const ContactEdit2 = createReactClass({
       this.setState({hiddenPacks:false});
     }
     this.setState({contact:this.old});
-  },
+  }
   // handleClear (data) {
   //   console.log("clear");
   //   var contact2={id:"",hetongbh:"",name:"",addr:""};
   //   console.log(contact2);
   //   this.setState({contact:contact2});
-  // },
-  handleCopy(data) {
+  // }
+  handleCopy=(data)=>{
      console.log("copy");
      var contact2=update(this.state.contact,{id:{$set:""}});
      console.log(contact2);
      this.setState({contact:contact2});
-  },
-  handleSave (data) {
+  }
+  handleSave=(data)=>{
     var url="/rest/Contact";
     Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
@@ -94,8 +91,8 @@ const ContactEdit2 = createReactClass({
         alert(res.message);
       }
     });
-  },
-  tiaoshi_date_change(value){
+  }
+  tiaoshi_date_change=(value)=>{
     //this.state.yujifahuo_date=value;
     var e_target_name="tiaoshi_date";
     console.log(this.old[e_target_name]);
@@ -126,9 +123,9 @@ const ContactEdit2 = createReactClass({
     const contact2=update(this.state.contact,{[e_target_name]: {$set:t}});
     console.log(contact2);
     this.setState({contact:contact2});
-  },
+  }
 
-  yujifahuo_date_change(value){
+  yujifahuo_date_change=(value)=>{
     //this.state.yujifahuo_date=value;
     var e_target_name="yujifahuo_date";
     console.log(this.old[e_target_name]);
@@ -157,13 +154,13 @@ const ContactEdit2 = createReactClass({
     const contact2=update(this.state.contact,{[e_target_name]: {$set:t}});
     console.log(contact2);
     this.setState({contact:contact2});
-  },
-  channels_change(event, value){
+  }
+  channels_change=(event, value)=>{
     console.log("auto_change");
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null,value) 
-  },
-  channels_select(value, item) {
+  }
+  channels_select=(value, item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.channels===item)
@@ -178,13 +175,13 @@ const ContactEdit2 = createReactClass({
       const contact2=update(this.state.contact,{channels: {$set:item}});
       console.log(contact2);
       this.setState({contact:contact2});
-  },
-  yiqixinghao_change(event, value){
+  }
+  yiqixinghao_change=(event, value)=>{
     console.log("auto_change");
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.yiqixinghao_select(null,value) 
-  },
-  yiqixinghao_select(value, item) {
+  }
+  yiqixinghao_select=(value, item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.yiqixinghao===item)
@@ -199,8 +196,8 @@ const ContactEdit2 = createReactClass({
       const contact2=update(this.state.contact,{yiqixinghao: {$set:item}});
       console.log(contact2);
       this.setState({contact:contact2});
-  },
-  handleChange(e){
+  }
+  handleChange=(e)=>{
     console.log("change");
     console.log(e);
     console.log(e.target.value);
@@ -221,11 +218,11 @@ const ContactEdit2 = createReactClass({
     const contact2=update(this.state.contact,{[e.target.name]: {$set:e.target.value}});
     console.log(contact2);
     this.setState({contact:contact2});
-  },
-  matchStateToTerm(state, value){
+  }
+  matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
-  },
-  render() {
+  }
+  render=()=>{
     return (
         <a  className="yiqixinxi" onClick={this.open}>{this.props.title}
         <div>
@@ -408,5 +405,5 @@ const ContactEdit2 = createReactClass({
         </a>
     );
   }
-});
+}
 export default ContactEdit2;

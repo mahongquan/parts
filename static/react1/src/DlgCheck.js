@@ -1,21 +1,18 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-var createReactClass = require('create-react-class');
-const DlgCheck = createReactClass({
-  getInitialState() {
-    return { 
+class DlgCheck extends React.Component{
+  state= { 
       showModal: false,
       error:"",
       packs:[],
       hideTable:true,
-    };
-  },
+  }
 
-  close() {
+  close=()=>{
     this.setState({ showModal: false });
-  },
-  upload(){
+  }
+  upload=()=>{
     const file = this.fileUpload.files[0];
     console.log(file);
     var data1=new FormData();
@@ -74,12 +71,12 @@ const DlgCheck = createReactClass({
       self.setState({packs: showdata});
       self.setState({hideTable:false});
     });
-  },
-  open() {
+  }
+  open=()=>{
     this.setState({ showModal: true });
     this.setState({hideTable:true});
-  },
-  render() {
+  }
+  render=()=>{
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
         <td style={{color:"blue"}}>{pack.left0}</td>
@@ -121,5 +118,5 @@ const DlgCheck = createReactClass({
         </button>
     );
   }
-});
+}
 export default DlgCheck;

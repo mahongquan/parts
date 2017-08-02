@@ -2,20 +2,17 @@ import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 import update from 'immutability-helper';
-var createReactClass = require('create-react-class');
-const DlgImport = createReactClass({
-  getInitialState() {
-    return { 
+class DlgImport extends React.Component{
+  state={ 
       showModal: false,
       error:"",
       packs:[]
-    };
-  },
+  }
 
-  close() {
+  close=()=>{
     this.setState({ showModal: false });
-  },
-  upload(){
+  }
+  upload=()=>{
     const file = this.fileUpload.files[0];
     console.log(file);
     var data1=new FormData();
@@ -26,8 +23,8 @@ const DlgImport = createReactClass({
         const newFoods = update(self.state.packs, {$push: res.result});
         self.setState({packs: newFoods });
     });
-  },
-  open() {
+  }
+  open=()=>{
     var self=this;
    this.setState({ showModal: true });
    var data= { limit:10,search:"xls"};
@@ -40,8 +37,8 @@ const DlgImport = createReactClass({
           self.setState({packs:result.data});
           console.log(result.data);
    })
-  },
-  render() {
+  }
+  render=()=>{
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
         <td>{pack.id}</td>
@@ -72,5 +69,5 @@ const DlgImport = createReactClass({
         </button>
     );
   }
-});
+}
 export default DlgImport;

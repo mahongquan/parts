@@ -35,6 +35,9 @@ class App extends Component {
     currentIndex:null,
   }
   componentDidMount=() => {
+    this.load_data();
+  }
+  load_data=()=>{
     Client.contacts(
       { start:this.mystate.start,
         limit:this.mystate.limit,
@@ -75,7 +78,7 @@ class App extends Component {
       user: user,
       contacts: [], //slice(0, MATCHING_ITEM_LIMIT),
     });
-    this.componentDidMount();
+    this.load_data();
   };
   handleLogout = () => {
     console.log("logout");
@@ -93,17 +96,15 @@ class App extends Component {
   handleSearchChange = (e) => {
     this.mystate.search=e.target.value;
     this.setState({search:this.mystate.search});
-    //this.componentDidMount();
   };
   handlePrev = (e) => {
     this.mystate.start=this.mystate.start-this.mystate.limit;
     if(this.mystate.start<0) {this.mystate.start=0;}
-    //this.setState({start:start});
-    this.componentDidMount();
+    this.load_data();
   };
   search = (e) => {
     this.mystate.start=0;
-    this.componentDidMount();
+    this.load_data();
   };
   jump=()=>{
     this.mystate.start=parseInt(this.state.start_input,10)-1;
@@ -113,7 +114,7 @@ class App extends Component {
     {
       this.mystate.start=0;
     }
-    this.componentDidMount();
+    this.load_data();
   };
   handlePageChange= (e) => {
     this.setState({start_input:e.target.value});
@@ -131,12 +132,11 @@ class App extends Component {
     {
       this.mystate.start=0;
     }
-    this.componentDidMount();
+    this.load_data();
   };
   onSelectBaoxiang=(e) => {
     this.mystate.baoxiang=e;
-    this.componentDidMount();
-    console.log(e);
+    this.load_data();
   }
   auto_change=(event, value)=>{
     console.log("auto_change");

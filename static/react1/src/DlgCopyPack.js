@@ -3,7 +3,6 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {NavItem,} from "react-bootstrap";
 import Autocomplete from './Autocomplete'
-var createReactClass = require('create-react-class');
 let styles = {
   item: {
     padding: '2px 6px',
@@ -22,9 +21,8 @@ let styles = {
   }
 }
 
-const DlgCopyPack = createReactClass({
-  getInitialState() {
-    return { 
+class DlgCopyPack  extends React.Component{
+  state= { 
       showModal: false,
       error:"",
       lbls:[],
@@ -34,12 +32,11 @@ const DlgCopyPack = createReactClass({
       auto_value: '',
       auto_items:[],
       auto_loading: false,
-    };
-  },
-  newnameChange(event){
+  }
+  newnameChange=(event)=>{
     this.setState({newname:event.target.value});
-  },
-  copy_pack(){
+  }
+  copy_pack=()=>{
     console.log(this.src_id+" "+this.state.newname);
     var self=this;
     var data1=new FormData();
@@ -48,8 +45,8 @@ const DlgCopyPack = createReactClass({
     Client.postForm("/rest/copypack/",data1,(result) => {
           self.setState({ error:result.message})
     });
-  },
-  auto_change(event, value){
+  }
+  auto_change=(event, value)=>{
     console.log("auto_change");
     if (value.length>1)
     {
@@ -61,22 +58,22 @@ const DlgCopyPack = createReactClass({
     else{
       this.setState({ auto_value:value, auto_loading: false });
     };
-  },
-  auto_select(value, item)  {
+  }
+  auto_select=(value, item)=>{
       console.log("selected");
       console.log(item);
       //todo this.addrow(item.id);
       this.src_id=item.id;
       this.setState({auto_value:value, auto_items: [ item ] })
-  },
-  close() {
+  }
+  close=()=>{
     this.setState({ showModal: false });
-  },
-  open() {
+  }
+  open=()=>{
    this.setState({ showModal: true });
    this.src_id=null;
-  },
-  render() {
+  }
+  render=()=>{
     return (
         <NavItem eventKey={5} href="#" onClick={this.open}>复制包
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
@@ -124,5 +121,5 @@ const DlgCopyPack = createReactClass({
         </NavItem>
     );
   }
-});
+}
 export default DlgCopyPack;

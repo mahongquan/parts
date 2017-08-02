@@ -1,34 +1,31 @@
 import React from 'react';
-var createReactClass = require('create-react-class');
-var LoginFormComponent = createReactClass({
-  getInitialState: function() {
-    return {
+class LoginFormComponent extends React.Component{
+  state={
       name: "mahongquan",
       pwd: "333333"
-    };
-  },
-  handleNameChange: function(e) {
+  }
+  handleNameChange=(e)=>{
     this.setState({
       name: e.target.value
     });
-  },
-  handlePwdChange: function(e) {
+  }
+  handlePwdChange=(e)=>{
     this.setState({
       pwd: e.target.value
     });
-  },
-  handleSubmit: function(e) {
+  }
+  handleSubmit=(e)=>{
     e.preventDefault();
     var data = {};
     data["username"] = this.state.name;
     data["password"] = this.state.pwd;
     this.props.onLoginSubmit(data);
     this.props.dlgclose();
-  },
-  handleCandel: function(e) {
+  }
+  handleCandel=(e)=>{
     this.props.dlgclose();
-  },
-  render: function() {
+  }
+  render=()=>{
     return (
       <form className="loginForm" onSubmit={this.handleSubmit}>
       <table className="table-condensed">
@@ -67,6 +64,5 @@ var LoginFormComponent = createReactClass({
       </form>
     );
   }
-});
-
+}
 export default LoginFormComponent;

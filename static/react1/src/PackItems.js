@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
