@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-//import UsePacks2 from "./UsePacks2";
+import UsePacks2 from "./UsePacks2";
 import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-//import './react-datetime.css'
-var moment = require('moment');
-var locale=require('moment/locale/zh-cn');
-var DateTime=require('react-datetime');
+import  moment from 'moment';
+import  locale from 'moment/locale/zh-cn';
+import  DateTime from 'react-datetime';
 var styles = {
   item: {
     padding: '2px 6px',
@@ -30,7 +27,7 @@ var styles = {
 class ContactEdit2New  extends Component{
   constructor() {
       super();
-      state={ 
+      this.state={ 
           showModal: false,
           contact:{ yujifahuo_date:moment(), tiaoshi_date:moment()},
           hiddenPacks:true,
@@ -298,7 +295,7 @@ class ContactEdit2New  extends Component{
     //   options_channels.push({label:o[i],value:o[i]});
     // }
     return (
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
+        <Modal show={this.state.showModal} onHide={()=>this.close()}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑仪器信息</Modal.Title>
           </Modal.Header>
@@ -316,14 +313,14 @@ class ContactEdit2New  extends Component{
                     <label>用户单位:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.contact.yonghu} onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.contact.yonghu} onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
                     客户地址:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="addr" value={this.state.contact.addr} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="addr" value={this.state.contact.addr} onChange={(e)=>this.handleChange(e)} />
                 </td>
                 <td>
                     通道配置:
@@ -359,9 +356,9 @@ class ContactEdit2New  extends Component{
                         "2O",
                       ]}
                       getItemValue={(item) => item}
-                      onSelect={this.channels_select}
-                      onChange={this.channels_change}
-                      shouldItemRender={this.matchStateToTerm}
+                      onSelect={(a,b)=>this.channels_select(a,b)}
+                      onChange={(e)=>this.channels_change(e)}
+                      shouldItemRender={(state, value)=>this.matchStateToTerm(state, value)}
                       renderItem={(item, isHighlighted) => (
                         <div
                           style={isHighlighted ? styles.highlightedItem : styles.item}
@@ -397,9 +394,9 @@ class ContactEdit2New  extends Component{
                         "ONH-3000"
                       ]}
                       getItemValue={(item) => item}
-                      onSelect={this.yiqixinghao_select}
-                      onChange={this.yiqixinghao_change}
-                      shouldItemRender={this.matchStateToTerm}
+                      onSelect={(a,b)=>this.yiqixinghao_select(a,b)}
+                      onChange={(e)=>this.yiqixinghao_change(e)}
+                      shouldItemRender={(state, value)=>this.matchStateToTerm(state, value)}
                       renderItem={(item, isHighlighted) => (
                         <div
                           style={isHighlighted ? styles.highlightedItem : styles.item}
@@ -412,20 +409,20 @@ class ContactEdit2New  extends Component{
                     <label>仪器编号:</label>
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.yiqibh}}  type="text" id="yiqibh" name="yiqibh" value={this.state.contact.yiqibh}  onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.yiqibh}}  type="text" id="yiqibh" name="yiqibh" value={this.state.contact.yiqibh}  onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
                     <label>包箱:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="baoxiang" value={this.state.contact.baoxiang}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="baoxiang" value={this.state.contact.baoxiang}  onChange={(e)=>this.handleChange(e)} />
                 </td>
                 <td>
                     审核:
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.shenhe}} type="text" id="shenhe" name="shenhe" value={this.state.contact.shenhe}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.shenhe}} type="text" id="shenhe" name="shenhe" value={this.state.contact.shenhe}  onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
@@ -438,7 +435,7 @@ class ContactEdit2New  extends Component{
                         {"backgroundColor":this.state.bg.yujifahuo_date}
                       }
                     } 
-                    id="yujifahuo_date" name="yujifahuo_date"  value={this.state.contact.yujifahuo_date} onChange={this.yujifahuo_date_change} />
+                    id="yujifahuo_date" name="yujifahuo_date"  value={this.state.contact.yujifahuo_date} onChange={(e)=>this.yujifahuo_date_change(e)} />
                 </td>
                 <td>
                     调试时间:
@@ -450,14 +447,14 @@ class ContactEdit2New  extends Component{
                         {"backgroundColor":this.state.bg.tiaoshi_date}
                       }
                     } 
-                    name="tiaoshi_date"  value={this.state.contact.tiaoshi_date} onChange={this.tiaoshi_date_change} />
+                    name="tiaoshi_date"  value={this.state.contact.tiaoshi_date} onChange={(e)=>this.tiaoshi_date_change(e)} />
                 </td>
             </tr><tr>
                 <td>
                     <label>合同编号:</label>
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.hetongbh}}  type="text" id="hetongbh" name="hetongbh" value={this.state.contact.hetongbh}  onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.hetongbh}}  type="text" id="hetongbh" name="hetongbh" value={this.state.contact.hetongbh}  onChange={(e)=>this.handleChange(e)} />
                 </td>
                 <td>
                     方法:
@@ -474,15 +471,13 @@ class ContactEdit2New  extends Component{
             </tbody>
             </table>
        <div> 
-       <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
+       <button className="btn btn-primary" id="bt_save" onClick={(e)=>this.handleSave(e)} >保存</button> 
+       <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={(e)=>this.handleCopy(e)}>复制</button>
        </div>
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
-        {
-        //<UsePacks2  contact_id={this.state.contact.id}/>
-        }
+        <UsePacks2  contact_id={this.state.contact.id}/>
         </div>
-                </Modal.Body>
+      </Modal.Body>
         </Modal>
     );
   }

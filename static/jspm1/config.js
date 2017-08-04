@@ -19,6 +19,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "npm:bootstrap@3.3.7",
     "core-js": "npm:core-js@1.2.7",
+    "create-react-class": "npm:create-react-class@15.6.0",
     "dom-scroll-into-view": "npm:dom-scroll-into-view@1.2.1",
     "immutability-helper": "npm:immutability-helper@2.3.0",
     "intl": "npm:intl@1.2.5",
@@ -46,7 +47,7 @@ System.config({
     "github:jspm/nodelibs-http@1.7.1": {
       "Base64": "npm:Base64@0.2.1",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.3",
+      "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
