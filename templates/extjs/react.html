@@ -6,12 +6,6 @@
 <script src="/static/react-15.1.0/build/react.js"></script>
 <script src="/static/react-15.1.0/build/react-dom.js"></script>
 <script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
-<script>
-  $.ajaxSetup({
-  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-  });
-</script>
-<script src="/static/react-15.1.0/marked_0.3.5_marked.min.js"></script>
 <script type="text/babel">
 var myglobal={start:0,limit:5,total:0};
 var ItemBox = React.createClass({
