@@ -22,7 +22,9 @@ let styles = {
   }
 }
 class PackItems extends React.Component {
-  state = {
+  constructor() {
+    super();
+  this.state = {
     items: [],
     showRemoveIcon: false,
     newPackName: '',
@@ -30,21 +32,22 @@ class PackItems extends React.Component {
     auto_items:[],
     auto_loading: false,
     release:true,
-  };
-  componentDidMount=()=> {
+  }
+}
+  componentDidMount() {
       Client.PackItems(this.props.pack_id, (items) => {
         this.setState({
           items: items.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
   };
-  auto_select=(value, item) => {
+  auto_select(value, item)  {
       console.log("selected");
       console.log(item);
       this.addrow(item.id);
       //this.setState({auto_value:value, auto_items: [ item ] })
   }
-  auto_change=(event, value)=>{
+  auto_change(event, value){
     console.log("auto_change");
     if (value.length>1)
     {
@@ -57,7 +60,7 @@ class PackItems extends React.Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   };
-  new_packitem= (id) => {
+  new_packitem (id)  {
     var url="/rest/BothPackItem";
     var data={"name":this.state.newPackName,"pack":this.props.pack_id};
     console.log(data);
@@ -67,13 +70,13 @@ class PackItems extends React.Component {
         this.setState({ items: newFoods });
     });
   };
-  handlePackItemChange = (idx,contact) => {
+  handlePackItemChange (idx,contact)  {
     console.log(idx);
     const contacts2=update(this.state.items,{[idx]: {$set:contact}});
     console.log(contacts2);
     this.setState({items:contacts2});
   };
-  addrow=(item_id)=>{
+  addrow(item_id){
     var url="/rest/PackItem";
     var data={pack:this.props.pack_id,itemid:item_id};
     Client.post(url,data,(res) => {
@@ -82,12 +85,12 @@ class PackItems extends React.Component {
         this.setState({ items: newFoods });
     });
   };
-  newpackChange=(e)=>{
+  newpackChange(e){
     this.setState({newPackName:e.target.value});
   };
-  onEditClick = (id) => {
+  onEditClick  (id)  {
   };
-  onDeleteClick = (itemIndex) => {
+  onDeleteClick  (itemIndex)  {
     var url="/rest/PackItem";
     Client.delete1(url,{id:this.state.items[itemIndex].id},(res) => {
         const filteredFoods = this.state.items.filter(
@@ -96,7 +99,7 @@ class PackItems extends React.Component {
         this.setState({ items: filteredFoods });
     });
   };
-  handleEdit=(idx)=>{
+  handleEdit(idx){
     this.refs.dlg.open2(idx);
   }
   render() {

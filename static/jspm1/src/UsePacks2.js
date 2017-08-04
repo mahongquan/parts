@@ -24,7 +24,9 @@ let styles = {
   }
 }
 class UsePacks2 extends React.Component {
-  state = {
+  constructor() {
+    super();
+    this.state = {
     usepacks: [],
     showRemoveIcon: false,
     newPackName: '',
@@ -32,25 +34,26 @@ class UsePacks2 extends React.Component {
     auto_items:[],
     auto_loading: false,
     release:true,
-  };
+    }
+  }
    componentWillReceiveProps(nextProps) {
     if(nextProps.contact_id){
       this.load_data(nextProps.contact_id);
     }
   }
-  load_data=(contact_id)=>{
+  load_data(contact_id){
       Client.UsePacks(contact_id, (usepacks) => {
         this.setState({
           usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
   }
-  componentDidMount=()=> {
+  componentDidMount() {
     if(this.props.contact_id){
       this.load_data(this.props.contact_id);
     }
   };
-  auto_change=(event, value)=>{
+  auto_change(event, value){
     console.log("auto_change");
     if (value.length>1)
     {
@@ -63,17 +66,17 @@ class UsePacks2 extends React.Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   };
-  auto_select=(value, item) => {
+  auto_select(value, item)  {
       console.log("selected");
       console.log(item);
       this.addrow(item.id);
       //this.setState({auto_value:value, auto_items: [ item ] })
   }
-  bibei= (id) => {
+  bibei (id)  {
     //this.setState({auto_value:"必备"});
     this.auto_change(null,"必备");
   };
-  new_pack= (id) => {
+  new_pack (id)  {
     var url="/rest/UsePackEx";
     var data={"name":this.state.newPackName,contact:this.props.contact_id};
     Client.postOrPut(url,data,(res) => {
@@ -82,7 +85,7 @@ class UsePacks2 extends React.Component {
         this.setState({ usepacks: newFoods });
     });
   };
-  addrow=(pack_id)=>{
+  addrow(pack_id){
     var url="/rest/UsePack";
     var data={contact:this.props.contact_id,pack:pack_id};
     Client.postOrPut(url,data,(res) => {
@@ -91,12 +94,12 @@ class UsePacks2 extends React.Component {
         this.setState({ usepacks: newFoods });
     });
   };
-  newpackChange=(e)=>{
+  newpackChange(e){
     this.setState({newPackName:e.target.value});
   };
-  onEditClick = (id) => {
+  onEditClick  (id) {
   };
-  onDeleteClick = (itemIndex) => {
+  onDeleteClick  (itemIndex)  {
     var url="/rest/UsePack";
     Client.delete1(url,{id:this.state.usepacks[itemIndex].id},(res) => {
         const filteredFoods = this.state.usepacks.filter(
@@ -105,11 +108,11 @@ class UsePacks2 extends React.Component {
         this.setState({ usepacks: filteredFoods });
     });
   };
-   handleEdit=(idx)=>{
+   handleEdit(idx){
     //this.setState({currentIndex:idx,showModal:true});
     this.refs.edit1.open2(idx);
   }
-  getUsers=(input)=> {
+  getUsers(input) {
     console.log("getUsers");
     console.log(input)
     if (!input) {
@@ -124,12 +127,12 @@ class UsePacks2 extends React.Component {
       return r;
     });
   }
-  onChange=(value)=>{
+  onChange(value){
     this.setState({
       auto_value: value,
     });
   }
-  onValueClick=(value)=>{
+  onValueClick(value){
     console.log(value);
   }
   render() {

@@ -2,14 +2,17 @@
   "jspm": {
     "dependencies": {
       "bootstrap": "npm:bootstrap@^3.3.7",
+      "dom-scroll-into-view": "npm:dom-scroll-into-view@^1.2.1",
       "immutability-helper": "npm:immutability-helper@^2.3.0",
       "intl": "npm:intl@^1.2.5",
       "intl-locales-supported": "npm:intl-locales-supported@^1.0.0",
       "jquery": "npm:jquery@^3.2.1",
       "moment": "npm:moment@^2.18.1",
+      "prop-types": "npm:prop-types@^15.5.10",
       "query-string": "npm:query-string@^5.0.0",
       "react": "npm:react@^15.6.1",
       "react-bootstrap": "npm:react-bootstrap@^0.31.2",
+      "react-datetime": "npm:react-datetime@^2.9.0",
       "react-dom": "npm:react-dom@^15.6.1"
     },
     "devDependencies": {

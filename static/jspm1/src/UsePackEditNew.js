@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import PackItems from "./PackItems";
 import {Modal} from "react-bootstrap";
 class UsePackEditNew extends Component{
-  state={ 
-      showModal: false,
-      usepack:{},
-      bg:{},
+  constructor() {
+    super();
+    this.state={ 
+        showModal: false,
+        usepack:{},
+        bg:{},
+    }
   }
 
-  close=()=>{
+  close(){
     this.setState({ showModal: false });
   }
-  handleChange=()=>{
+  handleChange(){
     
   }
   // componentWillReceiveProps(nextProps) {
@@ -25,10 +28,10 @@ class UsePackEditNew extends Component{
   //   }
   //   this.setState({usepack:this.old});
   // }
-  close=()=>{
+  close(){
     this.setState({ showModal: false });
   }
-  open2=(idx)=>{
+  open2(idx){
     this.index=idx;
     this.setState({ showModal: true });
     if (this.index==null){
@@ -51,7 +54,7 @@ class UsePackEditNew extends Component{
   //   }
   //   this.setState({usepack:this.old});
   // }
-  render=()=>{
+  render(){
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>

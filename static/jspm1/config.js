@@ -19,14 +19,17 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "npm:bootstrap@3.3.7",
     "core-js": "npm:core-js@1.2.7",
+    "dom-scroll-into-view": "npm:dom-scroll-into-view@1.2.1",
     "immutability-helper": "npm:immutability-helper@2.3.0",
     "intl": "npm:intl@1.2.5",
     "intl-locales-supported": "npm:intl-locales-supported@1.0.0",
     "jquery": "npm:jquery@3.2.1",
     "moment": "npm:moment@2.18.1",
+    "prop-types": "npm:prop-types@15.5.10",
     "query-string": "npm:query-string@5.0.0",
     "react": "npm:react@15.6.1",
     "react-bootstrap": "npm:react-bootstrap@0.31.2",
+    "react-datetime": "npm:react-datetime@2.9.0",
     "react-dom": "npm:react-dom@15.6.1",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -248,6 +251,16 @@ System.config({
       "uncontrollable": "npm:uncontrollable@4.1.0",
       "warning": "npm:warning@3.0.0"
     },
+    "npm:react-datetime@2.9.0": {
+      "@types/react": "npm:@types/react@16.0.0",
+      "moment": "npm:moment@2.18.1",
+      "object-assign": "npm:object-assign@3.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "prop-types": "npm:prop-types@15.5.10",
+      "react": "npm:react@15.6.1",
+      "react-dom": "npm:react-dom@15.6.1",
+      "react-onclickoutside": "npm:react-onclickoutside@5.11.1"
+    },
     "npm:react-dom@15.6.1": {
       "fbjs": "npm:fbjs@0.8.14",
       "loose-envify": "npm:loose-envify@1.3.1",
@@ -255,6 +268,10 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "prop-types": "npm:prop-types@15.5.10",
       "react": "npm:react@15.6.1"
+    },
+    "npm:react-onclickoutside@5.11.1": {
+      "create-react-class": "npm:create-react-class@15.6.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:react-overlays@0.7.0": {
       "classnames": "npm:classnames@2.2.5",
@@ -281,7 +298,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "core-util-is": "npm:core-util-is@1.0.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream-browserify": "npm:stream-browserify@1.0.0",
@@ -311,7 +328,7 @@ System.config({
     },
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
-      "inherits": "npm:inherits@2.0.1",
+      "inherits": "npm:inherits@2.0.3",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string_decoder@0.10.31": {

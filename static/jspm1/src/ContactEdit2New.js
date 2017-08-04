@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UsePacks2 from "./UsePacks2";
+//import UsePacks2 from "./UsePacks2";
 import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
@@ -478,7 +478,9 @@ class ContactEdit2New  extends Component{
        <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
-        <UsePacks2  contact_id={this.state.contact.id}/>
+        {
+        //<UsePacks2  contact_id={this.state.contact.id}/>
+        }
         </div>
                 </Modal.Body>
         </Modal>

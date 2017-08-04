@@ -3,13 +3,16 @@ import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 class PackItemEditNew extends Component{
-  state={ 
+  constructor() {
+    super();
+  this.state={ 
       showModal: false,
       packitem:{},
       hiddenPacks:true,
       bg:{},
       date_open:false,
   }
+}
   // componentWillReceiveProps(nextProps) {
   //   this.setState({ showModal: nextProps.showModal });
   //   if (nextProps.index==null){
@@ -21,11 +24,11 @@ class PackItemEditNew extends Component{
   //   }
   //   this.setState({packitem:this.old});
   // }
-  close=()=>{
+  close(){
     this.setState({ showModal: false });
   }
 
-  open2=(idx)=>{
+  open2(idx){
     this.setState({ showModal: true });
     this.index=idx;
     if (this.index==null){
@@ -37,7 +40,7 @@ class PackItemEditNew extends Component{
     }
     this.setState({packitem:this.old});
   }
-  handleSave=(data)=>{
+  handleSave(data){
     var url="/rest/BothPackItem";
     Client.postOrPut(url,this.state.packitem,(res) => {
         this.setState({contact:res.data});
@@ -46,7 +49,7 @@ class PackItemEditNew extends Component{
         this.close();
     });
   }
-  quehuoChange=(e)=>{
+  quehuoChange(e){
     var quehuo=this.state.packitem.quehuo;
     quehuo=!quehuo;
     if(this.old.quehuo===quehuo)
@@ -62,7 +65,7 @@ class PackItemEditNew extends Component{
     console.log(contact2);
     this.setState({packitem:contact2});
   }
-  handleChange=(e)=>{
+  handleChange(e){
     console.log("change");
     console.log(e);
     console.log(e.target);
@@ -85,7 +88,7 @@ class PackItemEditNew extends Component{
     console.log(contact2);
     this.setState({packitem:contact2});
   }
-  render=()=>{
+  render(){
     return (
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>

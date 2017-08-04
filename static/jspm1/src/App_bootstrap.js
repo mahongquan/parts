@@ -5,7 +5,7 @@ import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
-// import ContactEdit2New from './ContactEdit2New';
+import ContactEdit2New from './ContactEdit2New';
 // import DlgWait from './DlgWait';
 // import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
@@ -218,22 +218,20 @@ class App extends Component {
       hasnext=false;
     }
     if (hasprev){
-      prev=(<a onClick={this.handlePrev}>前一页</a>);
+      prev=(<a onClick={()=>this.handlePrev()}>前一页</a>);
     }
     else{
       prev=null;
     }
     if(hasnext){
-      next=(<a onClick={this.handleNext}>后一页</a>);
+      next=(<a onClick={()=>this.handleNext()}>后一页</a>);
     }
     else{
       next=null;
     }
     return (
     <div id="todoapp" className="table-responsive">
-    {
-      //<ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
-    }
+    <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -291,8 +289,8 @@ class App extends Component {
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>{prev}
 <label id="page">{this.state.start+1}../{this.state.total}</label>{next}
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+      <input maxLength="6" size="6" onChange={(e)=>this.handlePageChange(e)} value={this.state.start_input} />
+      <button id="page_go"  className="btn btn-info" onClick={()=>this.jump()}>跳转</button>
   </div>
     );
   }
