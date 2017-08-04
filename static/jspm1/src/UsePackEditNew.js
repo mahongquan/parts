@@ -56,7 +56,7 @@ class UsePackEditNew extends Component{
   // }
   render(){
     return (
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
+        <Modal show={this.state.showModal} onHide={()=>this.close()}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑包</Modal.Title>
           </Modal.Header>

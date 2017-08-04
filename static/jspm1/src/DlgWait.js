@@ -1,19 +1,20 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-var createReactClass = require('create-react-class');
-const DlgWait = createReactClass({
-  getInitialState() {
-    return { 
+//var createReactClass = require('create-react-class');
+class DlgWait extends React.Component{
+  constructor() {
+    super();
+    this.state={ 
       showModal: false,
       hiddenPacks:true,
       error:"",
-    };
-  },
+    }
+  }
 
   close() {
     this.setState({ showModal: false });
-  },
+  }
 
   open() {
     var self=this;
@@ -27,7 +28,7 @@ const DlgWait = createReactClass({
           self.close();
        }
    })
-  },
+  }
   render() {
     return (
         <button  onClick={this.open}>{this.props.title}
@@ -42,5 +43,5 @@ const DlgWait = createReactClass({
         </button>
     );
   }
-});
+}
 export default DlgWait;

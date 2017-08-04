@@ -90,7 +90,7 @@ class PackItemEditNew extends Component{
   }
   render(){
     return (
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal show={this.state.showModal} onHide={()=>this.close()}>
           <Modal.Header closeButton>
             <Modal.Title>编辑备件信息</Modal.Title>
           </Modal.Header>
@@ -109,21 +109,21 @@ class PackItemEditNew extends Component{
                     名称:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="name" value={this.state.packitem.name} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="name" value={this.state.packitem.name} onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
                     <label>规格:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
                     <label>编号:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={(e)=>this.handleChange(e)} />
                 </td>
             </tr><tr>
                 <td>
@@ -131,7 +131,7 @@ class PackItemEditNew extends Component{
                 </td>
                 <td>
                     <input type="text" style={{"backgroundColor":this.state.bg.ct}}
-                    id="yujifahuo_date" name="ct"  value={this.state.packitem.ct} onChange={this.handleChange} />
+                    id="yujifahuo_date" name="ct"  value={this.state.packitem.ct} onChange={(e)=>this.handleChange()} />
                 </td>
             </tr>  
             <tr>
@@ -139,13 +139,13 @@ class PackItemEditNew extends Component{
                     <label>缺货:</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="quehuo" name="quehuo" checked={this.state.packitem.quehuo}  onChange={this.quehuoChange} />
+                    <input type="checkbox" id="quehuo" name="quehuo" checked={this.state.packitem.quehuo}  onChange={(e)=>this.quehuoChange(e)} />
                 </td>
             </tr>        
             </tbody>
             </table>
        <div> 
-       <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
+       <button className="btn btn-primary" id="bt_save" onClick={()=>this.handleSave()} >保存</button> 
        </div>
                 </Modal.Body>
         </Modal>

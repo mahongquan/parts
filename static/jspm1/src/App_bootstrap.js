@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
 import ContactEdit2New from './ContactEdit2New';
-// import DlgWait from './DlgWait';
+import DlgWait from './DlgWait';
 // import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
 // import DlgStat from './DlgStat';
@@ -193,9 +193,10 @@ class App extends Component {
         <td>
         <div className="btn-group" role="group">
         <a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
+        <DlgWait contact_id={contact.id} title="全部文件" />
   {        
          //<DlgUrl url="/rest/updateMethod" parent={this} index={idx} data={{id:contact.id}} title="更新方法" />
-         //<DlgWait contact_id={contact.id} title="全部文件" />
+         //
          //<DlgCheck contact_id={contact.id} title="核对备料计划" />
         //<DlgFolder contact_id={contact.id} title="资料文件夹" />
     
