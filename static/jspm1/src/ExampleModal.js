@@ -19,13 +19,13 @@ class  ExampleModal extends React.Component{
   }
   render() {
     return (
-        <a onClick={this.open}>{this.props.title}
+        <a onClick={()=>this.open()}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginFormComponent onLoginSubmit={this.onLoginSubmit} dlgclose={this.close}/>
+            <LoginFormComponent onLoginSubmit={(data)=>this.onLoginSubmit(data)} dlgclose={()=>this.close()}/>
         </Modal.Body>
 
         </Modal>

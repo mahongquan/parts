@@ -26,11 +26,14 @@ class LoginFormComponent extends React.Component{
     this.props.dlgclose();
   }
   handleCandel(e){
+    e.preventDefault();
+    //console.log(e);
+    //console.log(this.props.dlgclose)
     this.props.dlgclose();
   }
   render(){
     return (
-      <form className="loginForm" onSubmit={this.handleSubmit}>
+      <form className="loginForm" onSubmit={(e)=>this.handleSubmit(e)}>
       <table className="table-condensed">
         <tbody>
           <tr>
@@ -39,7 +42,7 @@ class LoginFormComponent extends React.Component{
                 </td>
                 <td>
                     <input type="text" id="username"  value={this.state.name}
-      onChange={this.handleNameChange}
+      onChange={(e)=>this.handleNameChange(e)}
       ></input>
                 </td>
           </tr>
@@ -49,7 +52,7 @@ class LoginFormComponent extends React.Component{
                 </td>
                 <td>
                     <input type="text" id="password"  value={this.state.pwd}
-      onChange={this.handlePwdChange}
+      onChange={(e)=>this.handlePwdChange(e)}
       ></input>
                 </td>
           </tr>
@@ -58,7 +61,7 @@ class LoginFormComponent extends React.Component{
                     <input type="submit" value="确定" />
                 </td>
                 <td>
-                    <button onClick={this.handleCandel}>取消</button>
+                    <button onClick={(e)=>this.handleCandel(e)}>取消</button>
                 </td>
           </tr>
         </tbody>

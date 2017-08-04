@@ -255,10 +255,10 @@ class App extends Component {
    <td>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
+          <ExampleModal onLoginSubmit={(data)=>this.onLoginSubmit(data)} title="登录" />
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
-          <a onClick={this.handleLogout}>注销</a>
+          <a onClick={()=>this.handleLogout()}>注销</a>
         </li>
      </DropdownButton>
   </td>
