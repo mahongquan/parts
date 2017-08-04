@@ -27,11 +27,47 @@
     var host="";
   </script>
   <script src="/static/backbone_parts/main.js"></script>
-
+ <script>
+   function hi(){
+    console.log("hi");
+    $("#myModal_test").modal("show");
+   };
+ </script>
 {% endblock %} 
 {% block content %}
 
   <div id="todoapp">
+  <div class="modal fade" id="myModal_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑仪器信息</h4>
+            </div>
+            <div class="modal-body">
+            <div id="id_contact_edit"></div>
+            <div id="id_usepack_edit"></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+  <button class="btn btn-primary btn-lg" onclick="hi()">开始演示模态框</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal_test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body">在这里添加一些文本</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
     <div>
     <table>
     <tr>
@@ -88,6 +124,7 @@
       <a id="bt_prev">前一页</a> <label id="page">page/page</label></input><a id="bt_next">后一页</a><input id="page_input" value="1" maxlength="6" size="6" /><button id="page_go"  class="btn btn-info">跳转</button>
     </div>
   </div>
+  <!--=========================================================================-->
   <script type="text/template" id="contact-template">
   <td>
       <%- id %>
@@ -122,10 +159,12 @@
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="contact-edit2-template">
-  <div id="id_contact_edit"></div>
-  <div id="id_usepack_edit"></div>
+     <div id="id_contact_edit"></div>
+            <div id="id_usepack_edit"></div>
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="contact-edit-template">
         <table id="table_input" class="table-condensed" >
 <tr >
@@ -222,6 +261,7 @@
        <div align="left"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button></div>
         <div id="id_usepacks"></div>
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="login-template">
         <table class="table-condensed">
         <tr hidden="true">
@@ -251,6 +291,7 @@
         </table>
         <button id="bt_login">提交</button>
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="delete-template">
         <table >
           <tr>
@@ -266,6 +307,7 @@
           </tr>
         </table>
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="usepack-list-template">
   <div >
       <!-- div id="contact-info">
@@ -289,11 +331,13 @@
       </div>
   </div>
   </script>
+  <!--=========================================================================-->
   <script type="text/template" id="usepack-template">
     　　　<td><%- id %></td><td><%- name %></td><td hidden="true"><%- contact %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- hetongbh %></td><td>
     <button class="usepack_edit" data="<%- id %>">编辑</button>
     <button  class="usepack_delete" data="<%- id %>">删除</button></td>
   </script>
+  <!--=========================================================================-->
 <script type="text/template" id="packitem-list-template">
   <div class="container">
       <div id="pack-info">
@@ -319,6 +363,7 @@
       </div>
   </div>
   </script>
+  <!--=========================================================================-->
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
     　　　<td><%- id %></td>
@@ -326,6 +371,7 @@
     <td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td><input type="checkbox" id="quehuo" disabled="disabled" name="quehuo" checked="<%- quehuo %>"></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td>
     <td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
+  <!--=========================================================================-->
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
             <tr hidden="true">
@@ -395,12 +441,14 @@
             </table>
         <button  class="btn btn-primary" id="bt_save_item">保存</button>
     </script>
+    <!--=========================================================================-->
    <script type="text/template" id="upload-template">
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
  </script>
+ <!--=========================================================================-->
     <script type="text/template" id="check-template">
     <p>仪器编号<%- yiqibh %>备料计划核对，请上传备料计划导出的Excel文件</p>
     <form  id="uploadForm" enctype="multipart/form-data">
@@ -410,6 +458,7 @@
     </form>
     <div id="resultlist"></div>
  </script>
+ <!--=========================================================================-->
  <script  type="text/template" id="importstandard-template">
       <form  id="uploadForm" enctype="multipart/form-data">
       <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value=""/>
@@ -429,6 +478,7 @@
       <!-- <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a> -->
     </div>
  </script>
+ <!--=========================================================================-->
    <script type="text/template" id="pack-template">
   <td>
       <%- id %>
@@ -436,6 +486,7 @@
       <%- name %>
  </td>
   </script>
+  <!--=========================================================================-->
 <script type="text/template" id="waiting-template">
   <p>请等待。。。。。
   </p>
