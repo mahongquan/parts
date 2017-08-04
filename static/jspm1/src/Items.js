@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {Modal} from "react-bootstrap";
 import Client from './Client';
-import {NavItem,Table} from "react-bootstrap";
-class DlgItems extends Component {
+import {Table} from "react-bootstrap";
+class Items extends Component {
   mystate = {
     start:0,
     limit:5,
@@ -30,7 +29,7 @@ class DlgItems extends Component {
   close=()=>{
     this.setState({ showModal: false });
   }
-  open=()=>{
+  componentDidMount=() => {
    this.setState({ showModal: true });
    this.loaddata();
   }
@@ -107,12 +106,8 @@ class DlgItems extends Component {
   render=()=>{
     const contactRows = this.state.contacts.map(this.mapfunc);
     return (
-        <NavItem eventKey={4} href="#" onClick={this.open}>备件
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>备件</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+          <div>
+          <p>items</p>
            <Table responsive bordered condensed><thead>
            <tr>
            <th>ID</th>
@@ -123,14 +118,12 @@ class DlgItems extends Component {
            <th>图片</th>
            </tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
       <a onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}../{this.state.total}</label>
+      <label id="page">{this.state.start+1}/{this.state.total}</label>
       <a onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
-          </Modal.Body>
-        </Modal>
-        </NavItem>
+          </div>
     );
   }
 };
-export default DlgItems;
+export default Items;
