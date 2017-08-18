@@ -18,7 +18,7 @@ const DlgFolder = createReactClass({
   open() {
     var self=this;
    this.setState({ showModal: true });
-   Client.get("/parts/folder",{id:this.props.contact_id}, function(result){
+   Client.get("/parts/folder/",{id:this.props.contact_id}, function(result){
        console.info(result);
        if (!result.success){
           self.setState({error:result.message});

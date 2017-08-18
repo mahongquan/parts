@@ -84,6 +84,7 @@ class ContactEdit2New  extends Component{
         yiqibh:"",
         yiqixinghao:""
       };
+      this.setState({hiddenPacks:true});
     }
     else{
       this.old=this.parent.state.contacts[this.index];

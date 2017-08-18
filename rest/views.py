@@ -1236,6 +1236,9 @@ def readStandardFile(fn,filename):
                 onedan.append(cells)
             else:
                 pass
+    logging.info(onedan)
+    if len(onedan)>0:
+        dan.append(onedan)
     rs=[]
     for one in dan:
         r=treatOne(one,filename)

@@ -3,3 +3,4 @@ python-docx-0.8.6
 numpy
 openpyxl
 xlrd
+pillow
