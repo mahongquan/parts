@@ -5,7 +5,6 @@ from mysite import mainview
 #admin.autodiscover()
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
-from ajax_select import urls as ajax_select_urls
 import django
 urlpatterns = [
     url(r'^$', mainview.index),
