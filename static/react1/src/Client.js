@@ -1,4 +1,48 @@
 /* eslint-disable no-undef */
+// function myFetch(url) {
+//   return fetch(url).then(res => {
+//     if (res.ok) {
+//       return res.json();
+//     } else {      
+//       throw `${res.status}, ${res.statusText}`;
+//     }
+//   })
+//   .then(json => {
+//     return json;
+//   })
+//   .catch(err => {
+//     throw err;
+//   });
+// }
+// 调用 myFetch 代码
+
+// meFetch(url)
+// .then((data) => {
+//   // 处理正确返回的数据
+// })
+// .catch((error) => {
+//   // 处理错误
+// });
+// 也可以用 Promise 包装下 fetch，代码看起来可能更简单点：
+
+// function myFetch(url) {
+//   return new Promise((resolve, reject) => {
+//     fetch(url).then(res => {
+//       if (res.ok) {
+//         return res.json();
+//       } else {      
+//         throw `${res.status}, ${res.statusText}`;
+//       }
+//     })
+//     .then(json => {
+//       resolve(json);
+//     })
+//     .catch(err => {
+//       reject(err);
+//     });
+//   });
+// }
+/////////////
 import queryString from 'query-string';
 function getRaw(url,cb) {
   var method="GET";
@@ -73,15 +117,27 @@ function postForm(url,data,cb) {
     .then(parseJSON)
     .then(cb);
 }
+function failFetch(){
+  console.log("failFetch");
+}
+
 function contacts(data, cb) {
   var query=queryString.stringify(data)
   return fetch(`/rest/Contact?${query}`, {
     credentials: 'include',
     'Content-Type': 'application/json',
     accept: 'application/json',
-  }).then(checkStatus)
-    .then(parseJSON)
+  }).then(checkStatus2,failFetch)
+    .then(parseJSON2)
     .then(cb);
+}
+function checkStatus2(response){
+  try{
+    return checkStatus(response);
+  }
+  catch(e){
+    alert(e);
+  } 
 }
 function UsePacks(query, cb) {
   return fetch(`/rest/UsePack?contact=${query}`, {
@@ -124,6 +180,7 @@ function logout( cb) {
     .then(parseJSON)
     .then(cb);
 }
+
 function login(username,password,cb) {
   var payload = {
     username: username,
@@ -139,6 +196,7 @@ function login(username,password,cb) {
     .then(parseJSON)
     .then(cb);
 }
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -146,15 +204,35 @@ function checkStatus(response) {
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;
   error.response = response;
-  console.log(error); // eslint-disable-line no-console
+  // console.log(error); // eslint-disable-line no-console
+  //alert("请刷新网页")
   throw error;
 }
 
 function parseJSON(response) {
   console.log("parse");
-  console.log(response.body);
-  var r= response.json();
-  return r;
+  //window.response=response;
+  //for var i in response.headers.entries();
+  console.log(response);
+  console.log(response.headers.get("content-type"));
+  if(response.headers.get("content-type")==="text/html; charset=utf-8")
+  {
+    const error = new Error("无效响应");
+    alert("\n请登录")
+    throw error;
+  }
+  else{
+    var r= response.json();
+    return r;
+  }
+}
+function parseJSON2(response) {
+  try{
+    return parseJSON(response);
+  }
+  catch(e){
+
+  }
 }
 
 const Client = {getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};

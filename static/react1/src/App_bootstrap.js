@@ -192,7 +192,7 @@ class App extends Component {
         <a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
          <DlgUrl url="/rest/updateMethod" parent={this} index={idx} data={{id:contact.id}} title="更新方法" />
          <DlgWait contact_id={contact.id} title="全部文件" />
-         <DlgCheck contact_id={contact.id} title="核对备料计划" />
+         <DlgCheck yiqibh={contact.yiqibh} contact_id={contact.id} title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
     
     { 

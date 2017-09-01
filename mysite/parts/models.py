@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
+from django.db.models.deletion import CASCADE, SET_DEFAULT, SET_NULL
 import myutil
 def addItem(items,item):
     find=False
@@ -76,8 +77,8 @@ class Pack(models.Model):
         verbose_name="包"
         verbose_name_plural=verbose_name
 class UsePack(models.Model):
-    contact=models.ForeignKey(Contact,verbose_name="合同")#合同
-    pack=models.ForeignKey(Pack,verbose_name="包")#备件
+    contact=models.ForeignKey(Contact,on_delete=CASCADE,verbose_name="合同")#合同
+    pack=models.ForeignKey(Pack,on_delete=CASCADE,verbose_name="包")#备件
     def __str__(self):
         return self.contact.hetongbh+"_"+self.pack.name
     class Meta:
@@ -126,8 +127,8 @@ class Item(models.Model):
         verbose_name="备件"
         verbose_name_plural=verbose_name
 class PackItem(models.Model):
-    pack=models.ForeignKey(Pack,verbose_name="包")#合同
-    item=models.ForeignKey(Item,verbose_name="备件")#备件
+    pack=models.ForeignKey(Pack,on_delete=CASCADE,verbose_name="包")#合同
+    item=models.ForeignKey(Item,on_delete=CASCADE,verbose_name="备件")#备件
     ct=  models.FloatField(verbose_name="数量",default=1)#数量
     quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
@@ -170,8 +171,8 @@ class Danju(models.Model):
         verbose_name="单据"
         verbose_name_plural="单据"
 class DanjuItem(models.Model):
-    danju=models.ForeignKey(Danju,verbose_name="单据")#合同
-    item=models.ForeignKey(Item,verbose_name="备件")#备件
+    danju=models.ForeignKey(Danju,on_delete=CASCADE,verbose_name="单据")#合同
+    item=models.ForeignKey(Item,on_delete=CASCADE,verbose_name="备件")#备件
     ct=  models.IntegerField(verbose_name="数量",default=1)#数量
     def __str__(self):
         return self.danju.beizhu+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
