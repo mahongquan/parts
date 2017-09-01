@@ -192,3 +192,9 @@ def contactOne(request,id=None):
         rec.save()
         output=rec.json()
         return HttpResponse(json.dumps(output, ensure_ascii=False))         
+    if request.method == 'DELETE':
+        rec=Item.objects.get(id=int(id))
+        rec.delete()
+        output={"success":True}
+        return HttpResponse(json.dumps(output, ensure_ascii=False)) 
+

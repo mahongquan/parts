@@ -3,7 +3,7 @@ app.controller("ContactsDeleteCtrl", function($scope, $routeParams, $location, C
   if ($routeParams.id) {
     $scope.contact = Contact.show({ id: $routeParams.id });
   } else {
-    $scope.contact = new Contact();
+    //$scope.contact = new Contact();
   }
 
   $scope.submit = function() {
@@ -28,9 +28,9 @@ app.controller("ContactsDeleteCtrl", function($scope, $routeParams, $location, C
     }
 
     if ($routeParams.id) {
-      Contact.update($scope.contact, success, failure);
+      Contact.destroy($scope.contact, success, failure);
     } else {
-      Contact.create($scope.contact, success, failure);
+      //Contact.create($scope.contact, success, failure);
     }
 
   };
