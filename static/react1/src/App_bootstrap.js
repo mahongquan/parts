@@ -15,6 +15,7 @@ import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
+import DlgPacks from './DlgPacks';
 var host="";
 class App extends Component {
   mystate = {
@@ -33,6 +34,7 @@ class App extends Component {
     search:"",
     start_input:1,
     currentIndex:null,
+    baoxiang:"",
   }
   componentDidMount=() => {
     this.load_data();
@@ -136,6 +138,7 @@ class App extends Component {
   };
   onSelectBaoxiang=(e) => {
     this.mystate.baoxiang=e;
+    this.setState({baoxiang:e});
     this.load_data();
   }
   auto_change=(event, value)=>{
@@ -237,6 +240,7 @@ class App extends Component {
     </Navbar.Header>
     <Nav>
       <NavItem eventKey={1} href="#">合同</NavItem>
+      <DlgPacks />
       <DlgItems />
       <DlgCopyPack />
       <DlgStat />
@@ -268,7 +272,8 @@ class App extends Component {
         <DlgImport/>
   </td>
    <td>
-    <DropdownButton title="过滤" id="id_dropdown2">
+   <label>过滤</label>
+    <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>

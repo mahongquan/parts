@@ -733,14 +733,13 @@ def view_pack(request):
     start=int(request.GET.get("start","0"))
     limit=int(request.GET.get("limit","20"))
     search=request.GET.get("search",'')
-    search_bh=request.GET.get("search_bh",'')
     logging.info("search="+search)
     if search!='':
         total=Pack.objects.filter(name__contains=search).count()
-        objs = Pack.objects.filter(name__contains=search)[start:start+limit]
+        objs = Pack.objects.filter(name__contains=search).order_by('-id')[start:start+limit]
     else:
         total=Pack.objects.count()
-        objs = Pack.objects.all()[start:start+limit]
+        objs = Pack.objects.all().order_by('-id')[start:start+limit]
     data=[]
     for rec in objs:
         data.append({"id":rec.id,"name":rec.name})
@@ -983,7 +982,7 @@ def view_pack1(request):
         objs =Pack.objects.filter(name__contains=search_bh).order_by("-id")[start:start+limit]
     else:
         total=Pack.objects.count()
-        objs =Pack.objects.all()[start:start+limit]
+        objs =Pack.objects.all().order_by("-id")[start:start+limit]
     #total=Pack.objects.count()
     #objs = Pack.objects.all()[start:start+limit]
     data=[]
