@@ -289,7 +289,7 @@ def view_item(request):
     logging.info("here")
     #pack_id=int(request.GET.get("pack"))
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","20"))
+    limit=int(request.GET.get("limit","2000"))
     search=request.GET.get("query",'')
     if search!='':
         total=Item.objects.filter(Q(name__icontains=search)).count()# | Q(bh__icontains=search)
@@ -1037,7 +1037,7 @@ def view_packItem(request):
     logging.info("view_packitem")
     contact=int(request.GET.get("pack","0"))
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","20"))
+    limit=int(request.GET.get("limit","2000"))
     # search_bh=request.GET.get("search",'')
     # if search_bh!='':
     #     total=PackItem.objects.filter(name__contains=search_bh).count()
