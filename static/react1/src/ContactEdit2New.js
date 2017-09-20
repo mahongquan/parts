@@ -124,6 +124,7 @@ class ContactEdit2New  extends Component{
   // },
   handleCopy=(data)=> {
      console.log("copy");
+     this.index=null;
      var contact2=update(this.state.contact,{id:{$set:""}});
      console.log(contact2);
      this.setState({contact:contact2});

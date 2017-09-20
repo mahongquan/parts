@@ -26,7 +26,7 @@ class PackItemEditNew extends Component{
   }
 
   open2=(idx)=>{
-    this.setState({ showModal: true });
+    this.setState({ showModal: true,bg:{}});
     this.index=idx;
     if (this.index==null){
       this.old={};
