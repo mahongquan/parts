@@ -28,6 +28,7 @@ class App extends Component {
   }
    state = {
     contacts: [],
+    limit:10,
     user: "AnonymousUser",
     start:0,
     total:0,
@@ -54,6 +55,7 @@ class App extends Component {
         this.mystate.total=contacts.total;//because async ,mystate set must before state;
         this.setState({
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          limit:this.mystate.limit,
           user: user,
           total:contacts.total,
           start:this.mystate.start
@@ -214,7 +216,9 @@ class App extends Component {
     if(this.state.start===0){
       hasprev=false;
     }
+    console.log(this.state.start+this.state.limit>=this.state.total);
     if(this.state.start+this.state.limit>=this.state.total){
+
       hasnext=false;
     }
     if (hasprev){

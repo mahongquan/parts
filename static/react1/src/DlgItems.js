@@ -38,8 +38,7 @@ class DlgItems extends Component {
    Client.get("/rest/Item",
       { start:this.mystate.start,
         limit:this.mystate.limit,
-        search:this.mystate.search,
-        baoxiang:this.mystate.baoxiang,
+        query:this.mystate.search,
       }, 
       (contacts2) => {
         var user=contacts2.user;
@@ -84,6 +83,14 @@ class DlgItems extends Component {
   handlePageChange= (e) => {
     this.setState({start_input:e.target.value});
   };
+  handleSearchChange = (e) => {
+    this.mystate.search=e.target.value;
+    this.setState({search:this.mystate.search});
+  };
+  search = (e) => {
+    this.mystate.start=0;
+    this.loaddata();
+  };
   mapfunc=(contact, idx) => {
       if (contact.image==="")
         return (<tr key={idx} >
@@ -106,6 +113,32 @@ class DlgItems extends Component {
   }
   render=()=>{
     const contactRows = this.state.contacts.map(this.mapfunc);
+        var hasprev=true;
+    var hasnext=true;
+    let prev;
+    let next;
+    console.log(this.mystate);
+    console.log(this.state);
+    if(this.state.start===0){
+      hasprev=false;
+    }
+    console.log(this.state.start+this.mystate.limit>=this.state.total);
+    if(this.state.start+this.mystate.limit>=this.state.total){
+
+      hasnext=false;
+    }
+    if (hasprev){
+      prev=(<a onClick={this.handlePrev}>前一页</a>);
+    }
+    else{
+      prev=null;
+    }
+    if(hasnext){
+      next=(<a onClick={this.handleNext}>后一页</a>);
+    }
+    else{
+      next=null;
+    }
     return (
         <NavItem eventKey={4} href="#" onClick={this.open}>备件
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
@@ -113,6 +146,8 @@ class DlgItems extends Component {
             <Modal.Title>备件</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+          <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
+          <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
            <Table responsive bordered condensed><thead>
            <tr>
            <th>ID</th>
@@ -122,9 +157,9 @@ class DlgItems extends Component {
            <th>单位</th>
            <th>图片</th>
            </tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
-      <a onClick={this.handlePrev}>前一页</a> 
+      {prev}
       <label id="page">{this.state.start+1}../{this.state.total}</label>
-      <a onClick={this.handleNext}>后一页</a>
+      {next}
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
           </Modal.Body>
