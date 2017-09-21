@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {NavItem,Table} from "react-bootstrap";
+import PackEdit from './PackEdit';
+
 class DlgPacks extends Component {
   mystate = {
     start:0,
@@ -91,17 +93,22 @@ class DlgPacks extends Component {
     this.mystate.start=0;
     this.loaddata();
   };
+   handleEdit=(pack_id)=>{
+    //this.setState({currentIndex:idx,showModal:true});
+    this.refs.edit1.open(pack_id);
+  }
   mapfunc=(contact, idx) => {
-      if (contact.image==="")
+    if (contact.name)
         return (<tr key={idx} >
           <td>{contact.id}</td>
-          <td>{contact.name}</td>
+          <td><a onClick={()=>this.handleEdit(contact.id)}>{contact.name}</a></td>
         </tr>);
-      else
+   else
         return (<tr key={idx} >
           <td>{contact.id}</td>
-          <td>{contact.name}</td>
+          <td><a onClick={()=>this.handleEdit(contact.id)}>[NONAME]</a></td>
         </tr>);
+
   }
   render=()=>{
     const contactRows = this.state.contacts.map(this.mapfunc);
@@ -138,6 +145,7 @@ class DlgPacks extends Component {
             <Modal.Title>备件</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+          <PackEdit ref="edit1" title="编辑"  />
           <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
           <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
            <Table responsive bordered condensed><thead>
