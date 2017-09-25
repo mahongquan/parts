@@ -39,7 +39,9 @@ class PackItemEditNew extends Component{
   }
   handleSave=(data)=>{
     var url="/rest/BothPackItem";
+    console.log(this.state.packitem);
     Client.postOrPut(url,this.state.packitem,(res) => {
+      console.log(res);
         this.setState({contact:res.data});
         this.parent.handlePackItemChange(this.index,res.data);
         this.old=res.data;
@@ -139,7 +141,7 @@ class PackItemEditNew extends Component{
                 </td>
                 <td>
                     <input type="text" style={{"backgroundColor":this.state.bg.danwei}}
-                    id="danwei" name="ct"  value={this.state.packitem.danwei} onChange={this.handleChange} />
+                    id="danwei" name="danwei"  value={this.state.packitem.danwei} onChange={this.handleChange} />
                 </td>
             </tr> 
             <tr>

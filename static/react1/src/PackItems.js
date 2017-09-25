@@ -109,6 +109,7 @@ class PackItems extends React.Component {
         <td >{item.name}</td>
         <td>{item.guige}</td>
         <td>{item.ct}</td>
+        <td>{item.danwei}</td>
         <td>{item.bh}</td>
         <td  hidden={this.state.release}>{item.pack}</td>
         <td><input type="checkbox" disabled="disabled" name="quehuo" defaultChecked={item.quehuo}  /></td>
@@ -127,6 +128,7 @@ class PackItems extends React.Component {
               <td>名称</td>
               <td>规格</td>
               <td>数量</td>
+              <td>单位</td>
               <td>编号</td>
               <td  hidden={this.state.release}>pack</td>
               <td>缺货</td>
