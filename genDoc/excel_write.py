@@ -8,6 +8,14 @@ from genDoc.genData import genTest,genjmd,genTestR
 import os
 from mysite.settings import MEDIA_ROOT
 import logging
+def yearbeforeday(d):
+    try:
+        d1=datetime.datetime(d.year+1,d.month,d.day)
+        d1=d1+datetime.timedelta(-1)
+    except ValueError as e:
+        d1=datetime.datetime(d.year+1,d.month,d.day-1)
+        d1=d1+datetime.timedelta(-1)
+    return d1
 def getElement(chanels,first):
     if first=="":
         return 
@@ -53,7 +61,7 @@ def genJiaozhunO(c,fn):
     setCell(table,32,8,str(d1.year))#setCell(table,32,8).FormulaR1C1 =d1.year#年
     setCell(table,32,12,str(d1.month))#setCell(table,32,12).Value =d1.month#月
     setCell(table,32,16,str(d1.day))#setCell(table,32,16).Value =d1.day#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))#setCell(table,35,8).Value =d2.year#年
     setCell(table,35,12,str(d2.month))#setCell(table,35,12).Value =d2.month#月
     setCell(table,35,16,str(d2.day))#setCell(table,35,16).Value =d2.day#日
@@ -95,7 +103,7 @@ def genJiaozhunOH(c,fn):
     setCell(table,32,8,str(d1.year))#年
     setCell(table,32,12,str(d1.month))#月
     setCell(table,32,16,str(d1.day))#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))#年
     setCell(table,35,12,str(d2.month))#月
     setCell(table,35,16,str(d2.day))#日
@@ -148,7 +156,7 @@ def genJiaozhunN(c,fn):
     setCell(table,32,8,str(d1.year))#年
     setCell(table,32,12,str(d1.month))#月
     setCell(table,32,16,str(d1.day))#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))#年
     setCell(table,35,12,str(d2.month))#月
     setCell(table,35,16,str(d2.day))#日
@@ -194,7 +202,7 @@ def genJiaozhunON(c,fn):
     setCell(table,32,8,str(d1.year))# setCell(table,32,8).FormulaR1C1 =d1.year#年
     setCell(table,32,12,str(d1.month))# setCell(table,32,12).Value =d1.month#月
     setCell(table,32,16,str(d1.day))# setCell(table,32,16).Value =d1.day#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))# setCell(table,35,8).Value =d2.year#年
     setCell(table,35,12,str(d2.month))# setCell(table,35,12).Value =d2.month#月
     setCell(table,35,16,str(d2.day))# setCell(table,35,16).Value =d2.day#日
@@ -249,7 +257,7 @@ def genJiaozhunCS(c,fn):
     setCell(table,32,8,str(d1.year))# setCell(table,32,8).FormulaR1C1 =d1.year#年
     setCell(table,32,12,str(d1.month))# setCell(table,32,12).Value =d1.month#月
     setCell(table,32,16,str(d1.day))# setCell(table,32,16).Value =d1.day#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))# setCell(table,35,8).Value =d2.year#年
     setCell(table,35,12,str(d2.month))# setCell(table,35,12).Value =d2.month#月
     setCell(table,35,16,str(d2.day))# setCell(table,35,16).Value =d2.day#日
@@ -347,7 +355,7 @@ def genJiaozhunONH(c,fn):
     setCell(table,32,8,str(d1.year))# setCell(table,32,8).FormulaR1C1 =d1.year#年
     setCell(table,32,12,str(d1.month))# setCell(table,32,12).Value =d1.month#月
     setCell(table,32,16,str(d1.day))# setCell(table,32,16).Value =d1.day#日
-    d2=d+datetime.timedelta(364)
+    d2=yearbeforeday(d1)
     setCell(table,35,8,str(d2.year))# setCell(table,35,8).Value =d2.year#年
     setCell(table,35,12,str(d2.month))# setCell(table,35,12).Value =d2.month#月
     setCell(table,35,16,str(d2.day))# setCell(table,35,16).Value =d2.day#日

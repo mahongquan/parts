@@ -39,7 +39,9 @@ class PackItemEditNew extends Component{
   }
   handleSave=(data)=>{
     var url="/rest/BothPackItem";
+    console.log(this.state.packitem);
     Client.postOrPut(url,this.state.packitem,(res) => {
+      console.log(res);
         this.setState({contact:res.data});
         this.parent.handlePackItemChange(this.index,res.data);
         this.old=res.data;
@@ -115,22 +117,33 @@ class PackItemEditNew extends Component{
                 <td>
                     <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={this.handleChange} />
                 </td>
-            </tr><tr>
+            </tr>
+            <tr>
                 <td>
                     <label>编号:</label>
                 </td>
                 <td>
                     <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
                 </td>
-            </tr><tr>
+            </tr>
+            <tr>
                 <td>
                     <label>数量:</label>
                 </td>
                 <td>
                     <input type="text" style={{"backgroundColor":this.state.bg.ct}}
-                    id="yujifahuo_date" name="ct"  value={this.state.packitem.ct} onChange={this.handleChange} />
+                    id="ct" name="ct"  value={this.state.packitem.ct} onChange={this.handleChange} />
                 </td>
             </tr>  
+            <tr>
+                <td>
+                    <label>单位:</label>
+                </td>
+                <td>
+                    <input type="text" style={{"backgroundColor":this.state.bg.danwei}}
+                    id="danwei" name="danwei"  value={this.state.packitem.danwei} onChange={this.handleChange} />
+                </td>
+            </tr> 
             <tr>
                 <td>
                     <label>缺货:</label>

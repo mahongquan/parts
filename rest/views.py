@@ -928,7 +928,7 @@ def create_BothPackItem(request):
         rec.ct=1
         rec.save()
         output={"success":True,"message":"Created new User" +str(rec.id)}
-        output["data"]={"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
+        output["data"]={"id":rec.id,"name":rec1.name,"danwei":rec1.danwei,"guige":rec1.guige,"ct":rec1.ct,"bh":rec1.bh,"pack":rec.pack.id}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     else:
         output={"success":False,"message":"No enough parameters"}
@@ -943,6 +943,8 @@ def update_BothPackItem(request):
         rec1.name=data["name"]
     if data.get("guige")!=None:
         rec1.guige=data["guige"]
+    if data.get("danwei")!=None:
+        rec1.danwei=data["danwei"]
     if data.get("bh")!=None:
         rec1.bh=data["bh"]
     rec1.save()
@@ -956,7 +958,7 @@ def update_BothPackItem(request):
     if recChange:
         rec.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
-    output["data"]={"quehuo":rec.quehuo,"id":rec.id,"name":rec1.name,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    output["data"]={"quehuo":rec.quehuo,"id":rec.id,"name":rec1.name,"danwei":rec1.danwei,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
@@ -1245,6 +1247,7 @@ def readStandardFile(fn,filename):
             rs.append(r)
     return rs
 def treatOne(rows,fn):
+    logging.info(rows)
     r=None
     beizhu=rows[1][7]
     if beizhu[:2]=="CS" or beizhu[:2]=="ON":
@@ -1258,9 +1261,11 @@ def treatOne(rows,fn):
             d.name=rows[1][7]+"_"+fn
             d.save()
             n=len(rows)
-            items=rows[4:4+n-4-3]
+            items=rows[4:n]
             for i in items:
                 #i=DanjuItem()
+                if i[0]=="合计":
+                    break
                 print(i[1],i[2],i[3],i[4],i[5])
                 items=Item.objects.filter(bh=i[1]).all()
                 if len(items)>1:
