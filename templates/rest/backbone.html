@@ -1,23 +1,5 @@
 {% extends "base.html" %} 
 {% block extrahead %}
-    <style type="text/css">
-    td{ 
-      padding: 3px 3px 3px 3px; 
-    }
-    #page{ 
-      padding: 5px 5px 5px 5px;
-     /* background-color:green;*/
-    }
-    /*.contact_delete{margin:1px 20px 1px 1px;}
-    .contact_usepack{margin:1px 20px 1px 1px;}
-    .contact_zxd{margin:1px 20px 1px 1px;}*/
-    .contact_updatemethod{margin:1px 2px 1px 2px;}
-    .contact_allfile{margin:1px 2px 1px 2px;}
-    thead tr{ font-weight:bold;}
-    .table_input{background-color:green;}
-    .newClass { background-color:#8888ff;}
-
-  </style>
   <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.css" />
   <script type="text/javascript" src="/static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
   <script src="/static/backbone_parts/bootstrap3-typeahead.min.js"></script>
@@ -35,6 +17,29 @@
     $("#myModal_test").modal("show");
    };
  </script>
+     <style type="text/css">
+    td{ 
+      padding: 3px 3px 3px 3px; 
+    }
+    #page{ 
+      padding: 5px 5px 5px 5px;
+     /* background-color:green;*/
+    }
+    a{
+      text-decoration: underline;
+      font-style:italic;
+      color:#006;
+    }
+    .contact_edit{text-decoration: underline;}
+    /*.contact_delete{margin:1px 20px 1px 1px;}
+    .contact_usepack{margin:1px 20px 1px 1px;}
+    .contact_zxd{margin:1px 20px 1px 1px;}*/
+    .contact_updatemethod{margin:1px 2px 1px 2px;}
+    .contact_allfile{margin:1px 2px 1px 2px;}
+    thead tr{ font-weight:bold;}
+    .table_input{background-color:green;}
+    .newClass { background-color:#8888ff;}
+  </style>
 {% endblock %} 
 {% block content %}
 
@@ -169,7 +174,7 @@
  </td><td>
       <%- yiqixinghao %>
  </td><td>
-     <a class="contact_edit"> <%- yiqibh %></a>
+     <a class="contact_edit" href="#"> <%- yiqibh %></a>
  </td><td>
       <%- baoxiang %>
  </td><td>
@@ -183,10 +188,12 @@
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
- <td><a class="contact_detail" data="<%- id %>">详细</a>
- <a class="contact_updatemethod" data="<%- id %>">更新方法</a>
+ <td><a href="#" class="contact_detail" data="<%- id %>">详细</a>
+ <a href="#" class="contact_updatemethod" data="<%- id %>">更新方法</a>
 <!-- <a class="contact_zxd" data="<%- id %>">装箱单</a><a class="contact_zs" data="<%- id %>">校准证书</a> -->
-<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> --><a class="contact_allfile" data="<%- id %>">全部文件</a><a class="contact_chuku" data="<%- id %>">核对备料计划</a>
+<!-- <a class="contact_quehuo" data="<%- id %>">缺货单</a> -->
+<a href="#" class="contact_allfile" data="<%- id %>">全部文件</a>
+<a href="#" class="contact_chuku" data="<%- id %>">核对备料计划</a>
 <button class="contact_folder" data="<%- id %>">资料文件夹</button>
 <!-- <a  class="contact_delete" data="<%- id %>">删除</a>
  </td> -->

@@ -113,7 +113,7 @@ class DlgItems extends Component {
   }
   render=()=>{
     const contactRows = this.state.contacts.map(this.mapfunc);
-        var hasprev=true;
+    var hasprev=true;
     var hasnext=true;
     let prev;
     let next;
