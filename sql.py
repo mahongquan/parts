@@ -3,9 +3,9 @@ import codecs
 import sqlite3
 import traceback
 conn = sqlite3.connect('data.sqlite')
+conn = sqlite3.connect('data - 副本.sqlite')
 c = conn.cursor()
-
-# c.execute('select * from parts_contact order by yiqibh')
+c.execute('select * from parts_pack where name="ON必备英文"')
 # # items=[]
 # for row in c:
 # 	s=""
