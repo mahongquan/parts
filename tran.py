@@ -24,4 +24,10 @@ for row in c:
 	old=getOld(row[2])
 	if old!=None:
 		#rename to old
+		print(old)
+		cmd="update parts_item set name='%s',danwei='%s' where id=%d" %(old[2],old[5],row[2])
+		print(cmd)
+		c3= conn.cursor()
+		c3.execute(cmd)
+conn.commit()
 
