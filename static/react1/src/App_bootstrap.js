@@ -64,8 +64,14 @@ class App extends Component {
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-    console.log(contacts2);
+    let contacts2
+    if (idx){
+      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      console.log(contacts2);
+    }
+    else{
+      contacts2=update(this.state.contacts,{$unshift: [contact]});
+    }
     this.setState({contacts:contacts2});
   };
   handleUserChange = (user) => {

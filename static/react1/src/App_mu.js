@@ -16,38 +16,50 @@ import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
 injectTapEventPlugin();
 //var user = "";
+var host="";
 class App extends Component {
-  state = {
-    contacts: [],
-    showRemoveIcon: false,
-    searchValue: '',
-    open: false,
+  mystate = {
+    start:0,
+    limit:10,
+    total:0,
+    baoxiang:"",
     logined: false,
-    user: "AnonymousUser",
-    selected:null,
-    test_input:"",
-  //csrf_token:"",
+    search:""
   }
-
+   state = {
+    contacts: [],
+    limit:10,
+    user: "AnonymousUser",
+    start:0,
+    total:0,
+    search:"",
+    start_input:1,
+    currentIndex:null,
+    baoxiang:"",
+  }
   componentDidMount=() => {
-    Client.contacts("", (contacts) => {
-      var user=contacts.user;
-      if(user===undefined){
-        user="AnonymousUser"
-      }
-      this.setState({
-        contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        user: user,
-      });
-      if (user === "AnonymousUser") {
+    this.load_data();
+  }
+  load_data=()=>{
+    Client.contacts(
+      { start:this.mystate.start,
+        limit:this.mystate.limit,
+        search:this.mystate.search,
+        baoxiang:this.mystate.baoxiang,
+      }, 
+      (contacts) => {
+        var user=contacts.user;
+        if(user===undefined){
+          user="AnonymousUser"
+        }
+        this.mystate.total=contacts.total;//because async ,mystate set must before state;
         this.setState({
-          logined: false
+          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          limit:this.mystate.limit,
+          user: user,
+          total:contacts.total,
+          start:this.mystate.start
         });
-      } else {
-        this.setState({
-          logined: true
-        });
-      }
     });
   };
   // removeFoodItem = (itemIndex) => {
@@ -172,6 +184,48 @@ class App extends Component {
       });
     }
   };
+    handleSearchChange = (e) => {
+    this.mystate.search=e.target.value;
+    this.setState({search:this.mystate.search});
+  };
+  handlePrev = (e) => {
+    this.mystate.start=this.mystate.start-this.mystate.limit;
+    if(this.mystate.start<0) {this.mystate.start=0;}
+    this.load_data();
+  };
+  search = (e) => {
+    this.mystate.start=0;
+    this.load_data();
+  };
+  jump=()=>{
+    this.mystate.start=parseInt(this.state.start_input,10)-1;
+    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
+        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
+    if(this.mystate.start<0)
+    {
+      this.mystate.start=0;
+    }
+    this.load_data();
+  };
+  handlePageChange= (e) => {
+    this.setState({start_input:e.target.value});
+  };
+
+  onDetailClick=(contactid)=>{
+    console.log(contactid);
+    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+  }
+  handleNext = (e) => {
+    this.mystate.start=this.mystate.start+this.mystate.limit;
+    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
+        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
+    if(this.mystate.start<0)
+    {
+      this.mystate.start=0;
+    }
+    this.load_data();
+  };
+
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -203,14 +257,57 @@ class App extends Component {
         <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
       </TableRow>
     ));
+    var hasprev=true;
+    var hasnext=true;
+    let prev;
+    let next;
+    console.log(this.mystate);
+    console.log(this.state);
+    if(this.state.start===0){
+      hasprev=false;
+    }
+    console.log(this.state.start+this.state.limit>=this.state.total);
+    if(this.state.start+this.state.limit>=this.state.total){
+
+      hasnext=false;
+    }
+    if (hasprev){
+      prev=(<button onClick={this.handlePrev}>前一页</button>);
+    }
+    else{
+      prev=null;
+    }
+    if(hasnext){
+      next=(<button onClick={this.handleNext}>后一页</button>);
+    }
+    else{
+      next=null;
+    }
     return (
       <div className="App">
-        <input onChange={this.inputChange} ref="input" value={this.state.test_input}></input>
         <MuiThemeProvider>
         <div>
          <Toolbar>
-        <ToolbarGroup>
-          <ToolbarTitle text="仪器信息" />
+           <ToolbarGroup>
+                <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{
+            horizontal: 'left',
+            vertical: 'bottom'
+          }}
+          targetOrigin={{
+            horizontal: 'left',
+            vertical: 'top'
+          }}
+          onRequestClose={this.handleRequestClose}
+          >
+          <Menu>
+            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
+          </Menu>
+        </Popover>
+          <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
+                </DialogExampleSimple>
           <TextField
       id="id_search"
       type='text'
@@ -232,29 +329,8 @@ class App extends Component {
         <RaisedButton  onTouchTap={this.handleTouchTap}
       label={this.state.user}>
         </RaisedButton>
-        <Popover
-      open={this.state.open}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{
-        horizontal: 'left',
-        vertical: 'bottom'
-      }}
-      targetOrigin={{
-        horizontal: 'left',
-        vertical: 'top'
-      }}
-      onRequestClose={this.handleRequestClose}
-      >
-          <Menu>
-            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
-          </Menu>
 
-        </Popover>
        </div>
-        </ToolbarGroup>
-        <ToolbarGroup>
-                <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
-                </DialogExampleSimple>
         </ToolbarGroup>
       </Toolbar>
         <Table>
@@ -271,6 +347,10 @@ class App extends Component {
             {contactRows}
           </TableBody>
         </Table>
+        {prev}
+<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
+      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
         </div>
       </MuiThemeProvider>
       </div>

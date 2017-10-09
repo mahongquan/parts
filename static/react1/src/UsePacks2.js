@@ -34,6 +34,9 @@ class UsePacks2 extends React.Component {
     release:true,
   };
    componentWillReceiveProps(nextProps) {
+    if(nextProps.contact_hetongbh){
+      this.setState({newPackName:nextProps.contact_hetongbh});
+    }
     if(nextProps.contact_id){
       this.load_data(nextProps.contact_id);
     }
@@ -46,6 +49,9 @@ class UsePacks2 extends React.Component {
       });
   }
   componentDidMount=()=> {
+    if(this.props.contact_hetongbh){
+      this.setState({newPackName:this.props.contact_hetongbh});
+    }
     if(this.props.contact_id){
       this.load_data(this.props.contact_id);
     }
