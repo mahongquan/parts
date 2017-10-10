@@ -108,14 +108,15 @@ class PackItemEditNew extends Component{
                     名称:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="name" value={this.state.packitem.name} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.name}}  type="text" id="name" name="name" value={this.state.packitem.name} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>规格:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.guige}} type="text"  name="guige" 
+                    value={this.state.packitem.guige}  onChange={this.handleChange} />
                 </td>
             </tr>
             <tr>
@@ -123,7 +124,7 @@ class PackItemEditNew extends Component{
                     <label>编号:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.bh}} type="text" id="bh" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
                 </td>
             </tr>
             <tr>

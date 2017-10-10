@@ -106,6 +106,7 @@ class PackItems extends React.Component {
         key={idx}
       >
         <td >{item.id}</td>
+        <td >{item.itemid}</td>
         <td >{item.name}</td>
         <td>{item.guige}</td>
         <td>{item.ct}</td>
@@ -125,6 +126,7 @@ class PackItems extends React.Component {
           <thead>
              <tr>
               <td>id</td>
+              <td>备件id</td>
               <td>名称</td>
               <td>规格</td>
               <td>数量</td>
@@ -152,7 +154,7 @@ class PackItems extends React.Component {
               style={isHighlighted ? styles.highlightedItem : styles.item}
               key={item.id}
               id={item.id}
-            >{item.bh+"_"+item.name+"_"+item.guige}</div>
+            >{item.id+"_"+item.bh+"_"+item.name+"_"+item.guige}</div>
           )}
         />
       <p>新备件名称：
