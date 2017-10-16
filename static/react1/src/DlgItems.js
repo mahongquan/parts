@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {NavItem,Table} from "react-bootstrap";
+import ItemEdit from './ItemEdit'
+import update from 'immutability-helper';
 class DlgItems extends Component {
   mystate = {
     start:0,
@@ -11,7 +13,7 @@ class DlgItems extends Component {
     search:""
   }
    state = {
-      contacts: [],
+      items: [],
       user: "AnonymousUser",
       start:0,
       total:0,
@@ -46,7 +48,7 @@ class DlgItems extends Component {
           user="AnonymousUser"
         }
         this.setState({
-          contacts: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total:contacts2.total,
           start:this.mystate.start
@@ -59,6 +61,12 @@ class DlgItems extends Component {
     if(this.mystate.start<0) {this.mystate.start=0;}
     //this.setState({start:start});
     this.loaddata();
+  };
+  handlePackItemChange = (idx,contact) => {
+    console.log(idx);
+    const contacts2=update(this.state.items,{[idx]: {$set:contact}});
+    console.log(contacts2);
+    this.setState({items:contacts2});
   };
   handleNext = (e) => {
     this.mystate.start=this.mystate.start+this.mystate.limit;
@@ -91,12 +99,15 @@ class DlgItems extends Component {
     this.mystate.start=0;
     this.loaddata();
   };
+  handleEdit=(idx)=>{
+    this.refs.dlg.open2(idx);
+  }
   mapfunc=(contact, idx) => {
-      if (contact.image==="")
+      if (!contact.image || contact.image==="")
         return (<tr key={idx} >
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
-          <td>{contact.name}</td>
+          <td><a onClick={()=>this.handleEdit(idx)}>{contact.name}</a></td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
           <td></td>
@@ -105,14 +116,14 @@ class DlgItems extends Component {
         return (<tr key={idx} >
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
-          <td>{contact.name}</td>
+          <td><a onClick={()=>this.handleEdit(idx)}>{contact.name}</a></td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
           <td><img alt="no" src={"/media/"+contact.image} width="100" height="100"></img></td>
         </tr>);
   }
   render=()=>{
-    const contactRows = this.state.contacts.map(this.mapfunc);
+    const contactRows = this.state.items.map(this.mapfunc);
     var hasprev=true;
     var hasnext=true;
     let prev;
@@ -141,30 +152,31 @@ class DlgItems extends Component {
     }
     return (
         <NavItem eventKey={4} href="#" onClick={this.open}>备件
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>备件</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
-          <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
-           <Table responsive bordered condensed><thead>
-           <tr>
-           <th>ID</th>
-           <th>编号</th>
-           <th>名称</th>
-           <th>规格</th>
-           <th>单位</th>
-           <th>图片</th>
-           </tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
-      {prev}
-      <label id="page">{this.state.start+1}../{this.state.total}</label>
-      {next}
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
-          </Modal.Body>
-        </Modal>
-        </NavItem>
+          <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
+            <Modal.Header closeButton>
+              <Modal.Title>备件</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ItemEdit ref="dlg" parent={this} />
+              <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
+              <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
+               <Table responsive bordered condensed><thead>
+               <tr>
+               <th>ID</th>
+               <th>编号</th>
+               <th>名称</th>
+               <th>规格</th>
+               <th>单位</th>
+               <th>图片</th>
+               </tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
+              {prev}
+              <label id="page">{this.state.start+1}../{this.state.total}</label>
+              {next}
+              <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+              <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+           </Modal.Body>
+      </Modal>
+     </NavItem>
     );
   }
 };

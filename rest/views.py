@@ -338,12 +338,6 @@ def update_item(request):
     output={"success":True,"message":"update item " +str(rec.id)}
     output["data"]={"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
-    objs=User.objects.all()
-    data=[]
-    for rec in objs:
-        data.append({"id":rec.id,"hetongbh":rec.hetongbh,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang})
-    output={"data":data}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
 def destroy_item(request):
     requestPOST = json.loads(request.body.decode("utf-8"))
     id1=int(requestPOST["id"])

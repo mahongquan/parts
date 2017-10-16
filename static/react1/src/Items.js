@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
+import ItemEdit from './ItemEdit'
 class Items extends Component {
   mystate = {
     start:0,
@@ -107,6 +108,7 @@ class Items extends Component {
     const contactRows = this.state.contacts.map(this.mapfunc);
     return (
           <div>
+        
           <p>items</p>
            <Table responsive bordered condensed><thead>
            <tr>
