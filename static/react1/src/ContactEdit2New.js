@@ -136,6 +136,7 @@ class ContactEdit2New  extends Component{
       if(res.success){
         this.setState({contact:res.data});
         this.parent.handleContactChange(this.index,res.data);
+        if(this.index){}else{this.index=0;}
         this.old=res.data;
         this.setState({bg:{}});
         this.setState({hiddenPacks:false});
