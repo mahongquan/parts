@@ -39,7 +39,7 @@ function getRaw(url,cb) {
 }
 function get(url,data,cb) {
   url=url+"?"+queryString.stringify(data)
-  console.log(url);
+  //console.log(url);
   return getRaw(url,cb)
 }
 function delete1(url,data,cb) {
@@ -72,7 +72,7 @@ function postForm(url,data,cb) {
     });
 }
 function contacts(data, cb) {
-  console.log(data);
+  //console.log(data);
   return get("/rest/Contact",data,cb)
 }
 function UsePacks(query, cb) {
@@ -116,10 +116,10 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  console.log("parse");
+  //console.log("parse");
   //window.response=response;
   //for var i in response.headers.entries();
-  console.log(response);
+  //console.log(response);
   // console.log(response.headers.get("content-type"));
   // if(response.headers.get("content-type")==="text/html; charset=utf-8")
   // {

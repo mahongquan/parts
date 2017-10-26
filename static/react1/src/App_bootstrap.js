@@ -65,7 +65,7 @@ class App extends Component {
   handleContactChange = (idx,contact) => {
     console.log(idx);
     let contacts2
-    if (idx){
+    if (idx!=null){
       contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
       console.log(contacts2);
     }
@@ -181,7 +181,7 @@ class App extends Component {
     this.refs.contactedit.open2(idx);
   }
   render() {
-    console.log("render=========================");
+    //console.log("render=========================");
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
@@ -217,12 +217,12 @@ class App extends Component {
     var hasnext=true;
     let prev;
     let next;
-    console.log(this.mystate);
-    console.log(this.state);
+    //console.log(this.mystate);
+    //console.log(this.state);
     if(this.state.start===0){
       hasprev=false;
     }
-    console.log(this.state.start+this.state.limit>=this.state.total);
+    //console.log(this.state.start+this.state.limit>=this.state.total);
     if(this.state.start+this.state.limit>=this.state.total){
 
       hasnext=false;

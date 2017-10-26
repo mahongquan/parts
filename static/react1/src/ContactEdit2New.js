@@ -135,8 +135,17 @@ class ContactEdit2New  extends Component{
     Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
         this.setState({contact:res.data});
+        //console.log("after save======================")
+        //console.log(this.index);
         this.parent.handleContactChange(this.index,res.data);
-        if(this.index){}else{this.index=0;}
+        if(this.index){
+          //console.log("true");
+
+        }else{
+          //console.log("false");
+          this.index=0;
+        }
+        console.log(this.index)
         this.old=res.data;
         this.setState({bg:{}});
         this.setState({hiddenPacks:false});

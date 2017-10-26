@@ -89,7 +89,7 @@ class DlgCopyPack  extends React.Component{
               </td>
               <td>
                 <Autocomplete
-                  inputProps={{ id: 'states-autocomplete' }}
+                  inputProps={{ id: 'states-autocomplete',placeholder:"源包名称" }}
                   ref="autocomplete"
                   value={this.state.auto_value}
                   items={this.state.auto_items}

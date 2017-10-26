@@ -116,12 +116,12 @@ class DlgPacks extends Component {
     var hasnext=true;
     let prev;
     let next;
-    console.log(this.mystate);
-    console.log(this.state);
+    //console.log(this.mystate);
+    //console.log(this.state);
     if(this.state.start===0){
       hasprev=false;
     }
-    console.log(this.state.start+this.mystate.limit>=this.state.total);
+    //console.log(this.state.start+this.mystate.limit>=this.state.total);
     if(this.state.start+this.mystate.limit>=this.state.total){
 
       hasnext=false;
@@ -142,7 +142,7 @@ class DlgPacks extends Component {
         <NavItem eventKey={4} href="#" onClick={this.open}>包
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>备件</Modal.Title>
+            <Modal.Title>包</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <PackEdit ref="edit1" title="编辑"  />

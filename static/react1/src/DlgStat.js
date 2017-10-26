@@ -58,7 +58,7 @@ logChange=(val)=> {
               borderWidth:2
           }]
       };
-      console.log(data);
+      //console.log(data);
       var options= {
           scales: {
               yAxes: [{

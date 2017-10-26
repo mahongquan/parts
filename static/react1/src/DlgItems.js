@@ -128,12 +128,12 @@ class DlgItems extends Component {
     var hasnext=true;
     let prev;
     let next;
-    console.log(this.mystate);
-    console.log(this.state);
+    //console.log(this.mystate);
+    //console.log(this.state);
     if(this.state.start===0){
       hasprev=false;
     }
-    console.log(this.state.start+this.mystate.limit>=this.state.total);
+    //console.log(this.state.start+this.mystate.limit>=this.state.total);
     if(this.state.start+this.mystate.limit>=this.state.total){
 
       hasnext=false;
