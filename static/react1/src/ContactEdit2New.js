@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
+//import {Modal} from "react-bootstrap";
+
+import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
@@ -40,6 +40,7 @@ class ContactEdit2New  extends Component{
   }
 
   close=()=>{
+  	console.log("close");
     this.setState({ showModal: false });
   }
  // componentWillReceiveProps(nextProps) {

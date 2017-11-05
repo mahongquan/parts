@@ -30,6 +30,7 @@ class DlgItems extends Component {
       auto_loading: false,
   }
   close=()=>{
+    console.log("close");
     this.setState({ showModal: false });
   }
   open=()=>{
@@ -151,7 +152,6 @@ class DlgItems extends Component {
       next=null;
     }
     return (
-        <NavItem eventKey={4} href="#" onClick={this.open}>备件
           <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
             <Modal.Header closeButton>
               <Modal.Title>备件</Modal.Title>
@@ -176,7 +176,6 @@ class DlgItems extends Component {
               <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
            </Modal.Body>
       </Modal>
-     </NavItem>
     );
   }
 };

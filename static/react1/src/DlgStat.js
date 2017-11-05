@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {Bar} from "react-chartjs-2";
-import {NavItem} from "react-bootstrap";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -69,7 +68,6 @@ logChange=(val)=> {
           }
       }
     return (
-        <NavItem eventKey={6} href="#" onClick={this.open}>统计
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>统计</Modal.Title>
@@ -89,7 +87,6 @@ logChange=(val)=> {
           <Bar data={data} options={options} width={600} height={300} />
           </Modal.Body>
         </Modal>
-        </NavItem>
     );
   }
 }

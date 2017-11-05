@@ -180,6 +180,18 @@ class App extends Component {
     //this.setState({currentIndex:idx});
     this.refs.contactedit.open2(idx);
   }
+  openDlgItems=()=>{
+    this.refs.dlgitems.open();
+  }
+  openDlgPacks=()=>{
+    this.refs.dlgpacks.open();
+  }
+  openDlgCopyPack=()=>{
+    this.refs.dlgcopypack.open();
+  }
+  openDlgStat=()=>{
+    this.refs.dlgstat.open();
+  }
   render() {
     //console.log("render=========================");
     const contactRows = this.state.contacts.map((contact, idx) => (
@@ -241,6 +253,10 @@ class App extends Component {
     }
     return (
     <div id="todoapp" className="table-responsive">
+    <DlgItems ref="dlgitems" />
+    <DlgPacks ref="dlgpacks" />
+    <DlgCopyPack ref="dlgcopypack" />
+    <DlgStat ref="dlgstat" />
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
@@ -250,10 +266,10 @@ class App extends Component {
     </Navbar.Header>
     <Nav>
       <NavItem eventKey={1} href="#">合同</NavItem>
-      <DlgPacks />
-      <DlgItems />
-      <DlgCopyPack />
-      <DlgStat />
+      <NavItem eventKey={2} href="#" onClick={this.openDlgPacks}>包</NavItem>
+      <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>备件</NavItem>
+      <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>复制包</NavItem>
+      <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
     </Nav>
   </Navbar>
     <table>

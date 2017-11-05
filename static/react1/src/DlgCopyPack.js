@@ -1,7 +1,6 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-import {NavItem,} from "react-bootstrap";
 import Autocomplete from './Autocomplete'
 let styles = {
   item: {
@@ -75,7 +74,6 @@ class DlgCopyPack  extends React.Component{
   }
   render=()=>{
     return (
-        <NavItem eventKey={5} href="#" onClick={this.open}>复制包
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>复制包</Modal.Title>
@@ -118,7 +116,6 @@ class DlgCopyPack  extends React.Component{
           <p>{this.state.error}</p>
           </Modal.Body>
         </Modal>
-        </NavItem>
     );
   }
 }
