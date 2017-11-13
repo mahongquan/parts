@@ -20,7 +20,7 @@ class DlgImport extends React.Component{
     //console.log(data1)
     var self=this;
     Client.postForm("/rest/standard",data1,function(res){
-        const newFoods = update(self.state.packs, {$push: res.result});
+        const newFoods = update(self.state.packs, {$unshift: res.result});
         self.setState({packs: newFoods });
     });
   }

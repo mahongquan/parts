@@ -258,7 +258,7 @@ class App extends Component {
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
-    <Navbar className="navbar-inverse">
+    <Navbar >
     <Navbar.Header>
       <Navbar.Brand>
         <a>装箱单</a>
@@ -270,6 +270,13 @@ class App extends Component {
       <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>备件</NavItem>
       <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>复制包</NavItem>
       <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
+      <DropdownButton title="aaaaa" >
+        <MenuItem eventKey="1">Action</MenuItem>
+        <MenuItem eventKey="2">Another action</MenuItem>
+        <MenuItem eventKey="3" active>Active Item</MenuItem>
+        <MenuItem divider />
+        <MenuItem eventKey="4">Separated link</MenuItem>
+      </DropdownButton>
     </Nav>
   </Navbar>
     <table>
