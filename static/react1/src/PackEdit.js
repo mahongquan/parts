@@ -21,7 +21,6 @@ const PackEdit = createReactClass({
   },
   render() {
     return (
-        <a onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑包</Modal.Title>
@@ -33,7 +32,6 @@ const PackEdit = createReactClass({
           </div>
           </Modal.Body>
         </Modal>
-        </a>
     );
   }
 });
