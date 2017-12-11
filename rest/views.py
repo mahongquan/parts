@@ -837,6 +837,7 @@ def create_usepack(request):
     if(data.get("contact")!=None and data.get("pack")!=None):
         rec.contact=Contact.objects.get(id=int(data["contact"]))
         rec.pack=Pack.objects.get(id=int(data["pack"]))
+        logging.info(rec)
         rec.save()
         output={"success":True,"message":"Created new User" +str(rec.id)}
         output["data"]={"id":rec.id,"contact":str(rec.contact.id),"pack":str(rec.pack.id),"hetongbh":rec.contact.hetongbh,"name":rec.pack.name}

@@ -6,14 +6,14 @@ CREATE TABLE auth_user (
     password     VARCHAR( 128 )  NOT NULL,
     last_login   DATETIME        NULL,
     is_superuser BOOL            NOT NULL,
+    username     VARCHAR( 150 )  NOT NULL
+                                 UNIQUE,
     first_name   VARCHAR( 30 )   NOT NULL,
-    last_name    VARCHAR( 30 )   NOT NULL,
     email        VARCHAR( 254 )  NOT NULL,
     is_staff     BOOL            NOT NULL,
     is_active    BOOL            NOT NULL,
     date_joined  DATETIME        NOT NULL,
-    username     VARCHAR( 30 )   NOT NULL
-                                 UNIQUE 
+    last_name    VARCHAR( 150 )  NOT NULL 
 );
 
 
@@ -27,28 +27,14 @@ CREATE TABLE django_content_type (
 );
 
 
--- Table: parts_item
-CREATE TABLE parts_item ( 
-    id      INTEGER         PRIMARY KEY
-                            NOT NULL,
-    bh      VARCHAR( 30 ),
-    name    VARCHAR( 30 )   NOT NULL,
-    guige   VARCHAR( 30 ),
-    ct      INTEGER         NOT NULL,
-    danwei  VARCHAR( 30 )   NOT NULL,
-    image   VARCHAR( 100 ),
-    name_en CHAR( 30 ),
-    beizhu  CHAR( 30 ) 
-);
-
-
 -- Table: parts_contact
 CREATE TABLE parts_contact ( 
     id             INTEGER         PRIMARY KEY
                                    NOT NULL,
     yonghu         VARCHAR( 30 )   NOT NULL,
     yiqixinghao    VARCHAR( 30 )   NOT NULL,
-    yiqibh         VARCHAR( 30 )   NOT NULL,
+    yiqibh         VARCHAR( 30 )   NOT NULL
+                                   UNIQUE,
     baoxiang       VARCHAR( 30 )   NOT NULL,
     shenhe         VARCHAR( 30 )   NOT NULL,
     yujifahuo_date DATE            NOT NULL,
@@ -142,6 +128,17 @@ CREATE TABLE django_migrations (
 );
 
 
+-- Table: extjs_ch11
+CREATE TABLE extjs_ch11 ( 
+    id     INTEGER        NOT NULL
+                          PRIMARY KEY AUTOINCREMENT,
+    name   VARCHAR( 30 )  NOT NULL,
+    gender VARCHAR( 1 )   NOT NULL,
+    dob    DATE           NOT NULL,
+    epaper BOOL           NOT NULL 
+);
+
+
 -- Table: parts_pack_contact
 CREATE TABLE parts_pack_contact ( 
     id         INTEGER NOT NULL
@@ -161,26 +158,18 @@ CREATE TABLE parts_pack (
 );
 
 
--- Table: parts_packitem
-CREATE TABLE parts_packitem ( 
-    id      INTEGER NOT NULL
-                    PRIMARY KEY AUTOINCREMENT,
-    pack_id INTEGER NOT NULL
-                    REFERENCES parts_pack ( id ),
-    item_id INTEGER NOT NULL
-                    REFERENCES parts_item ( id ),
-    ct      INTEGER NOT NULL 
-);
-
-
--- Table: parts_usepack
-CREATE TABLE parts_usepack ( 
-    id         INTEGER PRIMARY KEY AUTOINCREMENT
-                       NOT NULL,
-    contact_id INTEGER NOT NULL
-                       REFERENCES parts_contact ( id ),
-    pack_id    INTEGER NOT NULL
-                       REFERENCES parts_usepack ( id ) 
+-- Table: parts_item
+CREATE TABLE parts_item ( 
+    id      INTEGER         PRIMARY KEY
+                            NOT NULL,
+    bh      VARCHAR( 30 ),
+    name    VARCHAR( 30 )   NOT NULL,
+    guige   VARCHAR( 30 ),
+    ct      INTEGER         NOT NULL,
+    danwei  VARCHAR( 30 )   NOT NULL,
+    image   VARCHAR( 100 ),
+    name_en CHAR( 30 ),
+    beizhu  CHAR( 30 ) 
 );
 
 
@@ -200,24 +189,80 @@ CREATE TABLE django_admin_log (
 );
 
 
--- Table: extjs_ch11
-CREATE TABLE extjs_ch11 ( 
-    id     INTEGER        PRIMARY KEY AUTOINCREMENT
-                          NOT NULL,
-    name   VARCHAR( 30 )  NOT NULL,
-    gender VARCHAR( 1 )   NOT NULL,
-    dob    DATE,
-    epaper BOOL           NOT NULL 
+-- Table: parts_danju
+CREATE TABLE parts_danju ( 
+    id         INTEGER        PRIMARY KEY
+                              NOT NULL,
+    danjuhao   VARCHAR( 30 )  NOT NULL,
+    danju_date DATE           NOT NULL,
+    cangku     VARCHAR( 30 )  NOT NULL,
+    bumeng     VARCHAR( 30 )  NOT NULL,
+    gongying   VARCHAR( 30 ),
+    shenhe     DATE,
+    leibie     VARCHAR( 30 ),
+    beizhu     VARCHAR( 30 ),
+    filename   VARCHAR( 30 ),
+    zhidan     VARCHAR( 30 ),
+    qianzi     VARCHAR( 30 ) 
 );
 
 
--- Table: extjs_contact
-CREATE TABLE extjs_contact ( 
-    id        INTEGER        NOT NULL
-                             PRIMARY KEY AUTOINCREMENT,
-    firstname VARCHAR( 30 )  NOT NULL,
-    lastname  VARCHAR( 30 )  NOT NULL,
-    age       INTEGER        NULL 
+-- Table: parts_danjuitem
+CREATE TABLE parts_danjuitem ( 
+    id       INTEGER NOT NULL
+                     PRIMARY KEY AUTOINCREMENT,
+    danju_id INTEGER NOT NULL
+                     REFERENCES parts_pack ( id ),
+    item_id  INTEGER NOT NULL
+                     REFERENCES parts_item ( id ),
+    ct       INTEGER NOT NULL 
+);
+
+
+-- Table: parts_packitem
+CREATE TABLE parts_packitem ( 
+    id      INTEGER PRIMARY KEY AUTOINCREMENT
+                    NOT NULL,
+    pack_id INTEGER NOT NULL
+                    REFERENCES parts_pack ( id ),
+    item_id INTEGER NOT NULL
+                    REFERENCES parts_item ( id ),
+    ct      REAL    NOT NULL,
+    quehuo  BOOLEAN 
+);
+
+
+-- Table: parts2_pack
+CREATE TABLE parts2_pack ( 
+    id   INTEGER        NOT NULL
+                        PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR( 30 )  NOT NULL 
+);
+
+
+-- Table: parts2_item
+CREATE TABLE parts2_item ( 
+    id      INTEGER         PRIMARY KEY
+                            NOT NULL,
+    bh      VARCHAR( 30 ),
+    name    VARCHAR( 30 )   NOT NULL,
+    guige   VARCHAR( 30 ),
+    ct      INTEGER         NOT NULL,
+    danwei  VARCHAR( 30 )   NOT NULL,
+    image   VARCHAR( 100 ),
+    name_en CHAR( 30 ),
+    beizhu  CHAR( 30 ) 
+);
+
+
+-- Table: parts_usepack
+CREATE TABLE parts_usepack ( 
+    id         INTEGER PRIMARY KEY AUTOINCREMENT
+                       NOT NULL,
+    contact_id INTEGER NOT NULL
+                       REFERENCES parts_contact ( id ),
+    pack_id    INTEGER NOT NULL
+                       REFERENCES parts2_pack 
 );
 
 
@@ -275,6 +320,48 @@ CREATE INDEX parts_pack_contact_816533ed ON parts_pack_contact (
 );
 
 
+-- Index: auth_permission_417f1b1c
+CREATE INDEX auth_permission_417f1b1c ON auth_permission ( 
+    content_type_id 
+);
+
+
+-- Index: django_admin_log_417f1b1c
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log ( 
+    content_type_id 
+);
+
+
+-- Index: django_admin_log_e8701ad4
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log ( 
+    user_id 
+);
+
+
+-- Index: item_bh
+CREATE INDEX item_bh ON parts_item ( 
+    bh 
+);
+
+
+-- Index: item_name
+CREATE INDEX item_name ON parts_item ( 
+    name 
+);
+
+
+-- Index: pack_name
+CREATE INDEX pack_name ON parts_pack ( 
+    name 
+);
+
+
+-- Index: contact_bh
+CREATE INDEX contact_bh ON parts_contact ( 
+    hetongbh 
+);
+
+
 -- Index: parts_packitem_9391bab4
 CREATE INDEX parts_packitem_9391bab4 ON parts_packitem ( 
     pack_id 
@@ -296,47 +383,5 @@ CREATE INDEX parts_contactpack_816533ed ON parts_usepack (
 -- Index: parts_contactpack_9391bab4
 CREATE INDEX parts_contactpack_9391bab4 ON parts_usepack ( 
     pack_id 
-);
-
-
--- Index: auth_permission_417f1b1c
-CREATE INDEX auth_permission_417f1b1c ON auth_permission ( 
-    content_type_id 
-);
-
-
--- Index: django_admin_log_417f1b1c
-CREATE INDEX django_admin_log_417f1b1c ON django_admin_log ( 
-    content_type_id 
-);
-
-
--- Index: django_admin_log_e8701ad4
-CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log ( 
-    user_id 
-);
-
-
--- Index: contact_bh
-CREATE INDEX contact_bh ON parts_contact ( 
-    hetongbh 
-);
-
-
--- Index: item_bh
-CREATE INDEX item_bh ON parts_item ( 
-    bh 
-);
-
-
--- Index: item_name
-CREATE INDEX item_name ON parts_item ( 
-    name 
-);
-
-
--- Index: pack_name
-CREATE INDEX pack_name ON parts_pack ( 
-    name 
 );
 
