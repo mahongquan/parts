@@ -286,7 +286,7 @@ class App extends Component {
      </DropdownButton>
   </td>
   <td>
-        <input type="text" value={this.state.search}  placeholder="合同 or 仪器编号" onChange={this.handleSearchChange} />
+        <input type="text" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
         <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
         <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
