@@ -1,8 +1,9 @@
+from django.urls import path
 from django.conf.urls import  include, url
-#from django.contrib import admin
+from django.contrib import admin
 from mysite import settings
 from mysite import mainview
-#admin.autodiscover()
+admin.autodiscover()
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 import django
@@ -31,15 +32,15 @@ urlpatterns = [
     url(r'^rest/',include('rest.urls')),   
     url(r'^fs/',include('fs.urls')),   
     url(r'^parts/',include('mysite.parts.urls')),   
-    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
     #url(r'^admin/lookups/', include(ajax_select_urls)),
-    #url(r'^admin/', include(admin.site.urls)),
-    url(r'^explore/',include('explore.urls')), 
-    url(r'^accounts/login/$', mainview.loginpage),
-    url(r'^login/',mainview.mylogin),  
-    url(r'^logout/',mainview.mylogout),
-    url(r'^afterlogin/',mainview.afterlogin),
+    path('admin/', admin.site.urls),
+    #url(r'^explore/',include('explore.urls')), 
+    # url(r'^accounts/login/$', mainview.loginpage),
+    # url(r'^login/',mainview.mylogin),  
+    # url(r'^logout/',mainview.mylogout),
+    # url(r'^afterlogin/',mainview.afterlogin),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns +=static(settings.MEDIA_URL,django.contrib.staticfiles.views.serve)

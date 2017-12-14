@@ -132,7 +132,7 @@ class PackItem(models.Model):
     ct=  models.FloatField(verbose_name="数量",default=1)#数量
     quehuo=models.BooleanField(verbose_name="缺货",default=False)#数量
     def __str__(self):
-        return self.pack.name+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
+        return self.pack.name+"_"+str(self.item.name)+"_"+str(self.item.guige)+"_"+str(self.ct)+str(self.item.danwei)
     class Meta:
         verbose_name="备件条目"
         verbose_name_plural=verbose_name
