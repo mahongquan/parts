@@ -15,13 +15,13 @@
     "lodash": "^4.16.1",
     "normalizr": "^3.2.3",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0",
+    "react": "^16.2.0",
     "react-bootstrap": "^0.31.0",
     "react-bootstrap-daterangepicker": "^3.4.0",
     "react-chartjs-2": "^2.5.1",
     "react-contextmenu": "^2.6.4",
     "react-datetime": "^2.10.3",
-    "react-dom": "^16.0.0",
+    "react-dom": "^16.2.0",
     "react-select": "^1.0.0-rc.5"
   },
   "devDependencies": {

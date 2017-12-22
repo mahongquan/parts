@@ -113,7 +113,7 @@ class PackItems extends React.Component {
         <td>{item.danwei}</td>
         <td>{item.bh}</td>
         <td  hidden={this.state.release}>{item.pack}</td>
-        <td><input type="checkbox" disabled="disabled" name="quehuo" checked={item.quehuo} defaultChecked={item.quehuo}  /></td>
+        <td><input type="checkbox" disabled="disabled" name="quehuo" checked={item.quehuo} /></td>
         <td>
         <a onClick={()=>this.handleEdit(idx)}>编辑</a>
         <a style={{marginLeft:"10px"}} onClick={() => this.onDeleteClick(idx)}>删除</a>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-import {NavItem,Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import PackEdit from './PackEdit';
 
 class DlgPacks extends Component {
