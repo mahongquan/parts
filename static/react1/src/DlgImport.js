@@ -46,7 +46,6 @@ class DlgImport extends React.Component{
       </tr>
     ));   
     return (
-        <button className="btn btn-info" onClick={this.open}>    导入标样
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>导入标样</Modal.Title>
@@ -66,7 +65,6 @@ class DlgImport extends React.Component{
           </div>
           </Modal.Body>
         </Modal>
-        </button>
     );
   }
 }

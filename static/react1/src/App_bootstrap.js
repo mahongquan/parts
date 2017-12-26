@@ -192,6 +192,9 @@ class App extends Component {
   openDlgStat=()=>{
     this.refs.dlgstat.open();
   }
+  openDlgImport=()=>{
+    this.refs.dlgimport.open();
+  }
   render() {
     //console.log("render=========================");
     const contactRows = this.state.contacts.map((contact, idx) => (
@@ -257,6 +260,7 @@ class App extends Component {
     <DlgPacks ref="dlgpacks" />
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
+    <DlgImport ref="dlgimport" />
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
@@ -295,7 +299,7 @@ class App extends Component {
        <button className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
   </td>
    <td>
-        <DlgImport/>
+   <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
   </td>
    <td>
    <label>过滤</label>
