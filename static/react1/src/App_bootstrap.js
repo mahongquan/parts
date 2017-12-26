@@ -180,8 +180,22 @@ class App extends Component {
     //this.setState({currentIndex:idx});
     this.refs.contactedit.open2(idx);
   }
+  //<button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</button>
+  //<button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
+  opendlgwait=(contactid)=>{
+    this.refs.dlgwait.open(contactid); 
+  }
+  opendlgurl=(url,parent,idx,data)=>{
+    this.refs.dlgurl.open(url,parent,idx,data); 
+  }
   openDlgItems=()=>{
     this.refs.dlgitems.open();
+  }
+  opendlgfolder=(contactid)=>{
+   this.refs.dlgfolder.open(contactid); 
+  }
+  opendlgcheck=(contactid,yiqibh)=>{
+   this.refs.dlgcheck.open(contactid,yiqibh); 
   }
   openDlgPacks=()=>{
     this.refs.dlgpacks.open();
@@ -216,10 +230,10 @@ class App extends Component {
         <td>
         <div className="btn-group" role="group">
         <a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-         <DlgUrl url="/rest/updateMethod" parent={this} index={idx} data={{id:contact.id}} title="更新方法" />
-         <DlgWait contact_id={contact.id} title="全部文件" />
-         <DlgCheck yiqibh={contact.yiqibh} contact_id={contact.id} title="核对备料计划" />
-        <DlgFolder contact_id={contact.id} title="资料文件夹" />
+         <button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</button>
+         <button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
+         <button onClick={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</button>
+         <button onClick={()=>this.opendlgfolder(contact.id)}>资料文件夹</button>
     
     { 
       //<DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
@@ -261,6 +275,10 @@ class App extends Component {
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
     <DlgImport ref="dlgimport" />
+    <DlgCheck ref="dlgcheck" />
+    <DlgFolder ref="dlgfolder" />
+    <DlgWait ref="dlgwait" />
+    <DlgUrl ref="dlgurl" />
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>

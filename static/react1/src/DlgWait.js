@@ -15,10 +15,10 @@ const DlgWait = createReactClass({
     this.setState({ showModal: false });
   },
 
-  open() {
+  open(contact_id) {
     var self=this;
    this.setState({ showModal: true });
-   Client.get("/parts/allfile",{id:this.props.contact_id}, function(result){
+   Client.get("/parts/allfile",{id:contact_id}, function(result){
        console.info(result);
        if (!result.success){
           self.setState({error:result.message});

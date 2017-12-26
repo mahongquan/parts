@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 class DlgCheck extends React.Component{
-  state= { 
+  state= {
       showModal: false,
       error:"",
       packs:[],
@@ -17,7 +17,7 @@ class DlgCheck extends React.Component{
     console.log(file);
     var data1=new FormData();
     data1.append("file",file);
-    data1.append("id",this.props.contact_id);
+    data1.append("id",this.contact_id);
     //console.log(data1)
     var self=this;
     Client.postForm("/rest/check",data1,function(data){
@@ -72,7 +72,9 @@ class DlgCheck extends React.Component{
       self.setState({hideTable:false});
     });
   }
-  open=()=>{
+  open=(contact_id,yiqibh)=>{
+    this.contact_id=contact_id;
+    this.setState({yiqibh:yiqibh});
     this.setState({ showModal: true });
     this.setState({hideTable:true});
   }
@@ -88,13 +90,12 @@ class DlgCheck extends React.Component{
       </tr>
     ));   
     return (
-        <button onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <p>仪器编号{this.props.yiqibh}备料计划核对，请上传备料计划导出的Excel文件</p>
+          <p>仪器编号{this.state.yiqibh}备料计划核对，请上传备料计划导出的Excel文件</p>
           <form  ref="form1" encType="multipart/form-data">
           <input style={{margin:"10px 10px 10px 10px"}} id="file"  accept="application/vnd.ms-excel" type="file" name="file" ref={(ref) => this.fileUpload = ref}/>
           <button  style={{margin:"10px 10px 10px 10px"}} className="btn btn-primary" onClick={this.upload} type="button">上传</button>
@@ -115,7 +116,6 @@ class DlgCheck extends React.Component{
           </div>
           </Modal.Body>
         </Modal>
-        </button>
     );
   }
 }

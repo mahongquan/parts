@@ -11,16 +11,18 @@ class DlgUrl extends Component{
     this.setState({ showModal: false });
   }
 
-  open=()=>{
+  open=(url,parent,idx,data)=>{
+   this.parent=parent;
+   this.index=idx;
    var self=this;
    this.setState({ showModal: true });
-   Client.get(this.props.url,this.props.data, function(result){
+   Client.get(url,data, function(result){
        console.info(result);
        if (!result.success){
           self.setState({error:result.message});
        }
        else{
-          self.props.parent.handleContactChange(self.props.index,result.data);
+          self.parent.handleContactChange(self.index,result.data);
           self.close();
        }
    })
