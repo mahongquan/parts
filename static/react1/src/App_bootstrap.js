@@ -185,8 +185,22 @@ class App extends Component {
   opendlgwait=(contactid)=>{
     this.refs.dlgwait.open(contactid); 
   }
+  handleContactChange2= (contact) => {
+    var idx=this.currentIndex;
+    console.log(idx);
+    let contacts2
+    if (idx!=null){
+      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      console.log(contacts2);
+    }
+    else{
+      contacts2=update(this.state.contacts,{$unshift: [contact]});
+    }
+    this.setState({contacts:contacts2});
+  };
   opendlgurl=(url,parent,idx,data)=>{
-    this.refs.dlgurl.open(url,parent,idx,data); 
+    this.currentIndex=idx;
+    this.refs.dlgurl.open(url,data,this.handleContactChange2); 
   }
   openDlgItems=()=>{
     this.refs.dlgitems.open();

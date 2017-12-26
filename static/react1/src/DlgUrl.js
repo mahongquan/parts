@@ -11,9 +11,9 @@ class DlgUrl extends Component{
     this.setState({ showModal: false });
   }
 
-  open=(url,parent,idx,data)=>{
-   this.parent=parent;
-   this.index=idx;
+  open=(url,data,callback)=>{
+   //this.parent=parent;
+   //this.index=idx;
    var self=this;
    this.setState({ showModal: true });
    Client.get(url,data, function(result){
@@ -22,14 +22,13 @@ class DlgUrl extends Component{
           self.setState({error:result.message});
        }
        else{
-          self.parent.handleContactChange(self.index,result.data);
+          callback(result.data);
           self.close();
        }
    })
   }
   render=()=> {
     return (
-        <button onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>请等待。。。</Modal.Title>
@@ -38,7 +37,6 @@ class DlgUrl extends Component{
           <div>{this.state.error}</div>
           </Modal.Body>
         </Modal>
-        </button>
     );
   }
 }
