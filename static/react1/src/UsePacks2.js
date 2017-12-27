@@ -33,14 +33,14 @@ class UsePacks2 extends React.Component {
     auto_loading: false,
     release:true,
   };
-  //  componentWillReceiveProps(nextProps) {
-  //   if(nextProps.contact_hetongbh){
-  //     this.setState({newPackName:nextProps.contact_hetongbh});
-  //   }
-  //   if(nextProps.contact_id){
-  //     this.load_data(nextProps.contact_id);
-  //   }
-  // }
+   componentWillReceiveProps(nextProps) {
+    if(nextProps.contact_hetongbh){
+      this.setState({newPackName:nextProps.contact_hetongbh});
+    }
+    if(nextProps.contact_id){
+      this.load_data(nextProps.contact_id);
+    }
+  }
   load_data=(contact_id)=>{
       Client.UsePacks(contact_id, (usepacks) => {
         this.setState({

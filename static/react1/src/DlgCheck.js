@@ -92,7 +92,7 @@ class DlgCheck extends React.Component{
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>{this.props.title}</Modal.Title>
+            <Modal.Title>核对备料计划</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <p>仪器编号{this.state.yiqibh}备料计划核对，请上传备料计划导出的Excel文件</p>
