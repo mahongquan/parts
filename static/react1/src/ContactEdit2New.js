@@ -491,7 +491,7 @@ class ContactEdit2New  extends Component{
        <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
-        <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
+          <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
         </div>
                 </Modal.Body>
         </Modal>

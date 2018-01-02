@@ -145,6 +145,7 @@ class App extends Component {
     this.load_data();
   };
   onSelectBaoxiang=(e) => {
+    this.mystate.start=0;
     this.mystate.baoxiang=e;
     this.setState({baoxiang:e});
     this.load_data();
