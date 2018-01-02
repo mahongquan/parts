@@ -235,12 +235,12 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
-          <DropdownButton   id="id_dropdown3">
-          <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
-          <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
-          <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
-          <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
-        </DropdownButton>
+          <DropdownButton  dropup id="id_dropdown3">
+            <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
+          </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td><td>{contact.channels}</td>
         <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>{contact.baoxiang}</a></td>
@@ -343,10 +343,10 @@ class App extends Component {
 <th>客户单位</th>
 <th>客户地址</th><th>仪器编号</th><th>仪器型号</th><th>通道配置</th><th>包箱</th>
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
-</table>{prev}
-<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+</table>
+{prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
+<input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+<button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
   </div>
     );
   }
