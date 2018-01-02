@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {Modal} from "react-bootstrap";
+import {Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
 import {Bar} from "react-chartjs-2";
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+//import Select from 'react-select';
+//import 'react-select/dist/react-select.css';
 
 class DlgStat extends Component {
   state={
@@ -11,7 +11,7 @@ class DlgStat extends Component {
       error:"",
       lbls:[],
       values:[],
-      baoxiang:"%",
+      baoxiang:"",
   }
 
   close=()=>{
@@ -73,17 +73,12 @@ logChange=(val)=> {
             <Modal.Title>统计</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Select
-              name="form-field-name"
-              value={this.state.baoxiang}
-              options={[
-              { value: '马红权', label: '马红权' },
-              { value: '陈旺', label: '陈旺' },
-              { value: '吴振宁', label: '吴振宁' },
-              { value: '%', label: '*' }
-            ]}
-              onChange={this.logChange}
-            />
+          <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
+      <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
+    </DropdownButton>
           <Bar data={data} options={options} width={600} height={300} />
           </Modal.Body>
         </Modal>
