@@ -3,7 +3,8 @@ import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
 import UsePackEditNew from "./UsePackEditNew";
-import Autocomplete from './Autocomplete'
+import Autosuggest from 'react-autosuggest';
+//import Autocomplete from './Autocomplete'
 // import Select from 'react-select';
 // import 'react-select/dist/react-select.css';
 let styles = {
@@ -56,25 +57,43 @@ class UsePacks2 extends React.Component {
       this.load_data(this.props.contact_id);
     }
   };
-  auto_change=(event, value)=>{
-    console.log("auto_change");
+  auto_change=(data)=>{
+    var value=data.value;
     if (value.length>1)
     {
-      this.setState({ auto_value:value, auto_loading: true });
       Client.get("/rest/Pack",{search:value} ,(items) => {
-          this.setState({ auto_items: items.data, auto_loading: false })
+          this.setState({ auto_items: items.data })
       });
     }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
   };
-  auto_select=(value, item) => {
+  auto_select=(event,data) => {
       console.log("selected");
-      console.log(item);
-      this.addrow(item.id);
+      console.log(data)
+      this.addrow(data.suggestion.id);
       //this.setState({auto_value:value, auto_items: [ item ] })
   }
+  onSuggestionsClearRequested=()=>{
+
+  }
+  // auto_change=(event, value)=>{
+  //   console.log("auto_change");
+  //   if (value.length>1)
+  //   {
+  //     this.setState({ auto_value:value, auto_loading: true });
+  //     Client.get("/rest/Pack",{search:value} ,(items) => {
+  //         this.setState({ auto_items: items.data, auto_loading: false })
+  //     });
+  //   }
+  //   else{
+  //     this.setState({ auto_value:value, auto_loading: false });
+  //   };
+  // };
+  // auto_select=(value, item) => {
+  //     console.log("selected");
+  //     console.log(item);
+  //     this.addrow(item.id);
+  //     //this.setState({auto_value:value, auto_items: [ item ] })
+  // }
   bibei= (id) => {
     //this.setState({auto_value:"必备"});
     this.auto_change(null,"必备");
@@ -130,9 +149,11 @@ class UsePacks2 extends React.Component {
       return r;
     });
   }
-  onChange=(value)=>{
+  onChange=(event, { newValue })=>{
+    console.log("onChange======================");
+    console.log(newValue)
     this.setState({
-      auto_value: value,
+      auto_value: newValue,
     });
   }
   onValueClick=(value)=>{
@@ -175,25 +196,15 @@ class UsePacks2 extends React.Component {
           </tbody>
         </Table>
         <div>
-        输入包
-        {
-          // <Select.Async multi={false} 
-          // value={this.state.auto_value} 
-          // onChange={this.onChange} 
-          // onValueClick={this.onValueClick} 
-          // valueKey="id" labelKey="name" 
-          // loadOptions={this.getUsers}
-          // />
-        }
-        <Autocomplete
-          inputProps={{ id: 'states-autocomplete' }}
+        输入包<Autosuggest
+          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+          onSuggestionSelected={this.auto_select}
+          onSuggestionsFetchRequested={this.auto_change}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={(item) => item.name}
           ref="autocomplete"
-          value={this.state.auto_value}
-          items={this.state.auto_items}
-          getItemValue={(item) => item.name}
-          onSelect={this.auto_select}
-          onChange={this.auto_change}
-          renderItem={(item, isHighlighted) => (
+          suggestions={this.state.auto_items}
+          renderSuggestion={(item, isHighlighted) => (
             <div
               style={isHighlighted ? styles.highlightedItem : styles.item}
               key={item.id}

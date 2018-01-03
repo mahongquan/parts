@@ -3,7 +3,8 @@ import Client from './Client';
 import {Table} from "react-bootstrap";
 import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
-import Autocomplete from './Autocomplete'
+//import Autocomplete from './Autocomplete'
+import Autosuggest from 'react-autosuggest';
 let styles = {
   item: {
     padding: '2px 6px',
@@ -38,7 +39,23 @@ class PackItems extends React.Component {
         });
       });
   };
-  auto_select=(value, item) => {
+  auto_select=(event,data) => {
+      console.log("selected");
+      console.log(data)
+      this.addrow(data.suggestion.id);
+      //this.setState({auto_value:value, auto_items: [ item ] })
+  }
+  auto_change=(data)=>{
+    var value=data.value;
+    console.log("auto_change");
+    if (value.length>1)
+    {
+      Client.get("/rest/Item",{query:value} ,(items) => {
+          this.setState({ auto_items: items.data, auto_loading: false })
+      });
+    }
+  };
+  /*auto_select=(value, item) => {
       console.log("selected");
       console.log(item);
       this.addrow(item.id);
@@ -56,7 +73,7 @@ class PackItems extends React.Component {
     else{
       this.setState({ auto_value:value, auto_loading: false });
     };
-  };
+  };*/
   new_packitem= (id) => {
     var url="/rest/BothPackItem";
     var data={"name":this.state.newPackName,"pack":this.props.pack_id};
@@ -95,9 +112,16 @@ class PackItems extends React.Component {
         );
         this.setState({ items: filteredFoods });
     });
-  };
+  }
+  onChange=(event, { newValue })=>{
+    console.log(newValue);
+    this.setState({auto_value:newValue});
+  }
   handleEdit=(idx)=>{
     this.refs.dlg.open2(idx);
+  }
+  onSuggestionsClearRequested=()=>{
+
   }
   render() {
     const { items } = this.state;
@@ -141,20 +165,20 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-        输入备件<Autocomplete
-          inputProps={{ id: 'states-autocomplete' }}
+        输入备件<Autosuggest
+          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+          onSuggestionSelected={this.auto_select}
+          onSuggestionsFetchRequested={this.auto_change}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={(item) => item.name}
           ref="autocomplete"
-          value={this.state.auto_value}
-          items={this.state.auto_items}
-          getItemValue={(item) => item.name}
-          onSelect={this.auto_select}
-          onChange={this.auto_change}
-          renderItem={(item, isHighlighted) => (
+          suggestions={this.state.auto_items}
+          renderSuggestion={(item, isHighlighted) => (
             <div
               style={isHighlighted ? styles.highlightedItem : styles.item}
               key={item.id}
               id={item.id}
-            >{item.id+"_"+item.bh+"_"+item.name+"_"+item.guige}</div>
+            >{item.bh+"_"+item.name+"_"+item.guige}</div>
           )}
         />
       <p>新备件名称：

@@ -16,6 +16,7 @@ import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
+import "./autosuggest.css"
 var host="";
 class App extends Component {
   mystate = {
@@ -235,7 +236,7 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
-          <DropdownButton  dropup id="id_dropdown3">
+          <DropdownButton title="" dropup id="id_dropdown3">
             <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
             <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
