@@ -241,10 +241,11 @@ class App extends Component {
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
             <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
             <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
+            <MenuItem onSelect={() => this.onDetailClick(contact.id)}>详细</MenuItem>
           </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td><td>{contact.channels}</td>
-        <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>{contact.baoxiang}</a></td>
+        <td>{contact.baoxiang}</td>
         <td>{contact.yujifahuo_date}</td>
         <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>

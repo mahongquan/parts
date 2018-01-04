@@ -5,23 +5,6 @@ import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -165,7 +148,8 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-        输入备件<Autosuggest
+        <table><tbody><tr><td>输入备件</td><td>
+        <Autosuggest
           inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
           onSuggestionSelected={this.auto_select}
           onSuggestionsFetchRequested={this.auto_change}
@@ -173,14 +157,10 @@ class PackItems extends React.Component {
           getSuggestionValue={(item) => item.name}
           ref="autocomplete"
           suggestions={this.state.auto_items}
-          renderSuggestion={(item, isHighlighted) => (
-            <div
-              style={isHighlighted ? styles.highlightedItem : styles.item}
-              key={item.id}
-              id={item.id}
-            >{item.bh+"_"+item.name+"_"+item.guige}</div>
+          renderSuggestion={(item) => (
+            <span>{item.bh+"_"+item.name+"_"+item.guige}</span>
           )}
-        />
+        /></td></tr></tbody></table>
       <p>新备件名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>

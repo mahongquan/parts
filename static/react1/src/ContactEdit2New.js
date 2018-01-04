@@ -10,23 +10,6 @@ import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
 class ContactEdit2New  extends Component{
   state={ 
       showModal: false,
@@ -398,11 +381,8 @@ class ContactEdit2New  extends Component{
                       onSuggestionsFetchRequested={()=>{}}
                       onSuggestionsClearRequested={()=>{}}
                       onSuggestionSelected={this.yiqixinghao_select}
-                      renderSuggestion={(item, isHighlighted) => (
-                        <div
-                          style={isHighlighted ? styles.highlightedItem : styles.item}
-                          key={item}
-                        >{item}</div>
+                      renderSuggestion={(item) => (
+                        <span>{item}</span>
                       )}
                     />
                 </td>

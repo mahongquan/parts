@@ -7,23 +7,23 @@ import Autosuggest from 'react-autosuggest';
 //import Autocomplete from './Autocomplete'
 // import Select from 'react-select';
 // import 'react-select/dist/react-select.css';
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
+// let styles = {
+//   item: {
+//     padding: '2px 6px',
+//     cursor: 'default'
+//   },
 
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
+//   highlightedItem: {
+//     color: 'white',
+//     background: 'hsl(200, 50%, 50%)',
+//     padding: '2px 6px',
+//     cursor: 'default'
+//   },
 
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
+//   menu: {
+//     border: 'solid 1px #ccc'
+//   }
+// }
 class UsePacks2 extends React.Component {
   state = {
     usepacks: [],
@@ -195,8 +195,8 @@ class UsePacks2 extends React.Component {
             {usepackRows}
           </tbody>
         </Table>
-        <div>
-        输入包<Autosuggest
+        <table><tbody><tr><td>输入包</td>
+        <td><Autosuggest
           inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
           onSuggestionSelected={this.auto_select}
           onSuggestionsFetchRequested={this.auto_change}
@@ -204,16 +204,11 @@ class UsePacks2 extends React.Component {
           getSuggestionValue={(item) => item.name}
           ref="autocomplete"
           suggestions={this.state.auto_items}
-          renderSuggestion={(item, isHighlighted) => (
-            <div
-              style={isHighlighted ? styles.highlightedItem : styles.item}
-              key={item.id}
-              id={item.id}
-            >{item.name}</div>
+          renderSuggestion={(item) => (
+            <span>{item.name}</span>
           )}
-        />
-          <button  className="btn" onClick={this.bibei}>必备</button>
-        </div>
+        /></td><td><button  className="btn" onClick={this.bibei}>必备</button></td>
+        </tr></tbody></table>
       <div>新包名称：
         <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_usepack" onClick={this.new_pack}>新包</button>
