@@ -245,7 +245,6 @@ class App extends Component {
         <td>{contact.yiqixinghao}</td><td>{contact.channels}</td>
         <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>{contact.baoxiang}</a></td>
         <td>{contact.yujifahuo_date}</td>
-        <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
        </tr>
@@ -342,7 +341,7 @@ class App extends Component {
 <table className="table-bordered"><thead><tr><th>ID</th>
 <th>客户单位</th>
 <th>客户地址</th><th>仪器编号</th><th>仪器型号</th><th>通道配置</th><th>包箱</th>
-<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+<th>入库时间</th><th>合同编号</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
 <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
