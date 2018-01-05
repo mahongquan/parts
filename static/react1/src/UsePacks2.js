@@ -95,8 +95,8 @@ class UsePacks2 extends React.Component {
   //     //this.setState({auto_value:value, auto_items: [ item ] })
   // }
   bibei= (id) => {
-    //this.setState({auto_value:"必备"});
-    this.auto_change(null,"必备");
+    this.setState({auto_value:"必备"});
+    //this.auto_change(null,"必备");
   };
   new_pack= (id) => {
     var url="/rest/UsePackEx";
