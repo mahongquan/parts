@@ -77,7 +77,7 @@ logChange=(val)=> {
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("%")}>*</MenuItem>
     </DropdownButton>
           <Bar data={data} options={options} width={600} height={300} />
           </Modal.Body>
