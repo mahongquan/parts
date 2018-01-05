@@ -4,28 +4,12 @@ import {Modal} from "react-bootstrap";
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
-import Autocomplete from './Autocomplete';
+//import Autocomplete from './Autocomplete';
+import Autosuggest from 'react-autosuggest';
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
 class ContactEdit2New  extends Component{
   state={ 
       showModal: false,
@@ -218,20 +202,14 @@ class ContactEdit2New  extends Component{
     console.log(contact2);
     this.setState({contact:contact2});
   }
-  channels_change_new=(val)=>{
-    this.channels_select(null,val.value);
+  channels_change=(event, { newValue })=>{
+    this.change1(newValue);
   }
-  channels_change=(event, value)=>{
-    console.log("auto_change");
-    //this.setState({ yiqixinghao_value:value, auto_loading: false });
-    this.channels_select(null,value) 
+  channels_change_fetch=()=>{}
+  channels_select=(event,data)=>{
+    this.change1(data.suggestion);
   }
-  channels_input=(event)=>{
-    console.log(event);
-    //this.setState({ yiqixinghao_value:value, auto_loading: false });
-    this.channels_select(null,event) 
-  }
-  channels_select=(value, item)=>{
+  change1=(item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.channels===item)
@@ -247,12 +225,13 @@ class ContactEdit2New  extends Component{
       console.log(contact2);
       this.setState({contact:contact2});
   }
-  yiqixinghao_change=(event, value)=>{
-    console.log("auto_change");
-    //this.setState({ yiqixinghao_value:value, auto_loading: false });
-    this.yiqixinghao_select(null,value) 
+  yiqixinghao_change=(event, { newValue })=>{
+    this.change2(newValue);
   }
-  yiqixinghao_select=(value, item)=>{
+  yiqixinghao_select=(event,data)=>{
+    this.change2(data.suggestion);
+  }
+  change2=(item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.yiqixinghao===item)
@@ -341,25 +320,16 @@ class ContactEdit2New  extends Component{
                 <td>
                     通道配置:
                 </td>
-                <td>
-                {
-                // <Select
-                //   name="form-field-name"
-                //   value={this.state.contact.channels}
-                //   options={options_channels}
-                //   onChange={this.channels_change_new}
-                //   onInputChange={this.channels_input}
-                // />
-              }
-                  <Autocomplete
-                      value={this.state.contact.channels}
+                <td><Autosuggest
                       inputProps={
                         { 
                           id: 'channels-autocomplete',
-                          style:{backgroundColor:this.state.bg.channels}
+                          style:{backgroundColor:this.state.bg.channels},
+                          value:this.state.contact.channels,
+                          onChange:this.channels_change
                         }
                       }
-                      items={[
+                      suggestions={[
                         "1O(低氧)",
                         "1O(高氧)",
                         "1O(低氧)+2N",
@@ -371,15 +341,12 @@ class ContactEdit2New  extends Component{
                         "2O+2N",
                         "2O",
                       ]}
-                      getItemValue={(item) => item}
-                      onSelect={this.channels_select}
-                      onChange={this.channels_change}
-                      shouldItemRender={this.matchStateToTerm}
-                      renderItem={(item, isHighlighted) => (
-                        <div
-                          style={isHighlighted ? styles.highlightedItem : styles.item}
-                          key={item}
-                        >{item}</div>
+                      getSuggestionValue={(item) => item}
+                      onSuggestionSelected={this.channels_select}
+                      onSuggestionsFetchRequested={()=>{}}
+                      onSuggestionsClearRequested={()=>{}}
+                      renderSuggestion={(item) => (
+                        <span>{item}</span>
                       )}
                     />
                 </td>
@@ -388,15 +355,16 @@ class ContactEdit2New  extends Component{
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <Autocomplete
-                      value={this.state.contact.yiqixinghao}
-                      inputProps={
+                    <Autosuggest
+                       inputProps={
                         { 
                           id: 'yiqixinghao-autocomplete',
-                          style:{backgroundColor:this.state.bg.yiqixinghao}
+                          style:{backgroundColor:this.state.bg.yiqixinghao},
+                          value:this.state.contact.yiqixinghao,
+                          onChange:this.yiqixinghao_change
                         }
                       }
-                      items={[
+                      suggestions={[
                         "CS-1011C",
                         "CS-2800",
                         "CS-3000",
@@ -409,15 +377,12 @@ class ContactEdit2New  extends Component{
                         "ON-4000",
                         "ONH-3000"
                       ]}
-                      getItemValue={(item) => item}
-                      onSelect={this.yiqixinghao_select}
-                      onChange={this.yiqixinghao_change}
-                      shouldItemRender={this.matchStateToTerm}
-                      renderItem={(item, isHighlighted) => (
-                        <div
-                          style={isHighlighted ? styles.highlightedItem : styles.item}
-                          key={item}
-                        >{item}</div>
+                      getSuggestionValue={(item) => item}
+                      onSuggestionsFetchRequested={()=>{}}
+                      onSuggestionsClearRequested={()=>{}}
+                      onSuggestionSelected={this.yiqixinghao_select}
+                      renderSuggestion={(item) => (
+                        <span>{item}</span>
                       )}
                     />
                 </td>
