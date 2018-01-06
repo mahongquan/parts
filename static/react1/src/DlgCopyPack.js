@@ -3,25 +3,6 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
-
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
-
 class DlgCopyPack  extends React.Component{
   state= { 
       showModal: false,
@@ -112,12 +93,8 @@ class DlgCopyPack  extends React.Component{
           getSuggestionValue={(item) => item.name}
           ref="autocomplete"
           suggestions={this.state.auto_items}
-          renderSuggestion={(item, isHighlighted) => (
-                    <div
-                      style={isHighlighted ? styles.highlightedItem : styles.item}
-                      key={item.id}
-                      id={item.id}
-                    >{item.name}</div>
+          renderSuggestion={(item) => (
+                    <span>{item.name}</span>
                   )}
                 />
               </td>
