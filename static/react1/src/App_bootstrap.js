@@ -230,6 +230,7 @@ class App extends Component {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
+        <td>{contact.hetongbh}</td>
         <td>
           {contact.yonghu}
         </td>
@@ -237,17 +238,18 @@ class App extends Component {
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
           <DropdownButton title="" dropup id="id_dropdown3">
+            <MenuItem onSelect={() => this.onDetailClick(contact.id)}>详细</MenuItem>
             <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
             <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
             <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
-            <MenuItem onSelect={() => this.onDetailClick(contact.id)}>详细</MenuItem>
+            
           </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td><td>{contact.channels}</td>
         <td>{contact.baoxiang}</td>
         <td>{contact.yujifahuo_date}</td>
-        <td>{contact.hetongbh}</td>
+        
         <td>{contact.method}</td>
        </tr>
     ));
@@ -331,19 +333,19 @@ class App extends Component {
    <td>
    <label>过滤</label>
     <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
+      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
     </DropdownButton>
   </td>
   </tr>
   </tbody>
  </table>
-<table className="table-bordered"><thead><tr><th>ID</th>
+<table className="table-bordered"><thead><tr><th>ID</th><th>合同编号</th>
 <th>客户单位</th>
 <th>客户地址</th><th>仪器编号</th><th>仪器型号</th><th>通道配置</th><th>包箱</th>
-<th>入库时间</th><th>合同编号</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+<th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
 <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />

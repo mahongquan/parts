@@ -651,10 +651,12 @@ def allfile(request):
             except:
                 traceback.print_exc()
                 logging.info("except")
-        if platform.system()=="Linux":
+        if pf=="Linux":
             os.system("xdg-open "+p)
+        elif  pf.split("-")[0]=="CYGWIN_NT":
+            os.system('cygstart "'+p+'"')
         else:
-            os.system("start "+p)
+            os.system('start "'+p+'"')
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
     # except:
@@ -670,12 +672,18 @@ def folder(request):
     c=Contact.objects.get(id=contact_id)
     #p="d:/parts/media/仪器资料/"+c.yiqibh
     p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+    logging.info(p)
+    
     if not os.path.exists(p):
         os.makedirs(p)
-    if platform.system()=="Linux":
+    pf=platform.system()
+    logging.info(pf)
+    if pf=="Linux":
         os.system("xdg-open "+p)
+    elif  pf.split("-")[0]=="CYGWIN_NT":
+        os.system('cygstart "'+p+'"')
     else:
-        os.system("start "+p)
+        os.system('start "'+p+'"')
     out={"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
