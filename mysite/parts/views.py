@@ -651,12 +651,14 @@ def allfile(request):
             except:
                 traceback.print_exc()
                 logging.info("except")
+        logging.info(p)
+        pf=platform.system()
         if pf=="Linux":
             os.system("xdg-open "+p)
         elif  pf.split("-")[0]=="CYGWIN_NT":
             os.system('cygstart "'+p+'"')
         else:
-            os.system('start "'+p+'"')
+            os.system('start '+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
     # except:
@@ -683,7 +685,7 @@ def folder(request):
     elif  pf.split("-")[0]=="CYGWIN_NT":
         os.system('cygstart "'+p+'"')
     else:
-        os.system('start "'+p+'"')
+        os.system('start '+p)
     out={"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False))    
 def jiaozhun(request):
