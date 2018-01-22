@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
 from lxml import etree as ET
 from io import BytesIO,StringIO
 import datetime
 from genDoc.genData import genTest,genjmd,genTestR
+from mysite.settings import MEDIA_ROOT
+import logging
 def setCell(table,row,col,value):
     row=row-1
     col=col-1
@@ -142,10 +145,9 @@ def genJiaozhunO(c,fn):
     setCell(table,21,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")) # setCell(table,21,3).Value="   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genJiaozhunOH(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -205,10 +207,9 @@ def genJiaozhunOH(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genJiaozhunN(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -261,10 +262,9 @@ def genJiaozhunN(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genJiaozhunON(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -324,10 +324,9 @@ def genJiaozhunON(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genJiaozhunCS(c,fn):  
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -382,10 +381,9 @@ def genJiaozhunCS(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))# setCell(table,23,3).Value="   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genShujubiao(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -429,10 +427,9 @@ def genShujubiao(c,fn):
     setCell(table,14,3,c.baoxiang)#setCell(table,13,6).Value =str(d.day)+"日"    
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
-    #s.seek(0)
-    #data=s.read()
-    #data=data.decode('utf-8')
-    return s#data
+    s.seek(0)
+    data=s.getbuffer()
+    return data
 def genJiaozhunONH(c,fn):
     tree = ET.parse(fn)
     root = tree.getroot()
@@ -493,12 +490,14 @@ def genJiaozhunONH(c,fn):
     s=BytesIO()
     tree.write(s, encoding="utf-8", xml_declaration=True, method="xml")
     #s.seek(0)
-    data=s.read()
-    data=data.decode('utf-8')
+    data=s.getbuffer()
     return data
 def getJiaoZhunFile(c):
-    (lx,tmp)=c.yiqixinghao.split("-")
-    print(lx)
+    if "-" in c.yiqixinghao:
+        (lx,tmp)=c.yiqixinghao.split("-")
+        print(lx)
+    else:
+        lx=c.yiqixinghao
     data=None
     if lx==u"O":
         tname="O模板"

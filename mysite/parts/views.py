@@ -26,8 +26,8 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 #import zhengshu
-#from genDoc.excelXml_write import *
-from genDoc.excel_write import *
+from genDoc.excelXml_write import *
+#from genDoc.excel_write import *
 #from lxml import etree as ET
 import datetime
 from genDoc.docx_write import genPack,genQue
@@ -36,86 +36,6 @@ from genDoc.recordXml import genRecord
 from django.db.models import Count
 from django.db import connection,transaction
 import traceback
-# #@api_view(['GET', 'POST','DELETE'])
-# def user_list(request, format=None):
-#     """
-#     List all users, or create a new user.
-#     """
-#     logging.info("-============================")
-#     logging.info(request.method)
-#     logging.info(dir(request._request))
-#     logging.info(request._request)
-#     if request.method == 'GET':
-#         ct=User.objects.count()
-#         serializer = UserSerializer(User.objects.all(), many=True)
-#         out={"total":ct,"results":serializer.data}
-#         #logging.info(serializer.data)
-#         return Response(out)
-#     elif request.method == 'POST':
-#         serializer = UserSerializer(data=request.DATA)
-#         if serializer.is_valid():
-#             logging.info("save")
-#             serializer.save()
-#             serializer.data["clientId"]=request.DATA["id"]
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             logging.info("not save")
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method == 'DELETE':
-#         id1=request.DATA["id"]
-#         one=User.objects.get(id=int(id1))
-#         if one!=None:
-#             logging.info("save")
-#             one.delete()
-#             return Response({}, status=status.HTTP_201_CREATED)
-#         else:
-#             logging.info("not save")
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# #@api_view(['GET', 'POST'])
-# def item_list(request, format=None):
-#     """
-#     List all snippets, or create a new snippet.
-#     """
-#     logging.info(dir(request._request))
-#     logging.info(request._request)
-#     if request.method == 'GET':
-#         contact=int(request.GET.get("contact","0"))
-#         start=int(request.GET.get("start","0"))
-#         limit=int(request.GET.get("limit","5"))
-#         ct=ContactItem.objects.filter(contact=contact).count()
-#         snippets = ContactItem.objects.filter(contact=contact)[start:start+limit]
-#         serializer = ContactItemSerializer(snippets, many=True)
-#         out={"total":ct,"results":serializer.data}
-#         #logging.info(serializer.data)
-#         return Response(out)
-#     elif request.method == 'POST':
-#         serializer = ContactItemSerializer(data=request.DATA)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
-# #@api_view(['GET', 'POST'])
-# def contact_list(request, format=None):
-#     """
-#     List all snippets, or create a new snippet.
-#     """
-#     logging.info(dir(request._request))
-#     logging.info(request._request)
-#     if request.method == 'GET':
-#         start=int(request.GET.get("start","0"))
-#         limit=int(request.GET.get("limit","5"))
-#         ct=Contact.objects.count()
-#         snippets = Contact.objects.all()[start:start+limit]
-#         serializer = ContactSerializer(snippets, many=True)
-#         out={"total":ct,"results":serializer.data}
-#         #logging.info(serializer.data)
-#         return Response(out)
-#     elif request.method == 'POST':
-#         serializer = ContactSerializer(data=request.DATA)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def month12(request):
     logging.info("chart")
     # r=Contact.objects
@@ -529,11 +449,11 @@ def tarDict(dict1):
 def tar(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
     data2=getJiaoZhunFile(c)
-    byteio=tarDict({"证书数据表.xlsx":data,c.yonghu+"_"+c.yiqixinghao+".xlsx":data2})
+    byteio=tarDict({"证书数据表.xml":data,c.yonghu+"_"+c.yiqixinghao+".xml":data2})
     byteio.seek(0)
     data=byteio.read()#.decode()
     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
@@ -541,52 +461,52 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
-def allfile_old(request):
-    contact_id=request.GET["id"]
-    c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
-    logging.info(fullfilepath)
-    data=genShujubiao(c,fullfilepath)
-    data2=getJiaoZhunFile(c)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
-    logging.info(fullfilepath)
-    data_zxd=genPack(c,fullfilepath)
-    outfilename=c.yiqibh+"_"+c.yonghu
-    outfilename=outfilename[0:30]
-    dir1="证书_"+outfilename
-    dict1={dir1+"/证书数据表.xlsx":data
-        ,dir1+"/证书.xlsx":data2
-        ,outfilename+"_装箱单.docx":data_zxd
-        }
-    data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
-    dict1["标签.lbx"]=data_lbl
-    #
-    if c.method!=None:
-        logging.info(dir(c.method))
-        try:
-            fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
-            (data_record,data_xishu)=genRecord(fullfilepath,c)
-            dict1[c.yiqibh+"调试记录.docx"]=data_record
-            dict1["系数.lbx"]=data_xishu
-        except ValueError as e:
-            logging.info(e)
-            pass
-    #
-    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
-    if not os.path.exists(p):
-        os.makedirs(p)
-    if platform.system()=="Linux":
-        os.system("xdg-open "+p)
-    else:
-        os.system("start "+p)
-    byteio=tarDict(dict1)
-    byteio.seek(0)
-    data=byteio.read()#.decode()
-    t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
-    t['Content-Disposition'] = tstr.encode("gb2312")
-    t['Content-Length']=len(data)
-    return t    
+# def allfile_old(request):
+#     contact_id=request.GET["id"]
+#     c=Contact.objects.get(id=contact_id)
+#     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+#     logging.info(fullfilepath)
+#     data=genShujubiao(c,fullfilepath)
+#     data2=getJiaoZhunFile(c)
+#     fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+#     logging.info(fullfilepath)
+#     data_zxd=genPack(c,fullfilepath)
+#     outfilename=c.yiqibh+"_"+c.yonghu
+#     outfilename=outfilename[0:30]
+#     dir1="证书_"+outfilename
+#     dict1={dir1+"/证书数据表.xml":data
+#         ,dir1+"/证书.xml":data2
+#         ,outfilename+"_装箱单.docx":data_zxd
+#         }
+#     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+#     dict1["标签.lbx"]=data_lbl
+#     #
+#     if c.method!=None:
+#         logging.info(dir(c.method))
+#         try:
+#             fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+#             (data_record,data_xishu)=genRecord(fullfilepath,c)
+#             dict1[c.yiqibh+"调试记录.docx"]=data_record
+#             dict1["系数.lbx"]=data_xishu
+#         except ValueError as e:
+#             logging.info(e)
+#             pass
+#     #
+#     p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+#     if not os.path.exists(p):
+#         os.makedirs(p)
+#     if platform.system()=="Linux":
+#         os.system("xdg-open "+p)
+#     else:
+#         os.system("start "+p)
+#     byteio=tarDict(dict1)
+#     byteio.seek(0)
+#     data=byteio.read()#.decode()
+#     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+#     tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
+#     t['Content-Disposition'] = tstr.encode("gb2312")
+#     t['Content-Length']=len(data)
+#     return t    
 def allfile(request):
     #try:
         contact_id=request.GET["id"]
@@ -603,12 +523,12 @@ def allfile(request):
         logging.info(dir1)
         if not os.path.exists(dir1):
             os.makedirs(dir1)
-        file1=dir1+"/证书数据表.xlsx"
+        file1=dir1+"/证书数据表.xml"
         if not os.path.exists(file1):
-            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
             data=genShujubiao(c,fullfilepath)
             open(file1,"wb").write(data)
-        file2=dir1+"/"+c.yonghu+"证书.xlsx"
+        file2=dir1+"/"+c.yonghu+"证书.xml"
         if not os.path.exists(file2):
             data2=getJiaoZhunFile(c)
             open(file2,"wb").write(data2)
@@ -727,11 +647,11 @@ def shujubiao(request):
     logging.info(encode)
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xlsx")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
     t=HttpResponse(data,content_type="application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xlsx"
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xml"
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def copypack(request):

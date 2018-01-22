@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from lxml import etree as ET
+#from lxml import etree as ET
 from io import BytesIO,StringIO
 import datetime
 from openpyxl import load_workbook
@@ -47,7 +47,7 @@ def getchannels(peizhi):
     return chanels
 def setCell(table,row,col,value):
     print(row,col,value)
-    table.cell(row = row, column = col).value=value
+    table.cell(row = row, column = col,value=value)
 def getCell(table,row,col):
     return table.cell(row = row, column = col).value
 def genJiaozhunO(c,fn):
