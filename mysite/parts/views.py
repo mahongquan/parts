@@ -26,7 +26,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 #import zhengshu
-from genDoc.excelXml_write import *
+from genDoc.excel_write import *
 #from genDoc.excel_write import *
 #from lxml import etree as ET
 import datetime
@@ -449,11 +449,11 @@ def tarDict(dict1):
 def tar(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
     data2=getJiaoZhunFile(c)
-    byteio=tarDict({"证书数据表.xml":data,c.yonghu+"_"+c.yiqixinghao+".xml":data2})
+    byteio=tarDict({"证书数据表"+EXTNAME:data,c.yonghu+"_"+c.yiqixinghao+EXTNAME:data2})
     byteio.seek(0)
     data=byteio.read()#.decode()
     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
@@ -461,52 +461,6 @@ def tar(request):
     t['Content-Disposition'] = tstr.encode("gb2312")
     t['Content-Length']=len(data)
     return t
-# def allfile_old(request):
-#     contact_id=request.GET["id"]
-#     c=Contact.objects.get(id=contact_id)
-#     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
-#     logging.info(fullfilepath)
-#     data=genShujubiao(c,fullfilepath)
-#     data2=getJiaoZhunFile(c)
-#     fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
-#     logging.info(fullfilepath)
-#     data_zxd=genPack(c,fullfilepath)
-#     outfilename=c.yiqibh+"_"+c.yonghu
-#     outfilename=outfilename[0:30]
-#     dir1="证书_"+outfilename
-#     dict1={dir1+"/证书数据表.xml":data
-#         ,dir1+"/证书.xml":data2
-#         ,outfilename+"_装箱单.docx":data_zxd
-#         }
-#     data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
-#     dict1["标签.lbx"]=data_lbl
-#     #
-#     if c.method!=None:
-#         logging.info(dir(c.method))
-#         try:
-#             fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
-#             (data_record,data_xishu)=genRecord(fullfilepath,c)
-#             dict1[c.yiqibh+"调试记录.docx"]=data_record
-#             dict1["系数.lbx"]=data_xishu
-#         except ValueError as e:
-#             logging.info(e)
-#             pass
-#     #
-#     p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
-#     if not os.path.exists(p):
-#         os.makedirs(p)
-#     if platform.system()=="Linux":
-#         os.system("xdg-open "+p)
-#     else:
-#         os.system("start "+p)
-#     byteio=tarDict(dict1)
-#     byteio.seek(0)
-#     data=byteio.read()#.decode()
-#     t=HttpResponse(data,content_type="application/x-tar")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-#     tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+".tar"
-#     t['Content-Disposition'] = tstr.encode("gb2312")
-#     t['Content-Length']=len(data)
-#     return t    
 def allfile(request):
     #try:
         contact_id=request.GET["id"]
@@ -523,12 +477,12 @@ def allfile(request):
         logging.info(dir1)
         if not os.path.exists(dir1):
             os.makedirs(dir1)
-        file1=dir1+"/证书数据表.xml"
+        file1=dir1+"/证书数据表"+EXTNAME
         if not os.path.exists(file1):
-            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
             data=genShujubiao(c,fullfilepath)
             open(file1,"wb").write(data)
-        file2=dir1+"/"+c.yonghu+"证书.xml"
+        file2=dir1+"/"+c.yonghu+"证书"+EXTNAME
         if not os.path.exists(file2):
             data2=getJiaoZhunFile(c)
             open(file2,"wb").write(data2)
@@ -612,8 +566,8 @@ def jiaozhun(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
     data=getJiaoZhunFile(c)
-    t=HttpResponse(data,content_type="text/xml")#application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书.xml"
+    t=HttpResponse(data,content_type="application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书"+EXTNAME
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def que(request):
@@ -647,11 +601,11 @@ def shujubiao(request):
     logging.info(encode)
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
-    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表.xml")
+    fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
     logging.info(fullfilepath)
     data=genShujubiao(c,fullfilepath)
     t=HttpResponse(data,content_type="application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")#content_type="text/xml")#application/vnd.ms-excel")
-    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表.xml"
+    tstr='attachment; filename=%s' % c.yonghu+"_"+c.yiqixinghao+"_证书数据表"+EXTNAME
     t['Content-Disposition'] = tstr.encode("gb2312")
     return t
 def copypack(request):
