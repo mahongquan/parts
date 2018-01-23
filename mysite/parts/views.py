@@ -25,14 +25,13 @@ import json
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
-#import zhengshu
-from genDoc.excel_write import *
-#from genDoc.excel_write import *
-#from lxml import etree as ET
 import datetime
-from genDoc.docx_write import genPack,genQue
-import genDoc.genLabel
-from genDoc.recordXml import genRecord
+
+from genDoc.excel_write import *  #证书
+from genDoc.docx_write import genPack,genQue #装箱单
+import genDoc.genLabel          #标签
+from genDoc.recordXml import genRecord #调试记录
+
 from django.db.models import Count
 from django.db import connection,transaction
 import traceback
