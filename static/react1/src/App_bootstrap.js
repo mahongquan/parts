@@ -237,7 +237,7 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
-          <DropdownButton title="" dropup id="id_dropdown3">
+          <DropdownButton title="" id="id_dropdown3">
             <MenuItem onSelect={() => this.onDetailClick(contact.id)}>详细</MenuItem>
             <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
@@ -350,6 +350,7 @@ class App extends Component {
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
 <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
 <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+<div style={{minHeight:"200px"}}></div>
   </div>
     );
   }
