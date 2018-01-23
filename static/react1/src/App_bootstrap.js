@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay,OverlayTrigger} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
@@ -28,6 +28,10 @@ class App extends Component {
     search:""
   }
    state = {
+    search2:"",
+    search2tip:"",
+    target:null,
+    showcontext:false,
     contacts: [],
     limit:10,
     user: "AnonymousUser",
@@ -37,6 +41,16 @@ class App extends Component {
     start_input:1,
     currentIndex:null,
     baoxiang:"",
+  }
+
+  handleClickFilter = (event) => {
+    //console.log(event);
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({target:event.target,showcontext:true});
+    // setTimeout(()=>{
+    //         this.setState({showcontext:false});
+    //     },5000);
   }
   componentDidMount=() => {
     this.load_data();
@@ -108,6 +122,9 @@ class App extends Component {
     this.mystate.search=e.target.value;
     this.setState({search:this.mystate.search});
   };
+  handleSearch2Change=(e)=>{
+    this.setState({search2:e.target.value});
+  }
   handlePrev = (e) => {
     this.mystate.start=this.mystate.start-this.mystate.limit;
     if(this.mystate.start<0) {this.mystate.start=0;}
@@ -225,8 +242,15 @@ class App extends Component {
   openDlgImport=()=>{
     this.refs.dlgimport.open();
   }
+  onFilterDW =()=>{
+        console.log("filter dw");
+  }
+  closeFilter=()=>{
+    this.setState({showcontext:false});
+  }
   render() {
     //console.log("render=========================");
+
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
@@ -253,6 +277,9 @@ class App extends Component {
         <td>{contact.method}</td>
        </tr>
     ));
+    // const tooltipdw = (
+    //       <Tooltip id="tooltipdw"><strong>dw</strong></Tooltip>
+    //     );
     var hasprev=true;
     var hasnext=true;
     let prev;
@@ -281,6 +308,13 @@ class App extends Component {
     }
     return (
     <div id="todoapp" className="table-responsive">
+    <Overlay target={this.state.target} 
+        container={this} show={this.state.showcontext}  placement="bottom">
+        <Tooltip id="tooltip1" >
+            <input type="text" value={this.state.search2}  placeholder={this.state.search2tip} onChange={this.handleSearch2Change} />
+            <button onClick={this.closeFilter}>close</button>
+        </Tooltip>
+    </Overlay>
     <DlgItems ref="dlgitems" />
     <DlgPacks ref="dlgpacks" />
     <DlgCopyPack ref="dlgcopypack" />
@@ -330,21 +364,22 @@ class App extends Component {
    <td>
    <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
   </td>
-   <td>
-   <label>过滤</label>
-    <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
+  </tr>
+  </tbody>
+ </table>
+<table className="table-bordered"><thead><tr><th>ID</th><th>合同编号</th>
+<th><span onClick={this.handleClickFilter}>客户单位</span>
+</th>
+<th>客户地址</th>
+<th><span onClick={this.handleClickFilter}>仪器编号</span></th>
+<th>仪器型号</th><th>通道配置</th>
+<th>包箱<DropdownButton title={this.state.baoxiang} id="id_dropdown2">
       <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
     </DropdownButton>
-  </td>
-  </tr>
-  </tbody>
- </table>
-<table className="table-bordered"><thead><tr><th>ID</th><th>合同编号</th>
-<th>客户单位</th>
-<th>客户地址</th><th>仪器编号</th><th>仪器型号</th><th>通道配置</th><th>包箱</th>
+</th>
 <th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
