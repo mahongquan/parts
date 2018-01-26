@@ -417,7 +417,7 @@ function delCookie(name)//删除cookie
            var usepackListView = new UsepackListView({model:this.model});
            //usepackListView.render();
            usepackListView.$el.dialog({
-                width:"100%",//height:500,
+                width:"600px",//height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -518,7 +518,7 @@ var ContactEditView3 = Backbone.View.extend({
         $("#contact_edit").modal("show");
         var self=this;
         this.$el.dialog({
-                width:"100%",//height:800,
+                width:"600px",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -771,7 +771,7 @@ var ContactEditView3 = Backbone.View.extend({
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.dialog({
-                width:"100%",//height:800,
+                width:"600px",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -780,29 +780,8 @@ var ContactEditView3 = Backbone.View.extend({
                 }
                 , autoOpen: true,
                open: function (event, ui) {
-                  //console.log("dialog open function");
-                  //$(ui).find('.mydate').datepicker({
-                    //  $(".mydate").datepicker({
-                    //       dateFormat: 'yy-mm-dd',
-                    //       numberOfMonths:1,//显示几个月
-                    //       showButtonPanel:true,//是否显示按钮面板
-                    //       clearText:"清除",//清除日期的按钮名称
-                    //       closeText:"关闭",//关闭选择框的按钮名称
-                    //       yearSuffix: '年', //年的后缀
-                    //       showMonthAfterYear:true,//是否把月放在年的后面
-                    //       //defaultDate:'2011-03-10',//默认日期
-                    //       //minDate:'2011-03-05',//最小日期
-                    //       //maxDate:'2011-03-20',//最大日期
-                    //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-                    //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-                    //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-                    //       dayNamesMin: ['日','一','二','三','四','五','六'],
-                    // });
                  },
                close: function (event,ui) {
-                //console.log("dialog close function");
-                   //$(ui).find('.mydate').datepicker("destroy");
-                   //$('.mydate').datepicker("destroy");
                    $(this).dialog("destroy");
                }
        });
@@ -998,7 +977,7 @@ var ContactEditView3 = Backbone.View.extend({
             self.userv= new UserView({model: new User(),app:self});
           self.userv.render();
           self.userv.$el.dialog({
-               width:"100%",height:250,
+               width:"600px",height:250,
                   modal: true
                   , overlay: {
                       backgroundColor: '#000'
@@ -1246,7 +1225,7 @@ var ContactEditView3 = Backbone.View.extend({
         var self=this;
         this.$el.dialog({
                 title: "导入标样",
-                width:"100%",//height:800,
+                width:"600px",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1476,7 +1455,7 @@ var ContactEditView3 = Backbone.View.extend({
       //console.log("edit");
       var packitemListView = new PackItemListView({model:this.model});
            packitemListView.$el.dialog({
-                width:"100%",//height:500,
+                width:"600px",//height:500,
                 modal: true
                 , overlay: {
                     backgroundColor: '#000'
@@ -1649,7 +1628,7 @@ var ContactEditView3 = Backbone.View.extend({
        var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
        packitemedit.$el.dialog({
-              width:"100%",height:500,
+              width:"600px",height:500,
                 modal: false
                 , overlay: {
                     backgroundColor: '#000'
@@ -1883,7 +1862,7 @@ var ContactEditView3 = Backbone.View.extend({
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:"100%",height:500,
+                width:"600px",height:500,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1949,7 +1928,7 @@ var ContactEditView3 = Backbone.View.extend({
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:"100%",//height:800,
+                width:"600px",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
@@ -1983,7 +1962,7 @@ var ContactEditView3 = Backbone.View.extend({
         var self=this;
         //console.log(this.$el);
         this.$el.dialog({
-                width:"100%",//height:800,
+                width:"600px",//height:800,
                 modal: false
                 , overlay: {
                     //backgroundColor: '#0F0'
