@@ -304,31 +304,13 @@ function delCookie(name)//删除cookie
       },
     render: function() {
       console.log("ContactEditView render")
-      //this.$(".mydate").datepicker("destroy");
       this.$el.html(this.template(this.model.toJSON()));
 
-      // this.$("#channels").typeahead('destroy')
-      // this.$("#channels").typeahead({source: availableTags_2});
+      this.$("#channels").typeahead('destroy')
+      this.$("#channels").typeahead({source: availableTags_2});
 
-      // this.$("#yiqixinghao").typeahead('destroy')
-      // this.$("#yiqixinghao").typeahead({source: availableTags});
-
-      // this.$(".mydate").datepicker({
-      //       dateFormat: 'yy-mm-dd',
-      //       numberOfMonths:1,//显示几个月
-      //       showButtonPanel:true,//是否显示按钮面板
-      //       clearText:"清除",//清除日期的按钮名称
-      //       closeText:"关闭",//关闭选择框的按钮名称
-      //       yearSuffix: '年', //年的后缀
-      //       showMonthAfterYear:true,//是否把月放在年的后面
-      //       //defaultDate:'2011-03-10',//默认日期
-      //       //minDate:'2011-03-05',//最小日期
-      //       //maxDate:'2011-03-20',//最大日期
-      //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-      //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-      //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-      //       dayNamesMin: ['日','一','二','三','四','五','六'],
-      // });
+      this.$("#yiqixinghao").typeahead('destroy')
+      this.$("#yiqixinghao").typeahead({source: availableTags});
       return this;
     },
   });
@@ -339,12 +321,8 @@ function delCookie(name)//删除cookie
     events: {
       "click .contact_edit" : "edit",
       "click .contact_delete" : "delete",
-      "click .contact_usepack" : "usepack",
-      "click .contact_zxd" : "zxd",
       "click .contact_chuku" : "checkchuku",
       "click .contact_folder" : "folder",
-      "click .contact_quehuo" : "quehuo",
-      "click .contact_zs" : "zs",
       "click .contact_detail" : "detail",
       "click .contact_allfile" : "allfile",
       "click .contact_updatemethod" : "updatemethod",
@@ -372,7 +350,7 @@ function delCookie(name)//删除cookie
            if (result.success){
               self.model.set(result.data)
            }
-           s.$el.dialog('close');
+           s.$el.modal("hide");
        }).fail(function() {
           alert( "error" );
        });
@@ -382,7 +360,7 @@ function delCookie(name)//删除cookie
         s.showdialog();
         $.getJSON(host+"/parts/folder?id="+this.model.get("id"), function(result){
            console.info(result);
-           s.$el.dialog('close');
+           s.$el.modal("hide");
        }).fail(function() {
           alert( "error" );
        });
@@ -393,7 +371,7 @@ function delCookie(name)//删除cookie
         s.showdialog();
         $.getJSON(host+"/parts/allfile?id="+this.model.get("id"), function(result){
            console.info(result);
-           s.$el.dialog('close');
+           s.$el.modal("hide");
            if (!result.success){
             $("<p>"+result.message+"</p>").dialog();
            }
@@ -412,52 +390,6 @@ function delCookie(name)//删除cookie
     },
     zs:function(){
         window.open(host+"/parts/tar?id="+this.model.get("id"));
-    },
-    usepack:function(){
-           var usepackListView = new UsepackListView({model:this.model});
-           //usepackListView.render();
-           usepackListView.$el.dialog({
-                width:"600px",//height:500,
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                close: function (event,ui) {
-                   $(this).dialog("destroy");
-                }
-           });
-           usepackListView.$("#auto_pack1").typeahead({});
-           // usepackListView.$("#auto_pack1").autocomplete({
-           //      minLength: 1
-           //      , focus: function (event, ui) {
-           //          //$( "#auto_pack1" ).val( ui.item.value);
-           //          return false;
-           //      }
-           //      , select: function (event, ui) {
-           //          usepackListView.addrow(ui.item.pk, ui.item.value);
-           //          return false;
-           //      }
-           //      , source: function (request, response) {
-           //          var term = request.term;
-           //          if (term in cache) {
-           //              data = cache[term];
-           //              response(data);
-           //              return;
-           //          }
-           //          $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-           //              cache[term] = data;
-           //              response(data);
-           //          }).fail(function() {
-           //            alert( "error" );
-           //          });
-           //      }
-           //  }).autocomplete("instance")._renderItem = function (ul, item) {
-           //      return $("<li>")
-           //          .append("<a>" + item.pk + "_" + item.value + "</a>")
-           //          .appendTo(ul);
-           //  };
     },
     edit:function(){
         //console.log("edit");
@@ -519,43 +451,38 @@ function delCookie(name)//删除cookie
        // var self=this;
          console.log("showdialog ");
         
-        this.cev.$("#yiqixinghao" ).typeahead({
-            source:availableTags
-        });
-        this.cev.$("#channels" ).typeahead({
-          minLength: 1,
-          source: availableTags_2
-        });
-      // this.pev.$("#auto_pack1").autocomplete({
-      //           minLength: 1
-      //           , focus: function (event, ui) {
-      //               //$( "#auto_pack1" ).val( ui.item.value);
-      //               return false;
-      //           }
-      //           , select: function (event, ui) {
-      //               self.pev.addrow(ui.item.pk, ui.item.value);
-      //               return false;
-      //           }
-      //           , source: function (request, response) {
-      //               var term = request.term;
-      //               if (term in cache) {
-      //                   data = cache[term];
-      //                   response(data);
-      //                   return;
-      //               }
-      //               $.getJSON(host+"/rest/Pack?search="+term, request, function (data, status, xhr) {
-      //                   data=data.data;
-      //                   cache[term] = data;
-      //                   response(data);
-      //               }).fail(function() {
-      //                 alert( "error" );
-      //               });
-      //           }
-      //       }).autocomplete("instance")._renderItem = function (ul, item) {
-      //           return $("<li>")
-      //               .append("<a>" + item.pk + "_" + item.value + "</a>")
-      //               .appendTo(ul);
-      //       }; 
+      this.pev.$("#auto_pack1").typeahead("destroy");
+      this.pev.$("#auto_pack1").typeahead({
+                minLength: 1
+                , focus: function (event, ui) {
+                    //$( "#auto_pack1" ).val( ui.item.value);
+                    return false;
+                }
+                , select: function (event, ui) {
+                    self.pev.addrow(ui.item.pk, ui.item.value);
+                    return false;
+                }
+                , source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        data = cache[term];
+                        response(data);
+                        return;
+                    }
+                    $.getJSON(host+"/rest/Pack?search="+term, request, function (data, status, xhr) {
+                        data=data.data;
+                        cache[term] = data;
+                        response(data);
+                    }).fail(function() {
+                      alert( "error" );
+                    });
+                }
+            })
+            //   .autocomplete("instance")._renderItem = function (ul, item) {
+            //     return $("<li>")
+            //         .append("<a>" + item.pk + "_" + item.value + "</a>")
+            //         .appendTo(ul);
+            // }; 
         this.$el.modal();
     },
     changeModel:function(model){
@@ -951,7 +878,7 @@ function delCookie(name)//删除cookie
     },
     cancel:function(){
       //console.log("cancel");
-      //this.$el.dialog('close');
+      //this.$el.modal("hide");
       this.$el.modal("hide");
     },
     ok:function(){
