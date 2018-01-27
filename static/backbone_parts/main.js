@@ -517,16 +517,15 @@ function delCookie(name)//删除cookie
     showdialog:function(){
         this.render();//must call because editview has no element now;
        // var self=this;
-      //   console.log(this.$("#id_mymodal1"));
+         console.log("showdialog ");
         
-      //   this.cev.$("#yiqixinghao" ).autocomplete({
-      //     minLength: 1,
-      //     source: availableTags
-      //   });
-      //   this.cev.$("#channels" ).autocomplete({
-      //     minLength: 1,
-      //     source: availableTags_2
-      //   });
+        this.cev.$("#yiqixinghao" ).typeahead({
+            source:availableTags
+        });
+        this.cev.$("#channels" ).typeahead({
+          minLength: 1,
+          source: availableTags_2
+        });
       // this.pev.$("#auto_pack1").autocomplete({
       //           minLength: 1
       //           , focus: function (event, ui) {
