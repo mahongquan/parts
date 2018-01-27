@@ -45,6 +45,115 @@
 {% block content %}
   <div id="todoapp">
     <div>
+      <div id="id_mymodal1" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table id="table_input"  >
+                <tbody>
+<tr >
+                <td >
+                    ID:
+                </td>
+                <td >
+                    <input type="text" id="id" name="id" readonly="true"  disabled="disabled"    value="<%- id %>">
+                </td>
+        <!--     </tr><tr> -->
+                <td>
+                    <label>用户单位:</label>
+                </td>
+                <td>
+                    <input type="text" id="yonghu" name="yonghu" value="<%- yonghu %>">
+                </td>
+            </tr><tr>
+                <td>
+                    客户地址:
+                </td>
+                <td>
+                    <input type="text" id="addr" name="addr" value="<%- addr %>">
+                </td>
+       <!--      </tr><tr> -->
+                <td>
+                    通道配置:
+                </td>
+                <td>
+                    <input type="text" id="channels"  value="<%- channels %>" data-provide="typeahead" data-items="4" />  
+                </td>
+            </tr><tr>
+                <td>
+                    <label>仪器型号:</label>
+                </td>
+                <td>
+                <input type="text" id="yiqixinghao"  value="<%- yiqixinghao %>" data-provide="typeahead" data-items="3" />  
+                </td>
+  <!--           </tr><tr> -->
+                <td>
+                    <label>仪器编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="yiqibh" name="yiqibh" value="<%- yiqibh %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>包箱:</label>
+                </td>
+                <td>
+                    <input type="text" id="baoxiang" name="baoxiang" value="<%- baoxiang %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    审核:
+                </td>
+                <td>
+                    <input type="text" id="shenhe" name="shenhe" value="<%- shenhe %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>入库时间:</label>
+                </td>
+                <td>
+                    <input type="text" class="mydate" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    调试时间:
+                </td>
+                <td>
+                    <input type="text" class="mydate" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>合同编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="hetongbh" name="hetongbh" value="<%- hetongbh %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    方法:
+                </td>
+                <td>
+                <input type="text" id="method" name="method" readonly="true" value="<%- method %>">
+                <button class="btn" id="bt_file">
+                  <span class="fa fa-pencil" aria-hidden="true"></span>
+                </button>
+                <button class="btn" id="bt_removefile">
+                <span class="fa fa-remove" aria-hidden="true"></span>
+                </button>
+                </td>
+            </tr>      </tbody>  
+          </table>
+       <div align="left"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button></div>
+        <div id="id_usepacks"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     <table>
     <tr>
 	 <td>
@@ -147,12 +256,23 @@
  </script>
   <!--=========================================================================-->
   <script type="text/template" id="contact-edit2-template">
-     <div id="id_contact_edit"></div>
-            <div id="id_usepack_edit"></div>
+        <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >    
+              <div  id="id_contact_edit"></div>
+              <div id="id_usepack_edit"></div>
+            </div>
+          </div>
+        </div>
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="contact-edit-template">
-        <table id="table_input" class="table-condensed" >
+          <table id="table_input" class="table-condensed" >
 <tr >
                 <td >
                     ID:
@@ -279,19 +399,28 @@
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="delete-template">
-        <table >
-          <tr>
-                <td>是否确定?</td>
-          </tr>
-          <tr>
-                <td>
-                    <button id="id_ok">确定</button>
-                </td>
-                <td>
-                    <button id="id_cancel">取消</button>
-                </td>
-          </tr>
-        </table>
+        <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
+              <table >
+                <tr>
+                      <td>是否确定?</td>
+                </tr>
+                <tr>
+                      <td>
+                          <button id="delete_ok">确定</button>
+                      </td>
+                      <td>
+                          <button id="delete_cancel">取消</button>
+                      </td>
+                </tr>
+              </table>
+      </div></div></div>
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="usepack-list-template">
@@ -328,6 +457,14 @@
   </script>
   <!--=========================================================================-->
 <script type="text/template" id="packitem-list-template">
+  <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >   
   <div class="container">
       <div id="pack-info">
       <table>
@@ -351,7 +488,8 @@
       <p><input id="new_item1"  placeholder="新备件名称"><button id="id_new_packitem">新备件</button></p>
       </div>
   </div>
-  </script>
+</div></div></div>
+    </script>
   <!--=========================================================================-->
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
@@ -362,6 +500,14 @@
   </script>
   <!--=========================================================================-->
     <script type="text/template" id="packitem-edit-template">
+ <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >        
     <table  class="table-condensed" >
             <tr hidden="true">
                 <td >
@@ -429,16 +575,34 @@
             </tr>        
             </table>
         <button  class="btn btn-primary" id="bt_save_item">保存</button>
+      </div></div></div>
     </script>
     <!--=========================================================================-->
    <script type="text/template" id="upload-template">
+ <div class="modal-dialog" role="document" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >     
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
+</div></div></div>    
  </script>
  <!--=========================================================================-->
     <script type="text/template" id="check-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >       
     <p>仪器编号<%- yiqibh %>备料计划核对，请上传备料计划导出的Excel文件</p>
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value="<%- id %>"/>
@@ -446,9 +610,18 @@
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
     <div id="resultlist"></div>
+  </div></div></div>
  </script>
  <!--=========================================================================-->
  <script  type="text/template" id="importstandard-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
       <form  id="uploadForm" enctype="multipart/form-data">
       <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value=""/>
       <input style="margin:10px 10px 10px 10px;" id="file"  accept="application/vnd.ms-excel" type="file" name="file"/>
@@ -466,6 +639,9 @@
       </table>
       <!-- <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a> -->
     </div>
+  </div>
+</div>
+</div>
  </script>
  <!--=========================================================================-->
    <script type="text/template" id="pack-template">
@@ -477,8 +653,17 @@
   </script>
   <!--=========================================================================-->
 <script type="text/template" id="waiting-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
   <p>请等待。。。。。
   </p>
+  </div></div></div>
 </script>
 {% endblock %} 
 

@@ -307,11 +307,11 @@ function delCookie(name)//删除cookie
       this.$(".mydate").datepicker("destroy");
       this.$el.html(this.template(this.model.toJSON()));
 
-      this.$("#channels").typeahead('destroy')
-      this.$("#channels").typeahead({source: availableTags_2});
+      // this.$("#channels").typeahead('destroy')
+      // this.$("#channels").typeahead({source: availableTags_2});
 
-      this.$("#yiqixinghao").typeahead('destroy')
-      this.$("#yiqixinghao").typeahead({source: availableTags});
+      // this.$("#yiqixinghao").typeahead('destroy')
+      // this.$("#yiqixinghao").typeahead({source: availableTags});
 
       this.$(".mydate").datepicker({
             dateFormat: 'yy-mm-dd',
@@ -476,8 +476,10 @@ function delCookie(name)//删除cookie
     },
     delete:function(){
           //delete-template
-           var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.showdialog();
+           //var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+           //deleteview.showdialog();
+           var dlg=new UploadView({parent:this});
+        dlg.showdialog();
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -490,247 +492,10 @@ function delCookie(name)//删除cookie
     },
   });
 
-////////////////////////////////////////////////////////////////////////////
-var ContactEditView3 = Backbone.View.extend({
-    el: $("#contact_edit"),
-    template: _.template($('#contact-edit2-template').html()),
-    initialize: function() {
-      //this.$el.html(this.template(this.model.toJSON()));
-      this.cev=new ContactEditView({model:this.model,parentview:this});
-      var v=this.cev.render().el;
-      this.$("#id_contact_edit").empty();
-      this.$("#id_contact_edit").append(v);
-      this.pev=new UsepackListView({model:this.model});
-      var v=this.pev.render().el;
-      if(this.model.get("id")==undefined)
-      {
-        this.$("#id_usepack_edit").attr("hidden",true);  
-      }
-      else
-      {
-        this.$("#id_usepack_edit").attr("hidden",false);   
-      }
-      this.$("#id_usepack_edit").empty();
-      this.$("#id_usepack_edit").append(v);
-    },
-    showdialog:function(){
-        this.render();//must call because editview has no element now;
-        $("#contact_edit").modal("show");
-        var self=this;
-        this.$el.dialog({
-                width:"600px",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                 },
-               close: function (event,ui) {
-                //console.log("dialog close function");
-                   //$(ui).find('.mydate').datepicker("destroy");
-                   //$('.mydate').datepicker("destroy");
-                   $(this).dialog("destroy");
-               }
-       });
-        this.cev.$("#yiqixinghao" ).autocomplete({
-          minLength: 1,
-          source: availableTags
-        });
-        this.cev.$("#channels" ).autocomplete({
-          minLength: 1,
-          source: availableTags_2
-        });
-        this.pev.$("#auto_pack1").typeahead("destroy");
-        this.pev.$("#auto_pack1").typeahead({
-          source: function (query, process) {
-                    if (query in cache) {
-                         data = cache[term];
-                         process(data);
-                         return;
-                     }
-                    var request={search:query}
-                    $.getJSON(host+"/rest/Pack", request, function (data, status, xhr) {
-                        cache[query] = data.data;
-                        process(data.data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                },
-                items: 8,
-                afterSelect: function (item) {
-                   self.pev.addrow(item.id, item.name);
-                   console.log(item);//打印对应的id
-                }
-              });
-
-    },
-    changeModel:function(model){
-      console.log("changeModel=========================");
-      console.log(this.model.get("id"));
-      console.log(model.get("id"));
-      // if (this.model.get("id")!=model.get("id"))
-      // {
-        this.model=model
-        this.pev.model=this.model;
-        this.pev.render();
-        this.pev.mysetdata();//refresh data
-        if(this.model.get("id")==undefined)
-        {
-          this.$("#id_usepack_edit").attr("hidden",true);  
-        }
-        else
-        {
-          this.$("#id_usepack_edit").attr("hidden",false);   
-        }
-      // }
-    },
-    render: function() {
-      return this;
-    },
-  });
-///////////////////////////////
-///////////////////////////
-  var ContactEditView3 = Backbone.View.extend({
-    el: $("#myModal_edit"),
-    initialize: function() {
-      //this.$el.html(this.template(this.model.toJSON()));
-      this.cev=new ContactEditView({model:this.model,parentview:this});
-      var v=this.cev.render().el;
-      this.$("#id_contact_edit").empty();
-      this.$("#id_contact_edit").append(v);
-      this.pev=new UsepackListView({model:this.model});
-      var v=this.pev.render().el;
-      if(this.model.get("id")==undefined)
-      {
-        this.$("#id_usepack_edit").attr("hidden",true);  
-      }
-      else
-      {
-        this.$("#id_usepack_edit").attr("hidden",false);   
-      }
-      this.$("#id_usepack_edit").empty();
-      this.$("#id_usepack_edit").append(v);
-    },
-    showdialog:function(){
-      console.log("showdialog ContactEditView3");
-        //this.render();//must call because editview has no element now;
-        var self=this;
-        $("#myModal_edit").modal("show");
-        console.log(this.$("#myModal_edit"));
-       //  this.$el.dialog({
-       //          width:"100%",//height:800,
-       //          modal: false
-       //          , overlay: {
-       //              //backgroundColor: '#0F0'
-       //              //, 
-       //              opacity: 0.5
-       //          }
-       //          , autoOpen: true,
-       //         open: function (event, ui) {
-       //            //console.log("dialog open function");
-       //            //$(ui).find('.mydate').datepicker({
-       //              //  $(".mydate").datepicker({
-       //              //       dateFormat: 'yy-mm-dd',
-       //              //       numberOfMonths:1,//显示几个月
-       //              //       showButtonPanel:true,//是否显示按钮面板
-       //              //       clearText:"清除",//清除日期的按钮名称
-       //              //       closeText:"关闭",//关闭选择框的按钮名称
-       //              //       yearSuffix: '年', //年的后缀
-       //              //       showMonthAfterYear:true,//是否把月放在年的后面
-       //              //       //defaultDate:'2011-03-10',//默认日期
-       //              //       //minDate:'2011-03-05',//最小日期
-       //              //       //maxDate:'2011-03-20',//最大日期
-       //              //       monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-       //              //       dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-       //              //       dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-       //              //       dayNamesMin: ['日','一','二','三','四','五','六'],
-       //              // });
-       //           },
-       //         close: function (event,ui) {
-       //          //console.log("dialog close function");
-       //             //$(ui).find('.mydate').datepicker("destroy");
-       //             //$('.mydate').datepicker("destroy");
-       //             $(this).dialog("destroy");
-       //         }
-       // });
-        this.cev.$("#yiqixinghao" ).autocomplete({
-          minLength: 1,
-          source: availableTags
-        });
-        this.cev.$("#channels" ).autocomplete({
-          minLength: 1,
-          source: availableTags_2
-        });
-      this.pev.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    self.pev.addrow(ui.item.id, ui.item.name);
-                    return false;
-                }
-                , source: function (request, response) {
-                    console.log(request);
-                    var term = request.term;
-                    request={ search: term,limit:50};
-                    console.log("hi")
-                    console.log(request);
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/rest/Pack", request, function (data, status, xhr) {
-                        console.log(data);
-                        cache[term] = data.data;
-                        response(data.data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                console.log(item);
-                return $("<li>")
-                    .append("<a>" + item.id + "_" + item.name + "</a>")
-                    .appendTo(ul);
-            }; 
-        
-    },
-    changeModel:function(model){
-      console.log("changeModel=========================");
-      console.log(this.model.get("id"));
-      console.log(model.get("id"));
-      // if (this.model.get("id")!=model.get("id"))
-      // {
-        this.model=model
-        this.pev.model=this.model;
-        this.pev.render();
-        this.pev.mysetdata();//refresh data
-        if(this.model.get("id")==undefined)
-        {
-          this.$("#id_usepack_edit").attr("hidden",true);  
-        }
-        else
-        {
-          this.$("#id_usepack_edit").attr("hidden",false);   
-        }
-      // }
-    },
-    render: function() {
-      console.log("ContactEditView3 render");
-      console.log(this);
-      return this;
-    },
-  });
-///////////////////////
 ///////////////////////////
   var ContactEditView2 = Backbone.View.extend({
     tagName:  "div",
+    attributes:{class:"modal",tabindex:"-1",role:"dialog"},
     template: _.template($('#contact-edit2-template').html()),
     initialize: function() {
       this.$el.html(this.template(this.model.toJSON()));
@@ -751,60 +516,48 @@ var ContactEditView3 = Backbone.View.extend({
     },
     showdialog:function(){
         this.render();//must call because editview has no element now;
-        var self=this;
-        this.$el.dialog({
-                width:"600px",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                 },
-               close: function (event,ui) {
-                   $(this).dialog("destroy");
-               }
-       });
-        this.cev.$("#yiqixinghao" ).autocomplete({
-          minLength: 1,
-          source: availableTags
-        });
-        this.cev.$("#channels" ).autocomplete({
-          minLength: 1,
-          source: availableTags_2
-        });
-      this.pev.$("#auto_pack1").autocomplete({
-                minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    self.pev.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
-                    .appendTo(ul);
-            }; 
-
+       // var self=this;
+      //   console.log(this.$("#id_mymodal1"));
+        
+      //   this.cev.$("#yiqixinghao" ).autocomplete({
+      //     minLength: 1,
+      //     source: availableTags
+      //   });
+      //   this.cev.$("#channels" ).autocomplete({
+      //     minLength: 1,
+      //     source: availableTags_2
+      //   });
+      // this.pev.$("#auto_pack1").autocomplete({
+      //           minLength: 1
+      //           , focus: function (event, ui) {
+      //               //$( "#auto_pack1" ).val( ui.item.value);
+      //               return false;
+      //           }
+      //           , select: function (event, ui) {
+      //               self.pev.addrow(ui.item.pk, ui.item.value);
+      //               return false;
+      //           }
+      //           , source: function (request, response) {
+      //               var term = request.term;
+      //               if (term in cache) {
+      //                   data = cache[term];
+      //                   response(data);
+      //                   return;
+      //               }
+      //               $.getJSON(host+"/rest/Pack?search="+term, request, function (data, status, xhr) {
+      //                   data=data.data;
+      //                   cache[term] = data;
+      //                   response(data);
+      //               }).fail(function() {
+      //                 alert( "error" );
+      //               });
+      //           }
+      //       }).autocomplete("instance")._renderItem = function (ul, item) {
+      //           return $("<li>")
+      //               .append("<a>" + item.pk + "_" + item.value + "</a>")
+      //               .appendTo(ul);
+      //       }; 
+        this.$el.modal();
     },
     changeModel:function(model){
       console.log("changeModel=========================");
@@ -853,6 +606,7 @@ var ContactEditView3 = Backbone.View.extend({
        //  dlg.showdialog();
     },
     newcontact:function(){
+      //this.$("#id_mymodal1").modal('show');
         var editview= new ContactEditView2({model: new Contact()});
         editview.showdialog();
     },
@@ -1022,111 +776,6 @@ var ContactEditView3 = Backbone.View.extend({
   var PackView = Backbone.View.extend({
     tagName:  "tr",
     template: _.template($('#pack-template').html()),
-    // events: {
-    //   "click .contact_edit" : "edit",
-    //   "click .contact_delete" : "delete",
-    //   "click .contact_usepack" : "usepack",
-    //   "click .contact_zxd" : "zxd",
-    //   "click .contact_chuku" : "checkchuku",
-    //   "click .contact_quehuo" : "quehuo",
-    //   "click .contact_zs" : "zs",
-    //   "click .contact_detail" : "detail",
-    //   "click .contact_allfile" : "allfile",
-    // },
-    // checkchuku:function(){
-    //   check=new CheckChukuView({model:this.model})
-    //   check.showdialog();
-    // },
-    // allfile:function(){
-    //     window.open("/parts/allfile?id="+this.model.get("id"));
-    // },
-    // detail:function(){
-    //   window.open("/parts/showcontact/?id="+this.model.get("id"), "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
-    // },
-    // zxd:function(){
-    //     window.open("/parts/zhuangxiangdan?id="+this.model.get("id"));
-    // },
-    // quehuo:function(){
-    //     window.open("/parts/que?id="+this.model.get("id"));
-    // },
-    // zs:function(){
-    //     window.open("/parts/tar?id="+this.model.get("id"));
-    // },
-    // usepack:function(){
-    //        var usepackListView = new UsepackListView({model:this.model});
-    //        //usepackListView.render();
-    //        usepackListView.$el.dialog({
-    //             width:500,//height:500,
-    //             modal: true
-    //             , overlay: {
-    //                 backgroundColor: '#000'
-    //                 , opacity: 0.5
-    //             }
-    //             , autoOpen: true,
-    //             close: function (event,ui) {
-    //                $(this).dialog("destroy");
-    //             }
-    //        });
-    //        usepackListView.$("#auto_pack1").autocomplete({
-    //             minLength: 1
-    //             , focus: function (event, ui) {
-    //                 //$( "#auto_pack1" ).val( ui.item.value);
-    //                 return false;
-    //             }
-    //             , select: function (event, ui) {
-    //                 usepackListView.addrow(ui.item.pk, ui.item.value);
-    //                 return false;
-    //             }
-    //             , source: function (request, response) {
-    //                 var term = request.term;
-    //                 if (term in cache) {
-    //                     data = cache[term];
-    //                     response(data);
-    //                     return;
-    //                 }
-    //                 $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
-    //                     cache[term] = data;
-    //                     response(data);
-    //                 });
-    //             }
-    //         }).autocomplete("instance")._renderItem = function (ul, item) {
-    //             return $("<li>")
-    //                 .append("<a>" + item.pk + "_" + item.value + "</a>")
-    //                 .appendTo(ul);
-    //         };
-    // },
-    // edit:function(){
-    //     //console.log("edit");
-    //     //console.log(arguments)
-    //     var editview= new ContactEditView2({model: this.model});
-    //     editview.showdialog();
-    //     // App.editview.model=this.model;
-    //     //App.$("#section_edit").show();
-    // },
-    // true_delete:function(){
-    //     var data={};
-    //     data.id=this.model.get("id");
-    //     data.csrfmiddlewaretoken=csrf_token;
-    //     data= JSON.stringify(data);
-    //     this.model.destroy({ data:data,contentType:"application:json"});
-    // },
-    // delete:function(){
-    //       //delete-template
-    //        var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-    //        deleteview.render();
-    //        deleteview.$el.dialog({
-    //             modal: true
-    //             , overlay: {
-    //                 backgroundColor: '#000'
-    //                 , opacity: 0.5
-    //             }
-    //             , autoOpen: true,
-    //             close: function (event,ui) {
-    //                    $(this).dialog("destroy");
-    //             }
-
-    //        });
-    // },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
@@ -1140,6 +789,7 @@ var ContactEditView3 = Backbone.View.extend({
   ///////////////////////////////////
   var ImportStandardView = Backbone.View.extend({
     tagName:  "div",
+     attributes:{class:"modal",tabindex:"-1",role:"dialog"},
     template: _.template($('#importstandard-template').html()),
     events: {
        "click #bt_upload2" : "uploadfile",
@@ -1205,25 +855,7 @@ var ContactEditView3 = Backbone.View.extend({
     showdialog:function(){
         this.render();//must call because editview has no element now;
         var self=this;
-        this.$el.dialog({
-                title: "导入标样",
-                width:"600px",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 1
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                },
-               close: function (event,ui) {
-                //console.log("dialog close function");
-                   //$(ui).find('.mydate').datepicker("destroy");
-                   //$('.mydate').datepicker("destroy");
-                   $(this).dialog("destroy");
-               }
-       });
+        this.$el.modal();
     },
   });
  //////////////////////////////////////////////////////////////////////////
@@ -1289,7 +921,7 @@ var ContactEditView3 = Backbone.View.extend({
                   $("#dropdownMenu1_text").text(user);
                   $("#li_login").attr("hidden",true);
                   $("#li_logout").attr("hidden",false);
-                  self.$el.dialog("close");
+                  self.$el.modal("hide");
                   self.app.mysetdata();
               }
           }
@@ -1298,14 +930,16 @@ var ContactEditView3 = Backbone.View.extend({
   });  
 /////////////////////////////////////////////////////////////////////////////
   var DeleteView = Backbone.View.extend({
-    el: $("#dlg_delete"),
+     tagName:  "div",//el: $("#section_usepack"),
+     attributes:{class:"modal",tabindex:"-1",role:"dialog"},
+     template: _.template($('#delete-template').html()),
     events: {
       "click #delete_ok" : "ok",
       "click #delete_cancel" : "cancel"
     },
     showdialog:function(){
       this.render();
-      $("#dlg_delete").modal("show");
+      this.$el.modal("show");
     },
     initialize: function() {
       //console.log(arguments);
@@ -1313,12 +947,13 @@ var ContactEditView3 = Backbone.View.extend({
       this.obj=arguments[0].obj;
     },
     render: function() {
+      this.$el.html(this.template());
       return this;
     },
     cancel:function(){
       //console.log("cancel");
       //this.$el.dialog('close');
-      $("#dlg_delete").modal("hide");
+      this.$el.modal("hide");
     },
     ok:function(){
       console.log("ok");
@@ -1326,7 +961,7 @@ var ContactEditView3 = Backbone.View.extend({
       //contactlistview.true_delete();
       //this.callback();
       this.callback.apply(this.obj, []);
-      $("#dlg_delete").modal("hide");
+      this.$el.modal("hide");
     }
   });  
   /////////////////////////////////////////////////////////usepackListView
@@ -1436,49 +1071,50 @@ var ContactEditView3 = Backbone.View.extend({
     edit:function(){
       //console.log("edit");
       var packitemListView = new PackItemListView({model:this.model});
-           packitemListView.$el.dialog({
-                width:"600px",//height:500,
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                close: function (event,ui) {
-                   $(this).dialog("destroy");
-                }
+           packitemListView.$el.modal();
+           // packitemListView.$el.dialog({
+           //      width:"600px",//height:500,
+           //      modal: true
+           //      , overlay: {
+           //          backgroundColor: '#000'
+           //          , opacity: 0.5
+           //      }
+           //      , autoOpen: true,
+           //      close: function (event,ui) {
+           //         $(this).dialog("destroy");
+           //      }
 
-       });
-           packitemListView.$("#auto_item1").autocomplete({
-                minLength: 2
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    packitemListView.addrow(ui.item.id, ui.item.name);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    request={ query: term,limit:50};
-                    if (term in cache_item) {
-                        data = cache_item[term];
-                        response(data.data);
-                        return;
-                    }
-                    $.getJSON(host+"/rest/Item", request, function (data, status, xhr) {
-                        cache_item[term] = data;
-                        response(data.data);
-                    }).fail(function() {
-                      alert( "error" );
-                    });
-                }
-            }).autocomplete("instance")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.id + "_" + item.name+ "_" + item.guige + "</a>")
-                    .appendTo(ul);
-            };
+           // });
+           // packitemListView.$("#auto_item1").autocomplete({
+           //      minLength: 2
+           //      , focus: function (event, ui) {
+           //          //$( "#auto_pack1" ).val( ui.item.value);
+           //          return false;
+           //      }
+           //      , select: function (event, ui) {
+           //          packitemListView.addrow(ui.item.id, ui.item.name);
+           //          return false;
+           //      }
+           //      , source: function (request, response) {
+           //          var term = request.term;
+           //          request={ query: term,limit:50};
+           //          if (term in cache_item) {
+           //              data = cache_item[term];
+           //              response(data.data);
+           //              return;
+           //          }
+           //          $.getJSON(host+"/rest/Item", request, function (data, status, xhr) {
+           //              cache_item[term] = data;
+           //              response(data.data);
+           //          }).fail(function() {
+           //            alert( "error" );
+           //          });
+           //      }
+           //  }).autocomplete("instance")._renderItem = function (ul, item) {
+           //      return $("<li>")
+           //          .append("<a>" + item.id + "_" + item.name+ "_" + item.guige + "</a>")
+           //          .appendTo(ul);
+           //  };
     },
     true_delete:function(){
         var data={};
@@ -1507,6 +1143,7 @@ var ContactEditView3 = Backbone.View.extend({
   /////////////////////////////////////////////////////////usepackListView
   var PackItemListView = Backbone.View.extend({
      tagName:  "div",//el: $("#section_usepack"),
+      attributes:{class:"modal",tabindex:"-1",role:"dialog"},
      template: _.template($('#packitem-list-template').html()),
      events: {
       "click #id_new_packitem" : "new_packitem",
@@ -1609,19 +1246,7 @@ var ContactEditView3 = Backbone.View.extend({
       //console.log("edit");
        var packitemedit=new PackItemEditView({model:this.model});
        packitemedit.render();
-       packitemedit.$el.dialog({
-              width:"600px",height:500,
-                modal: false
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                            close: function (event,ui) {
-                   $(this).dialog("destroy");
-            }
-
-       });  
+       packitemedit.$el.modal("show");
     },
     true_delete:function(){
         var data={};
@@ -1632,19 +1257,9 @@ var ContactEditView3 = Backbone.View.extend({
     },
     delete:function(){
       var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
-           deleteview.$el.dialog({
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true,
-                            close: function (event,ui) {
-                   $(this).dialog("destroy");
-            }
-
-           });
+      deleteview.render();
+      deleteview.$el.modal("show");
+      //deleteview.showdialog();
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -1843,21 +1458,7 @@ var ContactEditView3 = Backbone.View.extend({
         this.render();//must call because editview has no element now;
         var self=this;
         //console.log(this.$el);
-        this.$el.dialog({
-                width:"600px",height:500,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                 },
-               close: function (event,ui) {
-                   $(this).dialog("destroy");
-               }
-       });
+        this.$el.modal("show");
     },
     save:function(){
     },
@@ -1874,6 +1475,7 @@ var ContactEditView3 = Backbone.View.extend({
   //////////////
     var UploadView = Backbone.View.extend({
     tagName:  "div",
+    attributes:{class:"modal",tabindex:"-1",role:"dialog"},
     template: _.template($('#upload-template').html()),
     events: {
        "click #bt_upload" : "uploadfile",
@@ -1898,7 +1500,7 @@ var ContactEditView3 = Backbone.View.extend({
             self.parent.$("#method").val(data.files);
             self.parent.$("#method").trigger("change");
             //$("#upload").removeAttr("disabled");
-            self.$el.dialog('close');
+            self.$el.modal('hide');
           }
           else{
           }
@@ -1909,21 +1511,22 @@ var ContactEditView3 = Backbone.View.extend({
         this.render();//must call because editview has no element now;
         var self=this;
         //console.log(this.$el);
-        this.$el.dialog({
-                width:"600px",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                 },
-               close: function (event,ui) {
-                   $(this).dialog("destroy");
-               }
-       });
+        this.$el.modal();
+       //  this.$el.dialog({
+       //          width:"600px",//height:800,
+       //          modal: false
+       //          , overlay: {
+       //              //backgroundColor: '#0F0'
+       //              //, 
+       //              opacity: 0.5
+       //          }
+       //          , autoOpen: true,
+       //         open: function (event, ui) {
+       //           },
+       //         close: function (event,ui) {
+       //             $(this).dialog("destroy");
+       //         }
+       // });
     },
     save:function(){
     },
@@ -1936,28 +1539,15 @@ var ContactEditView3 = Backbone.View.extend({
     },
   });
      //////////////
-    var WaitingView = Backbone.View.extend({
+  var WaitingView = Backbone.View.extend({
     tagName:  "div",
+    attributes:{class:"modal",tabindex:"-1",role:"dialog"},
     template: _.template($('#waiting-template').html()),
     showdialog:function(){
         this.render();//must call because editview has no element now;
         var self=this;
         //console.log(this.$el);
-        this.$el.dialog({
-                width:"600px",//height:800,
-                modal: false
-                , overlay: {
-                    //backgroundColor: '#0F0'
-                    //, 
-                    opacity: 0.5
-                }
-                , autoOpen: true,
-               open: function (event, ui) {
-                 },
-               close: function (event,ui) {
-                   $(this).dialog("destroy");
-               }
-       });
+        this.$el.modal();
     },
     render: function() {
       this.$el.html(this.template());
@@ -1967,6 +1557,7 @@ var ContactEditView3 = Backbone.View.extend({
     //////////////
     var PackItemEditView = Backbone.View.extend({
     tagName:  "div",
+     attributes:{class:"modal",tabindex:"-1",role:"dialog"},
     template: _.template($('#packitem-edit-template').html()),
     events: {
        "click #bt_save_item" : "save",
@@ -1999,7 +1590,7 @@ var ContactEditView3 = Backbone.View.extend({
           //console.log("packitem save finish");
           //model.set(resp.success.arguments[0].data);
           context.set(model.data);
-          self.$el.dialog("close");
+          self.$el.modal("hide");
         },
         error: function(model, response) {
           alert(response.statusText);

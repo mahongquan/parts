@@ -45,6 +45,22 @@ class Contact(models.Model,myutil.MyModel):
     class Meta:
         verbose_name="合同"
         verbose_name_plural="合同"
+    @classmethod
+    def mycreate(type1,data):
+        logging.info(data)
+        logging.info(type1)
+        fields=type1._meta.fields
+        c=Contact()     
+        for f in fields:
+            if data.get(f.name)!=None:
+                exec("c.%s=data['%s']" %(f.name,f.name))
+        return c    
+    def myupdate(self,data):
+        fields=type(self)._meta.fields
+        logging.info(data)
+        for f in fields:
+            if data.get(f.name)!=None:
+                exec("self.%s=data['%s']" %(f.name,f.name))         
     def huizong(self):
         items=[]
         items2=[]
