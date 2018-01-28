@@ -307,10 +307,15 @@ function delCookie(name)//删除cookie
       this.$el.html(this.template(this.model.toJSON()));
 
       this.$("#channels").typeahead('destroy')
-      this.$("#channels").typeahead({source: availableTags_2});
+      this.$("#channels").typeahead({
+        //appendTo:this.$el[0].parent,
+        source: availableTags_2
+      });
 
       this.$("#yiqixinghao").typeahead('destroy')
-      this.$("#yiqixinghao").typeahead({source: availableTags});
+      this.$("#yiqixinghao").typeahead({
+        //appendTo:this.$el[0].parent,
+        source: availableTags});
       return this;
     },
   });
@@ -447,42 +452,32 @@ function delCookie(name)//删除cookie
       this.$("#id_usepack_edit").append(v);
     },
     showdialog:function(){
-        this.render();//must call because editview has no element now;
-       // var self=this;
-         console.log("showdialog ");
+      this.render();//must call because editview has no element now;
+      var self=this;
+      console.log("showdialog ");
         
       this.pev.$("#auto_pack1").typeahead("destroy");
       this.pev.$("#auto_pack1").typeahead({
                 minLength: 1
-                , focus: function (event, ui) {
-                    //$( "#auto_pack1" ).val( ui.item.value);
-                    return false;
-                }
-                , select: function (event, ui) {
-                    self.pev.addrow(ui.item.pk, ui.item.value);
-                    return false;
-                }
-                , source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        data = cache[term];
-                        response(data);
-                        return;
-                    }
-                    $.getJSON(host+"/rest/Pack?search="+term, request, function (data, status, xhr) {
+                , source: function (query, process) {
+                    $.getJSON(host+"/rest/Pack?search="+query,  function (data, status, xhr) {
                         data=data.data;
-                        cache[term] = data;
-                        response(data);
+                        process(data);
                     }).fail(function() {
                       alert( "error" );
                     });
+                },
+                highlighter: function (item) {
+                  //console.log(item);
+                    return item;
+                },
+
+                updater: function (item) {
+                    //console.log(item);
+                    self.pev.addrow(item.id, item.name);
+                    return item;
                 }
             })
-            //   .autocomplete("instance")._renderItem = function (ul, item) {
-            //     return $("<li>")
-            //         .append("<a>" + item.pk + "_" + item.value + "</a>")
-            //         .appendTo(ul);
-            // }; 
         this.$el.modal();
     },
     changeModel:function(model){
@@ -1011,32 +1006,31 @@ function delCookie(name)//删除cookie
            //      }
 
            // });
-           // packitemListView.$("#auto_item1").autocomplete({
-           //      minLength: 2
-           //      , focus: function (event, ui) {
-           //          //$( "#auto_pack1" ).val( ui.item.value);
-           //          return false;
-           //      }
-           //      , select: function (event, ui) {
-           //          packitemListView.addrow(ui.item.id, ui.item.name);
-           //          return false;
-           //      }
-           //      , source: function (request, response) {
-           //          var term = request.term;
-           //          request={ query: term,limit:50};
-           //          if (term in cache_item) {
-           //              data = cache_item[term];
-           //              response(data.data);
-           //              return;
-           //          }
-           //          $.getJSON(host+"/rest/Item", request, function (data, status, xhr) {
-           //              cache_item[term] = data;
-           //              response(data.data);
-           //          }).fail(function() {
-           //            alert( "error" );
-           //          });
-           //      }
-           //  }).autocomplete("instance")._renderItem = function (ul, item) {
+           packitemListView.$("#auto_item1").typeahead("destroy");
+           //console.log(packitemListView.$("#auto_item1")[0])
+           packitemListView.$("#auto_item1").typeahead({
+                //appendTo:packitemListView.$el[0],
+                minLength: 1
+                , source: function (query, process) {
+                    $.getJSON(host+"/rest/Item?search="+query,  function (data, status, xhr) {
+                        data=data.data;
+                        process(data);
+                    }).fail(function() {
+                      alert( "error" );
+                    });
+                },
+                highlighter: function (item) {
+                  //console.log(item);
+                    return item;
+                },
+
+                updater: function (item) {
+                    //console.log(item);
+                    packitemListView.addrow(item.id, item.name);
+                    return item;
+                }
+           })
+           //.autocomplete("instance")._renderItem = function (ul, item) {
            //      return $("<li>")
            //          .append("<a>" + item.id + "_" + item.name+ "_" + item.guige + "</a>")
            //          .appendTo(ul);

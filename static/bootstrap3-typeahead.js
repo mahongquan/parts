@@ -141,18 +141,19 @@
     },
 
     show: function () {
-      var pos = $.extend({}, this.$element.position(), {
-        height: this.$element[0].offsetHeight
-      });
+      // var pos = $.extend({}, this.$element.position(), {
+      //   height: this.$element[0].offsetHeight
+      // });
 
-      var scrollHeight = typeof this.options.scrollHeight == 'function' ?
-          this.options.scrollHeight.call() :
-          this.options.scrollHeight;
+      // var scrollHeight = typeof this.options.scrollHeight == 'function' ?
+      //     this.options.scrollHeight.call() :
+      //     this.options.scrollHeight;
 
-      var element;
+      var element=this.$menu;
       if (this.shown) {
         element = this.$menu;
-      } else if (this.$appendTo) {
+      } 
+      else if (this.$appendTo) {
         element = this.$menu.appendTo(this.$appendTo);
         this.hasSameParent = this.$appendTo.is(this.$element.parent());
       } else {
@@ -160,28 +161,27 @@
         this.hasSameParent = true;
       }      
       
-      if (!this.hasSameParent) {
-          // We cannot rely on the element position, need to position relative to the window
-          element.css("position", "fixed");
-          var offset = this.$element.offset();
-          pos.top =  offset.top;
-          pos.left = offset.left;
-      }
-      element.css("position", "relative");
+      // if (!this.hasSameParent) {
+      //     // We cannot rely on the element position, need to position relative to the window
+      //     element.css("position", "fixed");
+      //     var offset = this.$element.offset();
+      //     pos.top =  offset.top;
+      //     pos.left = offset.left;
+      // }
+      element.css("position", "relative");//ma
       // The rules for bootstrap are: 'dropup' in the parent and 'dropdown-menu-right' in the element.
       // Note that to get right alignment, you'll need to specify `menu` in the options to be:
       // '<ul class="typeahead dropdown-menu" role="listbox"></ul>'
-      var dropup = $(element).parent().hasClass('dropup');
-      var newTop = dropup ? 'auto' : (pos.top + pos.height + scrollHeight);
-      var right = $(element).hasClass('dropdown-menu-right');
-      var newLeft = right ? 'auto' : pos.left;
-      // it seems like setting the css is a bad idea (just let Bootstrap do it), but I'll keep the old
-      // logic in place except for the dropup/right-align cases.
-      //element.css({ top: newTop, left: newLeft }).show();
-      element.css({ top: 0, left: 0}).show();
-      if (this.options.fitToElement === true) {
-          element.css("width", this.$element.outerWidth() + "px");
-      }
+      // var dropup = $(element).parent().hasClass('dropup');
+      // var newTop = dropup ? 'auto' : (pos.top + pos.height + scrollHeight);
+      // var right = $(element).hasClass('dropdown-menu-right');
+      // var newLeft = right ? 'auto' : pos.left;
+      // // it seems like setting the css is a bad idea (just let Bootstrap do it), but I'll keep the old
+      // // logic in place except for the dropup/right-align cases.
+      element.css({ top: 0, left: 0});//.show();//element.css({ top: newTop, left: newLeft }).show();
+      // if (this.options.fitToElement === true) {
+      //     element.css("width", this.$element.outerWidth() + "px");
+      // }
     
       this.shown = true;
       return this;
