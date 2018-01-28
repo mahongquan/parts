@@ -15,10 +15,14 @@ var sortRooms = function() {
 
 var RoomStore = _.extend({}, EventEmitter.prototype, {
   getCreatedRoomData: function(room) {
-    var date = Date.now();
+    //var date = Date.now();
     return {
-      id:            room.id || 'r_' + date,
-      name:           room.name
+      id:            room.id ,
+      name:           room.name,
+      bh:room.bh,
+      guige:room.guige,
+      danwei:room.danwei,
+      image:room.image
     };
   },
   getAll: function() {

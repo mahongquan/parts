@@ -1,8 +1,7 @@
-var ChatServerActionCreators = require('../actions/ChatServerActionCreators');
-
-var qwest                    = require('qwest');
-
-module.exports = {
+import Client from './Client';
+import ChatServerActionCreators from '../actions/ChatServerActionCreators';
+var qwest= require('qwest');
+export default {
   createRoom: function(room) {
     qwest.post('/rest/Item', {
       room: room,
@@ -28,16 +27,15 @@ module.exports = {
       //alert('error', response);
     });
   },
-  getRooms: function() {
-    qwest.get('/rest/Item',{},{
-      responseType: 'json'
-    }).then(function(response){
-      console.log(response);
-      ChatServerActionCreators.fetchedRooms(response.response.data);
-    }).catch(function(response){
-      console.log('error', response);
-      //alert('error', response);
-    });
+  getRooms: function(message) {
+    //console.log(search);
+    Client.items(
+        message.search
+        ,(res)=>{
+          console.log(res);
+          ChatServerActionCreators.fetchedRooms(res.data);
+        }
+      );
   },
   getMessages: function() {
     qwest.get('/rest/Item', {}, {

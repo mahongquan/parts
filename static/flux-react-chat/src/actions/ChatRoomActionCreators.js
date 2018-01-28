@@ -1,9 +1,18 @@
+import  ChatWebAPIUtils  from '../utils/ChatWebAPIUtils';
 var ChatAppDispatcher = require('../dispatcher/ChatAppDispatcher');
 var ChatConstants     = require('../constants/ChatConstants');
-var ChatWebAPIUtils   = require('../utils/ChatWebAPIUtils');
 var ActionTypes       = ChatConstants.ActionTypes;
 
-module.exports = {
+export default {
+  getRooms: function(search) {
+    ChatAppDispatcher.handleViewAction({
+      type: ActionTypes.FETCHED_ROOMS,
+      name: search
+    });
+    ChatWebAPIUtils.getRooms({
+      search: search 
+    });
+  },
   creatingRoom: function(name) {
     ChatAppDispatcher.handleViewAction({
       type: ActionTypes.CREATING_ROOM,
