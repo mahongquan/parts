@@ -25,10 +25,19 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      use: ['babel-loader'],
-      include: path.join(__dirname, 'src')
-    }]
+    rules: [
+      {
+           test: /\.css$/,
+           use: ['style-loader', 'css-loader']
+      },{
+        test: /\.jsx?$/,
+        use: ['babel-loader'],
+        include: path.join(__dirname, 'src')
+      },
+     {
+        test: /\.(eot|svg|ttf|woff|woff2)\w*/,
+            use: 'file-loader?publicPath=./&outputPath=font/'
+        }
+     ]
   }
 };

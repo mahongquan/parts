@@ -1,55 +1,12 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import { observable, action, computed } from "mobx";
-import { observer } from "mobx-react";
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+import React, { Component } from 'react';
+//import Client from './Client';
+//import myredux from './MyRedux';
 import {Table} from "react-bootstrap";
 //import ItemEdit from './ItemEdit';
 import update from 'immutability-helper';
-import Client from './Client';
-
-class Todo {
-    id = Math.random();
-    @observable title = "";
-    @observable finished = false;
-    constructor(t){
-        this.title=t;
-    }
-}
-class TodoList {
-    @observable todos = [];
-    // @computed get unfinishedTodoCount() {
-    //     return this.todos.filter(todo => !todo.finished).length;
-    // }
-    start=0;
-    total=0;
-    loaddata=(data)=>{
-        console.log(data);
-            Client.items(
-              data
-              ,(res)=>{
-                this.todos=res.data;
-                this.total=res.total;
-                this.start=data.start;
-              }
-            );
-    }
-}
-
-
-const TodoView = observer(({todo}) =>
-    <li>
-        <input
-            type="checkbox"
-            checked={todo.finished}
-            onClick={() => todo.finished = !todo.finished}
-        />{todo.title}
-    </li>
-)
-@observer
-class TodoListView extends Component {
-    constructor(){
+class Items extends Component {
+  
+   constructor(){
      super();
      this.state = {
       items: [],
@@ -79,11 +36,11 @@ class TodoListView extends Component {
       this.mystate=this.state;
   }
   loaddata=()=>{
-      this.props.todoList.loaddata({
-           query:this.mystate.search,
-           start:this.mystate.start,
-           limit:this.mystate.limit
-      });
+      // myredux.ItemActionCreators.getItems({
+      //     query:this.mystate.search,
+      //     start:this.mystate.start,
+      //     limit:this.mystate.limit
+      // });
   }
   handleSearchChange = (e) => {
     this.mystate.search=e.target.value;
@@ -159,14 +116,11 @@ class TodoListView extends Component {
     let next;
     //console.log(this.mystate);
     //console.log(this.state);
-    this.mystate.start=this.props.todoList.start;
-    this.mystate.total=this.props.todoList.total;
-    if(this.mystate.start===0){
+    if(this.state.start===0){
       hasprev=false;
     }
     //console.log(this.state.start+this.mystate.limit>=this.state.total);
-
-    if(this.mystate.start+this.mystate.limit>=this.mystate.total){
+    if(this.state.start+this.mystate.limit>=this.state.total){
 
       hasnext=false;
     }
@@ -182,8 +136,7 @@ class TodoListView extends Component {
     else{
       next=null;
     }
-    console.log(this.props.todoList);
-    const itemRows = this.props.todoList.todos.map(this.mapfunc);
+    const itemRows = this.state.items.map(this.mapfunc);
     return (
           <div>
               <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
@@ -198,7 +151,7 @@ class TodoListView extends Component {
            <th>图片</th>
            </tr></thead><tbody id="item-list">{itemRows}</tbody></Table>
       {prev}
-              <label id="page">{this.mystate.start+1}../{this.mystate.total}</label>
+              <label id="page">{this.state.start+1}../{this.state.total}</label>
               {next}
               <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
               <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
@@ -206,5 +159,4 @@ class TodoListView extends Component {
     );
   }
 };
-const store = new TodoList();
-ReactDOM.render(<TodoListView todoList={store} />, document.getElementById('root'));
+export default Items;
