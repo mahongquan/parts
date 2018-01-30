@@ -1,9 +1,7 @@
 {% extends "base.html" %} 
 {% block extrahead %}
-  <link type="text/css" rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.css" />
   <link href="/static/awesome/font-awesome.min.css" rel="stylesheet">
-  <script type="text/javascript" src="/static/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-  <script src="/static/backbone_parts/bootstrap3-typeahead.min.js"></script>
+  <script src="/static/bootstrap3-typeahead.js"></script>
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
@@ -45,7 +43,6 @@
 {% block content %}
   <div id="todoapp">
     <div>
-
     <table>
     <tr>
 	 <td>
@@ -149,12 +146,23 @@
  </script>
   <!--=========================================================================-->
   <script type="text/template" id="contact-edit2-template">
-     <div id="id_contact_edit"></div>
-            <div id="id_usepack_edit"></div>
+        <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >    
+              <div  id="id_contact_edit"></div>
+              <div id="id_usepack_edit"></div>
+            </div>
+          </div>
+        </div>
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="contact-edit-template">
-        <table id="table_input" class="table-condensed" >
+          <table id="table_input" class="table-condensed" >
 <tr >
                 <td >
                     ID:
@@ -281,45 +289,62 @@
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="delete-template">
-        <table >
-          <tr>
-                <td>是否确定?</td>
-          </tr>
-          <tr>
-                <td>
-                    <button id="id_ok">确定</button>
-                </td>
-                <td>
-                    <button id="id_cancel">取消</button>
-                </td>
-          </tr>
-        </table>
+        <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
+              <table >
+                <tr>
+                      <td>是否确定?</td>
+                </tr>
+                <tr>
+                      <td>
+                          <button id="delete_ok">确定</button>
+                      </td>
+                      <td>
+                          <button id="delete_cancel">取消</button>
+                      </td>
+                </tr>
+              </table>
+      </div></div></div>
   </script>
   <!--=========================================================================-->
   <script type="text/template" id="usepack-list-template">
   <div >
-      <!-- div id="contact-info">
-       <table>
-      <tr><td>id：</td><td><%- id %></td></tr>
-      <tr><td>合同号：</td><td><%- hetongbh %></td></tr>
-      </table>
-      </div -->
       <table  class="table-bordered"  width="600px">
     　<thead>
     　　<tr>
     　　　<td>ID</td><td>包名称</td><td hidden="true">合同</td><td hidden="true">包</td><td hidden="true">合同号</td><td>操作</td>
     　　</tr>
-   　</thead> 
+    　</thead> 
       <tbody id="usepack-list">
       </tbody>
       </table>
-      <div style="padding: 5px 5px 50px 5px;min-height:350px">  <!-- leave margin to show autocomplete items -->
-      <p>
-      <!-- input id="auto_pack1" placeholder="输入包" style="border:solid #265a88" -->
-      <input type="text" id="auto_pack1"  placeholder="输入包"  style="border:solid #265a88" data-provide="typeahead" data-items="5" />  
-      <button  id="id_bibei_usepack">必备</button></p>
-      <p>新包名称：<input id="new_pack1"  placeholder="新包" value="<%- hetongbh %>_选配"><button class="btn btn-info" id="id_new_usepack">新包</button></p>
+      <div style="padding: 5px 5px 50px 5px;">  <!-- leave margin to show autocomplete items -->
+          <table>
+            <tbody>
+              <tr>
+                <td>输入包</td>
+                <td>
+                    <input  type="text" id="auto_pack1"  placeholder="输入包" data-provide="typeahead" style="border:solid #265a88"  /> 
+                </td> 
+                <td>
+                    <button  id="id_bibei_usepack">必备</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            新包名称：
+            <input id="new_pack1"  placeholder="新包" value="<%- hetongbh %>_选配">
+            <button class="btn btn-info" id="id_new_usepack">新包</button>
+          </div>
       </div>
+      <div style="padding: 5px 5px 50px 5px;min-height:200px"></div>
   </div>
   </script>
   <!--=========================================================================-->
@@ -330,6 +355,14 @@
   </script>
   <!--=========================================================================-->
 <script type="text/template" id="packitem-list-template">
+  <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >   
   <div class="container">
       <div id="pack-info">
       <table>
@@ -353,7 +386,8 @@
       <p><input id="new_item1"  placeholder="新备件名称"><button id="id_new_packitem">新备件</button></p>
       </div>
   </div>
-  </script>
+</div></div></div>
+    </script>
   <!--=========================================================================-->
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
@@ -364,6 +398,14 @@
   </script>
   <!--=========================================================================-->
     <script type="text/template" id="packitem-edit-template">
+ <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >        
     <table  class="table-condensed" >
             <tr hidden="true">
                 <td >
@@ -431,16 +473,34 @@
             </tr>        
             </table>
         <button  class="btn btn-primary" id="bt_save_item">保存</button>
+      </div></div></div>
     </script>
     <!--=========================================================================-->
    <script type="text/template" id="upload-template">
+ <div class="modal-dialog" role="document" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >     
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" id="file" type="file" name="file"/>
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
+</div></div></div>    
  </script>
  <!--=========================================================================-->
     <script type="text/template" id="check-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" >       
     <p>仪器编号<%- yiqibh %>备料计划核对，请上传备料计划导出的Excel文件</p>
     <form  id="uploadForm" enctype="multipart/form-data">
     <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value="<%- id %>"/>
@@ -448,9 +508,18 @@
     <button  style="margin:10px 10px 10px 10px;" class="btn btn-primary" id="bt_upload" type="button">上传</button>
     </form>
     <div id="resultlist"></div>
+  </div></div></div>
  </script>
  <!--=========================================================================-->
  <script  type="text/template" id="importstandard-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
       <form  id="uploadForm" enctype="multipart/form-data">
       <input style="margin:10px 10px 10px 10px;" hidden="true" id="id" name="id" value=""/>
       <input style="margin:10px 10px 10px 10px;" id="file"  accept="application/vnd.ms-excel" type="file" name="file"/>
@@ -468,6 +537,9 @@
       </table>
       <!-- <a id="bt_prev">前一页</a> <label id="page">page/page</label><a id="bt_next">后一页</a> -->
     </div>
+  </div>
+</div>
+</div>
  </script>
  <!--=========================================================================-->
  <script  type="text/template" id="importstandard-template-new">
@@ -506,8 +578,17 @@
   </script>
   <!--=========================================================================-->
 <script type="text/template" id="waiting-template">
+   <div class="modal-dialog" role="document" >
+          <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" > 
   <p>请等待。。。。。
   </p>
+  </div></div></div>
 </script>
 {% endblock %} 
 
