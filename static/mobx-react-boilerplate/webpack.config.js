@@ -2,6 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+  devServer:{proxy: {
+     '/rest/*': {
+     target: 'http://localhost:8000',
+     changeOrigin: true,
+     secure: false
+     }
+ }},
   devtool: 'eval',
   entry: [
     './src/index'
