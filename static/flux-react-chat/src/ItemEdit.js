@@ -2,13 +2,46 @@ import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 //import Client from './Client';
+import myflx from './MyFlux';
 class ItemEdit extends Component{
   state={ 
       showModal: false,
       packitem:{},
-      hiddenPacks:true,
-      bg:{},
-      date_open:false,
+      bg:{}
+  }
+  componentDidMount=()=>{
+    myflx.ItemStore.eventEmitter.on("showedit", this._showedit);
+    myflx.ItemStore.eventEmitter.on("editChange", this._editChange);
+    //editError
+    myflx.ItemStore.eventEmitter.on("editError", this._editError);
+  }
+
+  componentWillUnmount=()=> {
+     myflx.ItemStore.eventEmitter.removeListener(this._showedit);
+     myflx.ItemStore.eventEmitter.removeListener(this._editChange);
+     myflx.ItemStore.eventEmitter.removeListener(this._editError);
+  }
+  _editError=()=>{
+    alert(myflx.ItemStore.getError());
+  }
+  _showedit=()=> {
+
+    console.log("_on showedit");
+    this.setState({ showModal: true,bg:{}});
+    this.old=myflx.ItemStore.getCurrent();
+    this.setState({packitem:this.old});
+    // let items,total,start;
+    // [items,total,start]=myflx.ItemStore.getAll();
+    // console.log(items);
+    // this.setState({items:items,total:total});
+    // this.setState({start:start});
+    // this.mystate.total=total;
+  }
+  _editChange=()=> {
+      console.log("_on showedit");
+      this.setState({ showModal: true,bg:{}});
+      this.old=myflx.ItemStore.getCurrent();
+      this.setState({packitem:this.old});
   }
   close=()=>{
     this.setState({ showModal: false });
@@ -28,8 +61,9 @@ class ItemEdit extends Component{
   }
   
   handleSave=(data)=>{
-    var url="/rest/Item";
-    console.log(this.state.packitem);
+    myflx.ItemActionCreators.updateItem(this.state.packitem);
+    //var url="/rest/Item";
+    //console.log(this.state.packitem);
     // Client.postOrPut(url,this.state.packitem,(res) => {
     //   console.log(res);
     //     this.setState({contact:res.data});
@@ -117,15 +151,7 @@ class ItemEdit extends Component{
                     <input style={{"backgroundColor":this.state.bg.bh}} type="text" id="bh" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <label>数量:</label>
-                </td>
-                <td>
-                    <input type="text" style={{"backgroundColor":this.state.bg.ct}}
-                    id="ct" name="ct"  value={this.state.packitem.ct} onChange={this.handleChange} />
-                </td>
-            </tr>  
+           
             <tr>
                 <td>
                     <label>单位:</label>

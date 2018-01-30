@@ -4,184 +4,215 @@ import  keyMirror from 'keymirror';
 var Dispatcher    = require('flux').Dispatcher;
 var EventEmitter      = require('events').EventEmitter;
 var _                 = require('underscore');
-var ChatConstants = {
-  ActionTypes: keyMirror({
-    CREATING_MESSAGE: null,
-    CREATED_MESSAGE: null,
-    CREATING_ITEM: null,
-    CREATED_ITEM: null,
-    FETCHING_ITEMS: null,
+var ActionTypes= keyMirror({
+    // CREATING_ITEM: null,
+    // CREATED_ITEM: null,
+    // FETCHING_ITEMS: null,
     FETCHED_ITEMS: null,
-    CLICKING_ITEM: null,
-    FETCHED_MESSAGES: null,
-    NEW_MESSAGE: null,
-    NEW_ITEM: null,
-    CREATED_USER: null,
+    SHOW_EDIT:null,
+    // NEW_ITEM: null,
     UPDATED_ITEM: null
-  }),
-
-  PayloadSources: keyMirror({
-    VIEW_ACTION: null,
-    SERVER_ACTION: null,
-    SOCKET_ACTION: null
   })
-};
-/////////////////////////////////
-var ActionTypes       = ChatConstants.ActionTypes;
+// ,
+
+//   PayloadSources: keyMirror({
+//     VIEW_ACTION: null,
+//     SERVER_ACTION: null,
+//     SOCKET_ACTION: null
+//   })
+// };
+// /////////////////////////////////
+// var ActionTypes       = ChatConstants.ActionTypes;
 
 var ItemActionCreators= {
-  getItems: function(data) {
-    console.log("ItemActionCreators");
+  showEdit: function(data) {/////////////////////////  1 action=>dispatch   ///////////////////
     console.log(data);
-    // ChatAppDispatcher.handleViewAction({
-    //   type: ActionTypes.FETCHING_ITEMS,
-    //   data: data
-    // });
+        ChatAppDispatcher.dispatch({
+          type: ActionTypes.SHOW_EDIT,
+          para: data
+        });
+  },
+  getItems: function(data) {/////////////////////////  1 action=>dispatch   ///////////////////
+    console.log(data);
     Client.items(
       data
       ,(res)=>{
-        console.log(res);
-        ChatAppDispatcher.handleServerAction({
+        res.start=data.start;
+        ChatAppDispatcher.dispatch({
           type: ActionTypes.FETCHED_ITEMS,
-          items: res
+          para: res
         });
       }
     );
   },
-  creatingItem: function(name) {
-    ChatAppDispatcher.handleViewAction({
-      type: ActionTypes.CREATING_ITEM,
-      name: name 
-    });
-    // ChatWebAPIUtils.createItem({
-    //   name: name 
-    // });
-  },
-  clickItem: function(item) {
-    ChatAppDispatcher.handleViewAction({
-      type: ActionTypes.CLICKING_ITEM,
-      item: item
-    });
+  updateItem: function(data) {
+    console.log(data);
+    Client.put("/rest/Item",
+      data
+      ,(res)=>{
+        ChatAppDispatcher.dispatch({
+          type: ActionTypes.UPDATED_ITEM,
+          para: res
+        });
+      }
+    );
   }
 };
 ////////////////////////////////////////////////////////////////////////////////
-var PayloadSources = ChatConstants.PayloadSources;
+//var PayloadSources = ChatConstants.PayloadSources;
 
-var ChatAppDispatcher = _.extend(new Dispatcher(), {
-  handleViewAction: function(action) {
-    var payload = {
-      source: PayloadSources.VIEW_ACTION,
-      action: action
-    };
-    this.dispatch(payload);
-  },
-  handleServerAction: function(action) {
-    var payload = {
-      source: PayloadSources.SERVER_ACTION,
-      action: action
-    };
-    this.dispatch(payload);
-  },
-  handleSocketAction: function(action) {
-    var payload = {
-      source: PayloadSources.SOCKET_ACTION,
-      action: action
-    };
-    this.dispatch(payload);
-  }
-});
+var ChatAppDispatcher =new Dispatcher()
+//  _.extend(new Dispatcher(), {
+//   handleViewAction: function(action) {
+//     var payload = {
+//       source: PayloadSources.VIEW_ACTION,
+//       action: action
+//     };
+//     this.dispatch(payload);
+//   },
+//   handleServerAction: function(action) {/////////////////////step two//////////////////////////////////////////
+//     var payload = {
+//       source: PayloadSources.SERVER_ACTION,
+//       action: action
+//     };
+//     this.dispatch(payload);
+//   },
+//   handleSocketAction: function(action) {
+//     var payload = {
+//       source: PayloadSources.SOCKET_ACTION,
+//       action: action
+//     };
+//     this.dispatch(payload);
+//   }
+// });
 
 ////////////////////////////////////////////////////////////////////////////
 var _items = [];
 var _total=0;
+var _start=0;
+var _item=null;
 var CHANGE_EVENT = 'change';
-var ActionTypes = ChatConstants.ActionTypes;
+var _error=null;
+//var ActionTypes = ChatConstants.ActionTypes;
 
-var sortItems = function() {
-  _items = _.sortBy(_items, function(item) {
-    return item.updatedAt;
-  }).reverse();
-};
+// var sortItems = function() {
+//   _items = _.sortBy(_items, function(item) {
+//     return item.updatedAt;
+//   }).reverse();
+// };
 
-class ItemStore extends{
-  getCreatedItemData=(item)=>{
-    //var date = Date.now();
-    return {
-      id:            item.id ,
-      name:           item.name,
-      bh:item.bh,
-      guige:item.guige,
-      danwei:item.danwei,
-      image:item.image
-    };
+class ItemStore  {
+  // constructor(){
+  //   //this.store=new myflx.ItemStore();
+  // }
+  static eventEmitter = new EventEmitter()
+  // static getCreatedItemData=(item)=>{
+  //   //var date = Date.now();
+  //   return {
+  //     id:            item.id ,
+  //     name:           item.name,
+  //     bh:item.bh,
+  //     guige:item.guige,
+  //     danwei:item.danwei,
+  //     image:item.image
+  //   };
+  // }
+  static getCurrent=()=>{
+    console.log("getCurrent");
+    console.log(_item);
+    return _items[_item];
   }
-  getAll=()=> {
-    return [_items,_total];
+  static getError=()=>{
+    return _error;
   }
-  emitChange=()=> {
-    this.emit(CHANGE_EVENT);
+  static getAll=()=> {
+    return [_items,_total,_start];
   }
-  addChangeListener= (callback)=> {
-    this.on(CHANGE_EVENT, callback);
+  //emitShowEdit
+  static emitShowEdit=()=> {
+    ItemStore.eventEmitter.emit("showedit");
   }
-  removeChangeListener=(callback)=> {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
-});
+  static emitEditChange=()=> {
+    ItemStore.eventEmitter.emit("editChange");
+  }
+  static emitEditError=()=> {
+    ItemStore.eventEmitter.emit("editError");
+  }
+  static emitChange=()=> {
+    ItemStore.eventEmitter.emit(CHANGE_EVENT);
+  }
+  static addChangeListener= (callback)=> {
+    ItemStore.eventEmitter.on(CHANGE_EVENT, callback);
+  }
+  static removeChangeListener=(callback)=> {
+    ItemStore.eventEmitter.removeListener(CHANGE_EVENT, callback);
+  }
+  static dispatchToken = ChatAppDispatcher.register(function(payload) {
+    var action = payload;
 
-ItemStore.dispatchToken = ChatAppDispatcher.register(function(payload) {
-  var action = payload.action;
+    switch(action.type) {
+      // case ActionTypes.CREATING_ITEM:
+      //   var conversation = ItemStore.getCreatedItemData({
+      //     name: action.name
+      //   });
+      //   _items.push(conversation);
+      //   ItemStore.emitChange(); 
+      //   break;
+      // case ActionTypes.CREATED_ITEM:
+      //   _items = _.map(_items, function(item) {
+      //     if (item.name === action.item.name) {
+      //       return action.item;
+      //     } else {
+      //       return item;
+      //     }
+      //   });
+      //   ItemStore.emitChange();
+      //   break;
+      case ActionTypes.SHOW_EDIT:
+        console.log(action);
+        _item=action.para;
+        ItemStore.emitShowEdit();//////////////////////     3 store=>view            //////////////////////////////////////////
+        break;
+      case ActionTypes.FETCHED_ITEMS:////////////////     2  dispatch=>store        ///////////////////////////////////////////////
+        console.log(action);
+        _items = _.map(action.para.data, ItemStore.getCreatedItemData);
+        _total=action.para.total;
 
-  switch(action.type) {
-    case ActionTypes.CREATING_ITEM:
-      var conversation = ItemStore.getCreatedItemData({
-        name: action.name
-      });
-      _items.push(conversation);
-      ItemStore.emitChange(); 
-      break;
-    case ActionTypes.CREATED_ITEM:
-      _items = _.map(_items, function(item) {
-        if (item.name === action.item.name) {
-          return action.item;
-        } else {
-          return item;
+        if (action.para.start){
+          _start=action.para.start;
         }
-      });
-      ItemStore.emitChange();
-      break;
-    case ActionTypes.FETCHED_ITEMS:
-      console.log(action);
-      _items = _.map(action.items.data, ItemStore.getCreatedItemData);
-      _total=action.items.total;
-      ItemStore.emitChange();
-      break;
-    case ActionTypes.CLICKING_ITEM:
-      _items = _.map(_items, function(item) {
-        if (item._id === action.item._id) {
-          item.isCurrent = true;
-        } else {
-          item.isCurrent = false;
+        else{
+          _start=0;
         }
-        return item;
-      });
-      ItemStore.emitChange();
-      break;
-    case ActionTypes.UPDATED_ITEM:
-      _items = _.map(_items, function(item) {
-        if (item._id === action.item._id) {
-          action.item.isCurrent = item.isCurrent;
-          return action.item;
-        } else {
-          return item;
+        ItemStore.emitChange();//////////////////////     3 store=>view            //////////////////////////////////////////
+        break;
+      // case ActionTypes.CLICKING_ITEM:
+      //   _items = _.map(_items, function(item) {
+      //     if (item._id === action.item._id) {
+      //       item.isCurrent = true;
+      //     } else {
+      //       item.isCurrent = false;
+      //     }
+      //     return item;
+      //   });
+      //   ItemStore.emitChange();
+      //   break;
+      case ActionTypes.UPDATED_ITEM:
+        console.log(action);
+        if (action.para.success){
+           _items[_item] = action.para.data;
+           ItemStore.emitChange();
+           ItemStore.emitEditChange();
         }
-      });
-      sortItems();
-      ItemStore.emitChange();
-      break;
+        else{
+          _error=action.para.message();
+          ItemStore.emitEditError();
+        }
+        break;
 
-    default:
-  }
-});
+      default:
+    }
+  });
+}
 var myflux={ItemStore,ItemActionCreators};
 export default myflux;

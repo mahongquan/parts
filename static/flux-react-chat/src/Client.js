@@ -50,6 +50,10 @@ function post(url,data,cb) {
   var method="POST"
   return myFetch(method,url,JSON.stringify(data),cb)
 }
+function put(url,data,cb) {
+  var method="PUT"
+  return myFetch(method,url,JSON.stringify(data),cb)
+}
 function postOrPut(url,data,cb) {
   var method="POST"
   if (data.id){
@@ -131,5 +135,5 @@ function parseJSON(response) {
     return r;
   //}
 }
-const Client = {getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
+const Client = {put,getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
 export default Client;

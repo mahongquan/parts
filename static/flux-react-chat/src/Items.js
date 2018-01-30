@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 //import Client from './Client';
 import myflx from './MyFlux';
 import {Table} from "react-bootstrap";
-import ItemEdit from './ItemEdit';
-console.log(myflx);
+//import ItemEdit from './ItemEdit';
+import update from 'immutability-helper';
 class Items extends Component {
   mystate = {
     start:0,
@@ -12,7 +12,7 @@ class Items extends Component {
     logined: false,
     search:""
   }
-   state = {
+  state = {
       items: [],
       user: "AnonymousUser",
       start:0,
@@ -30,33 +30,55 @@ class Items extends Component {
       auto_items:[],
       auto_loading: false,
   }
+  // constructor(){
+  //   super();
+  //   //this.store=new myflx.ItemStore();
+  // }
   componentDidMount=()=>{
+    console.log(myflx.ItemStore);
     myflx.ItemStore.addChangeListener(this._onChange);
     this.loaddata();
   }
 
   componentWillUnmount=()=> {
-    myflx.ItemStore.removeChangeListener(this._onChange);
+     myflx.ItemStore.removeChangeListener(this._onChange);
   }
    _onChange=()=> {
-    console.log("_onChange");
-    let items,total;
-    [items,total]=myflx.ItemStore.getAll();
-    console.log(items);
-    this.setState({items:items,total:total});
+      console.log("_onChange");
+      let items,total,start;
+      [items,total,start]=myflx.ItemStore.getAll();
+      console.log(items);
+      this.setState({items:items,total:total});
+      this.setState({start:start});
+      this.mystate.total=total;
   }
   loaddata=()=>{
-    myflx.ItemActionCreators.getItems({
-      search:this.state.search,
-      start:this.mystate.start,
-      limit:this.mystate.limit
-    });
+      myflx.ItemActionCreators.getItems({
+          query:this.mystate.search,
+          start:this.mystate.start,
+          limit:this.mystate.limit
+      });
   }
+  handleSearchChange = (e) => {
+    this.mystate.search=e.target.value;
+    this.setState({search:this.mystate.search});
+  }
+  search = (e) => {
+    console.log(this.state.search);
+    this.mystate.start=0;
+    this.loaddata();
+  };
   handlePrev = (e) => {
     this.mystate.start=this.mystate.start-this.mystate.limit;
     if(this.mystate.start<0) {this.mystate.start=0;}
     //this.setState({start:start});
     this.loaddata();
+  };
+  handlePackItemChange = (idx,contact) => {
+    console.log(idx);
+    const contacts2=update(this.state.items,{[idx]: {$set:contact}});
+    console.log(contacts2);
+    this.setState({items:contacts2});
   };
   handleNext = (e) => {
     this.mystate.start=this.mystate.start+this.mystate.limit;
@@ -81,31 +103,61 @@ class Items extends Component {
   handlePageChange= (e) => {
     this.setState({start_input:e.target.value});
   };
-  mapfunc=(item, idx) => {
-      if (item.image==="")
+  handleEdit=(idx)=>{
+    myflx.ItemActionCreators.showEdit(idx);
+  }
+  mapfunc=(contact, idx) => {
+      if (!contact.image || contact.image==="")
         return (<tr key={idx} >
-          <td>{item.id}</td>
-          <td>{item.bh}</td>
-          <td>{item.name}</td>
-          <td>{item.guige}</td>
-          <td>{item.danwei}</td>
+          <td>{contact.id}</td>
+          <td>{contact.bh}</td>
+          <td><a onClick={()=>this.handleEdit(idx)}>{contact.name}</a></td>
+          <td>{contact.guige}</td>
+          <td>{contact.danwei}</td>
           <td></td>
         </tr>);
       else
         return (<tr key={idx} >
-          <td>{item.id}</td>
-          <td>{item.bh}</td>
-          <td>{item.name}</td>
-          <td>{item.guige}</td>
-          <td>{item.danwei}</td>
-          <td><img alt="no" src={"/media/"+item.image} width="100" height="100"></img></td>
+          <td>{contact.id}</td>
+          <td>{contact.bh}</td>
+          <td><a onClick={()=>this.handleEdit(idx)}>{contact.name}</a></td>
+          <td>{contact.guige}</td>
+          <td>{contact.danwei}</td>
+          <td><img alt="no" src={"/media/"+contact.image} width="100" height="100"></img></td>
         </tr>);
   }
   render=()=>{
+    var hasprev=true;
+    var hasnext=true;
+    let prev;
+    let next;
+    //console.log(this.mystate);
+    //console.log(this.state);
+    if(this.state.start===0){
+      hasprev=false;
+    }
+    //console.log(this.state.start+this.mystate.limit>=this.state.total);
+    if(this.state.start+this.mystate.limit>=this.state.total){
+
+      hasnext=false;
+    }
+    if (hasprev){
+      prev=(<a onClick={this.handlePrev}>前一页</a>);
+    }
+    else{
+      prev=null;
+    }
+    if(hasnext){
+      next=(<a onClick={this.handleNext}>后一页</a>);
+    }
+    else{
+      next=null;
+    }
     const itemRows = this.state.items.map(this.mapfunc);
     return (
           <div>
-          <p>items</p>
+              <input type="text" value={this.state.search}  placeholder="" onChange={this.handleSearchChange} />
+              <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
            <Table responsive bordered condensed><thead>
            <tr>
            <th>ID</th>
@@ -115,11 +167,11 @@ class Items extends Component {
            <th>单位</th>
            <th>图片</th>
            </tr></thead><tbody id="item-list">{itemRows}</tbody></Table>
-      <a onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}/{this.state.total}</label>
-      <a onClick={this.handleNext}>后一页</a>
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+      {prev}
+              <label id="page">{this.state.start+1}../{this.state.total}</label>
+              {next}
+              <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+              <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
           </div>
     );
   }
