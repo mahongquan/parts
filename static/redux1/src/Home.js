@@ -4,13 +4,13 @@ import {  BrowserRouter as Router,Link,Route} from 'react-router-dom'
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
-import ContactEdit2New from './ContactEdit2New';
-import DlgWait from './DlgWait';
-import DlgFolder from './DlgFolder';
+// import ContactEdit2New from './ContactEdit2New';
+// import DlgWait from './DlgWait';
+// import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
-import DlgImport from './DlgImport';
-import DlgCheck from './DlgCheck'
-import DlgUrl from './DlgUrl';
+// import DlgImport from './DlgImport';
+// import DlgCheck from './DlgCheck'
+// import DlgUrl from './DlgUrl';
 var host="";
 class Home extends Component {
   mystate = {
@@ -199,7 +199,7 @@ class Home extends Component {
     ));
     return (
     <div id="todoapp" className="table-responsive">
-    <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
+    
     <table>
     <tbody>
     <tr>
@@ -222,9 +222,7 @@ class Home extends Component {
   <td>
     <Link style={{ margin:"10px"}} to={"/edit/-1"}>新仪器</Link>
   </td>
-   <td>
-        <DlgImport/>
-  </td>
+
    <td>
     <DropdownButton title="过滤" id="id_dropdown2">
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>

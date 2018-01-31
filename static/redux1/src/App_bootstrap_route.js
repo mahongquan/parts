@@ -7,10 +7,12 @@ import Stat from './Stat';
 import RouteContactEdit from './RouteContactEdit'
 import {  BrowserRouter as Router,Link,Route} from 'react-router-dom'
 import Home from './Home';
+import createHistory from "history/createBrowserHistory"
+
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={createHistory()}>
         <div>
           <div id="todoapp" className="table-responsive">
               <Link style={{ margin:"10px"}} to="/">合同</Link>

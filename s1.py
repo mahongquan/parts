@@ -7,4 +7,5 @@ from mysite import wsgi
 #     return ['WSGIserver is running!']
 
 server = wsgiserver.WSGIServer(wsgi.application, host='0.0.0.0', port=8000)
+print("host='0.0.0.0', port=8000")
 server.start()

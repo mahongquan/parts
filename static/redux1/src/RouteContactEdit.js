@@ -4,6 +4,7 @@ import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
 import './react-datetime.css'
+import {withRouter} from 'react-router-dom';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
@@ -241,7 +242,12 @@ class RouteContactEdit  extends Component{
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
   }
+  goBack=()=>{
+    this.props.history.goBack();
+  }
   render=()=>{
+    console.log("r edit render");
+    console.log(this.context);
     return (
       <div>
             <table id="table_input" className="table-condensed" >
@@ -412,9 +418,10 @@ class RouteContactEdit  extends Component{
           <div id="id_usepacks" hidden={this.state.hiddenPacks}>
            <UsePacks2  contact_id={this.state.contact.id}/>
           </div>
+          <button onClick={this.goBack}>go back</button>
         </div>
 
     );
   }
 };
-export default RouteContactEdit;
+export default withRouter(RouteContactEdit);
