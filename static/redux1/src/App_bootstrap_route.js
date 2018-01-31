@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import CopyPack from './CopyPack';
 import Items from './Items';
 import Stat from './Stat';
 import RouteContactEdit from './RouteContactEdit'
 import {  BrowserRouter as Router,Link,Route} from 'react-router-dom'
 import Home from './Home';
-import createHistory from "history/createBrowserHistory"
 
 class App extends Component {
   render() {
     return (
-      <Router history={createHistory()}>
+      <Router>
         <div>
           <div id="todoapp" className="table-responsive">
               <Link style={{ margin:"10px"}} to="/">合同</Link>
