@@ -1,85 +1,158 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { observable, action, computed } from "mobx";
+import { observable } from "mobx";//, action, computed
 import { observer } from "mobx-react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import {Table} from "react-bootstrap";
-//import ItemEdit from './ItemEdit';
+import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 
-// class Todo {
-//     id = Math.random();
-//     @observable title = "";
-//     @observable finished = false;
-//     constructor(t){
-//         this.title=t;
-//     }
-// }
-// class TodoList {
-//     @observable todos = [];
-//     // @computed get unfinishedTodoCount() {
-//     //     return this.todos.filter(todo => !todo.finished).length;
-//     // }
-//     start=0;
-//     total=0;
-//     loaddata=(data)=>{
-//         console.log(data);
-//             Client.items(
-//               data
-//               ,(res)=>{
-//                 this.todos=res.data;
-//                 this.total=res.total;
-//                 this.start=data.start;
-//               }
-//             );
-//     }
-// }
-
-
-// const TodoView = observer(({todo}) =>
-//     <li>
-//         <input
-//             type="checkbox"
-//             checked={todo.finished}
-//             onClick={() => todo.finished = !todo.finished}
-//         />{todo.title}
-//     </li>
-// )
+class ItemStore {
+    @observable todos = [];
+    @observable start=0;
+    @observable total=0;
+    @observable showModal=false;
+    @observable packitem={};
+    @observable bg={};
+    old={};
+    loaddata=(data)=>{
+        console.log(data);
+            Client.items(
+              data
+              ,(res)=>{
+                this.todos=res.data;
+                this.total=res.total;
+                this.start=data.start;
+              }
+            );
+    }
+}
 @observer
-class TodoListView extends Component {
+class ItemEdit extends Component{
+  close=()=>{
+    this.props.store.showModal=false;
+  }
+  
+  handleSave=(data)=>{
+    var url="/rest/Item";
+    Client.postOrPut(url,this.props.store.packitem,(res) => {
+      console.log(res);
+        this.props.store.packitem=res.data;
+        this.props.store.old=res.data;
+        this.close();
+    });
+  }
+  quehuoChange=(e)=>{
+    var quehuo=this.props.store.packitem.quehuo;
+    quehuo=!quehuo;
+    if(this.props.store.old.quehuo===quehuo)
+    {
+      const bg2=update(this.props.store.bg,{[e.target.name]:{$set:"#ffffff"}})
+      this.setState({bg:bg2});
+    }
+    else{
+       const bg2=update(this.props.store.bg,{[e.target.name]:{$set:"#8888ff"}})
+      this.setState({bg:bg2}); 
+    }
+    const contact2=update(this.props.store.packitem,{quehuo: {$set:quehuo}});
+    console.log(contact2);
+    this.setState({packitem:contact2});
+  }
+  handleChange=(e)=>{
+    console.log("change");
+    if(this.props.store.old[e.target.name]===e.target.value)
+    {
+      this.props.store.bg[e.target.name]="#ffffff"
+    }
+    else{
+      this.props.store.bg[e.target.name]="#8888ff"
+    }
+    this.props.store.packitem[e.target.name]=e.target.value;
+  }
+  render=()=>{
+    console.log("render==========");
+    return (
+        <Modal show={this.props.store.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>编辑备件信息</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <table id="table_input" className="table-condensed" >
+            <tbody> 
+            <tr >
+                <td >
+                    ID:
+                </td>
+                <td >
+                    <input type="text" id="id" name="id" readOnly="true"  disabled="disabled"    defaultValue={this.props.store.packitem.id} />
+                </td>
+            </tr><tr>
+                <td>
+                    名称:
+                </td>
+                <td>
+                    <input  style={{"backgroundColor":this.props.store.bg.name}}  type="text" id="name" name="name" value={this.props.store.packitem.name} onChange={this.handleChange} />
+                </td>
+            </tr><tr>
+                <td>
+                    <label>规格:</label>
+                </td>
+                <td>
+                    <input style={{"backgroundColor":this.props.store.bg.guige}} type="text"  name="guige" 
+                    value={this.props.store.packitem.guige}  onChange={this.handleChange} />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>编号:</label>
+                </td>
+                <td>
+                    <input style={{"backgroundColor":this.props.store.bg.bh}} type="text" id="bh" name="bh" value={this.props.store.packitem.bh}  onChange={this.handleChange} />
+                </td>
+            </tr>
+           
+            <tr>
+                <td>
+                    <label>单位:</label>
+                </td>
+                <td>
+                    <input type="text" style={{"backgroundColor":this.props.store.bg.danwei}}
+                    id="danwei" name="danwei"  value={this.props.store.packitem.danwei} onChange={this.handleChange} />
+                </td>
+            </tr> 
+            </tbody>
+            </table>
+       <div> 
+       <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
+       </div>
+                </Modal.Body>
+        </Modal>
+    );
+  }
+}
+@observer
+class Items extends Component {
     constructor(){
      super();
-     this.props.store = {
-      items: [],
-      start:0,
-      total:0,
-      limit:10,
-      search:"",
-      start_input:1,
-      error:"",
-     }
-     this.mystate=this.props.store;
+     this.mystate={
+        start:0,
+        total:0,
+        limit:10,
+        search:"",
+        start_input:1,
+        error:""
+      };
    }
   componentDidMount=()=>{
-    //console.log(myredux.ItemStore);
-    //this.unsubscribe=myredux.ItemStore.subscribe(this._onChange);
     this.loaddata();
   }
 
   componentWillUnmount=()=> {
-     //this.unsubscribe();
-  }
-   _onChange=()=> {
-      console.log("_onChange");
-      let state1   =myredux.ItemStore.getState();
-      //console.log(state1);
-      this.setState(state1);
-      this.mystate=this.props.store;
   }
   loaddata=()=>{
-      this.props.todoList.loaddata({
+      this.props.store.loaddata({
            query:this.mystate.search,
            start:this.mystate.start,
            limit:this.mystate.limit
@@ -97,7 +170,6 @@ class TodoListView extends Component {
   handlePrev = (e) => {
     this.mystate.start=this.mystate.start-this.mystate.limit;
     if(this.mystate.start<0) {this.mystate.start=0;}
-    //this.setState({start:start});
     this.loaddata();
   };
   handlePackItemChange = (idx,contact) => {
@@ -130,7 +202,11 @@ class TodoListView extends Component {
     this.setState({start_input:e.target.value});
   };
   handleEdit=(idx)=>{
-    myredux.ItemActionCreators.showEdit(idx);
+    //myredux.ItemActionCreators.showEdit(idx);
+    this.props.store.showModal=true;
+    this.props.store.packitem=this.props.store.todos[idx];
+    this.props.store.old=this.props.store.packitem;
+    this.props.store.bg={};
   }
   mapfunc=(contact, idx) => {
       if (!contact.image || contact.image==="")
@@ -157,14 +233,12 @@ class TodoListView extends Component {
     var hasnext=true;
     let prev;
     let next;
-    //console.log(this.mystate);
     //console.log(this.props.store);
-    this.mystate.start=this.props.todoList.start;
-    this.mystate.total=this.props.todoList.total;
+    this.mystate.start=this.props.store.start;
+    this.mystate.total=this.props.store.total;
     if(this.mystate.start===0){
       hasprev=false;
     }
-    //console.log(this.props.store.start+this.mystate.limit>=this.props.store.total);
 
     if(this.mystate.start+this.mystate.limit>=this.mystate.total){
 
@@ -182,8 +256,8 @@ class TodoListView extends Component {
     else{
       next=null;
     }
-    console.log(this.props.todoList);
-    const itemRows = this.props.todoList.todos.map(this.mapfunc);
+    //console.log(this.props.store);
+    const itemRows = this.props.store.todos.map(this.mapfunc);
     return (
           <div>
               <input type="text" value={this.props.store.search}  placeholder="" onChange={this.handleSearchChange} />
@@ -206,5 +280,11 @@ class TodoListView extends Component {
     );
   }
 };
-const store = new TodoList();
-ReactDOM.render(<TodoListView todoList={store} />, document.getElementById('root'));
+const store = new ItemStore();
+ReactDOM.render(
+    <div>
+      <Items store={store} />
+      <ItemEdit store={store} />
+    </div>
+    ,document.getElementById('root')
+  );

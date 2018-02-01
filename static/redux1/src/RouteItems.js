@@ -89,8 +89,6 @@ class Items extends Component {
   };
   handleEdit=(idx)=>{
     this.props.history.push("/edit/"+idx);
-    myredux.ItemActionCreators.showEdit(idx);
-
   }
   mapfunc=(contact, idx) => {
       if (!contact.image || contact.image==="")
