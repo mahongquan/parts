@@ -16,7 +16,13 @@ class ItemStore {
     @observable showModal=false;
     @observable packitem={};
     @observable bg={};
+    @observable search="";
+    @observable start_input=1;
+    limit=10;
     old={};
+    constructor(){
+      this.loaddata({query:this.search,start:this.start,limit:this.limit});
+    }
     loaddata=(data)=>{
         console.log(data);
             Client.items(
@@ -134,72 +140,62 @@ class ItemEdit extends Component{
 }
 @observer
 class Items extends Component {
-    constructor(){
-     super();
-     this.mystate={
-        start:0,
-        total:0,
-        limit:10,
-        search:"",
-        start_input:1,
-        error:""
-      };
-   }
   componentDidMount=()=>{
-    this.loaddata();
+    console.log("mount");
+    
+    //this.loaddata();
+
   }
 
   componentWillUnmount=()=> {
   }
   loaddata=()=>{
       this.props.store.loaddata({
-           query:this.mystate.search,
-           start:this.mystate.start,
-           limit:this.mystate.limit
+           query:this.props.store.search,
+           start:this.props.store.start,
+           limit:this.props.store.limit
       });
   }
   handleSearchChange = (e) => {
-    this.mystate.search=e.target.value;
-    this.setState({search:this.mystate.search});
+    this.props.store.search=e.target.value;
   }
   search = (e) => {
     console.log(this.props.store.search);
-    this.mystate.start=0;
+    this.props.store.start=0;
     this.loaddata();
   };
   handlePrev = (e) => {
-    this.mystate.start=this.mystate.start-this.mystate.limit;
-    if(this.mystate.start<0) {this.mystate.start=0;}
+    this.props.store.start=this.props.store.start-this.props.store.limit;
+    if(this.props.store.start<0) {
+      this.props.store.start=0;
+    }
     this.loaddata();
   };
-  handlePackItemChange = (idx,contact) => {
-    console.log(idx);
-    const contacts2=update(this.props.store.items,{[idx]: {$set:contact}});
-    console.log(contacts2);
-    this.setState({items:contacts2});
-  };
+
   handleNext = (e) => {
-    this.mystate.start=this.mystate.start+this.mystate.limit;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
+    this.props.store.start=this.props.store.start+this.props.store.limit;
+    if(this.props.store.start>this.props.store.total-this.props.store.limit)
+    { 
+        this.props.store.start=this.props.store.total-this.props.store.limit;//total >limit
+    }
+    if(this.props.store.start<0)
     {
-      this.mystate.start=0;
+      this.props.store.start=0;
     }
     this.loaddata();
   };
   jump=()=>{
-    this.mystate.start=parseInt(this.props.store.start_input,10)-1;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
+    this.props.store.start=parseInt(this.props.store.start_input,10)-1;
+    if(this.props.store.start>this.props.store.total-this.props.store.limit) 
+        this.props.store.start=this.props.store.total-this.props.store.limit;//total >limit
+    if(this.props.store.start<0)
     {
-      this.mystate.start=0;
+      this.props.store.start=0;
     }
     this.loaddata();
   };
   handlePageChange= (e) => {
-    this.setState({start_input:e.target.value});
+    this.props.store.start_input=e.target.value;
   };
   handleEdit=(idx)=>{
     //myredux.ItemActionCreators.showEdit(idx);
@@ -234,13 +230,11 @@ class Items extends Component {
     let prev;
     let next;
     //console.log(this.props.store);
-    this.mystate.start=this.props.store.start;
-    this.mystate.total=this.props.store.total;
-    if(this.mystate.start===0){
+    if(this.props.store.start===0){
       hasprev=false;
     }
 
-    if(this.mystate.start+this.mystate.limit>=this.mystate.total){
+    if(this.props.store.start+this.props.store.limit>=this.props.store.total){
 
       hasnext=false;
     }
@@ -272,7 +266,7 @@ class Items extends Component {
            <th>图片</th>
            </tr></thead><tbody id="item-list">{itemRows}</tbody></Table>
       {prev}
-              <label id="page">{this.mystate.start+1}../{this.mystate.total}</label>
+              <label id="page">{this.props.store.start+1}../{this.props.store.total}</label>
               {next}
               <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.props.store.start_input} />
               <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
@@ -283,7 +277,7 @@ class Items extends Component {
 const store = new ItemStore();
 ReactDOM.render(
     <div>
-      <Items store={store} />
+      <Items store={store} /><Items store={store} />
       <ItemEdit store={store} />
     </div>
     ,document.getElementById('root')
