@@ -34,6 +34,26 @@ class ItemStore {
               }
             );
     }
+    handleItemSave=(data)=>{
+      var url="/rest/Item";
+      Client.postOrPut(url,this.packitem,(res) => {
+        console.log(res);
+          this.packitem=res.data;
+          this.old=res.data;
+          this.showModal=false;
+      });
+    }
+    handleItemChange=(e)=>{
+      console.log("change");
+      if(this.old[e.target.name]===e.target.value)
+      {
+        this.bg[e.target.name]="#ffffff"
+      }
+      else{
+        this.bg[e.target.name]="#8888ff"
+      }
+      this.packitem[e.target.name]=e.target.value;
+    }
 }
 @observer
 class ItemEdit extends Component{
@@ -42,40 +62,10 @@ class ItemEdit extends Component{
   }
   
   handleSave=(data)=>{
-    var url="/rest/Item";
-    Client.postOrPut(url,this.props.store.packitem,(res) => {
-      console.log(res);
-        this.props.store.packitem=res.data;
-        this.props.store.old=res.data;
-        this.close();
-    });
-  }
-  quehuoChange=(e)=>{
-    var quehuo=this.props.store.packitem.quehuo;
-    quehuo=!quehuo;
-    if(this.props.store.old.quehuo===quehuo)
-    {
-      const bg2=update(this.props.store.bg,{[e.target.name]:{$set:"#ffffff"}})
-      this.setState({bg:bg2});
-    }
-    else{
-       const bg2=update(this.props.store.bg,{[e.target.name]:{$set:"#8888ff"}})
-      this.setState({bg:bg2}); 
-    }
-    const contact2=update(this.props.store.packitem,{quehuo: {$set:quehuo}});
-    console.log(contact2);
-    this.setState({packitem:contact2});
+    this.props.store.handleItemSave(data);
   }
   handleChange=(e)=>{
-    console.log("change");
-    if(this.props.store.old[e.target.name]===e.target.value)
-    {
-      this.props.store.bg[e.target.name]="#ffffff"
-    }
-    else{
-      this.props.store.bg[e.target.name]="#8888ff"
-    }
-    this.props.store.packitem[e.target.name]=e.target.value;
+    this.props.store.handleItemChange(e);
   }
   render=()=>{
     console.log("render==========");
