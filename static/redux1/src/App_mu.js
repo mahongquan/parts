@@ -1,0 +1,360 @@
+import React, { Component } from 'react';
+import './App.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import Client from './Client';
+import DialogExampleSimple from "./DialogExampleSimple"
+import DialogImportStandard from "./DialogImportStandard"
+import ContactEdit from "./ContactEdit"
+import update from 'immutability-helper';
+injectTapEventPlugin();
+//var user = "";
+var host="";
+class App extends Component {
+  mystate = {
+    start:0,
+    limit:10,
+    total:0,
+    baoxiang:"",
+    logined: false,
+    search:""
+  }
+   state = {
+    contacts: [],
+    limit:10,
+    user: "AnonymousUser",
+    start:0,
+    total:0,
+    search:"",
+    start_input:1,
+    currentIndex:null,
+    baoxiang:"",
+  }
+  componentDidMount=() => {
+    this.load_data();
+  }
+  load_data=()=>{
+    Client.contacts(
+      { start:this.mystate.start,
+        limit:this.mystate.limit,
+        search:this.mystate.search,
+        baoxiang:this.mystate.baoxiang,
+      }, 
+      (contacts) => {
+        var user=contacts.user;
+        if(user===undefined){
+          user="AnonymousUser"
+        }
+        this.mystate.total=contacts.total;//because async ,mystate set must before state;
+        this.setState({
+          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          limit:this.mystate.limit,
+          user: user,
+          total:contacts.total,
+          start:this.mystate.start
+        });
+    });
+  };
+  // removeFoodItem = (itemIndex) => {
+  //   const filteredFoods = this.state.selectedFoods.filter(
+  //     (item, idx) => itemIndex !== idx,
+  //   );
+  //   this.setState({ selectedFoods: filteredFoods });
+  // }
+
+  // addFood = (food) => {
+  //   const newFoods = this.state.selectedFoods.concat(food);
+  //   this.setState({ selectedFoods: newFoods });
+  // }
+  handleTest = () => {
+    //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
+    // console.log("handleTest");
+    //console.log(contact2);
+    //var one=this.state.contacts[this.state.selected];
+    var idx=this.state.selected;
+    console.log(idx);
+    const contacts2=update(this.state.contacts,{[idx]: {baoxiang:{$set:"test111"}}});
+    console.log(contacts2);
+    //this.state.contacts[this.state.selected].baoxiang="test";
+    this.setState({contacts:contacts2});
+    //this.forceUpdate();
+  };
+  handleContactChange = (idx,contact) => {
+    console.log(idx);
+    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+    console.log(contacts2);
+    this.setState({contacts:contacts2});
+  };
+  oncontactClick=(key) => {
+    console.log("click row");
+    console.log(key);
+    this.setState({selected:key});
+  };
+  handleImportStandard=() => {
+    console.log("import row");
+  };
+  handleUserChange = (user) => {
+    if (user === "AnonymousUser") {
+      this.setState({
+        logined: false
+      });
+    } else {
+      this.setState({
+        logined: true
+      });
+    }
+    this.setState({
+      user: user,
+      contacts: [], //slice(0, MATCHING_ITEM_LIMIT),
+    });
+    this.componentDidMount();
+  };
+  handleTouchTap = (event) => {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget
+    });
+  };
+  showlogin = () => {
+    console.log("showlogin");
+    var data = {
+      username: "mahongquan",
+      password: "333333"
+    };
+    this.onLoginSubmit(data);
+  };
+  handleLogin = () => {
+    console.log("login");
+    Client.login_index((data) => {
+      //console.log(data.csrf_token);
+      // const cookies = new Cookies();
+
+      // cookies.set('csrftoken', this.state.csrf_token, { path: '/' });
+      this.showlogin();
+    });
+
+  };
+  handleLogout = () => {
+    console.log("logout");
+    Client.logout((data) => {
+      console.log("logout" + data);
+      this.setState({
+        logined: false,
+        user: "AnonymousUser",
+      });
+      this.handleUserChange(this.state.user);
+    });
+  };
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+  handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    this.setState({
+      searchValue: value,
+    });
+
+    if (value === '') {
+      this.setState({
+        contacts: [],
+        showRemoveIcon: false,
+      });
+    } else {
+      this.setState({
+        showRemoveIcon: true,
+      });
+
+      Client.contacts(value, (contacts) => {
+        this.setState({
+          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        });
+      });
+    }
+  };
+    handleSearchChange = (e) => {
+    this.mystate.search=e.target.value;
+    this.setState({search:this.mystate.search});
+  };
+  handlePrev = (e) => {
+    this.mystate.start=this.mystate.start-this.mystate.limit;
+    if(this.mystate.start<0) {this.mystate.start=0;}
+    this.load_data();
+  };
+  search = (e) => {
+    this.mystate.start=0;
+    this.load_data();
+  };
+  jump=()=>{
+    this.mystate.start=parseInt(this.state.start_input,10)-1;
+    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
+        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
+    if(this.mystate.start<0)
+    {
+      this.mystate.start=0;
+    }
+    this.load_data();
+  };
+  handlePageChange= (e) => {
+    this.setState({start_input:e.target.value});
+  };
+
+  onDetailClick=(contactid)=>{
+    console.log(contactid);
+    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+  }
+  handleNext = (e) => {
+    this.mystate.start=this.mystate.start+this.mystate.limit;
+    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
+        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
+    if(this.mystate.start<0)
+    {
+      this.mystate.start=0;
+    }
+    this.load_data();
+  };
+
+  onLoginSubmit= (data) => {
+    console.log(data);
+    Client.login(data.username, data.password, (res) => {
+      if (res.success) {
+        this.setState({
+          logined: true,
+        });
+        this.setState({
+          user: data.username
+        });
+        this.handleUserChange(this.state.user);
+      }
+    });
+  };
+  inputChange=(e)=>{
+    console.log(this.refs.input);
+    console.log(this.refs.style);
+    var style=getComputedStyle(this.refs.input, null)
+    console.log(style);
+    this.setState({test_input:e.target.value});
+  };
+  render() {
+    const contactRows = this.state.contacts.map((contact, idx) => (
+      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
+        <TableRowColumn>{contact.id}</TableRowColumn>
+        <TableRowColumn>{contact.hetongbh}</TableRowColumn>
+        <TableRowColumn>{contact.yonghu}</TableRowColumn>
+        <TableRowColumn>{contact.baoxiang}</TableRowColumn>
+        <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
+      </TableRow>
+    ));
+    var hasprev=true;
+    var hasnext=true;
+    let prev;
+    let next;
+    console.log(this.mystate);
+    console.log(this.state);
+    if(this.state.start===0){
+      hasprev=false;
+    }
+    console.log(this.state.start+this.state.limit>=this.state.total);
+    if(this.state.start+this.state.limit>=this.state.total){
+
+      hasnext=false;
+    }
+    if (hasprev){
+      prev=(<button onClick={this.handlePrev}>前一页</button>);
+    }
+    else{
+      prev=null;
+    }
+    if(hasnext){
+      next=(<button onClick={this.handleNext}>后一页</button>);
+    }
+    else{
+      next=null;
+    }
+    return (
+      <div className="App">
+        <MuiThemeProvider>
+        <div>
+         <Toolbar>
+           <ToolbarGroup>
+                <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{
+            horizontal: 'left',
+            vertical: 'bottom'
+          }}
+          targetOrigin={{
+            horizontal: 'left',
+            vertical: 'top'
+          }}
+          onRequestClose={this.handleRequestClose}
+          >
+          <Menu>
+            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
+          </Menu>
+        </Popover>
+          <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
+                </DialogExampleSimple>
+          <TextField
+      id="id_search"
+      type='text'
+      placeholder='Search instrument...'
+      value={this.state.searchValue}
+      onChange={this.handleSearchChange}
+      >
+          </TextField>
+         <div>
+         <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
+         </div>
+         <div>
+         <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
+         </div>
+          <div>
+          <RaisedButton  onTouchTap={this.handleTest}
+            label="test" >
+        </RaisedButton>
+        <RaisedButton  onTouchTap={this.handleTouchTap}
+      label={this.state.user}>
+        </RaisedButton>
+
+       </div>
+        </ToolbarGroup>
+      </Toolbar>
+        <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHeaderColumn>id</TableHeaderColumn>
+        <TableHeaderColumn>合同编号</TableHeaderColumn>
+        <TableHeaderColumn>用户单位</TableHeaderColumn>
+        <TableHeaderColumn>包箱</TableHeaderColumn>
+        <TableHeaderColumn>仪器型号</TableHeaderColumn>
+      </TableRow>
+    </TableHeader>
+         <TableBody>
+            {contactRows}
+          </TableBody>
+        </Table>
+        {prev}
+<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
+      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+        </div>
+      </MuiThemeProvider>
+      </div>
+    );
+  }
+}
+export default App;

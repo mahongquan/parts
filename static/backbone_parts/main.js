@@ -509,16 +509,27 @@ function delCookie(name)//删除cookie
   var AppView = Backbone.View.extend({
      el: $("#todoapp"),
      events: {
+      "click #id_btn_test" : "mytest",
       "click #id_bt_search" : "mysearch",
       "click #id_bt_new" : "newcontact",
       "click #id_bt_standard" : "importstandard",
+      "click #id_bt_standard_new" : "importstandard_new",
       "click #id_login" : "showlogin",
       "click #id_logout" : "showlogout",
       "click .baoxiang" : "baoxiang",
       "change #id_input_search":"searchChange",
     },
+    mytest:function(){
+      console.log("mytest");
+    },
     searchChange:function(){
       myglobal.search=this.$("#id_input_search").val();
+    },
+    importstandard_new:function(){
+       var editview= new ImportStandardView_new();
+       editview.showdialog();
+       // var dlg=new UploadView({parent:this});
+       //  dlg.showdialog();
     },
     importstandard:function(){
        var editview= new ImportStandardView();
@@ -777,6 +788,78 @@ function delCookie(name)//删除cookie
         this.render();//must call because editview has no element now;
         var self=this;
         this.$el.modal();
+    },
+  });
+  //////////////////////////////
+  var ImportStandardView_new = Backbone.View.extend({
+    tagName:  "div",
+    template: _.template($('#importstandard-template-new').html()),
+    events: {
+       "click #bt_upload2" : "uploadfile",
+    },
+    uploadfile:function(){
+      var self=this;
+      var data1=new FormData(this.$('#uploadForm')[0]);
+      data1.append("id", this.$('#id').val());
+      console.log(data1);
+      $.ajax({
+        context:this.parent,
+        url: host+'/rest/standard',
+        type: 'POST',
+        cache: false,
+        data: data1,
+        processData: false,
+        contentType: false
+        }).done(function(res) {
+          data=JSON.parse(res);
+          if(data.success){
+            console.log(data.result);
+            self.mysetdata();
+          }
+          else{
+          }
+        }).fail(function(res) {
+        });
+    },
+   initialize: function() {
+      this.$el.html(this.template());
+      this.start=0;
+      this.limit=10;
+      this.packs= new PackList();;
+      this.listenTo(this.packs, 'add', this.addOne);
+      this.listenTo(this.packs, 'reset', this.addAll);
+      this.listenTo(this.packs, 'all', this.render);
+      this.mysetdata();
+    },
+    mysetdata:function(){
+        this.$("#pack-list").empty();
+        this.packs.fetch({
+            reset:true,
+            data: { start:this.start,limit:this.limit,search:"xls"},
+            success:function(){
+            },
+            error:function(){
+                alert("error");
+            }
+          }
+        );//{ reset: true,data: { start:this.start,limit:this.limit} });
+    },
+    addOne: function(pack) {
+      var view = new PackView({model: pack});
+      this.$("#pack-list").append(view.render().el);
+    },
+    addAll: function() {
+      this.packs.each(this.addOne, this);
+    },
+    render: function() {
+      //this.$el.html(this.template());
+      return this;
+    },
+    showdialog:function(){
+        this.render();//must call because editview has no element now;
+        var self=this;
+        console.log(this.$el);
+        this.$el.modal('toggle');
     },
   });
  //////////////////////////////////////////////////////////////////////////

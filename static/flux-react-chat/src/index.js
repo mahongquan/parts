@@ -1,23 +1,15 @@
 import ReactDOM from 'react-dom';
-import  ChatApp      from './components/ChatApp.react';
+import  Items     from './Items';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import  ChatWebAPIUtils  from './utils/ChatWebAPIUtils';
-
-var React            = require('react');
-//var ChatSocketIUtils = require('./utils/ChatSocketUtils');
-console.log(ChatWebAPIUtils);
-
-//ChatWebAPIUtils.getRooms();
-//ChatWebAPIUtils.getMessages();
-
+import  React   from 'react';
+import ItemEdit from './ItemEdit';
+class App extends React.Component {
+	render=()=>{
+		return(<div><ItemEdit ref="dlg" parent={this} /><Items /><Items /></div>);
+	}
+}
 ReactDOM.render(
-  <ChatApp />, 
+  <App />, 
   document.getElementById('root')
 );
-// var email = prompt('Enter you email');
-// if (!_.isUndefined(email) && !_.isEmpty(email)) {
-//   ChatWebAPIUtils.createUser(email);
-// } else {
-//   ChatWebAPIUtils.getUser();
-// }
