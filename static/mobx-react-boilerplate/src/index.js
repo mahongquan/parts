@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import {Table} from "react-bootstrap";
 import {Modal} from "react-bootstrap";
-import update from 'immutability-helper';
+//import update from 'immutability-helper';
 import Client from './Client';
 
 class ItemStore {
