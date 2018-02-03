@@ -13,14 +13,12 @@ export default {
       search: search 
     });
   },
-  creatingRoom: function(name) {
+  creatingRoom: function(data) {
     ChatAppDispatcher.handleViewAction({
       type: ActionTypes.CREATING_ROOM,
-      name: name 
+      data: data
     });
-    ChatWebAPIUtils.createRoom({
-      name: name 
-    });
+    ChatWebAPIUtils.createRoom(data);
   },
   clickRoom: function(room) {
     ChatAppDispatcher.handleViewAction({

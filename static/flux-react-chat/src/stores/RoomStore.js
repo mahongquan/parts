@@ -84,7 +84,7 @@ RoomStore.dispatchToken = ChatAppDispatcher.register(function(payload) {
           return room;
         }
       });
-      sortRooms();
+      //sortRooms();
       RoomStore.emitChange();
       break;
 

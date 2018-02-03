@@ -2,17 +2,14 @@ import Client from './Client';
 import ChatServerActionCreators from '../actions/ChatServerActionCreators';
 var qwest= require('qwest');
 export default {
-  createRoom: function(room) {
-    qwest.post('/rest/Item', {
-      room: room,
-      limit:10
-    },{
-      responseType: 'json'
-    }).then(function(response){
-      ChatServerActionCreators.createdRoom(response);
-    }).catch(function(response){
-      console.log('error', response);
-      //alert('error', response);
+  createRoom: function(data) {
+    Client.postOrPut("/rest/Item",data,(res) => {
+      ChatServerActionCreators.createdRoom(res.data);
+      // console.log(res);
+      //   this.setState({contact:res.data});
+      //   this.parent.handlePackItemChange(this.index,res.data);
+      //   this.old=res.data;
+      //   this.close();
     });
   },
   createMessage: function(message) {
