@@ -254,11 +254,12 @@ class App extends Component {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
-        <td>{contact.hetongbh}</td>
+        
         <td>
           {contact.yonghu}
         </td>
         <td>{contact.addr}</td>
+        <td>{contact.hetongbh}</td>
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
           <DropdownButton title="" id="id_dropdown3">
@@ -367,10 +368,10 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<table className="table-bordered"><thead><tr><th>ID</th><th>合同编号</th>
+<table className="table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
-<th>客户地址</th>
+<th>客户地址</th><th>合同编号</th>
 <th><span onClick={this.handleClickFilter}>仪器编号</span></th>
 <th>仪器型号</th><th>通道配置</th>
 <th>包箱<DropdownButton title={this.state.baoxiang} id="id_dropdown2">
