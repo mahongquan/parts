@@ -458,6 +458,7 @@ class ContactEdit2New  extends Component{
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
           <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
         </div>
+        <div style={{minHeight:"200px"}}></div>
                 </Modal.Body>
         </Modal>
     );

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay,OverlayTrigger} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
-import ExampleModal from './ExampleModal';
+import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
@@ -345,7 +345,7 @@ class App extends Component {
    <td>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
+          <DlgLogin onLoginSubmit={this.onLoginSubmit} title="登录" />
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
           <a onClick={this.handleLogout}>注销</a>
