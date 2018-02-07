@@ -97,6 +97,10 @@ class UsePacks2 extends React.Component {
   bibei= (id) => {
     this.setState({auto_value:"必备"});
     //this.auto_change(null,"必备");
+  }
+  fujia= (id) => {
+    this.setState({auto_value:"附加"});
+    //this.auto_change(null,"必备");
   };
   new_pack= (id) => {
     var url="/rest/UsePackEx";
@@ -208,10 +212,11 @@ class UsePacks2 extends React.Component {
             <span>{item.name}</span>
           )}
         /></td><td><button  className="btn" onClick={this.bibei}>必备</button></td>
-        </tr></tbody></table>
+        <td><button  className="btn btn-info" onClick={this.fujia}>附加</button></td>
+        </tr><tr></tr></tbody></table>
       <div>新包名称：
         <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
-        <button className="btn btn-info" id="id_new_usepack" onClick={this.new_pack}>新包</button>
+        <button className="btn btn-primary" id="id_new_usepack" onClick={this.new_pack}>新包</button>
       </div>
       </div>
     );

@@ -7,7 +7,7 @@ class PackEdit extends React.Component{
       pack_id:null,
     }
 
-  close() {
+  close=()=>{
     this.setState({ showModal: false });
   }
   handleChange(){
