@@ -47,10 +47,15 @@ def read(fn):
         #print(one)
         data.append(one)
     yiqi=data[1][1]#yiqixinghao ,channels
+    [xh,other]=yiqi.split(" ")
+    [zj,other]=other.split("（")
+    channels=other
     contact=Contact()
     contact.yonghu=zz
     contact.yiqixinghao=yqxh
     contact.baoxiang=""
+    contact.channels=channels
+    contact.addr=""
     contact.yiqibh=str(datetime.datetime.now())
     contact.yujifahuo_date=dt+datetime.timedelta(30)
     contact.save()
@@ -58,26 +63,78 @@ def read(fn):
         pass
     else:
         print("表格行数有改动")
-    # #table1 选  购  件
-    # tbl=document.tables[1]
-    # data=[]
-    # for row in tbl.rows:
-    #     one=[]
-    #     for c in row.cells:
-    #         one.append(c.text)
-    #     #print(one)
-    #     data.append(one)
-    # for one in data[2:]:#选  购  件
-    #     print(one[1],one[0],one[2],one[4],one[5])
-    # #table2 标配
-    # data=[]
-    # tbl=document.tables[2]
-    # for row in tbl.rows:
-    #     one=[]
-    #     for c in row.cells:
-    #         one.append(c.text)
-    #     data.append(one)
-    # print(data[2:])
+    #table1 选  购  件
+    tbl=document.tables[1]
+    pack=Pack()
+    pack.name="选购"+contact.yiqibh
+    pack.save()
+    data=[]
+    for row in tbl.rows:
+        one=[]
+        for c in row.cells:
+            one.append(c.text)
+        #print(one)
+        data.append(one)
+    for one in data[2:]:#选  购  件
+        print(one[1],one[0],one[2],one[4],one[5])
+        if one[0].strip()!="":
+            items=Item.objects.filter(bh=one[0]).all()
+            if len(items)>1:
+                item=items[0]
+            else:
+                item=Item()
+        else:
+            item=Item()
+        item.bh=one[0]
+        item.name=one[1]
+        item.guige=one[2]
+        item.danwei=one[3]
+        item.save()
+        di=PackItem()
+        di.pack=pack
+        di.item=item
+        di.ct=one[4]
+        di.save()
+    usepack=UsePack()
+    usepack.contact=contact
+    usepack.pack=pack;
+    usepack.save();
+    #table2 标配
+    tbl=document.tables[2]
+    pack=Pack()
+    pack.name="标配"+contact.yiqibh
+    pack.save()
+    data=[]
+    for row in tbl.rows:
+        one=[]
+        for c in row.cells:
+            one.append(c.text)
+        #print(one)
+        data.append(one)
+    for one in data[2:]:
+        print(one)
+        if one[0].strip()!="":
+            items=Item.objects.filter(bh=one[0]).all()
+            if len(items)>1:
+                item=items[0]
+            else:
+                item=Item()
+        else:
+            item=Item()
+        item.bh=one[0]
+        item.name=one[2]
+        item.guige=""
+        item.danwei=one[3][-1:]
+        item.save()
+        di=PackItem()
+        di.pack=pack
+        di.item=item
+        di.ct=one[3][:-1]
+        di.save()
+    usepack=UsePack()
+    usepack.contact=contact
+    usepack.pack=pack;
+    usepack.save();    
 if __name__=="__main__":
     #print(datetime.datetime.now())
     read("ON17470-O-3000技术协议.docx")

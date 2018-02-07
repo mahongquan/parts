@@ -27,6 +27,7 @@ import traceback
 import sys
 import xlrd
 from django.db import connection,transaction
+from docx import Document
 def mylistdir(p,f):
     a=os.listdir(p)
     fs=myfind(a,f)
@@ -393,7 +394,7 @@ def view_contact(request):
     data=[]
     for rec in objs:
         data.append(rec.json())
-    logging.info(data)
+    #logging.info(data)
     output={"total":total,"data":data,"user":request.user.username}
     return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def create_contact(request):
@@ -1269,7 +1270,153 @@ def standard(request):
     filetype = f.content_type
     packs=readStandardFile(f.read(),filename)
     res={"success":True, "result":packs}
-    return HttpResponse(json.dumps(res, ensure_ascii=False))        
+    return HttpResponse(json.dumps(res, ensure_ascii=False))   
+def readHtFile(fn,filename):
+    try:
+        document = Document(fn)
+        yqxh=document.paragraphs[8].text
+        yqxh=yqxh.split("：")[1].strip()
+        dt=document.paragraphs[10].text
+        dt=dt.split("：")[1].strip()
+        [y,other]=dt.split("年")
+        [m,other]=other.split("月")
+        [d,other]=other.split("日")
+        dt=datetime.date(int(y),int(m),int(d))
+        mj=document.paragraphs[11].text
+        mj=mj.split("：")[1].strip()
+        zz=document.paragraphs[12].text
+        zz=zz.split("：")[1].strip()
+        if(zz==""):
+            zz=mj
+        print(yqxh,y,m,d,mj,zz)
+        #table0 主机清单
+        tbl=document.tables[0]
+        data=[]
+        for row in tbl.rows:
+            one=[]
+            for c in row.cells:
+                one.append(c.text)
+            #print(one)
+            data.append(one)
+        yiqi=data[1][1]#yiqixinghao ,channels
+        [xh,other]=yiqi.split(" ")
+        [zj,other]=other.split("（")
+        channels=other
+        contact=Contact()
+        contact.yonghu=zz
+        contact.yiqixinghao=yqxh
+        contact.baoxiang=""
+        contact.channels=channels
+        contact.addr=""
+        contact.yiqibh=filename
+        contact.yujifahuo_date=dt+datetime.timedelta(30)
+        contact.save()
+        if len(data)==7:
+            pass
+        else:
+            print("表格行数有改动")
+        #table1 选  购  件
+        tbl=document.tables[1]
+        pack=Pack()
+        pack.name="选购"+contact.yiqibh
+        pack.save()
+        data=[]
+        for row in tbl.rows:
+            one=[]
+            for c in row.cells:
+                one.append(c.text)
+            #print(one)
+            data.append(one)
+        for one in data[2:]:#选  购  件
+            print(one[1],one[0],one[2],one[4],one[5])
+            if one[0].strip()!="":
+                items=Item.objects.filter(bh=one[0]).all()
+                if len(items)>1:
+                    item=items[0]
+                else:
+                    item=Item()
+            else:
+                item=Item()
+            item.bh=one[0]
+            item.name=one[1]
+            item.guige=one[2]
+            item.danwei=one[3]
+            item.save()
+            di=PackItem()
+            di.pack=pack
+            di.item=item
+            di.ct=one[4]
+            di.save()
+        usepack=UsePack()
+        usepack.contact=contact
+        usepack.pack=pack;
+        usepack.save();
+        #table2 标配
+        tbl=document.tables[2]
+        pack=Pack()
+        pack.name="标配"+contact.yiqibh
+        pack.save()
+        data=[]
+        for row in tbl.rows:
+            one=[]
+            for c in row.cells:
+                one.append(c.text)
+            #print(one)
+            data.append(one)
+        for one in data[2:]:
+            print(one)
+            if one[0].strip()!="":
+                items=Item.objects.filter(bh=one[0]).all()
+                if len(items)>1:
+                    item=items[0]
+                else:
+                    item=Item()
+            else:
+                item=Item()
+            item.bh=one[0]
+            item.name=one[2]
+            item.guige=""
+            item.danwei=one[3][-1:]
+            item.save()
+            di=PackItem()
+            di.pack=pack
+            di.item=item
+            di.ct=one[3][:-1]
+            di.save()
+        usepack=UsePack()
+        usepack.contact=contact
+        usepack.pack=pack
+        usepack.save()
+        rec=contact
+        output={"success":True,"message":"Created new User" +str(rec.id)}
+        output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
+        return output
+    except ValueError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except django.db.utils.IntegrityError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))        
+def ht(request):
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+    output=readHtFile(f,filename)
+    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))           
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")

@@ -11,6 +11,7 @@ import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
+import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
@@ -242,6 +243,9 @@ class App extends Component {
   openDlgImport=()=>{
     this.refs.dlgimport.open();
   }
+  openDlgImportHT=()=>{
+    this.refs.dlgimportHT.open();
+  }
   onFilterDW =()=>{
         console.log("filter dw");
   }
@@ -321,6 +325,7 @@ class App extends Component {
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
     <DlgImport ref="dlgimport" />
+    <DlgImportHT ref="dlgimportHT" parent={this} />
     <DlgCheck ref="dlgcheck" />
     <DlgFolder ref="dlgfolder" />
     <DlgWait ref="dlgwait" />
@@ -364,6 +369,9 @@ class App extends Component {
   </td>
    <td>
    <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
+  </td>
+  <td>
+   <button className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
   </td>
   </tr>
   </tbody>

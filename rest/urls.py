@@ -7,6 +7,7 @@ urlpatterns = [
         url(r'^upload', views.upload),
         url(r'^check', views.check),
         url(r'^standard', views.standard),
+        url(r'^ht', views.ht),
 
         url(r'^$',views.index),
         url(r'^restful',views.restful),
