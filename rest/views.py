@@ -1441,37 +1441,54 @@ def month12(request):
     res={"success":True, "lbls":lbls,"values":values}
     return HttpResponse(json.dumps(res, ensure_ascii=False))      
 def copypack(request):
-    logging.info(request.POST)
-    oldid=int(request.POST.get('oldid'))
-    newname=request.POST.get('newname')
-    logging.info(oldid)
-    logging.info(newname)
-    old=None
-    new=None
     try:
-        old=Pack.objects.get(id=oldid) 
-    except ObjectDoesNotExist as e:
-        pass
-    try:
-        new=Pack.objects.get(name=newname) 
-    except ObjectDoesNotExist as e:
-        new=Pack()
-        new.name=newname
-        new.save()
-    #copy items
-    content=""
-    if old==None:
-        content="old is None"
-    else:
-        for pi in old.packitem_set.all():
-            n=PackItem()
-            n.pack=new
-            n.item=pi.item
-            n.ct=pi.ct
-            n.save()
-        content="ok"
-    res={"success":True, "message":content}
-    return HttpResponse(json.dumps(res, ensure_ascii=False))   
+        logging.info(request.POST)
+        oldid=int(request.POST.get('oldid'))
+        newname=request.POST.get('newname')
+        logging.info(oldid)
+        logging.info(newname)
+        old=None
+        new=None
+        try:
+            old=Pack.objects.get(id=oldid) 
+        except ObjectDoesNotExist as e:
+            pass
+        try:
+            new=Pack.objects.get(name=newname) 
+        except ObjectDoesNotExist as e:
+            new=Pack()
+            new.name=newname
+            new.save()
+        #copy items
+        content=""
+        if old==None:
+            content="old is None"
+        else:
+            for pi in old.packitem_set.all():
+                n=PackItem()
+                n.pack=new
+                n.item=pi.item
+                n.ct=pi.ct
+                n.save()
+            content="复制成功！"
+        res={"success":True, "message":content}
+        return HttpResponse(json.dumps(res, ensure_ascii=False))   
+    except ValueError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except django.db.utils.IntegrityError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))            
 def showcontact(request):
     #print request.GET
     contact_id=request.GET["id"]
