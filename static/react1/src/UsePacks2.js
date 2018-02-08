@@ -211,10 +211,11 @@ class UsePacks2 extends React.Component {
           renderSuggestion={(item) => (
             <span>{item.name}</span>
           )}
-        /></td><td><button  className="btn" onClick={this.bibei}>必备</button></td>
+        /></td>
+        <td><button  style={{margin:"10px 10px 10px 10px"}} className="btn" onClick={this.bibei}>必备</button></td>
         <td><button  className="btn btn-info" onClick={this.fujia}>附加</button></td>
-        </tr><tr></tr></tbody></table>
-      <div>新包名称：
+        </tr></tbody></table>
+      <div style={{margin:"10px 10px 10px 10px"}}>新包名称：
         <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-primary" id="id_new_usepack" onClick={this.new_pack}>新包</button>
       </div>
