@@ -1,6 +1,7 @@
 import React from 'react';
 import PackItems from "./PackItems";
 import {Modal} from "react-bootstrap";
+
 class PackEdit extends React.Component{
   state={ 
       showModal: false,

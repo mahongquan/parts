@@ -1275,13 +1275,18 @@ def readHtFile(fn,filename):
     try:
         document = Document(fn)
         yqxh=document.paragraphs[8].text
+        logging.info(yqxh)
         yqxh=yqxh.split("：")[1].strip()
         dt=document.paragraphs[10].text
         dt=dt.split("：")[1].strip()
-        [y,other]=dt.split("年")
-        [m,other]=other.split("月")
-        [d,other]=other.split("日")
-        dt=datetime.date(int(y),int(m),int(d))
+        if "年" in dt:
+            [y,other]=dt.split("年")
+            [m,other]=other.split("月")
+            [d,other]=other.split("日")
+            dt=datetime.date(int(y),int(m),int(d))
+        elif "-" in dt:
+            [y,m,d]=dt.split("-")
+            dt=datetime.date(int(y),int(m),int(d))
         mj=document.paragraphs[11].text
         mj=mj.split("：")[1].strip()
         zz=document.paragraphs[12].text
@@ -1298,10 +1303,12 @@ def readHtFile(fn,filename):
                 one.append(c.text)
             #print(one)
             data.append(one)
-        yiqi=data[1][1]#yiqixinghao ,channels
-        [xh,other]=yiqi.split(" ")
-        [zj,other]=other.split("（")
-        channels=other
+        # logging.info(data[1][1])//CS-2800型 碳硫分析仪主机（最多配置3个通道）
+
+        # yiqi=data[1][1]#yiqixinghao ,channels
+        # [xh,other]=yiqi.split(" ")
+        # [zj,other]=other.split("（")
+        channels=""
         contact=Contact()
         contact.yonghu=zz
         contact.yiqixinghao=yqxh
@@ -1310,6 +1317,8 @@ def readHtFile(fn,filename):
         contact.addr=""
         contact.yiqibh=filename
         contact.yujifahuo_date=dt+datetime.timedelta(30)
+        n=datetime.datetime.now()
+        contact.tiaoshi_date=datetime.date(n.year,n.month,n.day)
         contact.save()
         if len(data)==7:
             pass
@@ -1328,7 +1337,8 @@ def readHtFile(fn,filename):
             #print(one)
             data.append(one)
         for one in data[2:]:#选  购  件
-            print(one[1],one[0],one[2],one[4],one[5])
+            print(one)
+            #print(one[1],one[0],one[2],one[4],one[5])
             if one[0].strip()!="":
                 items=Item.objects.filter(bh=one[0]).all()
                 if len(items)>1:
@@ -1390,7 +1400,7 @@ def readHtFile(fn,filename):
         rec=contact
         output={"success":True,"message":"Created new User" +str(rec.id)}
         output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
-        return output
+        return  HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     except ValueError as e:
         info = sys.exc_info()
         message=""
@@ -1415,8 +1425,8 @@ def ht(request):
     logging.info(dir(f))
     filename = f.name
     filetype = f.content_type
-    output=readHtFile(f,filename)
-    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))           
+    return readHtFile(f,filename)
+    #return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))           
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
