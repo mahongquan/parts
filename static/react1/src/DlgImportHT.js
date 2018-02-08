@@ -50,7 +50,7 @@ class DlgImportHT extends React.Component{
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
         <td>{pack.id}</td>
-        <td>{pack.name}</td>
+        <td>{pack.yiqibh}</td>
       </tr>
     ));   
     let alert;
@@ -65,7 +65,7 @@ class DlgImportHT extends React.Component{
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>导入标样</Modal.Title>
+            <Modal.Title>导入合同</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           {alert}
