@@ -1,6 +1,6 @@
 console.log("load");
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('data.sqlite');
+var db = new sqlite3.Database('../data.sqlite');
 const path = require('path')
 const {shell} = require('electron');
 const fs = require('fs');
@@ -32,7 +32,7 @@ var socket={
         data.start=0
     if (url=="/folder"){
         console.log(data);
-        const modalPath = path.join(__dirname, '/media/仪器资料/'+data.yiqibh);
+        const modalPath = path.join(__dirname, '../../media/仪器资料/'+data.yiqibh);
           // Open a local file in the default app
         console.log(modalPath);
         console.log(shell);
