@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head><title>parts</title><meta charset="utf-8">
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./bootstrap.min.css">
+<link rel="stylesheet" href="./bootstrap-theme.min.css">
+<link rel="stylesheet" href="./react-datetime.css">
+<link rel="stylesheet" href="./auto.css">
+<style type="text/css">
+    #page{ 
+      padding: 5px 5px 5px 5px;
+    }
+    .custom-modal{width:800px;}
+    .chart rect {
+      fill: steelblue;
+    }
+
+    .chart text {
+      fill: white;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+  </style>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script  type="text/javascript" src="./react.min.js"></script>
+    <script  type="text/javascript" src="./react-dom.min.js"></script>
+    <script  type="text/javascript" src="./babel.min.js"></script>
+    <script  type="text/javascript" src="./react-bootstrap.min.js"></script>
+    <script  type="text/javascript" src="./invariant.js"></script>
+    <script  type="text/javascript" src="./immutablehelper.js"></script>
+    <script  type="text/javascript" src="./prop-types.js"></script>
+</head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="app"></div>
+    <script type="text/babel" src="./app_autocomplete.js">
+    </script>
+  </body>
+</html>

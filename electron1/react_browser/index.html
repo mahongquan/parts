@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head><title>parts</title><meta charset="utf-8">
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./bootstrap.min.css">
+<link rel="stylesheet" href="./bootstrap-theme.min.css">
+<link rel="stylesheet" href="./react-datetime.css">
+<link rel="stylesheet" href="./auto.css">
+<style type="text/css">
+    #page{ 
+      padding: 5px 5px 5px 5px;
+    }
+    .custom-modal{width:800px;}
+    .chart rect {
+      fill: steelblue;
+    }
+
+    .chart text {
+      fill: white;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+  </style>
+    <script  type="text/javascript" src="./react.min.js"></script>
+    <script  type="text/javascript" src="./react-dom.min.js"></script>
+    <script  type="text/javascript" src="./babel.min.js"></script>
+    <script  type="text/javascript" src="./react-bootstrap.min.js"></script>
+    <script  type="text/javascript" src="./moment.min.js"></script>
+    <script  type="text/javascript" src="./autosuggest.js"></script>
+    <script  type="text/javascript" src="./react-datetime.min.js"></script>
+<script  type="text/javascript" src="./locale/zh-cn.js"></script>    
+    <script  type="text/javascript" src="./invariant.js"></script>
+    <script  type="text/javascript" src="./immutablehelper.js"></script>
+    <script  type="text/javascript" src="./prop-types.js"></script>
+    <script  type="text/javascript" src="./Chart.js"></script>
+    <script  type="text/javascript" src="./lodash.js"></script>
+    <script  type="text/javascript" src="../db.js"></script>
+</head>
+  <body>
+<!--   <svg class="chart"></svg> -->
+<!--   <script type="text/javascript">
+        var data = [4, 8, 15, 16, 23, 42];
+
+        var width = 420,
+            barHeight = 20;
+
+        var x = d3.scaleLinear()
+            .domain([0, d3.max(data)])
+            .range([0, width]);
+
+        var chart = d3.select(".chart")
+            .attr("width", width)
+            .attr("height", barHeight * data.length);
+
+        var bar = chart.selectAll("g")
+            .data(data)
+          .enter().append("g")
+            .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+        bar.append("rect")
+            .attr("width", x)
+            .attr("height", barHeight - 1);
+
+        bar.append("text")
+            .attr("x", function(d) { return x(d) - 3; })
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em")
+            .text(function(d) { return d; });
+  </script> -->
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="app"></div>
+    <script type="text/babel" src="./app_parts.js">
+    </script>
+  </body>
+</html>
