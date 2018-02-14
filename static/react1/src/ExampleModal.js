@@ -1,22 +1,20 @@
 import React from 'react';
 import LoginFormComponent from "./LoginFormComponent";
 import {Modal} from "react-bootstrap";
-var createReactClass = require('create-react-class');
-const ExampleModal = createReactClass({
-  getInitialState() {
-    return { showModal: false };
-  },
 
-  close() {
+class DlgLogin extends React.Component {
+  state={ showModal: false }
+
+  close=()=> {
     this.setState({ showModal: false });
-  },
+  }
 
-  open() {
+  open=()=> {
     this.setState({ showModal: true });
-  },
-  onLoginSubmit (data)  {
+  }
+  onLoginSubmit=(data)=>  {
     this.props.onLoginSubmit(data);
-  },
+  }
   render() {
     return (
         <a onClick={this.open}>{this.props.title}
@@ -32,5 +30,5 @@ const ExampleModal = createReactClass({
         </a>
     );
   }
-});
-export default ExampleModal;
+}
+export default DlgLogin;

@@ -1,8 +1,7 @@
 import React from 'react';
 import {Alert, Modal} from "react-bootstrap";
 import Client from './Client';
-import update from 'immutability-helper';
-class DlgImport extends React.Component{
+class DlgImportHT extends React.Component{
   state={ 
       showModal: false,
       show:false,
@@ -21,24 +20,22 @@ class DlgImport extends React.Component{
     data1.append("file",file);
     //console.log(data1)
     var self=this;
-    Client.postForm("/rest/standard",data1,function(res){
-        if (res.result.length>0){
-          const newFoods = update(self.state.packs, {$unshift: res.result});
-          self.setState({packs: newFoods});
+    Client.postForm("/rest/ht",data1,function(res){
+        if (res.success){
+          self.props.parent.handleContactChange(null,res.data);
+          self.setState({showModal:false});
         }
-        self.setState({showalert:true,info:"导入了"+res.result.length+"个合同的标钢。"})
+        else{
+          self.setState({showalert:true,info:res.message})
+        }
     });
   }
   open=()=>{
-    var self=this;
+   var self=this;
    this.setState({ showModal: true,showalert:false });
-   var data= { limit:10,search:"xls"};
-   Client.get("/rest/Pack",data, function(result){
+   var data= { limit:10,search:"docx"};
+   Client.get("/rest/Contact",data, function(result){
        console.info(result);
-       // if (!result.success){
-       //    self.setState({error:result.message});
-       // }
-       // else
           self.setState({packs:result.data});
           console.log(result.data);
    })
@@ -53,7 +50,7 @@ class DlgImport extends React.Component{
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
         <td>{pack.id}</td>
-        <td>{pack.name}</td>
+        <td>{pack.yiqibh}</td>
       </tr>
     ));   
     let alert;
@@ -68,13 +65,13 @@ class DlgImport extends React.Component{
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>导入标样</Modal.Title>
+            <Modal.Title>导入合同</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           {alert}
           <form  ref="form1" encType="multipart/form-data">
           <input style={{margin:"10px 10px 10px 10px"}} 
-          id="file"  accept="application/vnd.ms-excel" 
+          id="file"  accept="application/vnd.ms-word" 
           type="file" name="file" 
           ref={(ref) => this.fileUpload = ref} 
           onChange={this.inputChange}>
@@ -94,4 +91,4 @@ class DlgImport extends React.Component{
     );
   }
 }
-export default DlgImport;
+export default DlgImportHT;

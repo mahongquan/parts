@@ -3,6 +3,7 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
+import Spinner from './react-spin';
 class DlgCopyPack  extends React.Component{
   state= { 
       showModal: false,
@@ -14,6 +15,7 @@ class DlgCopyPack  extends React.Component{
       auto_value: '',
       auto_items:[],
       auto_loading: false,
+      stopped:true,
   }
   newnameChange=(event)=>{
     this.setState({newname:event.target.value});
@@ -22,10 +24,12 @@ class DlgCopyPack  extends React.Component{
     console.log(this.src_id+" "+this.state.newname);
     var self=this;
     var data1=new FormData();
+    this.setState({stopped:false});
     data1.append("oldid",this.src_id);
     data1.append("newname",this.state.newname);
     Client.postForm("/rest/copypack/",data1,(result) => {
           self.setState({ error:result.message})
+          this.setState({stopped:true});
     });
   }
   onSuggestionsClearRequested=()=>{
@@ -64,7 +68,7 @@ class DlgCopyPack  extends React.Component{
     this.setState({ showModal: false });
   }
   open=()=>{
-   this.setState({ showModal: true });
+   this.setState({ showModal: true,stopped:true });
    this.src_id=null;
   }
     onChange=(event, { newValue })=>{
@@ -72,6 +76,34 @@ class DlgCopyPack  extends React.Component{
     this.setState({auto_value:newValue});
   }
   render=()=>{
+    const spinCfg = {
+      lines: 8, // The number of lines to draw
+      length: 5, // The length of each line
+      width: 30, // The line thickness
+      radius: 35, // The radius of the inner circle
+      scale: .25, // Scales overall size of the spinner
+      //corners: 1, // Corner roundness (0..1)
+      //color: '#ffffff', // CSS color or array of colors
+      //fadeColor: 'transparent', // CSS color or array of colors
+      // opacity: 0.25, // Opacity of the lines
+      // rotate: 0, // The rotation offset
+      // direction: 1, // 1: clockwise, -1: counterclockwise
+      // speed: 1, // Rounds per second
+      // trail: 60, // Afterglow percentage
+      // fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+      // zIndex: 2e9, // The z-index (defaults to 2000000000)
+       top: '85px', // Top position relative to parent
+       left: '100px', // Left position relative to parent
+       //position: 'realative' // Element positioning
+    };
+    let showbutton
+    if(this.state.stopped){
+      showbutton="block"
+    }
+    else{
+      showbutton="none"
+    }
+    console.log(this.state);
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
@@ -86,14 +118,14 @@ class DlgCopyPack  extends React.Component{
               </td>
               <td>
               <Autosuggest
-          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
-          onSuggestionSelected={this.auto_select}
-          onSuggestionsFetchRequested={this.auto_change}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={(item) => item.name}
-          ref="autocomplete"
-          suggestions={this.state.auto_items}
-          renderSuggestion={(item) => (
+                  inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+                  onSuggestionSelected={this.auto_select}
+                  onSuggestionsFetchRequested={this.auto_change}
+                  onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                  getSuggestionValue={(item) => item.name}
+                  ref="autocomplete"
+                  suggestions={this.state.auto_items}
+                  renderSuggestion={(item) => (
                     <span>{item.name}</span>
                   )}
                 />
@@ -105,9 +137,19 @@ class DlgCopyPack  extends React.Component{
                 <input id="nameto" type="text" onChange={this.newnameChange} size="15" value={this.state.newname} maxLength="30" />
               </td>
             </tr>
+            <tr>
+            <td>
+              <div>
+                
+                <button style={{display:showbutton}} onClick={this.copy_pack}>复制</button>
+                <Spinner config={spinCfg} stopped={this.state.stopped} />
+                
+              </div>
+            </td>
+            </tr>
             </tbody>
             </table>
-          <button onClick={this.copy_pack}>复制</button>
+          
           <p>{this.state.error}</p>
           </Modal.Body>
         </Modal>

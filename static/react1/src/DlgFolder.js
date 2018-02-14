@@ -1,19 +1,16 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-var createReactClass = require('create-react-class');
-const DlgFolder = createReactClass({
-  getInitialState() {
-    return { 
+class DlgFolder extends React.Component{
+  state= { 
       showModal: false,
       hiddenPacks:true,
       error:"",
-    };
-  },
+    }
 
-  close() {
+  close=()=> {
     this.setState({ showModal: false });
-  },
+  }
 
   open(contact_id) {
     var self=this;
@@ -27,7 +24,7 @@ const DlgFolder = createReactClass({
           self.close();
        }
    })
-  },
+  }
   render() {
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
@@ -40,5 +37,5 @@ const DlgFolder = createReactClass({
         </Modal>
     );
   }
-});
+}
 export default DlgFolder;

@@ -158,13 +158,14 @@ class PackItems extends React.Component {
           ref="autocomplete"
           suggestions={this.state.auto_items}
           renderSuggestion={(item) => (
-            <span>{item.bh+"_"+item.name+"_"+item.guige}</span>
+            <span>{item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
           )}
         /></td></tr></tbody></table>
       <p>新备件名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>
       </p>
+      <div style={{minHeight:"200px"}}></div>
       <PackItemEditNew ref="dlg" parent={this} />
       </div>
     );

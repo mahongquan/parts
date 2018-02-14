@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay,OverlayTrigger} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
-import ExampleModal from './ExampleModal';
+import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
+import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
@@ -242,6 +243,9 @@ class App extends Component {
   openDlgImport=()=>{
     this.refs.dlgimport.open();
   }
+  openDlgImportHT=()=>{
+    this.refs.dlgimportHT.open();
+  }
   onFilterDW =()=>{
         console.log("filter dw");
   }
@@ -254,11 +258,12 @@ class App extends Component {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
-        <td>{contact.hetongbh}</td>
+        
         <td>
           {contact.yonghu}
         </td>
         <td>{contact.addr}</td>
+        <td>{contact.hetongbh}</td>
         <td>
           <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
           <DropdownButton title="" id="id_dropdown3">
@@ -320,6 +325,7 @@ class App extends Component {
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
     <DlgImport ref="dlgimport" />
+    <DlgImportHT ref="dlgimportHT" parent={this} />
     <DlgCheck ref="dlgcheck" />
     <DlgFolder ref="dlgfolder" />
     <DlgWait ref="dlgwait" />
@@ -345,7 +351,7 @@ class App extends Component {
    <td>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
+          <DlgLogin onLoginSubmit={this.onLoginSubmit} title="登录" />
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
           <a onClick={this.handleLogout}>注销</a>
@@ -364,13 +370,16 @@ class App extends Component {
    <td>
    <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
   </td>
+  <td>
+   <button className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
+  </td>
   </tr>
   </tbody>
  </table>
-<table className="table-bordered"><thead><tr><th>ID</th><th>合同编号</th>
+<table className="table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
-<th>客户地址</th>
+<th>客户地址</th><th>合同编号</th>
 <th><span onClick={this.handleClickFilter}>仪器编号</span></th>
 <th>仪器型号</th><th>通道配置</th>
 <th>包箱<DropdownButton title={this.state.baoxiang} id="id_dropdown2">

@@ -14,4 +14,7 @@ def printAllContact():
     f=open("gen.docx","wb")
     f.write(data)
     f.close()
-printAllContact()    
+def main():
+	pass
+if __name__=="__main__":    
+	printAllContact()    
