@@ -68,7 +68,7 @@ class DlgCopyPack  extends React.Component{
     this.setState({ showModal: false });
   }
   open=()=>{
-   this.setState({ showModal: true,stopped:true });
+   this.setState({ showModal: true,stopped:true,error:"" ,auto_value:"",newname:""});
    this.src_id=null;
   }
     onChange=(event, { newValue })=>{
