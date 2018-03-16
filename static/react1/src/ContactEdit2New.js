@@ -430,7 +430,8 @@ class ContactEdit2New  extends Component{
                     } 
                     name="tiaoshi_date"  value={this.state.contact.tiaoshi_date} onChange={this.tiaoshi_date_change} />
                 </td>
-            </tr><tr>
+            </tr>
+            <tr>
                 <td>
                     <label>合同编号:</label>
                 </td>
@@ -448,7 +449,40 @@ class ContactEdit2New  extends Component{
                 //<button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></button>
                 }
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    电气:
+                </td>
+                <td>
+                    <input  style={{"backgroundColor":this.state.bg.dianqi}}
+                      type="text" name="dianqi" value={this.state.contact.dianqi}  
+                      onChange={this.handleChange} />
+                </td>
+                <td>
+                    机械:
+                </td>
+                <td>
+                <input  style={{"backgroundColor":this.state.bg.jixie}}  type="text"
+                name="jixie"
+                 value={this.state.contact.jixie} />
+                   </td>
             </tr>        
+            <tr>
+                <td>
+                    红外:
+                </td>
+                <td>
+                    <input  style={{"backgroundColor":this.state.bg.hongwai}}  type="text"  
+                    name="hongwai" value={this.state.contact.hongwai}  onChange={this.handleChange} />
+                </td>
+                <td>
+                    热导:
+                </td>
+                <td>
+                <input  style={{"backgroundColor":this.state.bg.redao}}  type="text"  name="redao" value={this.state.contact.redao} />
+                </td>
+            </tr>                
             </tbody>
             </table>
        <div> 

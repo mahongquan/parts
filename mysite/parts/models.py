@@ -30,6 +30,10 @@ class Contact(models.Model,myutil.MyModel):
     yujifahuo_date = models.DateField(verbose_name="预计发货时间")#预计发货时间
     tiaoshi_date = models.DateField(null=True,blank=True,verbose_name="调试时间",default=datetime.datetime.now)#预计发货时间
     hetongbh=models.CharField(max_length=30,verbose_name="合同编号")#合同编号
+    dianqi=models.CharField(max_length=30,verbose_name="电气")#合同编号
+    jixie=models.CharField(max_length=30,verbose_name="机械")#合同编号
+    hongwai=models.CharField(max_length=30,verbose_name="红外")#合同编号
+    redao=models.CharField(max_length=30,verbose_name="热导")#合同编号
     method=models.FileField(null=True,blank=True,verbose_name="方法")
     def tablerow(self):
         return "%s\t%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh,self.yujifahuo_date)

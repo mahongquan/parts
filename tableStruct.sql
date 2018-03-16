@@ -42,7 +42,11 @@ CREATE TABLE parts_contact (
     addr           VARCHAR( 30 ),
     channels       VARCHAR( 30 ),
     tiaoshi_date   DATE,
-    method         VARCHAR( 200 ) 
+    method         VARCHAR( 200 ),
+    dianqi         VARCHAR( 20 ),
+    jixie          VARCHAR( 30 ),
+    hongwai        VARCHAR( 20 ),
+    redao          VARCHAR( 20 ) 
 );
 
 
@@ -255,6 +259,17 @@ CREATE TABLE parts2_item (
 );
 
 
+-- Table: parts_usepack2
+CREATE TABLE parts_usepack2 ( 
+    id         INTEGER PRIMARY KEY AUTOINCREMENT
+                       NOT NULL,
+    contact_id INTEGER NOT NULL
+                       REFERENCES parts_contact ( id ),
+    pack_id    INTEGER NOT NULL
+                       REFERENCES parts2_pack 
+);
+
+
 -- Table: parts_usepack
 CREATE TABLE parts_usepack ( 
     id         INTEGER PRIMARY KEY AUTOINCREMENT
@@ -262,7 +277,7 @@ CREATE TABLE parts_usepack (
     contact_id INTEGER NOT NULL
                        REFERENCES parts_contact ( id ),
     pack_id    INTEGER NOT NULL
-                       REFERENCES parts2_pack 
+                       REFERENCES parts_pack ( id ) 
 );
 
 
@@ -356,12 +371,6 @@ CREATE INDEX pack_name ON parts_pack (
 );
 
 
--- Index: contact_bh
-CREATE INDEX contact_bh ON parts_contact ( 
-    hetongbh 
-);
-
-
 -- Index: parts_packitem_9391bab4
 CREATE INDEX parts_packitem_9391bab4 ON parts_packitem ( 
     pack_id 
@@ -375,13 +384,19 @@ CREATE INDEX parts_packitem_0a47aae8 ON parts_packitem (
 
 
 -- Index: parts_contactpack_816533ed
-CREATE INDEX parts_contactpack_816533ed ON parts_usepack ( 
+CREATE INDEX parts_contactpack_816533ed ON parts_usepack2 ( 
     contact_id 
 );
 
 
 -- Index: parts_contactpack_9391bab4
-CREATE INDEX parts_contactpack_9391bab4 ON parts_usepack ( 
+CREATE INDEX parts_contactpack_9391bab4 ON parts_usepack2 ( 
     pack_id 
+);
+
+
+-- Index: contact_bh
+CREATE INDEX contact_bh ON parts_contact ( 
+    hetongbh 
 );
 
