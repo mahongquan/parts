@@ -1,8 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -29,15 +26,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var loadScript = require('load-script');
 
 var defaultScriptUrl = "/static/ckeditor/ckeditor.js";
-
 /**
  * @author codeslayer1
  * @description CKEditor component to render a CKEditor textarea with defined configs and all CKEditor events handler
  */
-
 var CKEditor = function (_React$Component) {
   _inherits(CKEditor, _React$Component);
-
   function CKEditor(props) {
     _classCallCheck(this, CKEditor);
 
@@ -86,7 +80,10 @@ var CKEditor = function (_React$Component) {
       }
 
       this.editorInstance = window.CKEDITOR.appendTo(_reactDom2.default.findDOMNode(this), this.state.config, this.props.content);
-
+      this.editorInstance.on("change", function () {
+        let data = this.editorInstance.getData();
+        this.props.onChange(data);
+      }.bind(this));
       //Register listener for custom events if any
       for (var event in this.props.events) {
         var eventHandler = this.props.events[event];
@@ -122,4 +119,4 @@ CKEditor.propTypes = {
   events: _propTypes2.default.object
 };
 
-exports.default = CKEditor;
+export default  CKEditor;

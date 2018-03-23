@@ -6,7 +6,8 @@ import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
-import CKEditor from './ckeditor.js'
+//import CKEditor from './ckeditor.js'
+import CKEditor from './ck2'
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
@@ -125,8 +126,13 @@ class ContactEdit2New  extends Component{
      this.setState({hiddenPacks:true});
   }
   handleSave=(data)=>{
+    console.log(this.refs.ck1);
+    var detailV=this.refs.ck1.getdata();
+    //const contact2=update(this.state.contact,{[detail]: {$set:detailV}});
+    var con2=this.state.contact;
+    con2.detail=detailV;
     var url="/rest/Contact";
-    Client.postOrPut(url,this.state.contact,(res) => {
+    Client.postOrPut(url,con2,(res) => {
       if(res.success){
         this.setState({contact:res.data});
         //console.log("after save======================")
@@ -501,9 +507,9 @@ class ContactEdit2New  extends Component{
                     备注:
                 </td>
                 <td  colSpan="3">
-                    <CKEditor  style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
-                    content={this.state.contact.detail}
-                    name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
+                    <CKEditor  ref="ck1" style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
+                    value={this.state.contact.detail}
+                    id="detail" name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
                     </CKEditor>
                 </td>
             </tr>                
