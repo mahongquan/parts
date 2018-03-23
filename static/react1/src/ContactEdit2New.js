@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
+import {Button, Modal,Well,Collapse} from "react-bootstrap";
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -15,6 +15,7 @@ var DateTime=require('react-datetime');
 
 class ContactEdit2New  extends Component{
   state={ 
+      openCollapse:false,
       showModal: false,
       contact:{
         yujifahuo_date:moment(),
@@ -469,6 +470,7 @@ class ContactEdit2New  extends Component{
                 }
                 </td>
             </tr>
+
             <tr>
                 <td>
                     电气:
@@ -508,11 +510,12 @@ class ContactEdit2New  extends Component{
                 </td>
                 <td  colSpan="3">
                     <CKEditor  ref="ck1" style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
-                    value={this.state.contact.detail}
-                    id="detail" name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
+                      value={this.state.contact.detail}
+                      id="detail" name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
                     </CKEditor>
                 </td>
-            </tr>                
+            </tr>   
+        
             </tbody>
             </table>
        <div> 
@@ -522,6 +525,7 @@ class ContactEdit2New  extends Component{
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
           <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
         </div>
+        
         <div style={{minHeight:"200px"}}></div>
                 </Modal.Body>
         </Modal>
