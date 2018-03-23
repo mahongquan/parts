@@ -6,10 +6,12 @@ import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
+import CKEditor from './ckeditor.js'
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
+
 class ContactEdit2New  extends Component{
   state={ 
       showModal: false,
@@ -20,6 +22,9 @@ class ContactEdit2New  extends Component{
       hiddenPacks:true,
       bg:{},
       date_open:false,
+  }
+  componentDidMount=()=>{
+    console.log("ContactEdit2New mounted");
   }
 
   close=()=>{
@@ -74,6 +79,11 @@ class ContactEdit2New  extends Component{
       this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
+    this.old.dianqi=this.old.dianqi || "";
+    this.old.jixie=this.old.jixie || "";
+    this.old.redao=this.old.redao || "";
+    this.old.hongwai=this.old.hongwai || "";
+
     this.setState({contact:this.old});
   }
   // open=()=>{
@@ -271,6 +281,9 @@ class ContactEdit2New  extends Component{
   }
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
+  }
+  detailchange=()=>{
+
   }
   render=()=>{
     // var o=[
@@ -481,6 +494,17 @@ class ContactEdit2New  extends Component{
                 </td>
                 <td>
                 <input  style={{"backgroundColor":this.state.bg.redao}}  type="text"  name="redao" value={this.state.contact.redao} />
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    备注:
+                </td>
+                <td  colSpan="3">
+                    <CKEditor  style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
+                    content={this.state.contact.detail}
+                    name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
+                    </CKEditor>
                 </td>
             </tr>                
             </tbody>
