@@ -3,7 +3,7 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
-import Spinner from './react-spin';
+//import Spinner from './react-spin';
 class DlgCopyPack  extends React.Component{
   state= { 
       showModal: false,
@@ -142,7 +142,9 @@ class DlgCopyPack  extends React.Component{
               <div>
                 
                 <button style={{display:showbutton}} onClick={this.copy_pack}>复制</button>
-                <Spinner config={spinCfg} stopped={this.state.stopped} />
+                {
+                //<Spinner config={spinCfg} stopped={this.state.stopped} />
+                }
                 
               </div>
             </td>

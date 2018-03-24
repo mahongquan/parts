@@ -94,12 +94,12 @@ def setupBrowser(usefirefox):
 		# profile.set_preference("network.http.pipelining", True);
 		# profile.set_preference("network.http.proxy.pipelining", True);
 		# profile.set_preference("network.http.pipelining.maxrequests", 32);
-
+		print(dir(profile))
 		profile.set_preference("browser.download.folderList",2);
 		profile.set_preference("browser.download.manager.showWhenStarting",	False);
 		profile.set_preference("browser.download.dir","~/Downloads");
 		profile.set_preference("browser.helperApps.neverAsk.saveToDisk","application/octet-stream,application/pdf,text/csv")
-		browser = webdriver.Firefox(profile)
+		browser = webdriver.Firefox(profile,r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe")
 		return browser
 	else:
 		browser = webdriver.Ie()#PhantomJS()#Ie()#Chrome()#Ie()#PhantomJS()
@@ -132,8 +132,7 @@ $(m0).trigger("mouseenter");
 		# items[1].click()
 		# search.find_element_by_class_name('search_input').send_keys(title)
 		# search.find_element_by_class_name('search_btn').click()
-		# pass
-
+		pass
 	return frame
 def newTodo():
 	menuUL=mywait_id("menuUL")
