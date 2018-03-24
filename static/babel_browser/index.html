@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+ <html lang=en> 
+<head>  
+<meta charset=utf-8> <meta http-equiv=X-UA-Compatible content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>装箱单</title>  
+<link type="text/css" rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css" />
+<script type="text/javascript"  src="/static/jquery-3.3.1.js"></script>
+<script type="text/javascript"  src="/static/popper.js"></script>
+<script type="text/javascript"  src="/static/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/static/babel_browser/babel.min.js"></script>
+<script src="/static/ckeditor/ckeditor.js"></script>
+</head>
+<body>
+ <div class="container table-responsive">
+          <table id="table_input" class="table-condensed" >
+<tr >
+                <td >
+                    ID:
+                </td>
+                <td >
+                    <input type="text" id="id" name="id" readonly="true"  disabled="disabled"    value="<%- id %>">
+                </td>
+        <!--     </tr><tr> -->
+                <td>
+                    <label>用户单位:</label>
+                </td>
+                <td>
+                    <input type="text" id="yonghu" name="yonghu" value="<%- yonghu %>">
+                </td>
+            </tr><tr>
+                <td>
+                    客户地址:
+                </td>
+                <td>
+                    <input type="text" id="addr" name="addr" value="<%- addr %>">
+                </td>
+       <!--      </tr><tr> -->
+                <td>
+                    通道配置:
+                </td>
+                <td>
+                    <input type="text" id="channels"  value="<%- channels %>" data-provide="typeahead" data-items="4" />  
+                </td>
+            </tr><tr>
+                <td>
+                    <label>仪器型号:</label>
+                </td>
+                <td>
+                <input type="text" id="yiqixinghao"  value="<%- yiqixinghao %>" data-provide="typeahead" data-items="3" />  
+                </td>
+  <!--           </tr><tr> -->
+                <td>
+                    <label>仪器编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="yiqibh" name="yiqibh" value="<%- yiqibh %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>包箱:</label>
+                </td>
+                <td>
+                    <input type="text" id="baoxiang" name="baoxiang" value="<%- baoxiang %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    审核:
+                </td>
+                <td>
+                    <input type="text" id="shenhe" name="shenhe" value="<%- shenhe %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>入库时间:</label>
+                </td>
+                <td>
+                    <input type="text" class="mydate" id="yujifahuo_date" name="yujifahuo_date" value="<%- yujifahuo_date %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    调试时间:
+                </td>
+                <td>
+                    <input type="text" class="mydate" id="tiaoshi_date" name="tiaoshi_date" value="<%- tiaoshi_date %>">
+                </td>
+            </tr><tr>
+                <td>
+                    <label>合同编号:</label>
+                </td>
+                <td>
+                    <input type="text" id="hetongbh" name="hetongbh" value="<%- hetongbh %>">
+                </td>
+<!--             </tr><tr> -->
+                <td>
+                    方法:
+                </td>
+                <td>
+                <input type="text" id="method" name="method" readonly="true" value="<%- method %>">
+                <button class="btn" id="bt_file">
+                  <span class="fa fa-pencil" aria-hidden="true"></span>
+                </button>
+                <button class="btn" id="bt_removefile">
+                <span class="fa fa-remove" aria-hidden="true"></span>
+                </button>
+                </td>
+            </tr>    
+            <tr>
+              <td>备注</td>
+              <td colspan="3">
+                <textarea  id="detail" name="detail" rows="5"><%- detail %>
+                </textarea>
+              </td>
+            </tr>    
+          </table>
+       <div align="left"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button></div>
+  </div>
+ <script type="text/babel">
+  const queryString={stringify:function(data){
+        console.log(data);
+        var res=""
+        for(var i  in data){
+          res =res+i+"="+data[i]+"&"
+        }
+        if(res.length>0){
+            res=res.substring(0,res.length-1);
+        }
+        console.log(res);
+        return res;
+    }
+  }
+  function myFetch(method,url,body,cb,headers2) {
+  let data;
+  let headers;
+  if (headers2)
+  {
+    headers=headers2;
+  }
+  else{
+   headers=  {'Content-Type':'application/json'}
+  }
+  if(method==="GET")
+  {
+    data={
+      method: method,
+      credentials: 'include',
+      headers: headers,
+    }
+  }
+  else{
+    data={
+      method: method,
+      credentials: 'include',
+      headers: headers,
+      body: body
+    }
+  }
+  return fetch(url,data
+  ).then(checkStatus)
+    .then(parseJSON)
+    .then(cb).catch((error) => {
+      //console.log(error)
+      alert(error+"\n请刷新网页/登录");
+    });
+}
+function getRaw(url,cb) {
+  return myFetch("GET",url,undefined,cb)
+}
+function get(url,data,cb) {
+  url=url+"?"+queryString.stringify(data)
+  //console.log(url);
+  return getRaw(url,cb)
+}
+function delete1(url,data,cb) {
+  var method="DELETE";
+  return myFetch(method,url,JSON.stringify(data),cb)
+}
+function post(url,data,cb) {
+  var method="POST"
+  return myFetch(method,url,JSON.stringify(data),cb)
+}
+function postOrPut(url,data,cb) {
+  var method="POST"
+  if (data.id){
+    method="PUT"
+  }
+  return myFetch(method,url,JSON.stringify(data),cb)
+}
+function postForm(url,data,cb) {
+  var method="POST"
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      body: data
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb).catch((error) => {
+      //console.log(error)
+      alert(error+"\n请刷新网页/登录");
+    });
+}
+function contacts(data, cb) {
+  //console.log(data);
+  return get("/rest/Contact",data,cb)
+}
+function UsePacks(query, cb) {
+  var data={contact:query}
+  return get("/rest/UsePack",data,cb)
+}
+function PackItems(query, cb) {
+  var data={pack:query}
+  return get("/rest/PackItem",data,cb)
+}
+function items(query, cb) {
+  var data={search:query}
+  return get("/rest/Item",data,cb)
+}
+function login_index( cb) {
+  return get("/rest/login",undefined,cb) 
+}
+function logout( cb) {
+ return get("/rest/logout",undefined,cb) 
+}
+
+function login(username,password,cb) {//post form
+  var payload = {
+    username: username,
+    password: password,
+  };
+  var body= queryString.stringify( payload )
+  return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
+}
+
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+  const error = new Error(`HTTP Error ${response.statusText}`);
+  error.status = response.statusText;
+  error.response = response;
+  // console.log(error); // eslint-disable-line no-console
+  //alert("请刷新网页")
+  throw error;
+}
+
+function parseJSON(response) {
+  //console.log("parse");
+  //window.response=response;
+  //for var i in response.headers.entries();
+  //console.log(response);
+  // console.log(response.headers.get("content-type"));
+  // if(response.headers.get("content-type")==="text/html; charset=utf-8")
+  // {
+  //   const error = new Error("无效响应");
+  //   //alert("\n请登录")
+  //   throw error;
+  // }
+  // else{
+    var r= response.json();
+    return r;
+  //}
+}
+const Client = {getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
+class Me{
+  constructor(){
+    this.editor1=CKEDITOR.replace( 'detail' );
+    this.load();
+    $("#bt_save").bind("click",()=>{
+      this.save();
+    });
+  }
+  load=()=>{
+    Client.contacts({limit:1},(res)=>{
+      this.contact=res.data[0];
+      this.setdata();  
+      //console.log($("#id"));
+    })
+  }
+  setdata=()=>{
+    console.log("setdata");
+    console.log(this.contact);
+    $("#id").val(this.contact.id);
+    //$("#detail").val(this.contact.detail);
+    this.editor1.setData(this.contact.detail);
+  }
+  save=()=>{
+    console.log("save");
+    this.contact.detail=this.editor1.getData();
+    console.log(this.contact.detail)
+    Client.postOrPut('/rest/Contact',this.contact,(res)=>{
+      console.log(res);
+      this.contact=res.data;
+      this.setdata(res.data)
+    });//url,data,cb
+  }
+} 
+console.log(Me);
+var me=new Me();
+</script>
+
+</body>
+</html>
