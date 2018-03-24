@@ -77,8 +77,10 @@ class App extends Component {
           start:this.mystate.start
         });
       },(error)=>{
-          //console.log(error);
-          this.openDlgLogin();
+          console.log(typeof(error));
+          if(error instanceof SyntaxError){
+            this.openDlgLogin();
+          }
       }
      );
   };
