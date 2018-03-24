@@ -427,7 +427,7 @@ def create_contact(request):
             rec.tiaoshi_date=dt.date()
         rec.save()
         output={"success":True,"message":"Created new User" +str(rec.id)}
-        output["data"]={"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
+        output["data"]=rec.json()#{"id":rec.id,"shenhe":rec.shenhe,"hetongbh":rec.hetongbh,"yiqibh":rec.yiqibh,"yiqixinghao":rec.yiqixinghao,"yujifahuo_date":rec.yujifahuo_date,"yonghu":rec.yonghu,"baoxiang":rec.baoxiang,"addr":rec.addr,"channels":rec.channels,"tiaoshi_date":rec.tiaoshi_date}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     except ValueError as e:
         info = sys.exc_info()

@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
+import {Button, Modal,Well,Collapse} from "react-bootstrap";
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
+//import CKEditor from './ckeditor.js'
+import CKEditor from './ck2'
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
+
 class ContactEdit2New  extends Component{
   state={ 
+      openCollapse:false,
       showModal: false,
       contact:{
         yujifahuo_date:moment(),
@@ -20,6 +24,9 @@ class ContactEdit2New  extends Component{
       hiddenPacks:true,
       bg:{},
       date_open:false,
+  }
+  componentDidMount=()=>{
+    console.log("ContactEdit2New mounted");
   }
 
   close=()=>{
@@ -74,6 +81,11 @@ class ContactEdit2New  extends Component{
       this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
+    this.old.dianqi=this.old.dianqi || "";
+    this.old.jixie=this.old.jixie || "";
+    this.old.redao=this.old.redao || "";
+    this.old.hongwai=this.old.hongwai || "";
+
     this.setState({contact:this.old});
   }
   // open=()=>{
@@ -115,8 +127,13 @@ class ContactEdit2New  extends Component{
      this.setState({hiddenPacks:true});
   }
   handleSave=(data)=>{
+    console.log(this.refs.ck1);
+    var detailV=this.refs.ck1.getdata();
+    //const contact2=update(this.state.contact,{[detail]: {$set:detailV}});
+    var con2=this.state.contact;
+    con2.detail=detailV;
     var url="/rest/Contact";
-    Client.postOrPut(url,this.state.contact,(res) => {
+    Client.postOrPut(url,con2,(res) => {
       if(res.success){
         this.setState({contact:res.data});
         //console.log("after save======================")
@@ -271,6 +288,9 @@ class ContactEdit2New  extends Component{
   }
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
+  }
+  detailchange=()=>{
+
   }
   render=()=>{
     // var o=[
@@ -450,6 +470,7 @@ class ContactEdit2New  extends Component{
                 }
                 </td>
             </tr>
+
             <tr>
                 <td>
                     电气:
@@ -482,7 +503,19 @@ class ContactEdit2New  extends Component{
                 <td>
                 <input  style={{"backgroundColor":this.state.bg.redao}}  type="text"  name="redao" value={this.state.contact.redao} />
                 </td>
-            </tr>                
+            </tr>   
+            <tr>
+                <td>
+                    备注:
+                </td>
+                <td  colSpan="3">
+                    <CKEditor  ref="ck1" style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
+                      value={this.state.contact.detail}
+                      id="detail" name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
+                    </CKEditor>
+                </td>
+            </tr>   
+        
             </tbody>
             </table>
        <div> 
@@ -492,6 +525,7 @@ class ContactEdit2New  extends Component{
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
           <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
         </div>
+        
         <div style={{minHeight:"200px"}}></div>
                 </Modal.Body>
         </Modal>

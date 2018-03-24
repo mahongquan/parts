@@ -316,6 +316,7 @@ function delCookie(name)//删除cookie
       this.$("#yiqixinghao").typeahead({
         //appendTo:this.$el[0].parent,
         source: availableTags});
+
       return this;
     },
   });
@@ -401,6 +402,7 @@ function delCookie(name)//删除cookie
         //console.log(arguments)
         var editview= new ContactEditView2({model: this.model});
         editview.showdialog();
+
         // App.editview.model=this.model;
         //App.$("#section_edit").show();
     },
@@ -453,6 +455,9 @@ function delCookie(name)//删除cookie
     },
     showdialog:function(){
       this.render();//must call because editview has no element now;
+      var editor=CKEDITOR.replace( 'editor1' );
+      console.log(editor);
+      
       var self=this;
       console.log("showdialog ");
         

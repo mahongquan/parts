@@ -5,6 +5,7 @@
   <script src="/static/backbone_parts/json2.js"></script>
   <script src="/static/backbone_parts/underscore.js"></script>
   <script src="/static/backbone_parts/backbone.js"></script>
+   <script src="/static/ckeditor/ckeditor.js"></script>
   <script type="text/javascript">
     var user="{{ user }}";var csrf_token="{{ csrf_token }}";
     var host="";
@@ -38,6 +39,28 @@
     thead tr{ font-weight:bold;}
     .table_input{background-color:green;}
     .newClass { background-color:#8888ff;}
+    /* Style a bit the inline editables. */
+.cke_editable.cke_editable_inline
+{
+  cursor: pointer;
+}
+
+/* Once an editable element gets focused, the "cke_focus" class is
+   added to it, so we can style it differently. */
+.cke_editable.cke_editable_inline.cke_focus
+{
+  box-shadow: inset 0px 0px 20px 3px #ddd, inset 0 0 1px #000;
+  outline: none;
+  background: #eee;
+  cursor: text;
+}
+
+/* Avoid pre-formatted overflows inline editable. */
+.cke_editable_inline pre
+{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
   </style>
 {% endblock %} 
 {% block content %}
@@ -253,7 +276,15 @@
                 <span class="fa fa-remove" aria-hidden="true"></span>
                 </button>
                 </td>
-            </tr>        </table>
+            </tr>    
+            <tr>
+              <td>备注</td>
+              <td colspan="3">
+                <textarea  id="editor1" name="editor1" rows="5"><%- detail %>
+                </textarea>
+              </td>
+            </tr>    
+          </table>
        <div align="left"> <button class="btn btn-primary" id="bt_save">保存</button> <button  id="bt_clear">清除</button> <button  id="bt_clearid">复制</button></div>
         <div id="id_usepacks"></div>
   </script>

@@ -1,318 +1,49 @@
-{% extends "base.html" %}
-{% block extrahead %}
+<!DOCTYPE html>
+ <html lang=en> 
+<head>  
+<meta charset=utf-8> <meta http-equiv=X-UA-Compatible content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>装箱单</title>  
+<link type="text/css" rel="stylesheet" href="/static/bootstrap-4.0.0/dist/css/bootstrap.css" />
+<script type="text/javascript"  src="/static/jquery-3.3.1.js"></script>
+<script type="text/javascript"  src="/static/popper.js"></script>
+<script type="text/javascript"  src="/static/bootstrap-4.0.0/dist/js/bootstrap.js"></script>
+<script src="/static/babel_browser/babel.min.js"></script>
+</head>
+<body>
+ <div class="container table-responsive">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/rest/backbone">装箱单</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/parts/items/">备件 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/parts/copypack/">复制包 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/static/react1/build/index.html">new<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <style type="text/css">
     .item_delete{margin:1px 20px 1px 20px;}
 </style>
-<script src="/static/react-15.1.0/build/react.js"></script>
-<script src="/static/react-15.1.0/build/react-dom.js"></script>
-<script src="/static/react-15.1.0/babel-core_5.8.23_browser.min.js"></script>
 <script type="text/babel">
-var myglobal={start:0,limit:5,total:0};
-var ItemBox = React.createClass({
-  handleItemEdit:function(data){
-    console.log(data);
-    this.itemform.setState(data);
-  },
-  handleItemDelete:function(data_out){
-    console.log("item_delete in box");
-    console.log(data_out);
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      contentType: "application/json",
-      type: 'DELETE',
-      data: JSON.stringify(data_out),//item,
-      success: function(data) {
-        console.log("handleItemDelete");
-        console.log(data);
-        var id=data_out.id;
-        var data0=this.state.data;
-        var at=-1;
-        for(var i in data0){
-          if(data0[i].id==id)
-          {
-            at=i;
-          }
-        } 
-        data0.splice(at,1);
-        this.setState({data:data0});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handleItemSubmit: function(item) {
-    console.log("submit");
-    console.log(item);
-    if (item.id!=undefined)
-    {
-      $.ajax({
-        url: this.props.url,
-        dataType: 'json',
-        contentType: "application/json",
-        type: 'PUT',
-        data: JSON.stringify(item),//item,
-        success: function(data) {
-          console.log("handleItemSubmit");
-          console.log(data);
-          //this.setState({data: data.data});
-          var data0=this.state.data;
-          data0.push(data.data);
-          this.setState({data:data0});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
-      return;
-    }
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      contentType: "application/json",
-      type: 'POST',
-      data: JSON.stringify(item),//item,
-      success: function(data) {
-        console.log("handleItemSubmit");
-        console.log(data);
-        //this.setState({data: data.data});
-        var data0=this.state.data;
-        data0.push(data.data);
-        this.setState({data:data0});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function() {
-    return {data: [],search:""};
-  },
-  componentDidMount: function() {
-    console.log("did mount");
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      data:{start:myglobal.start,limit:myglobal.limit,query:this.state.search},
-      success: function(data) {
-        console.log(data);
-        myglobal.total=data.total;
-        this.setState({data: data.data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handlePrev:function(){
-    console.log("prev");
-     myglobal.start=myglobal.start-myglobal.limit;
-     if( myglobal.start<0 ) {myglobal.start=0;}
-     this.componentDidMount();
-  },
-  handleNext:function(){
-    console.log("next");
-    myglobal.start=myglobal.start+myglobal.limit;
-    if(myglobal.start>myglobal.total-myglobal.limit) myglobal.start=myglobal.total-myglobal.limit;
-    this.componentDidMount();    
-  },
-  handleSearch:function(){
-    myglobal.start=0;
-    this.componentDidMount();    
-  },
-  handleSearchChange:function(e){
-     this.setState({search: e.target.value});
-  },
-  render: function() {
-    return (
-      <div className="itemBox">
-        <h4>备件</h4>
-        <p>
-          <input type="text" id="id_input_search"  placeholder="编号 or 名称" value={this.state.search} onChange={this.handleSearchChange}></input>
-          <button id="id_bt_search" onClick={this.handleSearch}>search</button>
-        </p>
-        <ItemList data={this.state.data} onItemDelete={this.handleItemDelete} onItemEdit={this.handleItemEdit}/>
-        <p>
-          <button onClick={this.handlePrev}>前一页</button><button  onClick={this.handleNext}>后一页</button>
-        </p>
-        <ItemForm onItemSubmit={this.handleItemSubmit} ref={ function(ref){this.itemform = ref;}.bind(this) }/>
-      </div>
-    );
-  }
-});
+class Me{
+  constructor(){
 
-var ItemList = React.createClass({
-  handleItemDelete:function(data){
-    console.log("item delete in list");
-    console.log(data);
-    this.props.onItemDelete(data);
-  },
-  handleItemEdit:function(data){
-    console.log(data);
-    this.props.onItemEdit(data);
-  },
-  render: function() {
-    console.log(this.props.data);
-    var itemNodes =null;
-    var self=this;
-    if (this.props.data==undefined){
+  }
 
-    }
-    else{
-      itemNodes = this.props.data.map(function(item) {
-        return (
-          <Item id={item.id} name={item.name} guige={item.guige} key={item.id} bh={item.bh} danwei={item.danwei} onItemDelete={self.handleItemDelete} onItemEdit={self.handleItemEdit}>
-          </Item>
-        );
-      });
-    }
-    return (
-      <table className="itemList table-bordered"><tbody>
-      <tr><td>id</td><td>编号</td><td><h5>名称</h5></td><td><h5>规格</h5></td><td>单位</td><td>actions</td></tr>
-        {itemNodes}
-      </tbody>
-      </table>
-    );
-  }
-});
-
-var ItemForm = React.createClass({
-  getInitialState: function() {
-    return {id:undefined,name: '', guige: '',bh:'',danwei:''};
-  },
-  handleNameChange: function(e) {
-    this.setState({name: e.target.value});
-  },
-  handleTextChange: function(e) {
-    this.setState({guige: e.target.value});
-  },
-  handleBhChange: function(e) {
-    this.setState({bh: e.target.value});
-  },
-  handleDanweiChange: function(e) {
-    this.setState({danwei: e.target.value});
-  },
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var name = this.state.name.trim();
-    var guige = this.state.guige.trim();
-    var bh=this.state.bh.trim();
-    var danwei=this.state.danwei.trim();
-    if (!guige || !name) {
-      return;
-    }
-   this.props.onItemSubmit({id:this.state.id,name: name, guige: guige,bh:bh,danwei:danwei});
-   this.setState({id:undefined,name: '', guige: '',bh:'',danwei:''});
-  },
-  render: function() {
-    return (
-      <form className="itemForm" onSubmit={this.handleSubmit}>
-      <table><tbody>
-      <tr>
-              <td>id</td>
-              <td>
-                <input
-                  type="text"
-                  readOnly="true"
-                  placeholder="id"
-                  value={this.state.id}
-                ></input>
-                </td>
-       </tr>
-      <tr>
-              <td>bh</td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="bh"
-                  value={this.state.bh}
-                  onChange={this.handleBhChange}
-                ></input>
-                </td>
-       </tr>
-      <tr>
-                <td>name</td>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="name"
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                  ></input>
-                  </td>
-        </tr>
-        <tr>
-                  <td>guige</td>
-                  <td>
-                  <input
-                    type="text"
-                    placeholder="Say something..."
-                    value={this.state.guige}
-                    onChange={this.handleTextChange}
-                  ></input>
-                  </td>
-        </tr>
-        <tr>
-                <td>danwei</td>
-                <td>
-                <input
-                  type="text"
-                  placeholder="Say something..."
-                  value={this.state.danwei}
-                  onChange={this.handleDanweiChange}
-                ></input>
-                </td>
-        </tr>
-        </tbody></table>
-        <input type="submit" value="save" />
-      </form>
-    );
-  }
-});
-var Item = React.createClass({
-  rawMarkup: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
-  },
-  handleDelete:function(){
-    console.log("delete");
-    for(var i in this.props){
-      console.log(i);
-    }
-    this.props.onItemDelete({id: this.props.id});
-  },
-  handleEdit:function(){
-    console.log("edit");
-    console.log("delete");
-    for(var i in this.props){
-      console.log(i);
-    }
-    this.props.onItemEdit({id:this.props.id,name: this.props.name, guige: this.props.guige,bh:this.props.bh,danwei:this.props.danwei});
-  },
-  render: function() {
-    return (
-      <tr className="item">
-        <td>{this.props.id}</td>
-        <td>{this.props.bh}</td>
-        <td className="itemName">
-          {this.props.name}
-        </td>
-        <td>{this.props.guige}</td>
-        <td>{this.props.danwei}</td>
-        <td><a className="item_edit" onClick={this.handleEdit}>edit</a><a className="item_delete" onClick={this.handleDelete} data="<%- id %>">delete</a>
-        </td>
-      </tr>
-    );
-  }
-});
-ReactDOM.render(
-  <ItemBox url="/rest/Item" />,
-  document.getElementById('content')
-);    
+} 
+console.log(Me);
 </script>
-{% endblock %}
-{% block content %}
-  <div id="content"></div>
-{% endblock %}
+ </div>
+</body>
+</html>
