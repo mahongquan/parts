@@ -1,28 +1,9 @@
 import React from 'react';
 import Client from './Client';
-//import Autocomplete from './Autocomplete'
-var createReactClass = require('create-react-class');
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
+import Autosuggest from 'react-autosuggest';
 
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
-
-const CopyPack = createReactClass({
-  getInitialState() {
-    return { 
+class CopyPack  extends React.Component{
+  state= { 
       showModal: false,
       error:"",
       lbls:[],
@@ -32,12 +13,11 @@ const CopyPack = createReactClass({
       auto_value: '',
       auto_items:[],
       auto_loading: false,
-    };
-  },
-  newnameChange(event){
+    }
+  newnameChange=(event)=>{
     this.setState({newname:event.target.value});
-  },
-  copy_pack(){
+  }
+  copy_pack=()=>{
     console.log(this.src_id+" "+this.state.newname);
     var self=this;
     var data1=new FormData();
@@ -46,35 +26,32 @@ const CopyPack = createReactClass({
     Client.postForm("/rest/copypack/",data1,(result) => {
           self.setState({ error:result.message})
     });
-  },
-  auto_change(event, value){
+  }
+  auto_change=(data)=>{
+    var value=data.value;
     console.log("auto_change");
     if (value.length>1)
     {
-      this.setState({ auto_value:value, auto_loading: true });
       Client.get("/rest/Pack",{search:value} ,(items) => {
           this.setState({ auto_items: items.data, auto_loading: false })
       });
     }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
-  },
-  auto_select(value, item)  {
+  }
+  auto_select=(value, item)=>{
       console.log("selected");
       console.log(item);
       //todo this.addrow(item.id);
       this.src_id=item.id;
       this.setState({auto_value:value, auto_items: [ item ] })
-  },
-  close() {
+  }
+  close=()=>{
     this.setState({ showModal: false });
-  },
-  open() {
+  }
+  open=()=>{
    this.setState({ showModal: true });
    this.src_id=null;
-  },
-  render() {
+  }
+  render=()=>{
     return (
           <div>
             <table>
@@ -84,24 +61,18 @@ const CopyPack = createReactClass({
                 <label>包名称:</label>
               </td>
               <td>
-              {
-                // <Autocomplete
-                //   inputProps={{ id: 'states-autocomplete' }}
-                //   ref="autocomplete"
-                //   value={this.state.auto_value}
-                //   items={this.state.auto_items}
-                //   getItemValue={(item) => item.name}
-                //   onSelect={this.auto_select}
-                //   onChange={this.auto_change}
-                //   renderItem={(item, isHighlighted) => (
-                //     <div
-                //       style={isHighlighted ? styles.highlightedItem : styles.item}
-                //       key={item.id}
-                //       id={item.id}
-                //     >{item.name}</div>
-                //   )}
-                // />
-              }
+              <Autosuggest
+                  inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+                  onSuggestionSelected={this.auto_select}
+                  onSuggestionsFetchRequested={this.auto_change}
+                  onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                  getSuggestionValue={(item) => item.name}
+                  ref="autocomplete"
+                  suggestions={this.state.auto_items}
+                  renderSuggestion={(item) => (
+                    <span>{item.name}</span>
+                  )}
+                />
               </td>
             </tr>
             <tr>
@@ -117,5 +88,5 @@ const CopyPack = createReactClass({
           </div>
     );
   }
-});
+}
 export default CopyPack;

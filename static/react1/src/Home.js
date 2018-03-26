@@ -1,16 +1,20 @@
 import {withRouter} from 'react-router-dom' ;
 import React, { Component } from 'react';
-import {MenuItem,DropdownButton} from "react-bootstrap";
+import {Button, MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
-import ExampleModal from './ExampleModal';
-//import ContactEdit2New from './ContactEdit2New';
+import DlgLogin from './DlgLogin';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-import DlgFolder2 from './DlgFolder2';
+//import DlgFolder2 from './DlgFolder2';
+import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
+import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
+import DlgCopyPack from './DlgCopyPack';
+import DlgItems from './DlgItems';
+import DlgPacks from './DlgPacks';
 var host="";
 class Home extends Component {
   mystate = {
@@ -175,6 +179,38 @@ class Home extends Component {
     //   state: { fromDashboard: true }
     // })
   }
+  opendlgurl=(url,parent,idx,data)=>{
+    this.currentIndex=idx;
+    this.refs.dlgurl.open(url,data,this.handleContactChange2); 
+  }
+  openDlgItems=()=>{
+    this.refs.dlgitems.open();
+  }
+  opendlgfolder=(contactid)=>{
+   this.refs.dlgfolder.open(contactid); 
+  }
+  opendlgcheck=(contactid,yiqibh)=>{
+   this.refs.dlgcheck.open(contactid,yiqibh); 
+  }
+  openDlgPacks=()=>{
+    this.refs.dlgpacks.open();
+  }
+  openDlgCopyPack=()=>{
+    this.refs.dlgcopypack.open();
+  }
+  openDlgStat=()=>{
+    this.refs.dlgstat.open();
+  }
+  openDlgLogin=()=>{
+    console.log("openDlgLogin");
+    this.refs.dlglogin.open();
+  }
+  openDlgImport=()=>{
+    this.refs.dlgimport.open();
+  }
+  openDlgImportHT=()=>{
+    this.refs.dlgimportHT.open();
+  }
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
@@ -204,16 +240,26 @@ class Home extends Component {
     ));
     return (
     <div id="todoapp" className="table-responsive">
-    {
-      //<ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
-  }
+    <DlgItems ref="dlgitems" />
+    <DlgPacks ref="dlgpacks" />
+    <DlgCopyPack ref="dlgcopypack" />
+    <DlgStat ref="dlgstat" />
+    <DlgImport ref="dlgimport" />
+    <DlgImportHT ref="dlgimportHT" parent={this} />
+    <DlgCheck ref="dlgcheck" />
+    <DlgFolder ref="dlgfolder" />
+    <DlgWait ref="dlgwait" />
+    <DlgUrl ref="dlgurl" />
+    <DlgLogin ref="dlglogin" onLoginSubmit={this.onLoginSubmit} />
     <table>
     <tbody>
     <tr>
    <td>
+     <Button onClick={this.openDlgPacks}>包</Button>
+     <Button onClick={this.openDlgItems}>备件</Button>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
+        <a onClick={this.openDlgLogin}>登录</a>
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
           <a onClick={this.handleLogout}>注销</a>

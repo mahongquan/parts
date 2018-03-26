@@ -36,6 +36,7 @@ class RouteContactEdit  extends Component{
       this.old={
         yujifahuo_date:moment().format("YYYY-MM-DD"),
         tiaoshi_date:moment().format("YYYY-MM-DD"),
+        id:"",
         addr:"",
         channels:"",
         baoxiang:"",
@@ -142,12 +143,14 @@ class RouteContactEdit  extends Component{
     console.log(contact2);
     this.setState({contact:contact2});
   }
-  channels_change=(event, value)=>{
-    console.log("auto_change");
-    //this.setState({ yiqixinghao_value:value, auto_loading: false });
-    this.channels_select(null,value) 
+  channels_change=(event, { newValue })=>{
+    this.change1(newValue);
   }
-  channels_select=(value, item)=>{
+  channels_change_fetch=()=>{}
+  channels_select=(event,data)=>{
+    this.change1(data.suggestion);
+  }
+  change1=(item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.channels===item)
@@ -163,12 +166,13 @@ class RouteContactEdit  extends Component{
       console.log(contact2);
       this.setState({contact:contact2});
   }
-  yiqixinghao_change=(event, value)=>{
-    console.log("auto_change");
-    //this.setState({ yiqixinghao_value:value, auto_loading: false });
-    this.yiqixinghao_select(null,value) 
+  yiqixinghao_change=(event, { newValue })=>{
+    this.change2(newValue);
   }
-  yiqixinghao_select=(value, item)=>{
+  yiqixinghao_select=(event,data)=>{
+    this.change2(data.suggestion);
+  }
+  change2=(item)=>{
       console.log("selected");
       console.log(item);
       if(this.old.yiqixinghao===item)
@@ -184,6 +188,7 @@ class RouteContactEdit  extends Component{
       console.log(contact2);
       this.setState({contact:contact2});
   }
+
   handleChange=(e)=>{
     console.log("change");
     console.log(e);
