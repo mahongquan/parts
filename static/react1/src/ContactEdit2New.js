@@ -1,17 +1,53 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
+import {Button, Modal,Well,Collapse} from "react-bootstrap";
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
+import './autosuggest.css';
 import './react-datetime.css'
+import RichTextEditor from 'react-rte';
+import PropTypes  from 'prop-types';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
+
+// class MyStatefulEditor extends Component {
+//   static propTypes = {
+//     onChange: PropTypes.func
+//   };
+
+//   state = {
+//     value: RichTextEditor.createEmptyValue()
+//   }
+
+//   onChange = (value) => {
+//     this.setState({value});
+//     if (this.props.onChange) {
+//       // Send the changes up to the parent component as an HTML string.
+//       // This is here to demonstrate using `.toString()` but in a real app it
+//       // would be better to avoid generating a string on each change.
+//       this.props.onChange(
+//         value.toString('html')
+//       );
+//     }
+//   };
+
+//   render () {
+//     return (
+//       <RichTextEditor
+//         value={this.state.value}
+//         onChange={this.onChange}
+//       />
+//     );
+//   }
+// }
+
 class ContactEdit2New  extends Component{
   state={ 
+      openCollapse:false,
       showModal: false,
       contact:{
         yujifahuo_date:moment(),
@@ -20,6 +56,11 @@ class ContactEdit2New  extends Component{
       hiddenPacks:true,
       bg:{},
       date_open:false,
+      rich:RichTextEditor.createEmptyValue(),
+  }
+  componentDidMount=()=>{
+
+    console.log("ContactEdit2New mounted");
   }
 
   close=()=>{
@@ -74,6 +115,11 @@ class ContactEdit2New  extends Component{
       this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
+    this.old.dianqi=this.old.dianqi || "";
+    this.old.jixie=this.old.jixie || "";
+    this.old.redao=this.old.redao || "";
+    this.old.hongwai=this.old.hongwai || "";
+    this.setState({rich:RichTextEditor.createValueFromString(this.old.detail,"html")})
     this.setState({contact:this.old});
   }
   // open=()=>{
@@ -272,6 +318,20 @@ class ContactEdit2New  extends Component{
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
   }
+  detailchange=(value)=>{
+    console.log(value);
+    this.setState({rich:value});
+    const contact2=update(this.state.contact,{["detail"]: {$set:value.toString('html')}});
+    this.setState({contact:contact2});
+    // if (this.props.onChange) {
+    //   // Send the changes up to the parent component as an HTML string.
+    //   // This is here to demonstrate using `.toString()` but in a real app it
+    //   // would be better to avoid generating a string on each change.
+    //   this.props.onChange(
+    //     value.toString('html')
+    //   );
+    // }
+  }
   render=()=>{
     // var o=[
     //                     "1O(低氧)",
@@ -450,6 +510,7 @@ class ContactEdit2New  extends Component{
                 }
                 </td>
             </tr>
+
             <tr>
                 <td>
                     电气:
@@ -482,7 +543,21 @@ class ContactEdit2New  extends Component{
                 <td>
                 <input  style={{"backgroundColor":this.state.bg.redao}}  type="text"  name="redao" value={this.state.contact.redao} />
                 </td>
-            </tr>                
+            </tr>   
+            <tr>
+                <td>
+                    备注:
+                </td>
+                <td  colSpan="3">
+                    <RichTextEditor
+                      value={
+                          this.state.rich// this.state.contact.detail
+                      }
+                      onChange={this.detailchange}
+                    />
+                </td>
+            </tr>   
+        
             </tbody>
             </table>
        <div> 
@@ -492,6 +567,7 @@ class ContactEdit2New  extends Component{
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
           <UsePacks2  contact_hetongbh={this.state.contact.hetongbh} contact_id={this.state.contact.id}/>
         </div>
+        
         <div style={{minHeight:"200px"}}></div>
                 </Modal.Body>
         </Modal>

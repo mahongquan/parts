@@ -143,7 +143,6 @@ class DlgCopyPack  extends React.Component{
                 
                 <button style={{display:showbutton}} onClick={this.copy_pack}>复制</button>
                 <Spinner config={spinCfg} stopped={this.state.stopped} />
-                
               </div>
             </td>
             </tr>

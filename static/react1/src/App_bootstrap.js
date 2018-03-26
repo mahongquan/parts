@@ -76,7 +76,13 @@ class App extends Component {
           total:contacts.total,
           start:this.mystate.start
         });
-    });
+      },(error)=>{
+          console.log(typeof(error));
+          if(error instanceof SyntaxError){
+            this.openDlgLogin();
+          }
+      }
+     );
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
@@ -240,6 +246,10 @@ class App extends Component {
   openDlgStat=()=>{
     this.refs.dlgstat.open();
   }
+  openDlgLogin=()=>{
+    console.log("openDlgLogin");
+    this.refs.dlglogin.open();
+  }
   openDlgImport=()=>{
     this.refs.dlgimport.open();
   }
@@ -330,6 +340,7 @@ class App extends Component {
     <DlgFolder ref="dlgfolder" />
     <DlgWait ref="dlgwait" />
     <DlgUrl ref="dlgurl" />
+    <DlgLogin ref="dlglogin" onLoginSubmit={this.onLoginSubmit} />
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
@@ -351,7 +362,7 @@ class App extends Component {
    <td>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <DlgLogin onLoginSubmit={this.onLoginSubmit} title="登录" />
+        <a onClick={this.openDlgLogin}>登录</a>
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
           <a onClick={this.handleLogout}>注销</a>
