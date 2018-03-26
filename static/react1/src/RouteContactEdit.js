@@ -3,28 +3,11 @@ import UsePacks2 from "./UsePacks2";
 import update from 'immutability-helper';
 import Client from './Client';
 import Autosuggest from 'react-autosuggest';
-//import Autocomplete from './Autocomplete';
+import './autosuggest.css';
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
-let styles = {
-  item: {
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  highlightedItem: {
-    color: 'white',
-    background: 'hsl(200, 50%, 50%)',
-    padding: '2px 6px',
-    cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
-  }
-}
 class RouteContactEdit  extends Component{
   state={ 
       contact:{
@@ -49,8 +32,30 @@ class RouteContactEdit  extends Component{
     this.setState({ showModal: false });
   }
   componentDidMount=()=>{
-    console.log(this.props);
-    this.old=this.props.location.state;
+    if (!this.props.location.state){
+      this.old={
+        yujifahuo_date:moment().format("YYYY-MM-DD"),
+        tiaoshi_date:moment().format("YYYY-MM-DD"),
+        addr:"",
+        channels:"",
+        baoxiang:"",
+        hetongbh:"",
+        shenhe:"",
+        yonghu:"",
+        yiqibh:"",
+        yiqixinghao:""
+      };
+      this.setState({hiddenPacks:true});
+    }
+    else{
+      this.old=this.props.location.state;
+      this.setState({hiddenPacks:false});
+    }
+    this.old.dianqi=this.old.dianqi || "";
+    this.old.jixie=this.old.jixie || "";
+    this.old.redao=this.old.redao || "";
+    this.old.hongwai=this.old.hongwai || "";
+    //this.setState({rich:RichTextEditor.createValueFromString(this.old.detail,"html")})
     this.setState({contact:this.old});
   }
   handleCopy=(data)=> {
@@ -64,7 +69,7 @@ class RouteContactEdit  extends Component{
     Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
         this.setState({contact:res.data});
-        this.parent.handleContactChange(this.index,res.data);
+        //this.parent.handleContactChange(this.index,res.data);
         this.old=res.data;
         this.setState({bg:{}});
         this.setState({hiddenPacks:false});
@@ -204,9 +209,12 @@ class RouteContactEdit  extends Component{
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
   }
+  returnHome=()=>{
+    this.props.history.push("/");
+  }
   render=()=>{
     return (
-      <div>
+      <div  className="table-responsive">
             <table id="table_input" className="table-condensed" >
             <tbody>
             <tr >
@@ -370,6 +378,8 @@ class RouteContactEdit  extends Component{
           <div id="id_usepacks" hidden={this.state.hiddenPacks}>
            <UsePacks2  contact_id={this.state.contact.id}/>
           </div>
+          <button className="btn btn-primary"  onClick={this.returnHome} >返回</button> 
+          <div style={{minHeight:"200px"}}></div>
         </div>
 
     );

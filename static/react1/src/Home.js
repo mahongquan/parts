@@ -185,6 +185,14 @@ class Home extends Component {
         <td>{contact.yiqixinghao}</td>
         <td>
           <a onClick={()=>this.handleEdit(contact)}>{contact.yiqibh}</a>
+          <DropdownButton title="" id="id_dropdown3">
+            <MenuItem onSelect={() => this.onDetailClick(contact.id)}>详细</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgurl("/rest/updateMethod",this,idx,{id:contact.id})}>更新方法</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
+            <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
+            
+          </DropdownButton>
         </td>
         <td>{contact.baoxiang}</td>
         <td>{contact.shenhe}</td>
@@ -192,13 +200,6 @@ class Home extends Component {
         <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
-        <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-         <DlgUrl url="/rest/updateMethod" parent={this} index={idx} data={{id:contact.id}} title="更新方法" />
-         <DlgWait contact_id={contact.id} title="全部文件" />
-         <DlgCheck contact_id={contact.id} title="核对备料计划" />
-        <DlgFolder contact_id={contact.id} title="资料文件夹" />
-        <DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
-        </td>
       </tr>
     ));
     return (
@@ -243,7 +244,7 @@ class Home extends Component {
   </tbody>
  </table>
 <table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
-<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
 </table>
       <a onClick={this.handlePrev}>前一页</a> 
       <label id="page">{this.state.start+1}/{this.state.total}</label>

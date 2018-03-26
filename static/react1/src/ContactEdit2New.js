@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
-//import CKEditor from './ckeditor.js'
+import './autosuggest.css';
 import './react-datetime.css'
 import RichTextEditor from 'react-rte';
 import PropTypes  from 'prop-types';

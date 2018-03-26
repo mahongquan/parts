@@ -14,9 +14,9 @@ class App extends Component {
         <div>
           <div id="todoapp" className="table-responsive">
               <Link to="/">合同</Link>
-              <Link to ="/items">备件</Link>
-              <Link to="/stat">统计</Link>
-              <Link to="/copypack">copy pack</Link>
+              <Link style={{paddingLeft:"20px"}} to ="/items">备件</Link>
+              <Link style={{paddingLeft:"20px"}} to="/stat">统计</Link>
+              <Link style={{paddingLeft:"20px"}} to="/copypack">copy pack</Link>
           </div>
           <Route exact path="/" component={Home}/>
           <Route path="/items" component={Items}/>
