@@ -17,7 +17,7 @@ class DlgLogin extends React.Component {
   }
   render() {
     return (
-        <a onClick={this.open}>{this.props.title}
+        
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
@@ -27,7 +27,6 @@ class DlgLogin extends React.Component {
         </Modal.Body>
 
         </Modal>
-        </a>
     );
   }
 }

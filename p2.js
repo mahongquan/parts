@@ -91,7 +91,7 @@ var openF=function(status)
 	}
 	else{
 		console.log("opened");
-		//if(page.injectJs("static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"))
+		if(page.injectJs("static/jquery-ui-1.11.4.custom/external/jquery/jquery.js"))
 		{
 		 	var rt=page.evaluate(loginAdmin);
 		 	console.log(rt);
@@ -99,4 +99,4 @@ var openF=function(status)
 		}
 	}
 }
-page.open('http://127.0.0.1:8000/', openF);
+page.open('http://127.0.0.1:8000/admin', openF);

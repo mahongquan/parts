@@ -7,11 +7,43 @@ import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
 //import CKEditor from './ckeditor.js'
-import CKEditor from './ck2'
 import './react-datetime.css'
+import RichTextEditor from 'react-rte';
+import PropTypes  from 'prop-types';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
+
+// class MyStatefulEditor extends Component {
+//   static propTypes = {
+//     onChange: PropTypes.func
+//   };
+
+//   state = {
+//     value: RichTextEditor.createEmptyValue()
+//   }
+
+//   onChange = (value) => {
+//     this.setState({value});
+//     if (this.props.onChange) {
+//       // Send the changes up to the parent component as an HTML string.
+//       // This is here to demonstrate using `.toString()` but in a real app it
+//       // would be better to avoid generating a string on each change.
+//       this.props.onChange(
+//         value.toString('html')
+//       );
+//     }
+//   };
+
+//   render () {
+//     return (
+//       <RichTextEditor
+//         value={this.state.value}
+//         onChange={this.onChange}
+//       />
+//     );
+//   }
+// }
 
 class ContactEdit2New  extends Component{
   state={ 
@@ -24,8 +56,10 @@ class ContactEdit2New  extends Component{
       hiddenPacks:true,
       bg:{},
       date_open:false,
+      rich:RichTextEditor.createEmptyValue(),
   }
   componentDidMount=()=>{
+
     console.log("ContactEdit2New mounted");
   }
 
@@ -85,7 +119,7 @@ class ContactEdit2New  extends Component{
     this.old.jixie=this.old.jixie || "";
     this.old.redao=this.old.redao || "";
     this.old.hongwai=this.old.hongwai || "";
-
+    this.setState({rich:RichTextEditor.createValueFromString(this.old.detail,"html")})
     this.setState({contact:this.old});
   }
   // open=()=>{
@@ -127,13 +161,8 @@ class ContactEdit2New  extends Component{
      this.setState({hiddenPacks:true});
   }
   handleSave=(data)=>{
-    console.log(this.refs.ck1);
-    var detailV=this.refs.ck1.getdata();
-    //const contact2=update(this.state.contact,{[detail]: {$set:detailV}});
-    var con2=this.state.contact;
-    con2.detail=detailV;
     var url="/rest/Contact";
-    Client.postOrPut(url,con2,(res) => {
+    Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
         this.setState({contact:res.data});
         //console.log("after save======================")
@@ -289,8 +318,19 @@ class ContactEdit2New  extends Component{
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
   }
-  detailchange=()=>{
-
+  detailchange=(value)=>{
+    console.log(value);
+    this.setState({rich:value});
+    const contact2=update(this.state.contact,{["detail"]: {$set:value.toString('html')}});
+    this.setState({contact:contact2});
+    // if (this.props.onChange) {
+    //   // Send the changes up to the parent component as an HTML string.
+    //   // This is here to demonstrate using `.toString()` but in a real app it
+    //   // would be better to avoid generating a string on each change.
+    //   this.props.onChange(
+    //     value.toString('html')
+    //   );
+    // }
   }
   render=()=>{
     // var o=[
@@ -509,10 +549,12 @@ class ContactEdit2New  extends Component{
                     备注:
                 </td>
                 <td  colSpan="3">
-                    <CKEditor  ref="ck1" style={{"backgroundColor":this.state.bg.detail,width:"100%"}} 
-                      value={this.state.contact.detail}
-                      id="detail" name="detail" onChange={()=>{console.log("CKEditor change");this.handleChange();}}>
-                    </CKEditor>
+                    <RichTextEditor
+                      value={
+                          this.state.rich// this.state.contact.detail
+                      }
+                      onChange={this.detailchange}
+                    />
                 </td>
             </tr>   
         

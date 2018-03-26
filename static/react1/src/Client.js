@@ -1,6 +1,6 @@
 /////////////
 import queryString from 'query-string';
-function myFetch(method,url,body,cb,headers2) {
+function myFetch(method,url,body,cb,headers2,err_callback) {
   let data;
   let headers;
   if (headers2)
@@ -30,17 +30,18 @@ function myFetch(method,url,body,cb,headers2) {
   ).then(checkStatus)
     .then(parseJSON)
     .then(cb).catch((error) => {
-      //console.log(error)
-      alert(error+"\n请刷新网页/登录");
+      if(err_callback) err_callback(error);
+      else
+        alert(error+"\n请刷新网页/登录");
     });
 }
-function getRaw(url,cb) {
-  return myFetch("GET",url,undefined,cb)
+function getRaw(url,cb,err_callback) {
+  return myFetch("GET",url,undefined,cb,undefined,err_callback)
 }
-function get(url,data,cb) {
+function get(url,data,cb,err_callback) {
   url=url+"?"+queryString.stringify(data)
   //console.log(url);
-  return getRaw(url,cb)
+  return getRaw(url,cb,err_callback)
 }
 function delete1(url,data,cb) {
   var method="DELETE";
@@ -71,9 +72,9 @@ function postForm(url,data,cb) {
       alert(error+"\n请刷新网页/登录");
     });
 }
-function contacts(data, cb) {
+function contacts(data, cb,err_callback) {
   //console.log(data);
-  return get("/rest/Contact",data,cb)
+  return get("/rest/Contact",data,cb,err_callback)
 }
 function UsePacks(query, cb) {
   var data={contact:query}
