@@ -22,7 +22,7 @@ var host="";
 class App extends Component {
   mystate = {
     start:0,
-    limit:10,
+    limit:20,
     total:0,
     baoxiang:"",
     logined: false,
