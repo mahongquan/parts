@@ -1,9 +1,10 @@
+import {withRouter} from 'react-router-dom' ;
 import React, { Component } from 'react';
 import {MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
-import ContactEdit2New from './ContactEdit2New';
+//import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgFolder2 from './DlgFolder2';
@@ -161,8 +162,13 @@ class Home extends Component {
     });
   };
   handleEdit=(idx)=>{
+    var path = {
+        pathname:'/edit',
+        state:idx,
+    }
+    this.props.history.push(path);
     //this.setState({currentIndex:idx});
-    this.refs.contactedit.open2(idx);
+    //this.refs.contactedit.open2(idx);
     // router.push({
     //   pathname: '/users/12',
     //   query: { modal: true },
@@ -178,7 +184,7 @@ class Home extends Component {
         <td>{contact.channels}</td>
         <td>{contact.yiqixinghao}</td>
         <td>
-          <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
+          <a onClick={()=>this.handleEdit(contact)}>{contact.yiqibh}</a>
         </td>
         <td>{contact.baoxiang}</td>
         <td>{contact.shenhe}</td>
@@ -197,7 +203,9 @@ class Home extends Component {
     ));
     return (
     <div id="todoapp" className="table-responsive">
-    <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
+    {
+      //<ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
+  }
     <table>
     <tbody>
     <tr>
@@ -246,4 +254,4 @@ class Home extends Component {
     );
   }
 }
-export default Home;
+export default withRouter(Home);

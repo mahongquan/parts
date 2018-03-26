@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
 import update from 'immutability-helper';
 import Client from './Client';
-import Autocomplete from './Autocomplete';
+import Autosuggest from 'react-autosuggest';
+//import Autocomplete from './Autocomplete';
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
@@ -26,53 +27,8 @@ let styles = {
 }
 class RouteContactEdit  extends Component{
   state={ 
-      showModal: false,
       contact:{
-        yujifahuo_date:moment(),
-        tiaoshi_date:moment(),
-          },
-      hiddenPacks:true,
-      bg:{},
-      date_open:false,
-  }
-
-  close=()=>{
-    this.setState({ showModal: false });
-  }
- // componentWillReceiveProps(nextProps) {
- //    this.setState({ showModal: nextProps.showModal });
- //    this.setState({bg:{}});
- //    this.parent=nextProps.parent;
- //    if (nextProps.index==null){
- //      this.old={
- //        yujifahuo_date:moment().format("YYYY-MM-DD"),
- //        tiaoshi_date:moment().format("YYYY-MM-DD"),
- //        addr:"",
- //        channels:"",
- //        baoxiang:"",
- //        hetongbh:"",
- //        shenhe:"",
- //        yonghu:"",
- //        yiqibh:"",
- //        yiqixinghao:""
- //      };
- //    }
- //    else{
- //      this.old=this.parent.state.contacts[nextProps.index];
- //      this.setState({hiddenPacks:false});
- //    }
- //    this.setState({contact:this.old});
- //  }
- componentDidMount=()=>{
-    this.setState({ showModal: true });
-    this.setState({bg:{}});
-    console.log(this.props);
-    this.parent=this.props.parent;
-    this.index=this.props.idx;
-    console.log(this.props);
-    if (this.index==null){
-      this.old={
-        yujifahuo_date:moment().format("YYYY-MM-DD"),
+       yujifahuo_date:moment().format("YYYY-MM-DD"),
         tiaoshi_date:moment().format("YYYY-MM-DD"),
         addr:"",
         channels:"",
@@ -81,13 +37,20 @@ class RouteContactEdit  extends Component{
         shenhe:"",
         yonghu:"",
         yiqibh:"",
-        yiqixinghao:""
-      };
-    }
-    else{
-      this.old=this.parent.state.contacts[this.index];
-      this.setState({hiddenPacks:false});
-    }
+        yiqixinghao:"",
+        id:"",
+      },
+      hiddenPacks:true,
+      bg:{},
+      date_open:false,
+  }
+
+  close=()=>{
+    this.setState({ showModal: false });
+  }
+  componentDidMount=()=>{
+    console.log(this.props);
+    this.old=this.props.location.state;
     this.setState({contact:this.old});
   }
   handleCopy=(data)=> {
@@ -270,15 +233,16 @@ class RouteContactEdit  extends Component{
                     通道配置:
                 </td>
                 <td>
-                  <Autocomplete
-                      value={this.state.contact.channels}
+   <Autosuggest
                       inputProps={
                         { 
                           id: 'channels-autocomplete',
-                          style:{backgroundColor:this.state.bg.channels}
+                          style:{backgroundColor:this.state.bg.channels},
+                          value:this.state.contact.channels,
+                          onChange:this.channels_change
                         }
                       }
-                      items={[
+                      suggestions={[
                         "1O(低氧)",
                         "1O(高氧)",
                         "1O(低氧)+2N",
@@ -290,15 +254,12 @@ class RouteContactEdit  extends Component{
                         "2O+2N",
                         "2O",
                       ]}
-                      getItemValue={(item) => item}
-                      onSelect={this.channels_select}
-                      onChange={this.channels_change}
-                      shouldItemRender={this.matchStateToTerm}
-                      renderItem={(item, isHighlighted) => (
-                        <div
-                          style={isHighlighted ? styles.highlightedItem : styles.item}
-                          key={item}
-                        >{item}</div>
+                      getSuggestionValue={(item) => item}
+                      onSuggestionSelected={this.channels_select}
+                      onSuggestionsFetchRequested={()=>{}}
+                      onSuggestionsClearRequested={()=>{}}
+                      renderSuggestion={(item) => (
+                        <span>{item}</span>
                       )}
                     />
                 </td>
@@ -307,15 +268,16 @@ class RouteContactEdit  extends Component{
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <Autocomplete
-                      value={this.state.contact.yiqixinghao}
-                      inputProps={
+<Autosuggest
+                       inputProps={
                         { 
                           id: 'yiqixinghao-autocomplete',
-                          style:{backgroundColor:this.state.bg.yiqixinghao}
+                          style:{backgroundColor:this.state.bg.yiqixinghao},
+                          value:this.state.contact.yiqixinghao,
+                          onChange:this.yiqixinghao_change
                         }
                       }
-                      items={[
+                      suggestions={[
                         "CS-1011C",
                         "CS-2800",
                         "CS-3000",
@@ -328,18 +290,14 @@ class RouteContactEdit  extends Component{
                         "ON-4000",
                         "ONH-3000"
                       ]}
-                      getItemValue={(item) => item}
-                      onSelect={this.yiqixinghao_select}
-                      onChange={this.yiqixinghao_change}
-                      shouldItemRender={this.matchStateToTerm}
-                      renderItem={(item, isHighlighted) => (
-                        <div
-                          style={isHighlighted ? styles.highlightedItem : styles.item}
-                          key={item}
-                        >{item}</div>
+                      getSuggestionValue={(item) => item}
+                      onSuggestionsFetchRequested={()=>{}}
+                      onSuggestionsClearRequested={()=>{}}
+                      onSuggestionSelected={this.yiqixinghao_select}
+                      renderSuggestion={(item) => (
+                        <span>{item}</span>
                       )}
-                    />
-                </td>
+                    />                </td>
                 <td>
                     <label>仪器编号:</label>
                 </td>

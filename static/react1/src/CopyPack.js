@@ -1,6 +1,6 @@
 import React from 'react';
 import Client from './Client';
-import Autocomplete from './Autocomplete'
+//import Autocomplete from './Autocomplete'
 var createReactClass = require('create-react-class');
 let styles = {
   item: {
@@ -84,22 +84,24 @@ const CopyPack = createReactClass({
                 <label>包名称:</label>
               </td>
               <td>
-                <Autocomplete
-                  inputProps={{ id: 'states-autocomplete' }}
-                  ref="autocomplete"
-                  value={this.state.auto_value}
-                  items={this.state.auto_items}
-                  getItemValue={(item) => item.name}
-                  onSelect={this.auto_select}
-                  onChange={this.auto_change}
-                  renderItem={(item, isHighlighted) => (
-                    <div
-                      style={isHighlighted ? styles.highlightedItem : styles.item}
-                      key={item.id}
-                      id={item.id}
-                    >{item.name}</div>
-                  )}
-                />
+              {
+                // <Autocomplete
+                //   inputProps={{ id: 'states-autocomplete' }}
+                //   ref="autocomplete"
+                //   value={this.state.auto_value}
+                //   items={this.state.auto_items}
+                //   getItemValue={(item) => item.name}
+                //   onSelect={this.auto_select}
+                //   onChange={this.auto_change}
+                //   renderItem={(item, isHighlighted) => (
+                //     <div
+                //       style={isHighlighted ? styles.highlightedItem : styles.item}
+                //       key={item.id}
+                //       id={item.id}
+                //     >{item.name}</div>
+                //   )}
+                // />
+              }
               </td>
             </tr>
             <tr>

@@ -22,7 +22,7 @@ class App extends Component {
           <Route path="/items" component={Items}/>
           <Route path="/stat" component={Stat}/>
           <Route path="/copypack" component={CopyPack}/>
-          <Route path="/edit/:idx" component={RouteContactEdit} />
+          <Route path="/edit" component={RouteContactEdit} />
         </div>
             
       </Router>
