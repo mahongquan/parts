@@ -13,16 +13,16 @@ class App extends Component {
       <Router>
         <div>
           <div id="todoapp" className="table-responsive">
-              <Link to="/">合同</Link>
-              <Link style={{paddingLeft:"20px"}} to ="/items">备件</Link>
-              <Link style={{paddingLeft:"20px"}} to="/stat">统计</Link>
-              <Link style={{paddingLeft:"20px"}} to="/copypack">copy pack</Link>
+              <Link to="/app">合同</Link>
+              <Link style={{paddingLeft:"20px"}} to ="/app/items">备件</Link>
+              <Link style={{paddingLeft:"20px"}} to="/app/stat">统计</Link>
+              <Link style={{paddingLeft:"20px"}} to="/app/copypack">copy pack</Link>
           </div>
-          <Route exact path="/" component={Home}/>
-          <Route path="/items" component={Items}/>
-          <Route path="/stat" component={Stat}/>
-          <Route path="/copypack" component={CopyPack}/>
-          <Route path="/edit" component={RouteContactEdit} />
+          <Route exact path="/app" component={Home}/>
+          <Route path="/app/items" component={Items}/>
+          <Route path="/app/stat" component={Stat}/>
+          <Route path="/app/copypack" component={CopyPack}/>
+          <Route path="/app/edit" component={RouteContactEdit} />
         </div>
             
       </Router>
