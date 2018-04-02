@@ -158,7 +158,7 @@ class PackItems extends React.Component {
           ref="autocomplete"
           suggestions={this.state.auto_items}
           renderSuggestion={(item) => (
-            <span>{item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
+            <span>{item.id+": "+item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
           )}
         /></td></tr></tbody></table>
       <p>新备件名称：
