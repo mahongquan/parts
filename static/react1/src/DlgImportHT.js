@@ -1,6 +1,7 @@
 import React from 'react';
 import {Alert, Modal} from "react-bootstrap";
 import Client from './Client';
+var _ = require('lodash');
 class DlgImportHT extends React.Component{
   state={ 
       showModal: false,
@@ -9,7 +10,14 @@ class DlgImportHT extends React.Component{
       packs:[],
       info:""
   }
+  shouldComponentUpdate(nextProps, nextState) {
 
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
+  }
   close=()=>{
     this.setState({ showModal: false });
   }

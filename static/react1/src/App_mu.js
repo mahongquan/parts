@@ -4,8 +4,7 @@ import './App.css';
 //import injectTapEventPlugin from 'react-tap-event-plugin';
 import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/Menu';
+import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import Toolbar from 'material-ui/Toolbar';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
@@ -36,7 +35,8 @@ class App extends Component {
     start_input:1,
     currentIndex:null,
     baoxiang:"",
-    open:false
+    open:false,
+    anchorEl:null,
   }
   componentDidMount=() => {
     this.load_data();
@@ -248,6 +248,13 @@ class App extends Component {
     console.log(style);
     this.setState({test_input:e.target.value});
   };
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <TableRow      key={idx}      onClick={() => this.oncontactClick(idx)}>
@@ -284,27 +291,11 @@ class App extends Component {
     else{
       next=null;
     }
+    const { anchorEl } = this.state;
     return (
       <div className="App">
         <div>
         <Toolbar>
-                <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{
-            horizontal: 'left',
-            vertical: 'bottom'
-          }}
-          targetOrigin={{
-            horizontal: 'left',
-            vertical: 'top'
-          }}
-          onRequestClose={this.handleRequestClose}
-          >
-          <Menu>
-            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
-          </Menu>
-        </Popover>
           <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
                 </DialogExampleSimple>
           <TextField
@@ -324,9 +315,23 @@ class App extends Component {
           <div>
           <Button   variant="raised" onClick={this.handleTest}>test
         </Button>
-        <Button   variant="raised" onClick={this.handleTouchTap}>{this.state.user}
+        <Button
+          aria-owns={anchorEl ? 'simple-menu' : null}
+          aria-haspopup="true"
+          onClick={this.handleClick}
+        >
+          {this.state.user}
         </Button>
-     
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleClose}
+        >
+          <MenuItem onClick={this.handleLogout}>
+          注销
+          </MenuItem>
+        </Menu>
        </div>
         </Toolbar>
         <Table>

@@ -45,7 +45,7 @@ export default class DialogImportStandard extends React.Component {
         <Button  variant="raised" onClick={this.handleOpen} >{this.props.title}</Button>
         <Dialog
           title={this.props.title}
-          modal={false}
+          modal="false"
           open={this.state.open}
           onRequestClose={this.handleClose}
         >

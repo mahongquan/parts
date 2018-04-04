@@ -4,6 +4,7 @@ import Client from './Client';
 import {Table} from "react-bootstrap";
 import ItemEdit from './ItemEdit'
 import update from 'immutability-helper';
+var _ = require('lodash');
 class DlgItems extends Component {
   mystate = {
     start:0,
@@ -28,6 +29,14 @@ class DlgItems extends Component {
       auto_value: '',
       auto_items:[],
       auto_loading: false,
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
   }
   close=()=>{
     console.log("close");
