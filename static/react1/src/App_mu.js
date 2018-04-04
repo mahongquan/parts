@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import RaisedButton from 'material-ui/RaisedButton';
+//import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+//import injectTapEventPlugin from 'react-tap-event-plugin';
+import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import Toolbar from 'material-ui/Toolbar';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Client from './Client';
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
 import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
-injectTapEventPlugin();
+//injectTapEventPlugin();
 //var user = "";
 var host="";
 class App extends Component {
@@ -36,6 +36,7 @@ class App extends Component {
     start_input:1,
     currentIndex:null,
     baoxiang:"",
+    open:false
   }
   componentDidMount=() => {
     this.load_data();
@@ -249,12 +250,12 @@ class App extends Component {
   };
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
-      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
-        <TableRowColumn>{contact.id}</TableRowColumn>
-        <TableRowColumn>{contact.hetongbh}</TableRowColumn>
-        <TableRowColumn>{contact.yonghu}</TableRowColumn>
-        <TableRowColumn>{contact.baoxiang}</TableRowColumn>
-        <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
+      <TableRow      key={idx}      onClick={() => this.oncontactClick(idx)}>
+        <TableCell>{contact.id}</TableCell>
+        <TableCell>{contact.hetongbh}</TableCell>
+        <TableCell>{contact.yonghu}</TableCell>
+        <TableCell>{contact.baoxiang}</TableCell>
+        <TableCell>{contact.yiqixinghao}</TableCell>
       </TableRow>
     ));
     var hasprev=true;
@@ -285,10 +286,8 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <MuiThemeProvider>
         <div>
-         <Toolbar>
-           <ToolbarGroup>
+        <Toolbar>
                 <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -323,26 +322,23 @@ class App extends Component {
          <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
          </div>
           <div>
-          <RaisedButton  onTouchTap={this.handleTest}
-            label="test" >
-        </RaisedButton>
-        <RaisedButton  onTouchTap={this.handleTouchTap}
-      label={this.state.user}>
-        </RaisedButton>
-
+          <Button   variant="raised" onClick={this.handleTest}>test
+        </Button>
+        <Button   variant="raised" onClick={this.handleTouchTap}>{this.state.user}
+        </Button>
+     
        </div>
-        </ToolbarGroup>
-      </Toolbar>
+        </Toolbar>
         <Table>
-    <TableHeader>
+    <TableHead>
       <TableRow>
-        <TableHeaderColumn>id</TableHeaderColumn>
-        <TableHeaderColumn>合同编号</TableHeaderColumn>
-        <TableHeaderColumn>用户单位</TableHeaderColumn>
-        <TableHeaderColumn>包箱</TableHeaderColumn>
-        <TableHeaderColumn>仪器型号</TableHeaderColumn>
+        <TableCell>id</TableCell>
+        <TableCell>合同编号</TableCell>
+        <TableCell>用户单位</TableCell>
+        <TableCell>包箱</TableCell>
+        <TableCell>仪器型号</TableCell>
       </TableRow>
-    </TableHeader>
+    </TableHead>
          <TableBody>
             {contactRows}
           </TableBody>
@@ -352,7 +348,6 @@ class App extends Component {
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
         </div>
-      </MuiThemeProvider>
       </div>
     );
   }
