@@ -1,3 +1,5 @@
+var {Editor, EditorState,ContentState}=Draft;
+var {convertFromHTML,convertToHTML}=DraftConvert;
 var {Table,Modal,Navbar,Nav,NavItem,DropdownButton,MenuItem}=ReactBootstrap;
 var update=newContext();
 var DateTime=Datetime;
@@ -5,7 +7,6 @@ var host="";
 //var socket=io();
 var app = require('electron').remote; 
 var dialog = app.dialog;
-
 // Or with ECMAScript 6
 var openDialog = function(defaultpath,callback){
     dialog.showOpenDialog({
@@ -1470,11 +1471,11 @@ class UsePacks2 extends React.Component {
     auto_items:[],
     release:true,
   };
-   componentWillReceiveProps(nextProps) {
-    if(nextProps.contact_id){
-      this.load_data(nextProps.contact_id);
-    }
-  }
+  //  componentWillReceiveProps(nextProps) {
+  //   if(nextProps.contact_id){
+  //     this.load_data(nextProps.contact_id);
+  //   }
+  // }
   load_data=(contact_id)=>{
       socket.emit("/get/UsePack",{contact_id:contact_id}, (usepacks) => {
         console.log(usepacks)
@@ -2367,6 +2368,19 @@ class DlgItems extends React.Component {
     );
   }
 };
+//////////////////////////
+// class RichTextEditor extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {editorState: EditorState.createEmpty()};
+//     this.onChange = (editorState) => this.setState({editorState});
+//   }
+//   render() {
+//     return (
+//         <Editor editorState={this.state.editorState} onChange={this.onChange} />
+//     );
+//   }
+// }
 //ContactEdit2New//////////////////////
 let styles = {
   item: {
@@ -2440,7 +2454,8 @@ class ContactEdit2New  extends React.Component{
         shenhe:"",
         yonghu:"",
         yiqibh:"",
-        yiqixinghao:""
+        yiqixinghao:"",
+        rich:null
       };
       this.setState({hiddenPacks:true});
     }
@@ -2452,37 +2467,11 @@ class ContactEdit2New  extends React.Component{
       this.setState({hiddenPacks:false});
     }
     this.setState({contact:this.old});
+    console.log(this.old.detail);
+    const state1= convertFromHTML(this.old.detail);
+
+    this.setState({rich:EditorState.createWithContent(state1)});
   }
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   this.setState({bg:{}});
-  //   this.parent=this.props.parent;
-  //   if (this.index==null){
-  //     this.old={
-  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
-  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
-  //       addr:"",
-  //       channels:"",
-  //       baoxiang:"",
-  //       hetongbh:"",
-  //       shenhe:"",
-  //       yonghu:"",
-  //       yiqibh:"",
-  //       yiqixinghao:""
-  //     };
-  //   }
-  //   else{
-  //     this.old=this.parent.state.contacts[this.index];
-  //     this.setState({hiddenPacks:false});
-  //   }
-  //   this.setState({contact:this.old});
-  // }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
   handleCopy=(data)=> {
      console.log("copy");
      var contact2=update(this.state.contact,{id:{$set:""}});
@@ -2645,6 +2634,13 @@ class ContactEdit2New  extends React.Component{
   }
   matchStateToTerm=(state, value)=>{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
+  }
+  detailchange=(editorState)=>{
+    this.setState({rich:editorState});
+    const html = convertToHTML(editorState.getCurrentContent());
+    const contact2=update(this.state.contact,{["detail"]: {$set:html}});
+    //console.log(contact2);
+    this.setState({contact:contact2}); 
   }
   render=()=>{
     return (
@@ -2813,7 +2809,54 @@ class ContactEdit2New  extends React.Component{
                 //<button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></button>
                 }
                 </td>
+            </tr>   
+                        <tr>
+                <td>
+                    电气:
+                </td>
+                <td>
+                    <input  style={{"backgroundColor":this.state.bg.dianqi}}
+                      type="text" name="dianqi" value={this.state.contact.dianqi}  
+                      onChange={this.handleChange} />
+                </td>
+                <td>
+                    机械:
+                </td>
+                <td>
+                <input  style={{"backgroundColor":this.state.bg.jixie}}  type="text"
+                name="jixie"
+                 value={this.state.contact.jixie} />
+                   </td>
             </tr>        
+            <tr>
+                <td>
+                    红外:
+                </td>
+                <td>
+                    <input  style={{"backgroundColor":this.state.bg.hongwai}}  type="text"  
+                    name="hongwai" value={this.state.contact.hongwai}  onChange={this.handleChange} />
+                </td>
+                <td>
+                    热导:
+                </td>
+                <td>
+                <input  style={{"backgroundColor":this.state.bg.redao}}  type="text"  name="redao" value={this.state.contact.redao} />
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    备注:
+                </td>
+                <td  colSpan="3">
+                    <Editor
+                      editorState={
+                          this.state.rich// this.state.contact.detail
+                      }
+                      onChange={this.detailchange}
+                    />
+                </td>
+            </tr>   
+     
             </tbody>
             </table>
        <div> 
