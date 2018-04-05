@@ -1,13 +1,20 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
+var _ = require('lodash');
 class DlgFolder extends React.Component{
   state= { 
       showModal: false,
       hiddenPacks:true,
       error:"",
     }
-
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
+  }
   close=()=> {
     this.setState({ showModal: false });
   }

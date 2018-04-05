@@ -4,7 +4,8 @@ import Client from './Client';
 import {Table} from "react-bootstrap";
 import PackItemEdit from './PackItemEdit_mu';
 import update from 'immutability-helper';
-import AutoComplete from 'material-ui/AutoComplete';
+//import AutoComplete from 'material-ui/AutoComplete';
+import Autosuggest from 'react-autosuggest';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -121,12 +122,17 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-        输入备件<AutoComplete id="id2"
-          openOnFocus={true}
-          searchText={this.state.auto_value}
-          onUpdateInput={this.auto_change}
-          dataSource={this.state.auto_items}
-          onNewRequest={this.auto_select}
+        输入备件<Autosuggest
+          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+          onSuggestionSelected={this.auto_select}
+          onSuggestionsFetchRequested={this.auto_change}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={(item) => item.name}
+          ref="autocomplete"
+          suggestions={this.state.auto_items}
+          renderSuggestion={(item) => (
+            <span>{item.id+": "+item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
+          )}
         />
       <p>新备件名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>

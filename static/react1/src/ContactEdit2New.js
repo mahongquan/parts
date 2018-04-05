@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Button, Modal,Well,Collapse} from "react-bootstrap";
+import { Modal} from "react-bootstrap";
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
-//import CKEditor from './ckeditor.js'
+import './autosuggest.css';
 import './react-datetime.css'
 import RichTextEditor from 'react-rte';
-import PropTypes  from 'prop-types';
+var _ = require('lodash');
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
@@ -58,6 +58,19 @@ class ContactEdit2New  extends Component{
       date_open:false,
       rich:RichTextEditor.createEmptyValue(),
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
+       console.log(this.props);
+       console.log(nextProps);
+       console.log("props not eq");
+       return true;
+    }
+    if (!_.isEqual(this.state, nextState)) {
+      console.log("state not eq");
+      return true;
+    }
+    return false;
+  }
   componentDidMount=()=>{
 
     console.log("ContactEdit2New mounted");
@@ -67,30 +80,22 @@ class ContactEdit2New  extends Component{
   	console.log("close");
     this.setState({ showModal: false });
   }
- // componentWillReceiveProps(nextProps) {
- //    this.setState({ showModal: nextProps.showModal });
- //    this.setState({bg:{}});
- //    this.parent=nextProps.parent;
- //    if (nextProps.index==null){
- //      this.old={
- //        yujifahuo_date:moment().format("YYYY-MM-DD"),
- //        tiaoshi_date:moment().format("YYYY-MM-DD"),
- //        addr:"",
- //        channels:"",
- //        baoxiang:"",
- //        hetongbh:"",
- //        shenhe:"",
- //        yonghu:"",
- //        yiqibh:"",
- //        yiqixinghao:""
- //      };
- //    }
- //    else{
- //      this.old=this.parent.state.contacts[nextProps.index];
- //      this.setState({hiddenPacks:false});
- //    }
- //    this.setState({contact:this.old});
- //  }
+  componentWillReceiveProps(nextProps) {
+    //console.log(nextProps)
+    if(!this.props.showModal && nextProps.showModal){
+      this.onShow(nextProps.index);
+    }
+    else if(this.props.showModal && !nextProps.showModal)
+    {
+      this.onHide();
+    }
+  }
+  onShow=(idx)=>{
+    this.open2(idx);
+  }
+  onHide=()=>{
+
+  }
  open2=(idx)=>{
     this.setState({ showModal: true });
     this.setState({bg:{}});
@@ -162,7 +167,9 @@ class ContactEdit2New  extends Component{
   }
   handleSave=(data)=>{
     var url="/rest/Contact";
-    Client.postOrPut(url,this.state.contact,(res) => {
+    var dataSave=this.state.contact;
+    dataSave.detail=data.rich.toString('html');
+    Client.postOrPut(url,dataSave,(res) => {
       if(res.success){
         this.setState({contact:res.data});
         //console.log("after save======================")
@@ -321,8 +328,8 @@ class ContactEdit2New  extends Component{
   detailchange=(value)=>{
     console.log(value);
     this.setState({rich:value});
-    const contact2=update(this.state.contact,{["detail"]: {$set:value.toString('html')}});
-    this.setState({contact:contact2});
+    // const contact2=update(this.state.contact,{["detail"]: {$set:value.toString('html')}});
+    // this.setState({contact:contact2});
     // if (this.props.onChange) {
     //   // Send the changes up to the parent component as an HTML string.
     //   // This is here to demonstrate using `.toString()` but in a real app it
@@ -349,8 +356,9 @@ class ContactEdit2New  extends Component{
     // for(var i in o){
     //   options_channels.push({label:o[i],value:o[i]});
     // }
+    console.log("render contactedit");
     return (
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
+        <Modal show={this.props.showModal} onHide={this.props.handleClose}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑仪器信息</Modal.Title>
           </Modal.Header>

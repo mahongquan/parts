@@ -4,7 +4,7 @@ import Client from './Client';
 import {Bar} from "react-chartjs-2";
 //import Select from 'react-select';
 //import 'react-select/dist/react-select.css';
-
+var _ = require('lodash');
 class DlgStat extends Component {
   state={
       showModal: false,
@@ -13,7 +13,13 @@ class DlgStat extends Component {
       values:[],
       baoxiang:"",
   }
-
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
+  }
   close=()=>{
     this.setState({ showModal: false });
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
+import {Table,Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import DlgLogin from './DlgLogin';
@@ -42,6 +42,8 @@ class App extends Component {
     start_input:1,
     currentIndex:null,
     baoxiang:"",
+    showDlgImport:false,
+    showDlgEdit:false,
   }
 
   handleClickFilter = (event) => {
@@ -203,8 +205,10 @@ class App extends Component {
     });
   };
   handleEdit=(idx)=>{
-    //this.setState({currentIndex:idx});
-    this.refs.contactedit.open2(idx);
+    this.setState({showDlgEdit:true,currentIndex:idx});
+    //this.setState({});
+    //this.refs.contactedit.open2(idx);
+
   }
   //<button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</button>
   //<button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
@@ -251,7 +255,8 @@ class App extends Component {
     this.refs.dlglogin.open();
   }
   openDlgImport=()=>{
-    this.refs.dlgimport.open();
+    //this.refs.dlgimport.open();
+    this.setState({showDlgImport:true});
   }
   openDlgImportHT=()=>{
     this.refs.dlgimportHT.open();
@@ -334,14 +339,20 @@ class App extends Component {
     <DlgPacks ref="dlgpacks" />
     <DlgCopyPack ref="dlgcopypack" />
     <DlgStat ref="dlgstat" />
-    <DlgImport ref="dlgimport" />
+    <DlgImport showModal={this.state.showDlgImport} handleClose={()=>{
+      this.setState({showDlgImport:false});
+    }} />
     <DlgImportHT ref="dlgimportHT" parent={this} />
     <DlgCheck ref="dlgcheck" />
     <DlgFolder ref="dlgfolder" />
     <DlgWait ref="dlgwait" />
     <DlgUrl ref="dlgurl" />
     <DlgLogin ref="dlglogin" onLoginSubmit={this.onLoginSubmit} />
-    <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
+    <ContactEdit2New showModal={this.state.showDlgEdit} 
+      handleClose={()=>{
+        this.setState({showDlgEdit:false});
+      }}
+     ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -387,7 +398,7 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<table className="table-bordered"><thead><tr><th>ID</th>
+<Table responsive bordered><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
 <th>客户地址</th><th>合同编号</th>
@@ -401,7 +412,7 @@ class App extends Component {
     </DropdownButton>
 </th>
 <th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
-</table>
+</Table>
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
 <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
 <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>

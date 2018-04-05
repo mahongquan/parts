@@ -11,7 +11,7 @@ class Items extends Component {
     search:""
   }
    state = {
-      contacts: [],
+      items: [],
       user: "AnonymousUser",
       start:0,
       total:0,
@@ -41,18 +41,18 @@ class Items extends Component {
         search:this.mystate.search,
         baoxiang:this.mystate.baoxiang,
       }, 
-      (contacts2) => {
-        var user=contacts2.user;
+      (items2) => {
+        var user=items2.user;
         if(user===undefined){
           user="AnonymousUser"
         }
         this.setState({
-          contacts: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          items: items2.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
-          total:contacts2.total,
+          total:items2.total,
           start:this.mystate.start
         });
-        this.mystate.total=contacts2.total;
+        this.mystate.total=items2.total;
     });
   }
   handlePrev = (e) => {
@@ -89,7 +89,7 @@ class Items extends Component {
         return (<tr key={idx} >
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
-          <td>{contact.name}</td>
+          <td><a onClick={()=>this.handleEdit(idx)}>{contact.name}</a></td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
           <td></td>
@@ -104,11 +104,14 @@ class Items extends Component {
           <td><img alt="no" src={"/media/"+contact.image} width="100" height="100"></img></td>
         </tr>);
   }
+  handleEdit=(idx)=>{
+    this.refs.dlg.open2(idx);
+  }
   render=()=>{
-    const contactRows = this.state.contacts.map(this.mapfunc);
+    const contactRows = this.state.items.map(this.mapfunc);
     return (
           <div>
-        
+        <ItemEdit ref="dlg" parent={this} />
           <p>items</p>
            <Table responsive bordered condensed><thead>
            <tr>

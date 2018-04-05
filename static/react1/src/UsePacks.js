@@ -2,7 +2,8 @@
 import React from 'react';
 import Client from './Client';
 import {Table, TableBody, TableRowColumn,  TableRow, } from 'material-ui/Table';
-import AutoComplete from 'material-ui/AutoComplete';
+//import AutoComplete from 'material-ui/AutoComplete';
+import Autosuggest from 'react-autosuggest';
 import UsePackEdit from "./UsePackEdit_mu";
 class UsePacks extends React.Component {
   state = {
@@ -151,12 +152,17 @@ class UsePacks extends React.Component {
         {foodRows}
         </TableBody>
         </Table>
-        <div>输入包<AutoComplete id="id1"
-          openOnFocus={true}
-          searchText={this.state.auto_value}
-          onUpdateInput={this.auto_change}
-          dataSource={this.state.auto_items}
-          onNewRequest={this.auto_select}
+        <div>输入包<Autosuggest
+          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+          onSuggestionSelected={this.auto_select}
+          onSuggestionsFetchRequested={this.auto_change}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={(item) => item.name}
+          ref="autocomplete"
+          suggestions={this.state.auto_items}
+          renderSuggestion={(item) => (
+            <span>{item.name}</span>
+          )}
         />
           <button  className="btn" onClick={this.bibei}>必备</button>
         </div>
