@@ -56,6 +56,7 @@ class ContactEdit2New  extends Component{
       hiddenPacks:true,
       bg:{},
       date_open:false,
+      editRich:false,
       rich:RichTextEditor.createEmptyValue(),
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -554,10 +555,13 @@ class ContactEdit2New  extends Component{
             </tr>   
             <tr>
                 <td>
-                    备注:
+                    备注:<span onClick={()=>{
+                    this.setState({editRich:!this.state.editRich})
+                }}  className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </td>
                 <td  colSpan="3">
-                    <RichTextEditor
+                
+                    <RichTextEditor disabled={this.state.editRich}
                       value={
                           this.state.rich// this.state.contact.detail
                       }
