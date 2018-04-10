@@ -398,7 +398,7 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<Table  bordered><thead><tr><th>ID</th>
+<Table condensed  bordered><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
 <th>客户地址</th><th>合同编号</th>

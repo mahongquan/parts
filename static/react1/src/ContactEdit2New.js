@@ -128,7 +128,10 @@ class ContactEdit2New  extends Component{
     this.old.channels=this.old.channels || "";
     this.old.detail=this.old.detail || "";
     this.old.addr=this.old.addr || "";
-    this.setState({rich:RichTextEditor.createValueFromString(this.old.detail,"html")})
+    var val1=RichTextEditor.createValueFromString(this.old.detail,"html");
+    console.log(val1);
+
+    this.setState({rich:val1});
     this.setState({contact:this.old});
   }
   // open=()=>{
@@ -172,10 +175,7 @@ class ContactEdit2New  extends Component{
   handleSave=(data)=>{
     var url="/rest/Contact";
     var dataSave=this.state.contact;
-    console.log(dataSave);
-    if (data.rich){
-      dataSave.detail=data.rich.toString('html');
-    }
+    dataSave.detail=this.state.rich.toString('html');
     Client.postOrPut(url,dataSave,(res) => {
       if(res.success){
         this.setState({contact:res.data});

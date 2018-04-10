@@ -44,7 +44,7 @@ class UsePacks2 extends React.Component {
   }
   load_data=(contact_id)=>{
       Client.UsePacks(contact_id, (usepacks) => {
-        this.setState({
+        if(!this.unload) this.setState({
           usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
@@ -56,7 +56,10 @@ class UsePacks2 extends React.Component {
     if(this.props.contact_id){
       this.load_data(this.props.contact_id);
     }
-  };
+  }
+  componentWillUnmount=()=>{
+    this.unload=true;
+  }
   auto_change=(data)=>{
     var value=data.value;
     if (value.length>1)
