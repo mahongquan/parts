@@ -4,6 +4,7 @@ import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
 import Spinner from './react-spin';
+var _ = require('lodash');
 class DlgCopyPack  extends React.Component{
   state= { 
       showModal: false,
@@ -16,6 +17,14 @@ class DlgCopyPack  extends React.Component{
       auto_items:[],
       auto_loading: false,
       stopped:true,
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
   }
   newnameChange=(event)=>{
     this.setState({newname:event.target.value});

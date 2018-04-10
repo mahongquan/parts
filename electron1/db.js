@@ -36,7 +36,7 @@ var socket={
           // Open a local file in the default app
         console.log(modalPath);
         console.log(shell);
-        if (fs.existsSync(path)){
+        if (fs.existsSync(modalPath)){
         }
         else{
             fs.mkdirSync(modalPath);

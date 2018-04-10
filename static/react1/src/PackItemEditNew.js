@@ -150,7 +150,9 @@ class PackItemEditNew extends Component{
                     <label>缺货:</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="quehuo" name="quehuo" checked={this.state.packitem.quehuo}  onChange={this.quehuoChange} />
+                    <input type="checkbox" id="quehuo" name="quehuo" 
+                    checked={this.state.packitem.quehuo}  
+                    onChange={this.quehuoChange} />
                 </td>
             </tr>        
             </tbody>

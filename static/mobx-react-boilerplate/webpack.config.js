@@ -22,6 +22,18 @@ module.exports = {
       test: /\.jsx?$/,
       use: ['babel-loader'],
       include: path.join(__dirname, 'src')
-    }]
+    },
+     {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },{
+        test: /\.(woff|ttf|eot|woff2|svg|png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}  
+          }
+        ]
+      }]
   }
 };

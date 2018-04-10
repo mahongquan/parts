@@ -3,7 +3,7 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {Table} from "react-bootstrap";
 import PackEdit from './PackEdit';
-
+var _ = require('lodash');
 class DlgPacks extends Component {
   mystate = {
     start:0,
@@ -28,6 +28,17 @@ class DlgPacks extends Component {
       auto_value: '',
       auto_items:[],
       auto_loading: false,
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    // if (_.isEqual(this.props, nextProps) || !_.isEmpty(this.props)) {
+    //     return false
+    // }
+    // return true;
+    if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+       return true
+    } else {
+       return false
+    }
   }
   close=()=>{
     this.setState({ showModal: false });
