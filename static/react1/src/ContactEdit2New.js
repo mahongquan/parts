@@ -555,13 +555,13 @@ class ContactEdit2New  extends Component{
             </tr>   
             <tr>
                 <td>
-                    备注:<span onClick={()=>{
+                    <a onClick={()=>{
                     this.setState({editRich:!this.state.editRich})
-                }}  className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                }}>备注:</a>
                 </td>
                 <td  colSpan="3">
                 
-                    <RichTextEditor disabled={this.state.editRich}
+                    <RichTextEditor disabled={!this.state.editRich}
                       value={
                           this.state.rich// this.state.contact.detail
                       }
