@@ -438,24 +438,53 @@ def create_contact(request):
         output={"success":False,"message":message}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
     except django.db.utils.IntegrityError as e:
-        info = sys.exc_info()
-        message=""
-        for file, lineno, function, text in traceback.extract_tb(info[2]):
-            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
-        message+= "** %s: %s" % info[:2]
+        print(e,dir(e))
+        if "hetongbh" in e.args[0]:
+            message="合同编号必须唯一，不能重复！"
+        elif "yiqibh" in e.args[0]:
+            message="仪器编号必须唯一，不能重复！"
+        else:
+            info = sys.exc_info()
+            message=""
+            for file, lineno, function, text in traceback.extract_tb(info[2]):
+                message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+            message+= "** %s: %s" % info[:2]
         output={"success":False,"message":message}
         return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def update_contact(request):
-    data = json.loads(request.body.decode("utf-8"))#extjs read data from body
-    logging.info(data)
-    id1=data.get("id")
-    id1=int(id1)
-    rec=Contact.objects.get(id=id1)
-    rec.myupdate(data)
-    rec.save()
-    output={"success":True,"message":"update Contact " +str(rec.id)}
-    output["data"]=rec.json()
-    return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    try:
+        data = json.loads(request.body.decode("utf-8"))#extjs read data from body
+        logging.info(data)
+        id1=data.get("id")
+        id1=int(id1)
+        rec=Contact.objects.get(id=id1)
+        rec.myupdate(data)
+        rec.save()
+        output={"success":True,"message":"update Contact " +str(rec.id)}
+        output["data"]=rec.json()
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except ValueError as e:
+        info = sys.exc_info()
+        message=""
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
+    except django.db.utils.IntegrityError as e:
+        print(e,dir(e))
+        if "hetongbh" in e.args[0]:
+            message="合同编号必须唯一，不能重复！"
+        elif "yiqibh" in e.args[0]:
+            message="仪器编号必须唯一，不能重复！"
+        else:
+            info = sys.exc_info()
+            message=""
+            for file, lineno, function, text in traceback.extract_tb(info[2]):
+                message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+            message+= "** %s: %s" % info[:2]
+        output={"success":False,"message":message}
+        return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))
 def destroy_contact(request):
     data = json.loads(request.body.decode("utf-8"))
     id=data.get("id")
