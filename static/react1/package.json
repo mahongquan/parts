@@ -1,7 +1,7 @@
 {
   "name": "react-parts",
   "version": "0.1.11",
-  "license":"",
+  "license": "",
   "private": true,
   "proxy": "http://localhost:8000/",
   "homepage": ".",
@@ -12,6 +12,7 @@
     "lodash": "^4.17.5",
     "material-ui": "^1.0.0-beta.40",
     "moment": "^2.20.1",
+    "paper-css": "^0.4.0",
     "react": "^16.2.0",
     "react-autosuggest": "^9.3.2",
     "react-bootstrap": "^0.32.1",

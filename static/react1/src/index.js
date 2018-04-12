@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //import App from './App_bootstrap_route';
 import App from './App_bootstrap';
+//import App from './AppPaper';
 //import App from './App_mu';
 ReactDOM.render(<App />, document.getElementById('root'));
 // //import BasicExample from './BasicExample'
