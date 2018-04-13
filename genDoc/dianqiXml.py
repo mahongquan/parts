@@ -105,11 +105,8 @@ def getchannels(peizhi):
         second=elements[1]
         getElement(chanels,second)
     return chanels
-def genRecord(fn,c):
-    yiqibh=c.yiqibh
-    yiqixinghao=c.yiqixinghao
-    factors=[]
-    if yiqixinghao[0]=="C":
+def genRecord(c):
+    if c.yiqixinghao[0]=="C":
         data=genRecordCS(c)
     else:
         data=genRecordONH(c)
@@ -119,8 +116,8 @@ def genRecordONH(contact):
     tree = Document(os.path.join(MEDIA_ROOT,'ONH电气.docx'))
     tbls=tree.tables
     ps=tree.paragraphs
-    ps[1].runs[-1].text=baoxiang
-    ps[4].runs[-1].text=baoxiang
+    ps[1].runs[-1].text=contact.baoxiang
+    ps[4].runs[-1].text=contact.baoxiang
     # i=0
     # for p in tree.paragraphs:
     #     print(i)

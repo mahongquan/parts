@@ -115,8 +115,8 @@ def genRecord(fn,c):
         data=genRecordONH(c)
     return data
 def genRecordONH(contact):
-    #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH电气.xml'))
-    tree = Document(os.path.join(MEDIA_ROOT,'ONH电气.docx'))
+    #tree = ET.parse(os.path.join(MEDIA_ROOT,'ONH机械.xml'))
+    tree = Document(os.path.join(MEDIA_ROOT,'ONH机械.docx'))
     tbls=tree.tables
     ps=tree.paragraphs
     ps[1].runs[-1].text=baoxiang
@@ -197,8 +197,8 @@ def genRecordONH(contact):
     data=s.read()
     return data
 def genRecordCS(contact):
-    #tree = ET.parse(os.path.join(MEDIA_ROOT,'CS电气.xml'))
-    tree = Document(os.path.join(MEDIA_ROOT,'CS电气.docx'))
+    #tree = ET.parse(os.path.join(MEDIA_ROOT,'CS机械.xml'))
+    tree = Document(os.path.join(MEDIA_ROOT,'CS机械.docx'))
     print(tree.paragraphs)
     c2=tree.paragraphs[1]#仪器编号
     print(c2.runs)
