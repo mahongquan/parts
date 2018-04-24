@@ -6,8 +6,8 @@ import update from 'immutability-helper';
 import Client from './Client';
 //import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
-import './autosuggest.css';
-import './react-datetime.css'
+// import './autosuggest.css';
+// import './react-datetime.css'
 import RichTextEditor from 'react-rte';
 var _ = require('lodash');
 var moment = require('moment');
@@ -61,20 +61,20 @@ class ContactEdit2New  extends Component{
   }
   shouldComponentUpdate(nextProps, nextState) {
     if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-       console.log(this.props);
-       console.log(nextProps);
-       console.log("props not eq");
+       // console.log(this.props);
+       // console.log(nextProps);
+       // console.log("props not eq");
        return true;
     }
     if (!_.isEqual(this.state, nextState)) {
-      console.log("state not eq");
+      // console.log("state not eq");
       return true;
     }
     return false;
   }
   componentDidMount=()=>{
 
-    console.log("ContactEdit2New mounted");
+    // console.log("ContactEdit2New mounted");
   }
 
   close=()=>{
@@ -129,7 +129,7 @@ class ContactEdit2New  extends Component{
     this.old.detail=this.old.detail || "";
     this.old.addr=this.old.addr || "";
     var val1=RichTextEditor.createValueFromString(this.old.detail,"html");
-    console.log(val1);
+    // console.log(val1);
 
     this.setState({rich:val1});
     this.setState({contact:this.old});
@@ -363,7 +363,7 @@ class ContactEdit2New  extends Component{
     // for(var i in o){
     //   options_channels.push({label:o[i],value:o[i]});
     // }
-    console.log("render contactedit");
+    // console.log("render contactedit");
     return (
         <Modal show={this.props.showModal} onHide={this.props.handleClose}  dialogClassName="custom-modal">
           <Modal.Header closeButton>

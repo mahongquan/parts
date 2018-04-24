@@ -5,7 +5,10 @@
   "private": true,
   "proxy": "http://localhost:8000/",
   "homepage": ".",
+  "main": "main.js",
   "dependencies": {
+    "electron": "~1.8.4",
+    "sqlite3": "^4.0.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.3",
     "immutability-helper": "^2.6.4",

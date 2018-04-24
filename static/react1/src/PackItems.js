@@ -30,7 +30,7 @@ class PackItems extends React.Component {
   }
   auto_change=(data)=>{
     var value=data.value;
-    console.log("auto_change");
+    // console.log("auto_change");
     if (value.length>1)
     {
       Client.get("/rest/Item",{query:value} ,(items) => {
@@ -97,7 +97,7 @@ class PackItems extends React.Component {
     });
   }
   onChange=(event, { newValue })=>{
-    console.log(newValue);
+    // console.log(newValue);
     this.setState({auto_value:newValue});
   }
   handleEdit=(idx)=>{

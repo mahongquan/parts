@@ -77,7 +77,7 @@ class DlgImport extends React.Component{
    this.setState({ showalert: false }); 
   }
   render=()=>{
-    console.log("render ImportStandard")
+    // console.log("render ImportStandard")
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
         <td>{pack.id}</td>

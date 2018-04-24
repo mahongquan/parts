@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap-theme.css';
 import {Table,Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
@@ -17,7 +17,7 @@ import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
-import "./autosuggest.css"
+//import "./autosuggest.css"
 var host="";
 class App extends Component {
   mystate = {
