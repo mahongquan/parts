@@ -11,7 +11,76 @@ import DialogImportStandard from "./DialogImportStandard"
 import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
 import image from './logo.svg';
- console.log(image);
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import blue from 'material-ui/colors/blue';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+});
+
+class SimpleSelect extends React.Component {
+  state = {
+    age: '',
+    name: 'hai',
+  };
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  onClick=()=>{
+    console.log("click");
+  }
+  render() {
+    const { classes } = this.props;
+
+    return (
+          <Select
+            value="baoxiang"
+            onChange={this.handleChange}
+            inputProps={{
+              name: 'age',
+              id: 'age-simple',
+            }}
+          >
+            <MenuItem value="" onClick={this.onClick}>
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={10} onClick={this.onClick}>Ten</MenuItem>
+            <MenuItem value={20} onClick={this.onClick}>Twenty</MenuItem>
+            <MenuItem value={30} onClick={this.onClick}>Thirty</MenuItem>
+          </Select>
+    );
+  }
+}
+
+SimpleSelect.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+var SimpleSelectStyle=withStyles(styles)(SimpleSelect);
+const theme = createMuiTheme({
+  typography: {
+    // In Japanese the characters are usually larger.
+    fontSize: 24,
+  },
+  palette: {
+    primary: blue,
+  },
+});
 // console.log(darkBaseTheme);
 // console.log(getMuiTheme(darkBaseTheme));
 
@@ -293,6 +362,7 @@ class App extends Component {
     }
     const { anchorEl } = this.state;
     return (
+    <MuiThemeProvider theme={theme}>
       <div className="App">
         <img src={image} width="100px"></img>
         <Toolbar>
@@ -313,15 +383,15 @@ class App extends Component {
          <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
          </div>
           <div>
-        <button   variant="raised" onClick={this.handleTest}>test
-        </button>
-        <button
+        <Button   variant="raised" onClick={this.handleTest}>test
+        </Button>
+        <Button
           aria-owns={anchorEl ? 'simple-menu' : null}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
           {this.state.user}
-        </button>
+        </Button>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
@@ -351,9 +421,10 @@ class App extends Component {
         {prev}
 <label id="page">{this.state.start+1}../{this.state.total}</label>{next}
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+      <Button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</Button>
+      <SimpleSelectStyle />
       </div>
-
+</MuiThemeProvider>
     );
   }
 }
