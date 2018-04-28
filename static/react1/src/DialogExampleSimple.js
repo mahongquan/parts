@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 //import FlatButton from 'material-ui/FlatButton';
-import Button from 'material-ui/Button';
+import Button from 'material-ui/FlatButton';
 import LoginFormComponent from "./LoginFormComponent";
 //import MenuItem from 'material-ui/MenuItem';
 /**

@@ -78,7 +78,9 @@ def genPack(contact,fn):
     else:
         changeGrid2(tbl,1,2,contact.yiqixinghao+" "+contact.channels)
     if contact.yiqixinghao[0]=='C':
-        changeGrid2(tbl,2,3,"1根")
+        changeGrid2(tbl,2,1,"")
+        pass
+        #changeGrid2(tbl,2,3,"1根")
     elif contact.yiqixinghao[0]=='O':
         changeGrid2(tbl,2,3,"3根")
     elif contact.yiqixinghao[0]=='N':

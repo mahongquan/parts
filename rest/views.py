@@ -59,6 +59,7 @@ def getIniFile(contact):
         else:
             pass
     except FileNotFoundError as e:
+        logging.info(e)
         pass
     xhp=contact.yiqixinghao.split("-")[0]
     path=os.path.join(filepath,"仪器资料/%s/%s" % (contact.yiqibh,xhp))
@@ -70,6 +71,7 @@ def getIniFile(contact):
         else:
             return None
     except FileNotFoundError as e:
+        logging.info(e)
         return None
        
 def inItems(item,items):
