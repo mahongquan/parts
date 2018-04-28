@@ -9,4 +9,4 @@ window.myremote={
     // webFrame:electron.webFrame,
 };
 require("babel-register");
-require("./index.js");
+require("./index_local.js");
