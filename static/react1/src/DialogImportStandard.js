@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 //import FlatButton from 'material-ui/FlatButton';
-import Button from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import LoginFormComponent from "./LoginFormComponent";
 //import MenuItem from 'material-ui/MenuItem';
 /**
@@ -45,9 +45,8 @@ export default class DialogImportStandard extends React.Component {
         <Button  variant="raised" onClick={this.handleOpen} >{this.props.title}</Button>
         <Dialog
           title={this.props.title}
-          modal={false}
+          modal={"false"}
           open={this.state.open}
-          onRequestClose={this.handleClose}
         >
           <LoginFormComponent onLoginSubmit={this.onLoginSubmit} dlgclose={this.handleClose}/>
         </Dialog>

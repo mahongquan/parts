@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';//import injectTapEventPlugin from 'react-tap-event-plugin';
-import Button from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
@@ -13,7 +10,8 @@ import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
 import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
-// console.log("AppMu");
+import image from './logo.svg';
+ console.log(image);
 // console.log(darkBaseTheme);
 // console.log(getMuiTheme(darkBaseTheme));
 
@@ -295,8 +293,8 @@ class App extends Component {
     }
     const { anchorEl } = this.state;
     return (
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div className="App">
+        <img src={image} width="100px"></img>
         <Toolbar>
           <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
                 </DialogExampleSimple>
@@ -336,28 +334,25 @@ class App extends Component {
         </Menu>
        </div>
         </Toolbar>
-        {
-    //     <Table>
-    // <TableHead>
-    //   <TableRow>
-    //     <TableCell>id</TableCell>
-    //     <TableCell>合同编号</TableCell>
-    //     <TableCell>用户单位</TableCell>
-    //     <TableCell>包箱</TableCell>
-    //     <TableCell>仪器型号</TableCell>
-    //   </TableRow>
-    // </TableHead>
-    //      <TableBody>
-    //         {contactRows}
-    //       </TableBody>
-    //     </Table>
-      }
+        <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell>id</TableCell>
+        <TableCell>合同编号</TableCell>
+        <TableCell>用户单位</TableCell>
+        <TableCell>包箱</TableCell>
+        <TableCell>仪器型号</TableCell>
+      </TableRow>
+    </TableHead>
+         <TableBody>
+            {contactRows}
+          </TableBody>
+        </Table>
         {prev}
 <label id="page">{this.state.start+1}../{this.state.total}</label>{next}
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
       </div>
-              </MuiThemeProvider>
 
     );
   }

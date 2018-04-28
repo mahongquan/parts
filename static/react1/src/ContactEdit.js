@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import Button from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import Client from './Client';
 import UsePacks from './UsePacks';
 import { withStyles } from 'material-ui/styles';
