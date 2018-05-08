@@ -1,1 +1,0 @@
-python c.py

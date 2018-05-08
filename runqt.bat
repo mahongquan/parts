@@ -1,1 +1,0 @@
-d:\python34\python runqt.py
