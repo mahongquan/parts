@@ -157,7 +157,7 @@ function css(el, props) {
  * Returns the line color from the given string or array.
  */
 function getColor(color, idx) {
-    return typeof color == 'string' ? color : color[idx % color.length];
+    return typeof color === 'string' ? color : color[idx % color.length];
 }
 /**
  * Internal method that draws the individual lines.

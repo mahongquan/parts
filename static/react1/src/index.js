@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //import App from './App_bootstrap_route';
 import App from './App_bootstrap';
-//import App from './AppPaper';
-//import App from './App_mu';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import './autosuggest.css';
+import './react-datetime.css';
 ReactDOM.render(<App />, document.getElementById('root'));
 // //import BasicExample from './BasicExample'
 // //ReactDOM.render(<BasicExample />, document.getElementById('root'));

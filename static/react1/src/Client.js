@@ -1,5 +1,5 @@
 /////////////
-import queryString from 'query-string';
+import queryString from 'querystring';
 let host=""
 if(window.myremote){
   host="http://127.0.0.1:8000"

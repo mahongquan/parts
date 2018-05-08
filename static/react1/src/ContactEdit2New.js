@@ -11,6 +11,7 @@ import Autosuggest from 'react-autosuggest';
 import RichTextEditor from 'react-rte';
 var _ = require('lodash');
 var moment = require('moment');
+// eslint-disable-next-line
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
 

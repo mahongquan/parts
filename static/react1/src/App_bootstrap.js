@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
+
 import {Table,Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
