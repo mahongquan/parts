@@ -44,7 +44,20 @@ class App extends Component {
     showDlgImport:false,
     showDlgEdit:false,
   }
-
+  constructor(props) {
+    super(props);
+    this.dlgwait = React.createRef();
+    this.dlgitems=React.createRef();
+    this.dlgurl=React.createRef();
+    this.dlgfolder=React.createRef();
+    this.dlgcopypack=React.createRef();
+    this.dlgcheck=React.createRef();
+    this.dlgstat=React.createRef();
+    this.dlgpacks=React.createRef();
+    this.dlgimport=React.createRef();
+    this.dlglogin=React.createRef();
+    this.dlgimportHT=React.createRef();
+  }
   handleClickFilter = (event) => {
     //console.log(event);
     event.preventDefault();
@@ -232,33 +245,33 @@ class App extends Component {
     this.refs.dlgurl.open(url,data,this.handleContactChange2); 
   }
   openDlgItems=()=>{
-    this.refs.dlgitems.open();
+    this.dlgitems.current.open();
   }
   opendlgfolder=(contactid)=>{
-   this.refs.dlgfolder.open(contactid); 
+   this.dlgfolder.current.open(contactid); 
   }
   opendlgcheck=(contactid,yiqibh)=>{
-   this.refs.dlgcheck.open(contactid,yiqibh); 
+   this.dlgcheck.current.open(contactid,yiqibh); 
   }
   openDlgPacks=()=>{
-    this.refs.dlgpacks.open();
+    this.dlgpacks.current.open();
   }
   openDlgCopyPack=()=>{
-    this.refs.dlgcopypack.open();
+    this.dlgcopypack.current.open();
   }
   openDlgStat=()=>{
-    this.refs.dlgstat.open();
+    this.dlgstat.current.open();
   }
   openDlgLogin=()=>{
     console.log("openDlgLogin");
-    this.refs.dlglogin.open();
+    this.dlglogin.current.open();
   }
   openDlgImport=()=>{
     //this.refs.dlgimport.open();
     this.setState({showDlgImport:true});
   }
   openDlgImportHT=()=>{
-    this.refs.dlgimportHT.open();
+    this.dlgimportHT.current.open();
   }
   onFilterDW =()=>{
         console.log("filter dw");
@@ -334,24 +347,24 @@ class App extends Component {
             <button onClick={this.closeFilter}>close</button>
         </Tooltip>
     </Overlay>
-    <DlgItems ref="dlgitems" />
-    <DlgPacks ref="dlgpacks" />
-    <DlgCopyPack ref="dlgcopypack" />
-    <DlgStat ref="dlgstat" />
+    <DlgItems ref={this.dlgitems} />
+    <DlgPacks ref={this.dlgpacks} />
+    <DlgCopyPack ref={this.dlgcopypack} />
+    <DlgStat ref={this.dlgstat} />
     <DlgImport showModal={this.state.showDlgImport} handleClose={()=>{
       this.setState({showDlgImport:false});
     }} />
-    <DlgImportHT ref="dlgimportHT" parent={this} />
-    <DlgCheck ref="dlgcheck" />
-    <DlgFolder ref="dlgfolder" />
-    <DlgWait ref="dlgwait" />
-    <DlgUrl ref="dlgurl" />
-    <DlgLogin ref="dlglogin" onLoginSubmit={this.onLoginSubmit} />
+    <DlgImportHT ref={this.dlgimportHT} parent={this} />
+    <DlgCheck ref={this.dlgcheck} />
+    <DlgFolder ref={this.dlgfolder} />
+    <DlgWait ref={this.dlgwait} />
+    <DlgUrl ref={this.dlgurl} />
+    <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
     <ContactEdit2New showModal={this.state.showDlgEdit} 
       handleClose={()=>{
         this.setState({showDlgEdit:false});
       }}
-     ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
+      parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>

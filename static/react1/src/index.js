@@ -5,7 +5,8 @@ import App from './App_bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './autosuggest.css';
-import './react-datetime.css';
+import 'react-datetime/css/react-datetime.css';
+//ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById('root'));
 ReactDOM.render(<App />, document.getElementById('root'));
 // //import BasicExample from './BasicExample'
 // //ReactDOM.render(<BasicExample />, document.getElementById('root'));
