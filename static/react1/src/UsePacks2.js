@@ -217,7 +217,7 @@ class UsePacks2 extends React.Component {
             )}
           />
         <button  style={{margin:"10px 10px 10px 10px"}} className="btn" onClick={this.bibei}>必备</button>
-        <button  className="btn btn-info" onClick={this.fujia}>附加</button>
+
       </div>
       <div style={{margin:"10px 10px 10px 10px",display:"flex",alignItems:"center"}}>
         <label>新包名称：</label>
