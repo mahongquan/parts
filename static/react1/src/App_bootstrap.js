@@ -225,7 +225,7 @@ class App extends Component {
   //<button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</button>
   //<button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
   opendlgwait=(contactid)=>{
-    this.refs.dlgwait.open(contactid); 
+    this.dlgwait.current.open(contactid); 
   }
   handleContactChange2= (contact) => {
     var idx=this.currentIndex;
@@ -242,7 +242,7 @@ class App extends Component {
   };
   opendlgurl=(url,parent,idx,data)=>{
     this.currentIndex=idx;
-    this.refs.dlgurl.open(url,data,this.handleContactChange2); 
+    this.dlgurl.current.open(url,data,this.handleContactChange2); 
   }
   openDlgItems=()=>{
     this.dlgitems.current.open();
