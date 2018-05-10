@@ -148,23 +148,25 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-        <table><tbody><tr><td>输入备件</td><td>
-        <Autosuggest
-          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
-          onSuggestionSelected={this.auto_select}
-          onSuggestionsFetchRequested={this.auto_change}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={(item) => item.name}
-          ref="autocomplete"
-          suggestions={this.state.auto_items}
-          renderSuggestion={(item) => (
-            <span>{item.id+": "+item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
-          )}
-        /></td></tr></tbody></table>
-      <p>新备件名称：
+        <div style={{display:"flex",alignItems:"center"}}>
+          <label>输入备件</label>
+          <Autosuggest
+            inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+            onSuggestionSelected={this.auto_select}
+            onSuggestionsFetchRequested={this.auto_change}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={(item) => item.name}
+            ref="autocomplete"
+            suggestions={this.state.auto_items}
+            renderSuggestion={(item) => (
+              <span>{item.id+": "+item.bh+" "}<b>{item.name}</b>{" "+item.guige}</span>
+            )}   />
+      </div>
+      <div style={{display:"flex",alignItems:"center"}}>
+        <label>新备件名称：</label>
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>
-      </p>
+      </div>
       <div style={{minHeight:"200px"}}></div>
       <PackItemEditNew ref="dlg" parent={this} />
       </div>

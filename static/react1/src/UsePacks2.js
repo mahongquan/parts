@@ -202,27 +202,29 @@ class UsePacks2 extends React.Component {
             {usepackRows}
           </tbody>
         </Table>
-        <table><tbody><tr><td>输入包</td>
-        <td><Autosuggest
-          inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
-          onSuggestionSelected={this.auto_select}
-          onSuggestionsFetchRequested={this.auto_change}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={(item) => item.name}
-          ref="autocomplete"
-          suggestions={this.state.auto_items}
-          renderSuggestion={(item) => (
-            <span>{item.name}</span>
-          )}
-        /></td>
-        <td><button  style={{margin:"10px 10px 10px 10px"}} className="btn" onClick={this.bibei}>必备</button></td>
-        <td><button  className="btn btn-info" onClick={this.fujia}>附加</button></td>
-        </tr></tbody></table>
-      <div style={{margin:"10px 10px 10px 10px"}}>新包名称：
+        <div style={{display:"flex",alignItems:"center"}}>
+          <label>输入包</label>
+          <Autosuggest
+            inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
+            onSuggestionSelected={this.auto_select}
+            onSuggestionsFetchRequested={this.auto_change}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={(item) => item.name}
+            ref="autocomplete"
+            suggestions={this.state.auto_items}
+            renderSuggestion={(item) => (
+              <span>{item.name}</span>
+            )}
+          />
+        <button  style={{margin:"10px 10px 10px 10px"}} className="btn" onClick={this.bibei}>必备</button>
+        <button  className="btn btn-info" onClick={this.fujia}>附加</button>
+      </div>
+      <div style={{margin:"10px 10px 10px 10px",display:"flex",alignItems:"center"}}>
+        <label>新包名称：</label>
         <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-primary" id="id_new_usepack" onClick={this.new_pack}>新包</button>
       </div>
-      </div>
+    </div>
     );
   }
 }
