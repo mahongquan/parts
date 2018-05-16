@@ -339,7 +339,7 @@ class App extends Component {
       next=null;
     }
     return (
-    <div id="todoapp" className="table-responsive">
+<div id="todoapp" className="table-responsive">
     <Overlay target={this.state.target} 
         container={this} show={this.state.showcontext}  placement="bottom">
         <Tooltip id="tooltip1" >
@@ -379,37 +379,23 @@ class App extends Component {
       <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
     </Nav>
   </Navbar>
-    <table>
-    <tbody>
-    <tr>
-   <td>
-     <DropdownButton title={this.state.user} id="id_dropdown1">
-        <li hidden={this.state.user!=="AnonymousUser"}>
-        <a onClick={this.openDlgLogin}>登录</a>
-        </li>
-        <li  hidden={this.state.user==="AnonymousUser"} >
-          <a onClick={this.handleLogout}>注销</a>
-        </li>
-     </DropdownButton>
-  </td>
-  <td>
-        <input type="text" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
-        <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
-        <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
-        </button>
-  </td>
-  <td>
-       <button className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
-  </td>
-   <td>
-   <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
-  </td>
-  <td>
-   <button className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
-  </td>
-  </tr>
-  </tbody>
- </table>
+    <div style={{display:"flex",alignItems:"center"}}>
+       <DropdownButton title={this.state.user} id="id_dropdown1">
+          <li hidden={this.state.user!=="AnonymousUser"}>
+          <a onClick={this.openDlgLogin}>登录</a>
+          </li>
+          <li  hidden={this.state.user==="AnonymousUser"} >
+            <a onClick={this.handleLogout}>注销</a>
+          </li>
+       </DropdownButton>
+       <input style={{margin:"0px 10px 0px 10px"}} type="text" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
+       <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
+          <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+       </button>
+       <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
+       <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
+       <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
+    </div>
 <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>

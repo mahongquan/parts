@@ -4,74 +4,174 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const path = require('path')
-const url = require('url')
-// var sqlite3 = require('sqlite3').verbose();
-// var db = new sqlite3.Database('data.db');
+//-----------------------------------------------------------------
 
-// db.serialize(function() {
-//     db.run("CREATE TABLE lorem (info TEXT)");
+const {Menu, MenuItem, dialog, ipcMain }=electron;
 
-//       var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-//         for (var i = 0; i < 10; i++) {
-//                 stmt.run("Ipsum " + i);
-//                   }
-//           stmt.finalize();
 
-//             //db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-//                     //console.log(row.id + ": " + row.info);
-//                       //});
-// });
+//是否可以安全退出
 
-//db.close();
+let safeExit = false;
+
+//-----------------------------------------------------------------
+
+
+
 // Keep a global reference of the window object, if you don't, the window will
+
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
 
-function createWindow () {
+let mainWindow;
+const devMode = (process.argv || []).indexOf('--dev') !== -1;
+const localMode = (process.argv || []).indexOf('--local') !== -1;
+console.log(__dirname);
+let entryBasePath;
+  if(localMode){//local mode
+    entryBasePath =  `file://${__dirname}/src/index.html`;  
+  }
+  else{         //devMode  productionMode
+    if(devMode){
+      entryBasePath = 'http://localhost:3000';
+    }
+    else{
+      entryBasePath =  'file://${__dirname}/build/index.html';     
+    }
+  }
+console.log(entryBasePath);
+const createWindow = () => {
+  console.log("createWindow");
+
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
 
+  mainWindow = new BrowserWindow({
+
+    width: 800,
+
+    height: 600,
+
+  });
+  //menu
+  const template=
+    [{
+      label: 'File',
+      submenu: [
+        {
+          label: 'New Window',
+          accelerator: 'Ctrl+N',
+          click: () =>{createWindow()},
+        },
+        {
+          label: 'HOME',
+          accelerator: 'Ctrl+H',
+          click: (item, win) =>{win.loadURL(entryBasePath);},
+        },
+        {
+          label: 'BACK',
+          accelerator: 'Ctrl+B',
+          click: (item, win) =>{
+            win.webContents.send("goback");
+          },
+        },
+        {
+          label: 'Exit',
+          accelerator: 'Ctrl+E',
+          click: (item, win) =>{
+             // console.log(win);
+             // console.log(mainWindow);
+             win.close();
+          },
+        }
+        ]
+    }];
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+  //
+  if (devMode || localMode) {
+      mainWindow.openDevTools();
+  }
   // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '/src/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+
+  mainWindow.loadURL(entryBasePath);
+
+
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-  mainWindow.openDevTools();
+
+  // /mainWindow.webContents.openDevTools();
+  // mainWindow.on('close', (e) => {
+
+  //   if(!safeExit){
+
+  //     e.preventDefault();
+
+  //     mainWindow.webContents.send('action', 'exiting');
+
+  //   }
+
+  // });
+
+  //-----------------------------------------------------------------
+
+
+
   // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
+
+  mainWindow.on('closed', () => {
+
     // Dereference the window object, usually you would store windows
+
     // in an array if your app supports multi windows, this is the time
+
     // when you should delete the corresponding element.
-    mainWindow = null
-  })
-}
+
+    mainWindow = null;
+
+  });
+
+};
+
+
 
 // This method will be called when Electron has finished
+
 // initialization and is ready to create browser windows.
+
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+
+app.on('ready', createWindow);
+
+
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function () {
+
+app.on('window-all-closed', () => {
+
   // On OS X it is common for applications and their menu bar
+
   // to stay active until the user quits explicitly with Cmd + Q
+
   if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
 
-app.on('activate', function () {
+    app.quit();
+
+  }
+
+});
+
+
+
+app.on('activate', () => {
+
   // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+  // dock icon is clicked and there are no other windows open.
+
+  if (mainWindow === null) {
+
+    createWindow();
+
+  }
+
+});
+
+

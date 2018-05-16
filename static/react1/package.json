@@ -1,6 +1,6 @@
 {
   "name": "react-parts",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "license": "",
   "private": true,
   "proxy": "http://localhost:8000/",
@@ -14,7 +14,7 @@
     "lodash": "^4.17.10",
     "material-ui": "^1.0.0-beta.43",
     "moment": "^2.22.1",
-    "paper-css": "^0.4.0",
+    "paper-css": "^0.4.1",
     "querystring": "^0.2.0",
     "react": "^16.3.2",
     "react-autosuggest": "^9.3.4",
@@ -24,16 +24,16 @@
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.2.2",
     "react-rte": "^0.16.1",
-    "spin.js": "^3.1.0",
-    "sqlite3": "^4.0.0"
+    "spin.js": "^3.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-transform-assets-import-to-string": "^1.1.0",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "local":"electron . --local",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

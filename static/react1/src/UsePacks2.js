@@ -203,14 +203,13 @@ class UsePacks2 extends React.Component {
           </tbody>
         </Table>
         <div style={{display:"flex",alignItems:"center"}}>
-          <label>输入包</label>
+          <label>输入包:</label>
           <Autosuggest
             inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             getSuggestionValue={(item) => item.name}
-            ref="autocomplete"
             suggestions={this.state.auto_items}
             renderSuggestion={(item) => (
               <span>{item.name}</span>
@@ -219,9 +218,9 @@ class UsePacks2 extends React.Component {
         <button  style={{margin:"10px 10px 10px 10px"}} className="btn" onClick={this.bibei}>必备</button>
 
       </div>
-      <div style={{margin:"10px 10px 10px 10px",display:"flex",alignItems:"center"}}>
+      <div style={{margin:"10px 10px 10px 0px",display:"flex",alignItems:"center"}}>
         <label>新包名称：</label>
-        <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
+        <input  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-primary" id="id_new_usepack" onClick={this.new_pack}>新包</button>
       </div>
     </div>
