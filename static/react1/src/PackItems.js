@@ -33,7 +33,7 @@ class PackItems extends React.Component {
     // console.log("auto_change");
     if (value.length>1)
     {
-      Client.get("/rest/Item",{query:value} ,(items) => {
+      Client.get("/rest/Item",{query:value,limit:15} ,(items) => {
           this.setState({ auto_items: items.data, auto_loading: false })
       });
     }

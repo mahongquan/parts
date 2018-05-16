@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {Table,Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import DlgLogin from './DlgLogin';
@@ -410,13 +410,13 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<Table condensed={true}  bordered={true}><thead><tr><th>ID</th>
+<table className="table-condensed table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
 <th>客户地址</th><th>合同编号</th>
 <th><span onClick={this.handleClickFilter}>仪器编号</span></th>
 <th>仪器型号</th><th>通道配置</th>
-<th>包箱<DropdownButton title={this.state.baoxiang} id="id_dropdown2">
+<th>包箱<DropdownButton title="" id="id_dropdown2">
       <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
       <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
@@ -424,7 +424,7 @@ class App extends Component {
     </DropdownButton>
 </th>
 <th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
-</Table>
+</table>
 {prev}<label id="page">{this.state.start+1}../{this.state.total}</label>{next}
 <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
 <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>

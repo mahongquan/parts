@@ -737,7 +737,7 @@ def view_pack(request):
     logging.info("here")
     logging.info(request.GET)
     start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","20"))
+    limit=int(request.GET.get("limit","200"))
     search=request.GET.get("search",'')
     logging.info("search="+search)
     if search!='':

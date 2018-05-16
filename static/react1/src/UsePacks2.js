@@ -64,7 +64,7 @@ class UsePacks2 extends React.Component {
     var value=data.value;
     if (value.length>1)
     {
-      Client.get("/rest/Pack",{search:value} ,(items) => {
+      Client.get("/rest/Pack",{search:value,limit:15} ,(items) => {
           this.setState({ auto_items: items.data })
       });
     }
