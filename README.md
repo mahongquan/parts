@@ -1,5 +1,7 @@
 # 备件管理
 数据库结构备份在tabelStruct.sql文件中。
+
+
 django服务器依赖安装：
 
 	pip install -r depends.txt 
