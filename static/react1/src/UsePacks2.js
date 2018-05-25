@@ -34,6 +34,10 @@ class UsePacks2 extends React.Component {
     auto_loading: false,
     release:true,
   };
+  constructor(props) {
+    super(props);
+    this.auto1 = React.createRef();
+  }
    componentWillReceiveProps(nextProps) {
     if(nextProps.contact_hetongbh){
       this.setState({newPackName:nextProps.contact_hetongbh});
@@ -99,6 +103,8 @@ class UsePacks2 extends React.Component {
   // }
   bibei= (id) => {
     this.setState({auto_value:"必备"});
+    console.log(this.auto1);
+    this.auto1.current.input.click();
     //this.auto_change(null,"必备");
   }
   fujia= (id) => {
@@ -204,7 +210,7 @@ class UsePacks2 extends React.Component {
         </Table>
         <div style={{display:"flex",alignItems:"center"}}>
           <label>输入包:</label>
-          <Autosuggest
+          <Autosuggest ref={this.auto1}
             inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
