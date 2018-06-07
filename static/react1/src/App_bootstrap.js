@@ -388,13 +388,17 @@ class App extends Component {
             <a onClick={this.handleLogout}>注销</a>
           </li>
        </DropdownButton>
-       <input style={{margin:"0px 10px 0px 10px"}} type="text" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
-       <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
-          <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
-       </button>
+       <div class="input-group" style={{width:"250px"}}>
+     
+      <input type="text" class="form-control" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
+       <span class="input-group-btn">
+        <button class="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+       
        <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
        <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
-       <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
+       <button  style={{margin:"0px 10px 0px 10px",display:"none"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
     </div>
 <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
