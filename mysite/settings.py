@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     #'ajax_select',
     'rest',
     'fs',
-    'extjs'
+    #'extjs'
 ]
 
 MIDDLEWARE = [
