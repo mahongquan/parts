@@ -44,7 +44,7 @@ function getRaw(url,cb,err_callback) {
 }
 function get(url,data,cb,err_callback) {
   url=url+"?"+queryString.stringify(data)
-  //console.log(url);
+  console.log(url);
   return getRaw(url,cb,err_callback)
 }
 function delete1(url,data,cb) {

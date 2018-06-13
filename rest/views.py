@@ -1536,7 +1536,9 @@ def showcontact(request):
     c=Contact.objects.get(id=contact_id)
     dic={}
     dic["contact"]=c
+
     (items,items2)=c.huizong()
+    logging.info(items)
     dic["items"]=items
     if len(items2)==0:
         items2=None

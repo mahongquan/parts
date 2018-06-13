@@ -16,6 +16,7 @@ import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
+import DlgDetail from './DlgDetail';
 //import "./autosuggest.css"
 var host="";
 class App extends Component {
@@ -43,6 +44,7 @@ class App extends Component {
     baoxiang:"",
     showDlgImport:false,
     showDlgEdit:false,
+    showDlgDetail:false,
   }
   constructor(props) {
     super(props);
@@ -170,8 +172,9 @@ class App extends Component {
   };
 
   onDetailClick=(contactid)=>{
-    console.log(contactid);
-    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+    // console.log(contactid);
+    // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+    this.setState({showDlgDetail:true,contactid:contactid});
   }
   handleNext = (e) => {
     this.mystate.start=this.mystate.start+this.mystate.limit;
@@ -360,6 +363,10 @@ class App extends Component {
     <DlgWait ref={this.dlgwait} />
     <DlgUrl ref={this.dlgurl} />
     <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
+    <DlgDetail  contactid={this.state.contactid} showModal={this.state.showDlgDetail} 
+      handleClose={()=>{
+        this.setState({showDlgDetail:false});
+    }} />
     <ContactEdit2New showModal={this.state.showDlgEdit} 
       handleClose={()=>{
         this.setState({showDlgEdit:false});

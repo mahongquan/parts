@@ -39,8 +39,8 @@ class MyEncoder(json.JSONEncoder):
             return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
         if isinstance(obj,datetime.datetime):
             return "%d-%02d-%02d" % (obj.year,obj.month,obj.day)
-        if isinstance(obj,mysite.parts.models.Item):
-            return obj.name
+        # if isinstance(obj,mysite.parts.models.Item):
+        #     return obj.name
         if isinstance(obj,FieldFile):
             #logging.info(dir(obj))
             return obj.name
