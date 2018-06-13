@@ -91,7 +91,7 @@ class App extends Component {
           start:this.mystate.start
         });
       },(error)=>{
-          console.log(typeof(error));
+          // console.log(typeof(error));
           if(error instanceof SyntaxError){
             this.openDlgLogin();
           }
@@ -203,7 +203,7 @@ class App extends Component {
     };
   }
   onLoginSubmit= (data) => {
-    console.log(data);
+    // console.log(data);
     Client.login(data.username, data.password, (res) => {
       if (res.success) {
         this.setState({
@@ -263,7 +263,7 @@ class App extends Component {
     this.dlgstat.current.open();
   }
   openDlgLogin=()=>{
-    console.log("openDlgLogin");
+    // console.log("openDlgLogin");
     this.dlglogin.current.open();
   }
   openDlgImport=()=>{
@@ -388,11 +388,11 @@ class App extends Component {
             <a onClick={this.handleLogout}>注销</a>
           </li>
        </DropdownButton>
-       <div class="input-group" style={{width:"250px"}}>
+       <div className="input-group" style={{width:"250px"}}>
      
-      <input type="text" class="form-control" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
-       <span class="input-group-btn">
-        <button class="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      <input type="text" className="form-control" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
+       <span className="input-group-btn">
+        <button className="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
       </span>
     </div>
        

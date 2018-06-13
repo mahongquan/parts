@@ -112,7 +112,7 @@ class DlgCopyPack  extends React.Component{
     else{
       showbutton="none"
     }
-    console.log(this.state);
+    // console.log(this.state);
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
