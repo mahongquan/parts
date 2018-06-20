@@ -18,7 +18,7 @@ import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 //import "./autosuggest.css"
-var host="";
+// var host="";
 class App extends Component {
   mystate = {
     start:0,

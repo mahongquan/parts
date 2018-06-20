@@ -31,7 +31,7 @@ class DlgStat extends Component {
    var self=this;
    var data= { limit:10,search:"xls",baoxiang:baoxiang};
    Client.get("/rest/month12",data, function(result){
-          self.setState({lbls:result.lbls,values:result.values});
+          self.setState({lbls:result.lbls,values:result.values,baoxiang:""});
    })
   }
   onSelectBaoxiang=(baoxiang)=>{

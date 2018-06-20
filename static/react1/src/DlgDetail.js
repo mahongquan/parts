@@ -1,7 +1,7 @@
 import React from 'react';
-import {Alert, Modal,Table} from "react-bootstrap";
+import {Modal,Table} from "react-bootstrap";
 import Client from './Client';
-import update from 'immutability-helper';
+// import update from 'immutability-helper';
 var _ = require('lodash');
 class DlgDetail extends React.Component{
   state={ 
@@ -77,15 +77,15 @@ class DlgDetail extends React.Component{
 
   render=()=>{
     // console.log("render ImportStandard")
-    let alert;
-    if (this.state.showalert) {
-        alert=(<Alert bsStyle="info" onDismiss={this.handleDismiss}>
-          <p>
-            {this.state.info}
-          </p>
-        </Alert>
-      );
-    }
+    // let alert;
+    // if (this.state.showalert) {
+    //     alert=(<Alert bsStyle="info" onDismiss={this.handleDismiss}>
+    //       <p>
+    //         {this.state.info}
+    //       </p>
+    //     </Alert>
+    //   );
+    // }
     const contactRows = this.state.items.map(this.mapfunc);
     let contactRows2,quehuo;
     if(this.state.items2.length>0){
