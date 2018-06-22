@@ -37,7 +37,7 @@ urlpatterns = [
     #url(r'^admin/lookups/', include(ajax_select_urls)),
     # path('admin/', admin.site.urls),
     #url(r'^explore/',include('explore.urls')), 
-    # url(r'^accounts/login/$', mainview.loginpage),
+    url(r'^accounts/login/$', mainview.loginpage),
     # url(r'^login/',mainview.mylogin),  
     # url(r'^logout/',mainview.mylogout),
     # url(r'^afterlogin/',mainview.afterlogin),

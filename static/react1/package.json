@@ -9,7 +9,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
-    "electron": "~1.8.4",
+    "electron": "^2.0.2",
     "immutability-helper": "^2.7.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

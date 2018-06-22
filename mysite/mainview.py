@@ -4,12 +4,12 @@
 from django.http import HttpResponse,HttpResponseRedirect
 # import datetime
 # import json
-# from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response
 # #from rest_framework.request import Request
 # #from rest_framework.parsers import JSONParser
 # import extjs
 # from django.template.context import RequestContext
-# from django.template.context_processors import csrf
+from django.template.context_processors import csrf
 # from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import authenticate, login,logout
 # from django.contrib.auth.models import Group
@@ -399,11 +399,11 @@ def index(request):
 #     t=HttpResponse(mimetype="text/xml")
 #     t.content=data
 #     return (t)
-# def loginpage(request):
-#     c={}
-#     c.update(csrf(request))
-#     r=render_to_response("registration/login.html",c)
-#     return(r)
+def loginpage(request):
+    c={}
+    c.update(csrf(request))
+    r=render_to_response("registration/login.html",c)
+    return(r)
 # def mylogin(request):
 #     username = request.POST['username']
 #     password = request.POST['password']
