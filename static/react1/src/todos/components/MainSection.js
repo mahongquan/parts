@@ -73,6 +73,7 @@ export default class MainSection extends Component {
           )}
         </ul>
         {this.renderFooter(completedCount)}
+        <div style={{minHeight:"30px"}}></div>
       </section>
     )
   }

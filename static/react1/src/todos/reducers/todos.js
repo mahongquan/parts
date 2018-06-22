@@ -27,9 +27,7 @@ export default function todos(state = initialState, action) {
 
     case EDIT_TODO:
       return state.map(todo =>
-        todo.id === action.id ?
-          { ...todo, text: action.text } :
-          todo
+        todo.id === action.id ? {...todo, text: action.text }:todo
       )
 
     case COMPLETE_TODO:

@@ -4,9 +4,9 @@ import classnames from 'classnames'
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
 
 const FILTER_TITLES = {
-  [SHOW_ALL]: 'All',
-  [SHOW_ACTIVE]: 'Active',
-  [SHOW_COMPLETED]: 'Completed'
+  [SHOW_ALL]: '全部',
+  [SHOW_ACTIVE]: '未完成',
+  [SHOW_COMPLETED]: '已完成'
 }
 
 export default class Footer extends Component {
@@ -20,11 +20,11 @@ export default class Footer extends Component {
 
   renderTodoCount() {
     const { activeCount } = this.props
-    const itemWord = activeCount === 1 ? 'item' : 'items'
+    // const itemWord = activeCount === 1 ? '' : ''
 
     return (
       <span className="todo-count">
-        <strong>{activeCount || 'No'}</strong> {itemWord} left
+        <strong>{activeCount+"件" || '无'}</strong>待办
       </span>
     )
   }
@@ -48,7 +48,7 @@ export default class Footer extends Component {
       return (
         <button className="clear-completed"
                 onClick={onClearCompleted} >
-          Clear completed
+          全部清除
         </button>
       )
     }

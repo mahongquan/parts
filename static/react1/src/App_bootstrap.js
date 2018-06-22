@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import DlgTodos from './DlgTodos';
 import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
@@ -45,6 +45,7 @@ class App extends Component {
     showDlgImport:false,
     showDlgEdit:false,
     showDlgDetail:false,
+    showDlgTodos:false,
   }
   constructor(props) {
     super(props);
@@ -362,11 +363,15 @@ class App extends Component {
     <DlgFolder ref={this.dlgfolder} />
     <DlgWait ref={this.dlgwait} />
     <DlgUrl ref={this.dlgurl} />
+
     <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
     <DlgDetail  contactid={this.state.contactid} showModal={this.state.showDlgDetail} 
       handleClose={()=>{
         this.setState({showDlgDetail:false});
     }} />
+    <DlgTodos showModal={this.state.showDlgTodos} close={()=>{
+      this.setState({showDlgTodos:false});
+    }}/> 
     <ContactEdit2New showModal={this.state.showDlgEdit} 
       handleClose={()=>{
         this.setState({showDlgEdit:false});
@@ -384,6 +389,9 @@ class App extends Component {
       <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>备件</NavItem>
       <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>复制包</NavItem>
       <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
+      <NavItem eventKey={5} href="#" onClick={()=>{
+        this.setState({showDlgTodos:true});
+      }}>待办</NavItem>
     </Nav>
   </Navbar>
     <div style={{display:"flex",alignItems:"center"}}>
