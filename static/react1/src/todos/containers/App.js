@@ -6,10 +6,20 @@ import Header from '../components/Header'
 import MainSection from '../components/MainSection'
 import * as TodoActions from '../actions'
 
-const App = ({todos, actions}) => (
-  <div>
-    <Header addTodo={actions.addTodo} />
-    <MainSection todos={todos} actions={actions} />
+class App extends React.Component{// = ({todos, actions}) => (
+ constructor(props){
+  super(props);
+  props.actions.loadTodo();
+
+ }
+ componentWillReceiveProps(nextProps) {
+  // console.log(nextProps)
+ }
+ render=()=>{ 
+  // console.log(this.props);
+  return(<div>
+    <Header addTodo={this.props.actions.addTodo} />
+    <MainSection todos={this.props.todos} actions={this.props.actions} />
     <style jsx="true">
     {`
 button {
@@ -26,19 +36,6 @@ button {
   appearance: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.4em;
-  background: #f5f5f5;
-  color: #4d4d4d;
-  min-width: 230px;
-  max-width: 550px;
-  margin: 0 auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 300;
 }
 
 :focus {
@@ -378,8 +375,8 @@ html .clear-completed:active {
     `}
     </style>
   </div>
-)
-
+)}
+}
 App.propTypes = {
   todos: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired

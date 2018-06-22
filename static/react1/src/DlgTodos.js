@@ -6,7 +6,7 @@ class DlgItems extends Component {
     return (
           <Modal show={this.props.showModal} onHide={this.props.close}  dialogClassName="custom-modal">
             <Modal.Header closeButton>
-              <Modal.Title>待办事项</Modal.Title>
+              <Modal.Title><strong>待办事项</strong></Modal.Title>
             </Modal.Header>
             <Modal.Body>
              <Todos />

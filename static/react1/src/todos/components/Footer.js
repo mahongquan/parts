@@ -48,7 +48,7 @@ export default class Footer extends Component {
       return (
         <button className="clear-completed"
                 onClick={onClearCompleted} >
-          全部清除
+          清除已完成
         </button>
       )
     }

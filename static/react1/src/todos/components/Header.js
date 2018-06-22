@@ -18,7 +18,7 @@ export default class Header extends Component {
       <header className="header">
         <TodoTextInput newTodo
                        onSave={this.handleSave}
-                       placeholder="有哪件事要完成?" />
+                       placeholder="有哪件事要做?" />
       </header>
     )
   }

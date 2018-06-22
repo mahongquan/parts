@@ -72,6 +72,13 @@ const createWindow = () => {
             win.webContents.send("goback");
           },
         },
+         {
+          label: 'DevTools',
+          accelerator: 'Ctrl+D',
+          click: (item, win) =>{
+            win.openDevTools();
+          },
+        },
         {
           label: 'Exit',
           accelerator: 'Ctrl+E',
