@@ -206,6 +206,8 @@ class CalculatorForm(QtWidgets.QMainWindow):
             print(cmd)
             os.system(cmd)
     def showdata(self,d):
+        print("show data")
+        print(d,dir(d))
         self.data=d
         self.rows=len(d)
         self.cols=10
