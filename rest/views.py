@@ -28,6 +28,7 @@ import sys
 import xlrd
 from django.db import connection,transaction
 from docx import Document
+# @transaction.commit_on_success
 def mylistdir(p,f):
     a=os.listdir(p)
     fs=myfind(a,f)
