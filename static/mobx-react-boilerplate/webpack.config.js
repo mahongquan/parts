@@ -11,7 +11,7 @@ module.exports = {
    port: 3000,
    proxy: {
      '/rest/*': {
-     target: 'http://localhost:8000',
+     target: 'http://127.0.0.1:8000',
      changeOrigin: true,
      secure: false
      }

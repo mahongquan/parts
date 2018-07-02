@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
 export class ItemStore {
+
     @observable todos = [];
     @observable start=0;
     @observable total=0;
@@ -15,6 +16,7 @@ export class ItemStore {
     @observable packitem={};
     @observable bg={};
     @observable search="";
+    @observable user="AnonymousUser";
     @observable baoxiang="";
     @observable start_input=1;
     limit=10;
@@ -33,7 +35,10 @@ export class ItemStore {
               ,(res)=>{
                 this.todos=res.data;
                 this.total=res.total;
-                this.start=data.start;
+                this.user=res.user;
+                if(this.user===undefined){
+                  this.user="AnonymousUser";
+                }
               }
             );
     }
@@ -135,7 +140,6 @@ export class ItemEdit extends Component{
 export class Items extends Component {
   componentDidMount=()=>{
     console.log("mount");
-    
     //this.loaddata();
 
   }
@@ -263,8 +267,27 @@ export class Items extends Component {
     const itemRows = this.props.store.todos.map(this.mapfunc);
     return (
           <div>
-              <input type="text" value={this.props.store.search}  placeholder="" onChange={this.handleSearchChange} />
-              <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索</button>
+          <div style={{display:"flex",alignItems:"center"}}>
+       <DropdownButton title={this.props.store.user} id="id_dropdown1">
+          <li hidden={this.props.store.user!=="AnonymousUser"}>
+          <a onClick={this.openDlgLogin}>登录</a>
+          </li>
+          <li  hidden={this.props.store.user==="AnonymousUser"} >
+            <a onClick={this.handleLogout}>注销</a>
+          </li>
+       </DropdownButton>
+       <div className="input-group" style={{width:"250px"}}>
+     
+      <input type="text" value={this.props.store.search}  placeholder="" onChange={this.handleSearchChange} />
+       <span className="input-group-btn">
+        <button className="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+      
+       <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
+       <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
+       <button  style={{margin:"0px 10px 0px 10px",display:"none"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
+    </div>
           <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
 <th><span onClick={this.handleClickFilter}>客户单位</span>
 </th>
