@@ -1,9 +1,8 @@
 /////////////
 import queryString from 'querystring';
+import fetch from 'node-fetch';
 let host=""
-if(window.myremote){
-  host="http://127.0.0.1:8000"
-}
+host="http://127.0.0.1:8000"
 function myFetch(method,url,body,cb,headers2,err_callback) {
   let data;
   let headers;
@@ -36,7 +35,7 @@ function myFetch(method,url,body,cb,headers2,err_callback) {
     .then(cb).catch((error) => {
       if(err_callback) err_callback(error);
       else
-        alert(error+"\n请刷新网页/登录");
+        console.log(error+"\n请刷新网页/登录");
     });
 }
 function getRaw(url,cb,err_callback) {

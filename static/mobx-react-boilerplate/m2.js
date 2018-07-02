@@ -1,4 +1,4 @@
-import Client from './cs/src/Client';
+import Client from './src/Client';
 import { observable,useStrict,action,autorun } from "mobx";//, action, computed
 const immutable= require('immutable')
 useStrict(false);
@@ -20,9 +20,7 @@ class ContactStore {
     old={};
     constructor(){
       autorun(() => console.log(this.report));
-      Client.socket.init(()=>{
-          this.loaddata();
-      })
+      this.loaddata();
     }
     report=()=>{
         console.log("report=============");
