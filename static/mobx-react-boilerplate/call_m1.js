@@ -1,3 +1,5 @@
+console.log(process.argv)
+console.log("node call.js m1.js")
 require("babel-register");
 require("babel-polyfill");
-require("./m1.js");
+require(process.argv[2]);
