@@ -4,6 +4,8 @@ import { observable } from "mobx";//, action, computed
 import { observer } from "mobx-react";
 import {Table,Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
+import DlgLogin from './DlgLogin';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
@@ -22,25 +24,25 @@ export class ItemStore {
     limit=10;
     old={};
     constructor(){
-      this.loaddata({
+      this.loaddata();
+    }
+    loaddata=()=>{
+      var data={
         search:this.search
         ,start:this.start
         ,limit:this.limit
-        ,baoxiang:this.baoxiang});
-    }
-    loaddata=(data)=>{
-        console.log(data);
-            Client.contacts(
-              data
-              ,(res)=>{
-                this.todos=res.data;
-                this.total=res.total;
-                this.user=res.user;
-                if(this.user===undefined){
-                  this.user="AnonymousUser";
-                }
-              }
-            );
+        ,baoxiang:this.baoxiang};
+      Client.contacts(
+        data
+        ,(res)=>{
+          this.todos=res.data;
+          this.total=res.total;
+          this.user=res.user;
+          if(this.user===undefined){
+            this.user="AnonymousUser";
+          }
+        }
+      );
     }
     handleItemSave=(data)=>{
       var url="/rest/Contact";
@@ -138,6 +140,11 @@ export class ItemEdit extends Component{
 }
 @observer
 export class Items extends Component {
+  constructor(){
+    super();
+    this.dlglogin=React.createRef();
+  }
+
   componentDidMount=()=>{
     console.log("mount");
     //this.loaddata();
@@ -209,6 +216,39 @@ export class Items extends Component {
     this.props.store.old=this.props.store.packitem;
     this.props.store.bg={};
   }
+  handleUserChange = (user) => {
+    if (user === "AnonymousUser") {
+      this.props.store.logined=false;
+    } else {
+      this.props.store.logined=true;
+    }
+    this.props.store.todos=[];
+    this.props.store.loaddata();
+  };
+  openDlgLogin=()=>{
+    // console.log("openDlgLogin");
+    this.dlglogin.current.open();
+  }
+  onLoginSubmit= (data) => {
+    // console.log(data);
+    Client.login(data.username, data.password, (res) => {
+      if (res.success) {
+        this.props.store.logined=true;
+        this.props.store.user=data.username
+        this.handleUserChange(this.props.store.user);
+      }
+    });
+  };
+  handleLogout = () => {
+    console.log("logout");
+    Client.logout((data) => {
+      console.log("logout" + data);
+      this.props.store.user= "AnonymousUser";
+      this.props.store.total=0;
+      this.props.store.start=0;
+      this.handleUserChange(this.props.store.user);
+    });
+  };
   mapfunc=(contact, idx) => {
       if (!contact.image || contact.image==="")
         return (      <tr key={idx} >
@@ -266,8 +306,8 @@ export class Items extends Component {
     //console.log(this.props.store);
     const itemRows = this.props.store.todos.map(this.mapfunc);
     return (
-          <div>
-          <div style={{display:"flex",alignItems:"center"}}>
+  <div  id="todoapp" className="table-responsive">
+    <div style={{display:"flex",alignItems:"center"}}>
        <DropdownButton title={this.props.store.user} id="id_dropdown1">
           <li hidden={this.props.store.user!=="AnonymousUser"}>
           <a onClick={this.openDlgLogin}>登录</a>
@@ -278,37 +318,39 @@ export class Items extends Component {
        </DropdownButton>
        <div className="input-group" style={{width:"250px"}}>
      
-      <input type="text" value={this.props.store.search}  placeholder="" onChange={this.handleSearchChange} />
-       <span className="input-group-btn">
-        <button className="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-      </span>
-    </div>
+          <input type="text" className="form-control" value={this.props.store.search}  placeholder="" onChange={this.handleSearchChange} />
+           <span className="input-group-btn">
+            <button className="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          </span>
+        </div>
       
        <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
        <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
        <button  style={{margin:"0px 10px 0px 10px",display:"none"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
     </div>
-          <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
-<th><span onClick={this.handleClickFilter}>客户单位</span>
-</th>
-<th>客户地址</th><th>合同编号</th>
-<th><span onClick={this.handleClickFilter}>仪器编号</span></th>
-<th>仪器型号</th><th>通道配置</th>
-<th>包箱<DropdownButton title="" id="id_dropdown2">
-      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
-    </DropdownButton>
-</th>
-<th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{itemRows}</tbody>
-</table>
-      {prev}
-              <label id="page">{this.props.store.start+1}../{this.props.store.total}</label>
-              {next}
-              <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.props.store.start_input} />
-              <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
-          </div>
+    <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
+        <th><span onClick={this.handleClickFilter}>客户单位</span>
+        </th>
+        <th>客户地址</th><th>合同编号</th>
+        <th><span onClick={this.handleClickFilter}>仪器编号</span></th>
+        <th>仪器型号</th><th>通道配置</th>
+        <th>包箱<DropdownButton title="" id="id_dropdown2">
+              <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
+              <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
+              <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
+              <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
+            </DropdownButton>
+        </th>
+        <th>入库时间</th><th>方法</th></tr></thead><tbody id="contact-list">{itemRows}</tbody>
+    </table>
+    {prev}
+    <label id="page">{this.props.store.start+1}../{this.props.store.total}</label>
+    {next}
+    <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.props.store.start_input} />
+    <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+    <div style={{minHeight:"200px"}}></div>
+    <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
+  </div>
     );
   }
 };

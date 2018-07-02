@@ -11,7 +11,7 @@ import DlgFolder from './DlgFolder';
 import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
-import DlgCheck from './DlgCheck'
+import DlgCheck from './DlgCheck';
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';

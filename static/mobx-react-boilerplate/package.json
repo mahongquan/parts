@@ -46,9 +46,9 @@
     "mobx-react-devtools": "^4.2.11",
     "node-fetch": "^2.1.2",
     "query-string": "^6.0.0",
-    "react": "^15.1.0",
+    "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
-    "react-dom": "^15.1.0",
+    "react-dom": "^16.4.0",
     "style-loader": "^0.20.3",
     "universal-cookie": "^2.2.0",
     "whatwg-fetch": "^2.0.4"
