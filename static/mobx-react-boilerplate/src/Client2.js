@@ -1,45 +1,52 @@
 import queryString from 'querystring';
+import axios from "axios";
+
+// axios.interceptors.request.use((config) => {
+//   config.headers['X-Requested-With'] = 'XMLHttpRequest';
+//   let regex = /.*csrftoken=([^;.]*).*$/; // 用于从cookie中匹配 csrftoken值
+//   config.headers['X-CSRFToken'] = document.cookie.match(regex) === null ? null : document.cookie.match(regex)[1];
+//   return config
+// });
 let host=""
-if(window && window.require){
-  host="http://127.0.0.1:8000"
-}
+host="http://127.0.0.1:8000"
 function myFetch(method,url,body,cb,headers2,err_callback) {
-  let data;
-  let headers;
-  if (headers2)
-  {
-    headers=headers2;
+  if(method==="GET"){
+    return axios.get(host+url).then((response)=>{
+      console.log("then");
+      let res;
+      try{
+        res=JSON.parse(response.data);
+        cb(res);
+      }
+      catch(err){
+        if(err_callback)
+          err_callback(err);
+      }
+    }).catch((err)=>{
+      if(err_callback)
+        err_callback(err);
+    })
   }
-  else{
-   headers=  {'Content-Type':'application/json'}
+  if(method==="POST"){
+    return axios.post(host+url,body).then((response)=>{
+      console.log("then");
+      let res;
+      try{
+        res=JSON.parse(response.data);
+        cb(res);
+      }
+      catch(err){
+        if(err_callback)
+          err_callback(err);
+      }
+    }).catch((err)=>{
+      if(err_callback)
+        err_callback(err);
+    })
   }
-  if(method==="GET")
-  {
-    data={
-      method: method,
-      credentials: 'include',
-      headers: headers,
-    }
-  }
-  else{
-    data={
-      method: method,
-      credentials: 'include',
-      headers: headers,
-      body: body
-    }
-  }
-  return fetch(host+url,data
-  ).then(checkStatus)
-    .then(parseJSON)
-    .then(cb).catch((error) => {
-      if(err_callback) err_callback(error);
-      else
-        console.log(error+"\n请刷新网页/登录");
-    });
 }
 function getRaw(url,cb,err_callback) {
-  return myFetch("GET",url,undefined,cb,undefined,err_callback)
+  myFetch("GET",url,undefined,cb,undefined,err_callback)
 }
 function get(url,data,cb,err_callback) {
   url=url+"?"+queryString.stringify(data)
@@ -50,9 +57,9 @@ function delete1(url,data,cb) {
   var method="DELETE";
   return myFetch(method,url,JSON.stringify(data),cb)
 }
-function post(url,data,cb) {
+function post(url,data,cb,err_callback) {
   var method="POST"
-  return myFetch(method,url,JSON.stringify(data),cb)
+  return myFetch(method,url,JSON.stringify(data),cb,undefined,err_callback)
 }
 function postOrPut(url,data,cb) {
   var method="POST"

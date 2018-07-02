@@ -34,8 +34,10 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "3.3.7",
+    "cross-fetch": "^2.2.2",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "immutable": "^3.8.2",
@@ -47,6 +49,8 @@
     "react": "^15.1.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^15.1.0",
-    "style-loader": "^0.20.3"
+    "style-loader": "^0.20.3",
+    "universal-cookie": "^2.2.0",
+    "whatwg-fetch": "^2.0.4"
   }
 }
