@@ -83,47 +83,11 @@ function delCookie(name)//删除cookie
     var cval=getCookie(name);
     if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
-//   var object = {};
-//   _.extend(object, Backbone.Events);
-// var object2 = {};
-//   _.extend(object2, Backbone.Events);
-//   object.on("alert", function(msg) {
-//     alert("object Triggered " + msg);
-//   });
-//   object2.on("alert", function(msg) {
-//     alert("object2 Triggered " + msg);
-//   });
-//   object.trigger("alert", "an event");
-//   object2.trigger("alert", "an event");
-  var user="{{ user }}"; $("#dropdownMenu1_text").text(user);
-  var csrf_token="{{ csrf_token }}";
+  var user="AnonymousUser"; 
+  $("#dropdownMenu1_text").text(user);
+  var csrf_token=getCookie("csrf_token"); //"{{ csrf_token }}";
   var cache={};
   var cache_item={};
-  // Backbone.ajax = function() {
-  //   var param = arguments[0];
-  //   if (param.success) {//修改响应数据
-  //     var oldSuccess = param.success;
-  //     var oldError = param.error;
-  //     param.success = function() {
-  //       var newArguments = Array.prototype.slice.call(arguments, 0);
-  //       //newArguments[0]=newArguments[0].data;//remove other
-  //       oldSuccess.apply(null, newArguments);
-  //     };
-  //   }
-  //   //2发送请求
-  //   //console.log("Backbone.ajax");
-  //   //console.log(param);
-  //   //console.log(param.data);
-  //   return $.ajax({
-  //     url : param.url,
-  //     data : param.data,
-  //     success : param.success,
-  //     type : param.type,
-  //     dataType :param.dataType
-  //     contentType : 'multipart/form-data'//application/x-www-form-urlencoded, multipart/form-data, or text/plain
-  //   });
-    
-  // };
   var myglobal={};
   var Contact = Backbone.Model.extend({
     urlRoot : "/rest/Contact/",
@@ -1188,7 +1152,7 @@ function delCookie(name)//删除cookie
     <div>
     <table>
     <tr>
-<!--   <td>
+   <td>
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <span id="dropdownMenu1_text">Dropdown</span>
@@ -1199,7 +1163,7 @@ function delCookie(name)//删除cookie
         <li id="li_logout"><a href="#" id="id_logout">log out</a></li>
       </ul>
     </div>
-  </td> -->
+  </td> 
   <td>
         <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value="">
         <button id="id_bt_search" class="btm btn-info">搜索</button>
