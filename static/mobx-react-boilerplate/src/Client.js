@@ -88,8 +88,7 @@ function PackItems(query, cb) {
   var data={pack:query}
   return get("/rest/PackItem",data,cb)
 }
-function items(query, cb) {
-  var data={search:query}
+function items(data, cb) {
   return get("/rest/Item",data,cb)
 }
 function login_index( cb) {

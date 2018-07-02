@@ -266,7 +266,7 @@ class Items extends Component {
 const store = new ItemStore();
 ReactDOM.render(
     <div>
-      <Items store={store} /><Items store={store} />
+      <Items store={store} />
       <ItemEdit store={store} />
     </div>
     ,document.getElementById('root')
