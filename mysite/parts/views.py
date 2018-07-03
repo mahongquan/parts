@@ -472,16 +472,16 @@ def allfile(request):
         #p="d:/parts/media/仪器资料/"+c.yiqibh
         p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
         #证书
-        dir1=p+"/"+outfilename
-        logging.info(dir1)
-        if not os.path.exists(dir1):
-            os.makedirs(dir1)
-        file1=dir1+"/证书数据表"+EXTNAME
-        if not os.path.exists(file1):
-            fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
-            data=genShujubiao(c,fullfilepath)
-            open(file1,"wb").write(data)
-        file2=dir1+"/"+c.yonghu+"证书"+EXTNAME
+        # dir1=p+"/"+outfilename
+        # logging.info(dir1)
+        if not os.path.exists(p):
+            os.makedirs(p)
+        # file1=dir1+"/证书数据表"+EXTNAME
+        # if not os.path.exists(file1):
+        #     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
+        #     data=genShujubiao(c,fullfilepath)
+        #     open(file1,"wb").write(data)
+        file2=p+"/"+c.hetongbh+"_"+c.yonghu+"_证书"+EXTNAME
         if not os.path.exists(file2):
             data2=getJiaoZhunFile(c)
             open(file2,"wb").write(data2)
