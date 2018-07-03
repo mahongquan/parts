@@ -5,12 +5,13 @@ import { observer } from "mobx-react";
 import {Table,Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
 import DlgLogin from './DlgLogin';
-
+import DlgDetail from './DlgDetail';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
 export class ItemStore {
-
+    @observable showDlgDetail=null;
+    @observable contactid=null;
     @observable todos = [];
     @observable start=0;
     @observable total=0;
@@ -21,6 +22,7 @@ export class ItemStore {
     @observable user="AnonymousUser";
     @observable baoxiang="";
     @observable start_input=1;
+    @observable showDlgDetail=false;
     limit=10;
     old={};
     constructor(){
@@ -144,7 +146,10 @@ export class Items extends Component {
     super();
     this.dlglogin=React.createRef();
   }
-
+  onDetailClick=(contactid)=>{
+    this.props.store.showDlgDetail=true;
+    this.props.store.contactid=contactid;
+  }
   componentDidMount=()=>{
     console.log("mount");
     //this.loaddata();
@@ -154,12 +159,7 @@ export class Items extends Component {
   componentWillUnmount=()=> {
   }
   loaddata=()=>{
-      this.props.store.loaddata({
-           search:this.props.store.search,
-           start:this.props.store.start,
-           limit:this.props.store.limit,
-           baoxiang:this.props.store.baoxiang,
-      });
+      this.props.store.loaddata();
   }
   handleSearchChange = (e) => {
     this.props.store.search=e.target.value;
@@ -350,6 +350,10 @@ export class Items extends Component {
     <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
     <div style={{minHeight:"200px"}}></div>
     <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
+    <DlgDetail  contactid={this.props.store.contactid} showModal={this.props.store.showDlgDetail} 
+      handleClose={()=>{
+        this.props.store.showDlgDetail=false;
+    }} />
   </div>
     );
   }
