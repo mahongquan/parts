@@ -3,27 +3,15 @@ import LoginFormComponent from "./LoginFormComponent";
 import {Modal} from "react-bootstrap";
 
 class DlgLogin extends React.Component {
-  state={ showModal: false }
-
-  close=()=> {
-    this.setState({ showModal: false });
-  }
-
-  open=()=> {
-    this.setState({ showModal: true });
-  }
-  onLoginSubmit=(data)=>  {
-    this.props.onLoginSubmit(data);
-  }
   render() {
     return (
         
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal show={this.props.showModal} onHide={this.props.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginFormComponent onLoginSubmit={this.onLoginSubmit} dlgclose={this.close}/>
+            <LoginFormComponent onLoginSubmit={this.props.onLoginSubmit} dlgclose={this.props.handleClose}/>
         </Modal.Body>
 
         </Modal>

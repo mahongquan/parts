@@ -7,8 +7,15 @@ import Client from './Client';
 import DlgLogin from './DlgLogin';
 import DlgDetail from './DlgDetail';
 import ContactEdit from './ContactEdit';
+import DlgImport from './DlgImport';
+import DlgUrl from './DlgUrl';
 
 export class ItemStore {
+    url=null;
+    data=null;
+    @observable showDlgUrl =false;
+    @observable showDlgLogin =false;
+    @observable showDlgImport=false;
     @observable showDlgEdit=false;
     @observable showDlgDetail=false;
     @observable contactid=null;
@@ -80,11 +87,17 @@ export class ItemStore {
 export class Items extends Component {
   constructor(){
     super();
-    this.dlglogin=React.createRef();
   }
   handleEdit=(idx)=>{
     this.props.store.showDlgEdit=true;
     this.props.store.currentIndex=idx;
+  }
+  opendlgurl=(url,parent,idx,data)=>{
+    console.log("opendlgurl");
+    this.props.store.currentIndex=idx;
+    this.props.store.showDlgUrl=true;
+    this.props.store.url=url;
+    this.props.store.data=data;
   }
   onDetailClick=(contactid)=>{
     this.props.store.showDlgDetail=true;
@@ -159,10 +172,6 @@ export class Items extends Component {
     this.props.store.todos=[];
     this.props.store.loaddata();
   };
-  openDlgLogin=()=>{
-    // console.log("openDlgLogin");
-    this.dlglogin.current.open();
-  }
   onLoginSubmit= (data) => {
     // console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -172,6 +181,9 @@ export class Items extends Component {
         this.handleUserChange(this.props.store.user);
       }
     });
+  };
+  handleContactChange = (idx,contact) => {
+    this.props.store.todos[idx]=contact;
   };
   handleLogout = () => {
     console.log("logout");
@@ -183,6 +195,7 @@ export class Items extends Component {
       this.handleUserChange(this.props.store.user);
     });
   };
+
   mapfunc=(contact, idx) => {
       if (!contact.image || contact.image==="")
         return (      <tr key={idx} >
@@ -244,7 +257,7 @@ export class Items extends Component {
     <div style={{display:"flex",alignItems:"center"}}>
        <DropdownButton title={this.props.store.user} id="id_dropdown1">
           <li hidden={this.props.store.user!=="AnonymousUser"}>
-          <a onClick={this.openDlgLogin}>登录</a>
+          <a onClick={()=>{this.props.store.showDlgLogin=true;}}>登录</a>
           </li>
           <li  hidden={this.props.store.user==="AnonymousUser"} >
             <a onClick={this.handleLogout}>注销</a>
@@ -259,7 +272,7 @@ export class Items extends Component {
         </div>
       
        <button  style={{margin:"0px 10px 0px 10px"}}  className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
-       <button className="btn btn-info" onClick={this.openDlgImport}>导入标样</button>
+       <button className="btn btn-info" onClick={()=>{this.props.store.showDlgImport=true;}}>导入标样</button>
        <button  style={{margin:"0px 10px 0px 10px",display:"none"}}  className="btn btn-primary" onClick={this.openDlgImportHT}>导入合同</button>
     </div>
     <table className="table-condensed table-bordered"><thead><tr><th>ID</th>
@@ -283,7 +296,9 @@ export class Items extends Component {
     <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.props.store.start_input} />
     <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
     <div style={{minHeight:"200px"}}></div>
-    <DlgLogin ref={this.dlglogin} onLoginSubmit={this.onLoginSubmit} />
+    <DlgLogin showModal={this.props.store.showDlgLogin} onLoginSubmit={this.onLoginSubmit} handleClose={()=>{
+        this.props.store.showDlgLogin =false;
+    }}/>
     <DlgDetail  contactid={this.props.store.contactid} showModal={this.props.store.showDlgDetail} 
       handleClose={()=>{
         this.props.store.showDlgDetail=false;
@@ -293,6 +308,16 @@ export class Items extends Component {
         this.props.store.showDlgEdit=false;
       }}
       parent={this}  store={this.props.store} index={this.props.store.currentIndex} title="编辑"  />
+    <DlgImport showModal={this.props.store.showDlgImport} handleClose={()=>{
+      this.props.store.showDlgImport=false;
+    }} />
+    <DlgUrl showModal={this.props.store.showDlgUrl}
+      url={this.props.store.url}
+      data={this.props.store.data}
+      callback={this.handleContactChange}
+      handleClose={()=>{
+      this.props.store.showDlgUrl=false;
+    }} />
   </div>
     );
   }
