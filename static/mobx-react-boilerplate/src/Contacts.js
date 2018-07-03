@@ -6,12 +6,13 @@ import {Table,Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
 import DlgLogin from './DlgLogin';
 import DlgDetail from './DlgDetail';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+import ContactEdit from './ContactEdit';
 
 export class ItemStore {
-    @observable showDlgDetail=null;
+    @observable showDlgEdit=false;
+    @observable showDlgDetail=false;
     @observable contactid=null;
+    @observable currentIndex=null;
     @observable todos = [];
     @observable start=0;
     @observable total=0;
@@ -46,6 +47,14 @@ export class ItemStore {
         }
       );
     }
+  //   handleEdit=(idx)=>{
+  //   //myredux.ItemActionCreators.showEdit(idx);
+  //   this.props.store.showModal=true;
+  //   this.props.store.packitem=this.props.store.todos[idx];
+  //   this.props.store.old=this.props.store.packitem;
+  //   this.props.store.bg={};
+  // }
+
     handleItemSave=(data)=>{
       var url="/rest/Contact";
       Client.postOrPut(url,this.packitem,(res) => {
@@ -68,83 +77,14 @@ export class ItemStore {
     }
 }
 @observer
-export class ItemEdit extends Component{
-  close=()=>{
-    this.props.store.showModal=false;
-  }
-  
-  handleSave=(data)=>{
-    this.props.store.handleItemSave(data);
-  }
-  handleChange=(e)=>{
-    this.props.store.handleItemChange(e);
-  }
-  render=()=>{
-    console.log("render==========");
-    return (
-        <Modal show={this.props.store.showModal} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title>编辑备件信息</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <table id="table_input" className="table-condensed" >
-            <tbody> 
-            <tr >
-                <td >
-                    ID:
-                </td>
-                <td >
-                    <input type="text" id="id" name="id" readOnly="true"  disabled="disabled"    defaultValue={this.props.store.packitem.id} />
-                </td>
-            </tr><tr>
-                <td>
-                    名称:
-                </td>
-                <td>
-                    <input  style={{"backgroundColor":this.props.store.bg.name}}  type="text" id="name" name="name" value={this.props.store.packitem.name} onChange={this.handleChange} />
-                </td>
-            </tr><tr>
-                <td>
-                    <label>规格:</label>
-                </td>
-                <td>
-                    <input style={{"backgroundColor":this.props.store.bg.guige}} type="text"  name="guige" 
-                    value={this.props.store.packitem.guige}  onChange={this.handleChange} />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>编号:</label>
-                </td>
-                <td>
-                    <input style={{"backgroundColor":this.props.store.bg.bh}} type="text" id="bh" name="bh" value={this.props.store.packitem.bh}  onChange={this.handleChange} />
-                </td>
-            </tr>
-           
-            <tr>
-                <td>
-                    <label>单位:</label>
-                </td>
-                <td>
-                    <input type="text" style={{"backgroundColor":this.props.store.bg.danwei}}
-                    id="danwei" name="danwei"  value={this.props.store.packitem.danwei} onChange={this.handleChange} />
-                </td>
-            </tr> 
-            </tbody>
-            </table>
-       <div> 
-       <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       </div>
-                </Modal.Body>
-        </Modal>
-    );
-  }
-}
-@observer
 export class Items extends Component {
   constructor(){
     super();
     this.dlglogin=React.createRef();
+  }
+  handleEdit=(idx)=>{
+    this.props.store.showDlgEdit=true;
+    this.props.store.currentIndex=idx;
   }
   onDetailClick=(contactid)=>{
     this.props.store.showDlgDetail=true;
@@ -209,13 +149,7 @@ export class Items extends Component {
   handlePageChange= (e) => {
     this.props.store.start_input=e.target.value;
   };
-  handleEdit=(idx)=>{
-    //myredux.ItemActionCreators.showEdit(idx);
-    this.props.store.showModal=true;
-    this.props.store.packitem=this.props.store.todos[idx];
-    this.props.store.old=this.props.store.packitem;
-    this.props.store.bg={};
-  }
+
   handleUserChange = (user) => {
     if (user === "AnonymousUser") {
       this.props.store.logined=false;
@@ -354,6 +288,11 @@ export class Items extends Component {
       handleClose={()=>{
         this.props.store.showDlgDetail=false;
     }} />
+    <ContactEdit showModal={this.props.store.showDlgEdit} 
+      handleClose={()=>{
+        this.props.store.showDlgEdit=false;
+      }}
+      parent={this}  store={this.props.store} index={this.props.store.currentIndex} title="编辑"  />
   </div>
     );
   }

@@ -10,7 +10,6 @@ export default class App extends Component{
   render=()=>{
     return(<div>
       <Items store={this.store} />
-      <ItemEdit store={this.store} />
     </div>);
   }
 }
