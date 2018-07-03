@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {ItemStore,Items,ItemEdit} from "./Contacts";
+import Items,{ItemStore} from "./Contacts";
 
 export default class App extends Component{
   constructor(){

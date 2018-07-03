@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { observable } from "mobx";//, action, computed
+import { observable,action,autorun } from "mobx";//, action, computed
 import { observer } from "mobx-react";
 import {Table,Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
@@ -34,7 +34,22 @@ export class ItemStore {
     limit=10;
     old={};
     constructor(){
+      console.log("constructor");
+      autorun(() => console.log(this));
       this.loaddata();
+    }
+    @action
+    show_DlgLogin=()=>{
+      console.log("showDlgLogin")
+      this.showDlgLogin=true;
+    }
+    @action setdata(res){
+          this.todos=res.data;
+          this.total=res.total;
+          this.user=res.user;
+          if(this.user===undefined){
+            this.user="AnonymousUser";
+          }
     }
     loaddata=()=>{
       var data={
@@ -45,46 +60,14 @@ export class ItemStore {
       Client.contacts(
         data
         ,(res)=>{
-          this.todos=res.data;
-          this.total=res.total;
-          this.user=res.user;
-          if(this.user===undefined){
-            this.user="AnonymousUser";
-          }
+          this.setdata(res);
         }
       );
     }
-  //   handleEdit=(idx)=>{
-  //   //myredux.ItemActionCreators.showEdit(idx);
-  //   this.props.store.showModal=true;
-  //   this.props.store.packitem=this.props.store.todos[idx];
-  //   this.props.store.old=this.props.store.packitem;
-  //   this.props.store.bg={};
-  // }
-
-    handleItemSave=(data)=>{
-      var url="/rest/Contact";
-      Client.postOrPut(url,this.packitem,(res) => {
-        console.log(res);
-          this.packitem=res.data;
-          this.old=res.data;
-          this.showModal=false;
-      });
-    }
-    handleItemChange=(e)=>{
-      console.log("change");
-      if(this.old[e.target.name]===e.target.value)
-      {
-        this.bg[e.target.name]="#ffffff"
-      }
-      else{
-        this.bg[e.target.name]="#8888ff"
-      }
-      this.packitem[e.target.name]=e.target.value;
-    }
 }
-@observer
-export class Items extends Component {
+
+
+class Items extends Component {
   constructor(){
     super();
   }
@@ -142,6 +125,9 @@ export class Items extends Component {
     }
     this.loaddata();
   };
+  componentWillReact() {
+        console.log("I will re-render, since the todo has changed!")
+  }
   onSelectBaoxiang=(e) => {
     console.log(this);
 
@@ -225,6 +211,8 @@ export class Items extends Component {
        </tr>);
   }
   render=()=>{
+    console.log(this);
+
     var hasprev=true;
     var hasnext=true;
     let prev;
@@ -257,7 +245,9 @@ export class Items extends Component {
     <div style={{display:"flex",alignItems:"center"}}>
        <DropdownButton title={this.props.store.user} id="id_dropdown1">
           <li hidden={this.props.store.user!=="AnonymousUser"}>
-          <a onClick={()=>{this.props.store.showDlgLogin=true;}}>登录</a>
+          <a onClick={()=>{
+            this.props.store.show_DlgLogin();
+          }}>登录</a>
           </li>
           <li  hidden={this.props.store.user==="AnonymousUser"} >
             <a onClick={this.handleLogout}>注销</a>
@@ -296,7 +286,9 @@ export class Items extends Component {
     <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.props.store.start_input} />
     <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
     <div style={{minHeight:"200px"}}></div>
-    <DlgLogin showModal={this.props.store.showDlgLogin} onLoginSubmit={this.onLoginSubmit} handleClose={()=>{
+    <DlgLogin showModal={this.props.store.showDlgLogin}
+     onLoginSubmit={this.onLoginSubmit}
+     handleClose={()=>{
         this.props.store.showDlgLogin =false;
     }}/>
     <DlgDetail  contactid={this.props.store.contactid} showModal={this.props.store.showDlgDetail} 
@@ -322,11 +314,4 @@ export class Items extends Component {
     );
   }
 };
-// const store = new ItemStore();
-// ReactDOM.render(
-//     <div>
-//       <Items store={store} />
-//       <ItemEdit store={store} />
-//     </div>
-//     ,document.getElementById('root')
-//   );
+export default observer(Items);

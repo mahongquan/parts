@@ -3,7 +3,9 @@ import LoginFormComponent from "./LoginFormComponent";
 import {Modal} from "react-bootstrap";
 
 class DlgLogin extends React.Component {
+
   render() {
+    console.log(this.props);
     return (
         
         <Modal show={this.props.showModal} onHide={this.props.handleClose}>

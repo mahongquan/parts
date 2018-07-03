@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { observable } from "mobx";//, action, computed
+import { observable,action,autorun } from "mobx";//, action, computed
 import { observer } from "mobx-react";
 import {Table,Modal} from "react-bootstrap";
 import Client from './Client';
@@ -19,6 +19,10 @@ export class ItemStore {
     limit=10;
     old={};
     constructor(){
+      autorun(() => {
+        console.log(this);
+        console.log(this.todos.length);
+      });
       this.loaddata({query:this.search,start:this.start,limit:this.limit});
     }
     loaddata=(data)=>{
@@ -26,11 +30,14 @@ export class ItemStore {
             Client.items(
               data
               ,(res)=>{
-                this.todos=res.data;
-                this.total=res.total;
-                this.start=data.start;
+                this.init(res);
               }
             );
+    }
+    @action init(res){
+       console.log("init");
+       this.todos=res.data;
+       this.total=res.total;
     }
     handleItemSave=(data)=>{
       var url="/rest/Item";
@@ -53,6 +60,7 @@ export class ItemStore {
       this.packitem[e.target.name]=e.target.value;
     }
 }
+
 @observer
 export class ItemEdit extends Component{
   close=()=>{
@@ -270,3 +278,4 @@ export class Items extends Component {
 //     </div>
 //     ,document.getElementById('root')
 //   );
+
