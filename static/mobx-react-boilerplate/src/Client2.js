@@ -1,6 +1,5 @@
 import queryString from 'querystring';
 import axios from "axios";
-
 // axios.interceptors.request.use((config) => {
 //   config.headers['X-Requested-With'] = 'XMLHttpRequest';
 //   let regex = /.*csrftoken=([^;.]*).*$/; // 用于从cookie中匹配 csrftoken值
@@ -10,8 +9,7 @@ import axios from "axios";
 let host=""
 host="http://127.0.0.1:8000"
 function myFetch(method,url,body,cb,headers2,err_callback) {
-  if(method==="GET"){
-    return axios.get(host+url).then((response)=>{
+    return axios.request({method:method,data:body,url:host+url,withCredentials: true}).then((response)=>{
       console.log("then");
       let res;
       try{
@@ -26,24 +24,6 @@ function myFetch(method,url,body,cb,headers2,err_callback) {
       if(err_callback)
         err_callback(err);
     })
-  }
-  if(method==="POST"){
-    return axios.post(host+url,body).then((response)=>{
-      console.log("then");
-      let res;
-      try{
-        res=JSON.parse(response.data);
-        cb(res);
-      }
-      catch(err){
-        if(err_callback)
-          err_callback(err);
-      }
-    }).catch((err)=>{
-      if(err_callback)
-        err_callback(err);
-    })
-  }
 }
 function getRaw(url,cb,err_callback) {
   myFetch("GET",url,undefined,cb,undefined,err_callback)

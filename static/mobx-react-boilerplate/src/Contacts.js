@@ -9,10 +9,11 @@ import DlgDetail from './DlgDetail';
 import ContactEdit from './ContactEdit';
 import DlgImport from './DlgImport';
 import DlgUrl from './DlgUrl';
-
+import DlgFolder from './DlgFolder';
 export class ItemStore {
     url=null;
     data=null;
+    @observable showDlgFolder =false;    
     @observable showDlgUrl =false;
     @observable showDlgLogin =false;
     @observable showDlgImport=false;
@@ -71,6 +72,12 @@ class Items extends Component {
   constructor(){
     super();
   }
+  opendlgfolder=(contactid)=>{
+    console.log("opendlgfolder");
+   this.props.store.contactid=contactid; 
+   this.props.store.showDlgFolder=true; 
+  }
+
   handleEdit=(idx)=>{
     this.props.store.showDlgEdit=true;
     this.props.store.currentIndex=idx;
@@ -309,6 +316,11 @@ class Items extends Component {
       callback={this.handleContactChange}
       handleClose={()=>{
       this.props.store.showDlgUrl=false;
+    }} />
+    <DlgFolder  showModal={this.props.store.showDlgFolder } 
+    contactid={this.props.store.contactid}
+    handleClose={()=>{
+      this.props.store.showDlgFolder =false;
     }} />
   </div>
     );

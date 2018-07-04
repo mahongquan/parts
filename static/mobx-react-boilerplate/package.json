@@ -1,7 +1,6 @@
 {
-  "name": "mobx-react-boilerplate",
+  "name": "reactparts",
   "version": "1.0.0",
-  "description": "Boilerplate for MobX + React project with JSX, ES6 and decorator compilation",
   "scripts": {
     "start": "webpack-dev-server --hot --open  --mode development",
     "lint": "eslint src"
@@ -34,6 +33,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "3.3.7",
     "css-loader": "^0.28.11",

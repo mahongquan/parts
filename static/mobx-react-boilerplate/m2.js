@@ -1,4 +1,4 @@
-import Client from './src/Client';
+import Client from './src/Client2';
 import { observable,useStrict,action,autorun } from "mobx";//, action, computed
 const immutable= require('immutable')
 useStrict(false);
@@ -34,7 +34,7 @@ class ContactStore {
         console.log(err);
       });
     }
-    @action loaddata=()=>{
+    loaddata=()=>{
       console.log("loaddata");
       var data={search:this.search
         ,start:this.start

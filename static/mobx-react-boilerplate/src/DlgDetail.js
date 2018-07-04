@@ -27,19 +27,6 @@ class DlgDetail extends React.Component{
         ,items:res.items,items2:res.items2,totalid:res.totalid,totalct:res.totalct})
     });
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-       console.log(this.props);
-       console.log(nextProps);
-       console.log("props not eq");
-       return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      console.log("state not eq");
-      return true;
-    }
-    return false;
-  }
   componentWillReceiveProps(nextProps) {
     if(!this.props.showModal && nextProps.showModal){
       this.onShow(nextProps.contactid);
