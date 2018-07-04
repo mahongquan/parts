@@ -3,21 +3,17 @@ import {Modal} from "react-bootstrap";
 import Client from './Client';
 class DlgCheck extends React.Component{
   state= {
-      showModal: false,
       error:"",
       packs:[],
       hideTable:true,
   }
 
-  close=()=>{
-    this.setState({ showModal: false });
-  }
   upload=()=>{
     const file = this.fileUpload.files[0];
     console.log(file);
     var data1=new FormData();
     data1.append("file",file);
-    data1.append("id",this.contact_id);
+    data1.append("id",this.props.contactid);
     //console.log(data1)
     var self=this;
     Client.postForm("/rest/check",data1,function(data){
@@ -72,12 +68,21 @@ class DlgCheck extends React.Component{
       self.setState({hideTable:false});
     });
   }
-  open=(contact_id,yiqibh)=>{
-    this.contact_id=contact_id;
-    this.setState({yiqibh:yiqibh});
-    this.setState({ showModal: true });
-    this.setState({hideTable:true});
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.showModal && nextProps.showModal){
+      this.onShow(nextProps);
+    }
+    else if(this.props.showModal && !nextProps.showModal)
+    {
+      this.onHide();
+    }
   }
+  onShow=(nextProps)=>{
+  }
+  onHide=()=>{
+
+  }
+
   render=()=>{
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx} >
@@ -90,12 +95,12 @@ class DlgCheck extends React.Component{
       </tr>
     ));   
     return (
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
+        <Modal show={this.props.showModal} onHide={this.props.handleClose}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>核对备料计划</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <p>仪器编号{this.state.yiqibh}备料计划核对，请上传备料计划导出的Excel文件</p>
+          <p>仪器编号{this.props.yiqibh}备料计划核对，请上传备料计划导出的Excel文件</p>
           <form  ref="form1" encType="multipart/form-data">
           <input style={{margin:"10px 10px 10px 10px"}} id="file"  accept="application/vnd.ms-excel" type="file" name="file" ref={(ref) => this.fileUpload = ref}/>
           <button  style={{margin:"10px 10px 10px 10px"}} className="btn btn-primary" onClick={this.upload} type="button">上传</button>

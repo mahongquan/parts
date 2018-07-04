@@ -10,9 +10,15 @@ import ContactEdit from './ContactEdit';
 import DlgImport from './DlgImport';
 import DlgUrl from './DlgUrl';
 import DlgFolder from './DlgFolder';
+import DlgWait from './DlgWait';
+import DlgCheck from './DlgCheck';
 export class ItemStore {
     url=null;
     data=null;
+    yiqibh=null;
+    @observable showDlgCheck =false;    
+    @observable showDlgWait =false;
+
     @observable showDlgFolder =false;    
     @observable showDlgUrl =false;
     @observable showDlgLogin =false;
@@ -71,6 +77,15 @@ export class ItemStore {
 class Items extends Component {
   constructor(){
     super();
+  }
+  opendlgcheck=(contactid,yiqibh)=>{
+   this.props.store.contactid=contactid;
+   this.props.store.yiqibh=yiqibh;
+   this.props.store.showDlgCheck=true; 
+  }
+  opendlgwait=(contactid)=>{
+    this.props.store.contactid=contactid; 
+   this.props.store.showDlgWait=true; 
   }
   opendlgfolder=(contactid)=>{
     console.log("opendlgfolder");
@@ -322,6 +337,18 @@ class Items extends Component {
     handleClose={()=>{
       this.props.store.showDlgFolder =false;
     }} />
+    <DlgCheck  showModal={this.props.store.showDlgCheck } 
+    contactid={this.props.store.contactid}
+    yiqibh={this.props.store.yiqibh}
+    handleClose={()=>{
+      this.props.store.showDlgCheck =false;
+    }} />
+    <DlgWait  showModal={this.props.store.showDlgWait } 
+    contactid={this.props.store.contactid}
+    handleClose={()=>{
+      this.props.store.showDlgWait =false;
+    }} />
+
   </div>
     );
   }
