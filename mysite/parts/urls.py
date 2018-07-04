@@ -30,8 +30,8 @@ urlpatterns = [
 	 # url(r'^jiaozhun/',views.jiaozhun),
 	 # url(r'^shujubiao/',views.shujubiao),
 	 # url(r'^tar/',views.tar),
-	 url(r'^allfile/',views.allfile),
-	 url(r'^folder/',views.folder),
+	 # url(r'^allfile/',views.allfile),
+	 # url(r'^folder/',views.folder),
 
 	 # url(r'^zhuangxiangdan/',views.zhuangxiangdan),
 

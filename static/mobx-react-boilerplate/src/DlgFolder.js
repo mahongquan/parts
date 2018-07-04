@@ -25,7 +25,7 @@ class DlgFolder extends React.Component{
   open(contact_id) {
     var self=this;
    this.setState({ showModal: true });
-   Client.get("/parts/folder/",{id:contact_id}, function(result){
+   Client.get("/rest/folder/",{id:contact_id}, function(result){
        console.info(result);
        if (!result.success){
           self.setState({error:result.message});

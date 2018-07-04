@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
+import sys
+import platform
+import logging
+import json 
+from mysite.settings import MEDIA_ROOT,MEDIA_URL
+from genDoc.excel_write import *  #证书
+from genDoc.docx_write import genPack,genQue #装箱单
+import genDoc.genLabel          #标签
+from genDoc.recordXml import genRecord #调试记录
 import re
 import django
 from django.shortcuts import render_to_response
 import time
 import os
-import logging
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
@@ -16,7 +24,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.context_processors import csrf
 import mysite.settings
 import datetime
-import json
 from mysite.parts.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
@@ -24,7 +31,6 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from myutil import MyEncoder
 import traceback
-import sys
 import xlrd
 from django.db import connection,transaction
 from docx import Document
@@ -1550,3 +1556,104 @@ def showcontact(request):
     dic["totalct"]=totalct
     dic["totalid"]=len(items)
     return HttpResponse(json.dumps(dic, ensure_ascii=False,cls=MyEncoder))     
+def allfile(request):
+    #try:
+        contact_id=request.GET["id"]
+        c=Contact.objects.get(id=contact_id)
+        
+        outfilename=c.yiqixinghao+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        #
+        #p="d:/parts/media/仪器资料/"+c.yiqibh
+        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+        #证书
+        # dir1=p+"/"+outfilename
+        # logging.info(dir1)
+        if not os.path.exists(p):
+            os.makedirs(p)
+        # file1=dir1+"/证书数据表"+EXTNAME
+        # if not os.path.exists(file1):
+        #     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
+        #     data=genShujubiao(c,fullfilepath)
+        #     open(file1,"wb").write(data)
+        file2=p+"/"+c.hetongbh+"_"+c.yonghu+"_证书"+EXTNAME
+        if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            if c.yujifahuo_date<datetime.datetime.now().date():
+                c.yujifahuo_date=datetime.datetime.now().date()
+                c.save()
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+            data_zxd=genPack(c,fullfilepath)
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+            open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
+        if c.method!=None:
+            try:
+                logging.info("here")
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file6,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
+        logging.info(p)
+        pf=platform.system()
+        if pf=="Linux":
+            os.system("xdg-open "+p)
+        elif  pf.split("-")[0]=="CYGWIN_NT":
+            os.system('cygstart "'+p+'"')
+        else:
+            os.system('start '+p)
+        out={"success":True}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
+def folder(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    #p="d:/parts/media/仪器资料/"+c.yiqibh
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+    logging.info(p)
+    
+    if not os.path.exists(p):
+        os.makedirs(p)
+    pf=platform.system()
+    logging.info(pf)
+    if pf=="Linux":
+        os.system("xdg-open "+p)
+    elif  pf.split("-")[0]=="CYGWIN_NT":
+        os.system('cygstart "'+p+'"')
+    else:
+        os.system('start '+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))    
