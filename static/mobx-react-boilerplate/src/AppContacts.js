@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Items,{ItemStore} from "./Contacts";
+import Contacts,{ItemStore} from "./Contacts";
 
 export default class App extends Component{
   constructor(){
@@ -9,7 +9,7 @@ export default class App extends Component{
   }
   render=()=>{
     return(<div>
-      <Items store={this.store} />
+      <Contacts store={this.store} />
     </div>);
   }
 }

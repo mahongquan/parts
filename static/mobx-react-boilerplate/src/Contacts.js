@@ -73,8 +73,8 @@ export class ItemStore {
     }
 }
 
-
-class Items extends Component {
+@observer
+export default class Contacts extends Component {
   constructor(){
     super();
   }
@@ -353,4 +353,3 @@ class Items extends Component {
     );
   }
 };
-export default observer(Items);
