@@ -23,6 +23,7 @@ class LoginFormComponent extends React.Component{
     this.props.dlgclose();
   }
   handleCandel=(e)=>{
+    console.log("handleCandel");
     this.props.dlgclose();
   }
   render=()=>{

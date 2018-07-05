@@ -7,13 +7,17 @@ import ReactDOM from 'react-dom';
 import "todomvc-common/base.css";
 import "todomvc-app-css/index.css";
 
-const initialState = window.initialState && JSON.parse(window.initialState) || {};
-var todoStore = TodoStore.fromJS(initialState.todos || []);
-var viewStore = new ViewStore();
-todoStore.subscribeServerToStore();
-
 export default class App extends React.Component{
+	constructor(){
+		super();
+		const initialState = window.initialState && JSON.parse(window.initialState) || {};
+		this.todoStore = TodoStore.fromJS(initialState.todos || []);
+		this.viewStore = new ViewStore();
+		this.todoStore.subscribeServerToStore();
+	}
 	render=()=>{
-		return(<TodoApp todoStore={todoStore} viewStore={viewStore}/>);
+		return(<section id="todoapp" class="todoapp">
+			<TodoApp todoStore={this.todoStore} viewStore={this.viewStore}/>
+			</section>);
 	}
 }	

@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { observable,action,autorun } from "mobx";//, action, computed
+import { observable,action,autorun , reaction} from "mobx";//, action, computed
 import { observer } from "mobx-react";
 import {Table,Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import Client from './Client';
 import DlgLogin from './DlgLogin';
 import DlgDetail from './DlgDetail';
-import ContactEdit from './ContactEdit';
+// import ContactEdit from './ContactEdit';
 import DlgImport from './DlgImport';
 import DlgUrl from './DlgUrl';
 import DlgFolder from './DlgFolder';
 import DlgWait from './DlgWait';
 import DlgCheck from './DlgCheck';
+console.log(observable);
+
 export class ItemStore {
     url=null;
     data=null;
@@ -21,7 +23,7 @@ export class ItemStore {
 
     @observable showDlgFolder =false;    
     @observable showDlgUrl =false;
-    @observable showDlgLogin =false;
+    @observable showDlgLogin=false;
     @observable showDlgImport=false;
     @observable showDlgEdit=false;
     @observable showDlgDetail=false;
@@ -42,7 +44,10 @@ export class ItemStore {
     old={};
     constructor(){
       console.log("constructor");
-      autorun(() => console.log(this));
+      autorun(() => {
+        console.log("autorun");
+        console.log(this);
+      });
       this.loaddata();
     }
     @action
@@ -50,7 +55,10 @@ export class ItemStore {
       console.log("showDlgLogin")
       this.showDlgLogin=true;
     }
-    @action setdata(res){
+    @action 
+    setdata(res){
+      console.log("setdata");
+
           this.todos=res.data;
           this.total=res.total;
           this.user=res.user;
@@ -75,7 +83,7 @@ export class ItemStore {
 
 @observer
 export default class Contacts extends Component {
-  constructor(){
+  constructor(props){
     super();
   }
   opendlgcheck=(contactid,yiqibh)=>{
@@ -109,9 +117,10 @@ export default class Contacts extends Component {
     this.props.store.contactid=contactid;
   }
   componentDidMount=()=>{
-    console.log("mount");
+    console.log("contacts did mount");
     //this.loaddata();
-
+    console.log(this.props);
+    
   }
 
   componentWillUnmount=()=> {
@@ -233,8 +242,8 @@ export default class Contacts extends Component {
        </tr>);
   }
   render=()=>{
-    console.log(this);
-
+    console.log("Contacts render==========");
+    console.log(this.props.store.showDlgLogin);
     var hasprev=true;
     var hasnext=true;
     let prev;
@@ -260,7 +269,6 @@ export default class Contacts extends Component {
     else{
       next=null;
     }
-    //console.log(this.props.store);
     const itemRows = this.props.store.todos.map(this.mapfunc);
     return (
   <div  id="todoapp" className="table-responsive">
@@ -268,7 +276,8 @@ export default class Contacts extends Component {
        <DropdownButton title={this.props.store.user} id="id_dropdown1">
           <li hidden={this.props.store.user!=="AnonymousUser"}>
           <a onClick={()=>{
-            this.props.store.show_DlgLogin();
+            this.props.store.showDlgLogin=true;
+            console.log(this.props.store);
           }}>登录</a>
           </li>
           <li  hidden={this.props.store.user==="AnonymousUser"} >

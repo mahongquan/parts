@@ -8,6 +8,7 @@ import TodoItem from './todoItem';
 @observer
 export default class TodoOverview extends React.Component {
 	render() {
+		console.log("TodoOverview render");
 		const {todoStore, viewStore} = this.props;
 		if (todoStore.todos.length === 0)
 			return null;
@@ -31,6 +32,8 @@ export default class TodoOverview extends React.Component {
 	}
 
 	getVisibleTodos() {
+
+
 		return this.props.todoStore.todos.filter(todo => {
 			switch (this.props.viewStore.todoFilter) {
 				case ACTIVE_TODOS:

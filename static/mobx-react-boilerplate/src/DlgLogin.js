@@ -5,7 +5,6 @@ import {Modal} from "react-bootstrap";
 class DlgLogin extends React.Component {
 
   render() {
-    console.log(this.props);
     return (
         
         <Modal show={this.props.showModal} onHide={this.props.handleClose}>
@@ -13,7 +12,8 @@ class DlgLogin extends React.Component {
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginFormComponent onLoginSubmit={this.props.onLoginSubmit} dlgclose={this.props.handleClose}/>
+            <LoginFormComponent onLoginSubmit={this.props.onLoginSubmit} 
+            dlgclose={this.props.handleClose}/>
         </Modal.Body>
 
         </Modal>

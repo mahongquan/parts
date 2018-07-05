@@ -5,7 +5,8 @@ import * as Utils from '../utils';
 
 export default class TodoStore {
 	@observable todos = [];
-
+    @observable showmodal=false;
+    
 	@computed get activeTodoCount() {
 		return this.todos.reduce(
 			(sum, todo) => sum + (todo.completed ? 0 : 1),
@@ -18,14 +19,14 @@ export default class TodoStore {
 	}
 
 	subscribeServerToStore() {
-		reaction(
-			() => this.toJS(),
-			todos => window.fetch && fetch('/api/todos', {
-				method: 'post',
-				body: JSON.stringify({ todos }),
-				headers: new Headers({ 'Content-Type': 'application/json' })
-			})
-		);
+		// reaction(
+		// 	() => this.toJS(),
+		// 	// todos => window.fetch && fetch('/api/todos', {
+		// 	// 	method: 'post',
+		// 	// 	body: JSON.stringify({ todos }),
+		// 	// 	headers: new Headers({ 'Content-Type': 'application/json' })
+		// 	// })
+		// );
 	}
 
 	subscribeLocalstorageToStore() {
@@ -37,6 +38,7 @@ export default class TodoStore {
 
 	addTodo (title) {
 		this.todos.push(new TodoModel(this, Utils.uuid(), title, false));
+		console.log(this.todos);
 	}
 
 	toggleAll (checked) {
