@@ -311,7 +311,7 @@ def view_item(request):
     for rec in objs:
         data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei,"image":rec.image})
     logging.info(data)
-    out={"total":total,"data":data}
+    out={"total":total,"data":data,"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 def create_item(request):
     data = json.loads(request.body.decode("utf-8"))

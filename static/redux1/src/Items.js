@@ -31,7 +31,7 @@ class Items extends Component {
    _onChange=()=> {
       console.log("_onChange");
       let state1   =myredux.ItemStore.getState();
-      //console.log(state1);
+      console.log(state1);
       this.setState(state1);
       this.mystate=this.state;
   }
@@ -54,7 +54,6 @@ class Items extends Component {
   handlePrev = (e) => {
     this.mystate.start=this.mystate.start-this.mystate.limit;
     if(this.mystate.start<0) {this.mystate.start=0;}
-    //this.setState({start:start});
     this.loaddata();
   };
   handlePackItemChange = (idx,contact) => {

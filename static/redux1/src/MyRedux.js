@@ -1,14 +1,12 @@
-//import  ChatWebAPIUtils  from '../utils/ChatWebAPIUtils';
 import { createStore } from 'redux'
 import Client from "./Client";
-import  keyMirror from 'keymirror';
-var ActionTypes= keyMirror({
-    FETCHED_ITEMS: null,
-    FETCHING_ITEMS: null,
-    SHOW_EDIT:null,
-    HIDE_EDIT:null,
-    UPDATED_ITEM: null
-  })
+var ActionTypes= {
+    FETCHED_ITEMS: "FETCHED_ITEMS",
+    FETCHING_ITEMS: "FETCHING_ITEMS",
+    SHOW_EDIT:"SHOW_EDIT",
+    HIDE_EDIT:"HIDE_EDIT",
+    UPDATED_ITEM: "UPDATED_ITEM"
+  }
 function reducer(state = {error:null,showedit:false,_item:null,items:[],toal:0,start:0}, action) {
   console.log(action);
   switch (action.type) {
