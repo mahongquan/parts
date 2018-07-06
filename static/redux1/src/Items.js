@@ -20,7 +20,7 @@ class Items extends Component {
      this.mystate=this.state;
    }
   componentDidMount=()=>{
-    console.log(myredux.ItemStore);
+    // console.log(myredux.ItemStore);
     this.unsubscribe=myredux.ItemStore.subscribe(this._onChange);
     this.loaddata();
   }
@@ -29,9 +29,9 @@ class Items extends Component {
      this.unsubscribe();
   }
    _onChange=()=> {
-      console.log("_onChange");
+      // console.log("_onChange");
       let state1   =myredux.ItemStore.getState();
-      console.log(state1);
+      // console.log(state1);
       this.setState(state1);
       this.mystate=this.state;
   }

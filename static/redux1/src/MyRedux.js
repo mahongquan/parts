@@ -8,10 +8,10 @@ var ActionTypes= {
     UPDATED_ITEM: "UPDATED_ITEM"
   }
 function reducer(state = {error:null,showedit:false,_item:null,items:[],toal:0,start:0}, action) {
-  console.log(action);
+  // console.log(action);
   switch (action.type) {
     case ActionTypes.UPDATED_ITEM:
-        console.log(action);
+        // console.log(action);
         if (action.para.success){
            state.items[state._item] = action.para.data;
         }
@@ -43,21 +43,21 @@ function reducer(state = {error:null,showedit:false,_item:null,items:[],toal:0,s
 var ItemStore=createStore(reducer);
 var ItemActionCreators= {
   showEdit: function(data) {/////////////////////////  1 action=>dispatch   ///////////////////
-    console.log(data);
+    // console.log(data);
         ItemStore.dispatch({
           type: ActionTypes.SHOW_EDIT,
           para: data
         });
   },
   hideEdit: function(data) {/////////////////////////  1 action=>dispatch   ///////////////////
-    console.log(data);
+    // console.log(data);
         ItemStore.dispatch({
           type: ActionTypes.HIDE_EDIT,
           para: data
         });
   },
   getItems: function(data) {/////////////////////////  1 action=>dispatch   ///////////////////
-    console.log(data);
+    // console.log(data);
     Client.items(
       data
       ,(res)=>{
@@ -70,7 +70,7 @@ var ItemActionCreators= {
     );
   },
   updateItem: function(data) {
-    console.log(data);
+    // console.log(data);
     Client.put("/rest/Item",
       data
       ,(res)=>{
