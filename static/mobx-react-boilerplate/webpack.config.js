@@ -2,6 +2,21 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+
+ devServer: {
+   historyApiFallback: true,
+   hot: true,
+   inline: true,
+   progress: true,
+   port: 3000,
+   proxy: {
+     '/rest/*': {
+     target: 'http://127.0.0.1:8000',
+     changeOrigin: true,
+     secure: false
+     }
+   }
+ },
   devtool: 'eval',
   entry: [
     './src/index'

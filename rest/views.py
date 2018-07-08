@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
+import sys
+import platform
+import logging
+import json 
+from mysite.settings import MEDIA_ROOT,MEDIA_URL
+from genDoc.excel_write import *  #证书
+from genDoc.docx_write import genPack,genQue #装箱单
+import genDoc.genLabel          #标签
+from genDoc.recordXml import genRecord #调试记录
 import re
 import django
 from django.shortcuts import render_to_response
 import time
 import os
-import logging
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import  check_password, make_password
@@ -16,7 +24,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.context_processors import csrf
 import mysite.settings
 import datetime
-import json
 from mysite.parts.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
@@ -24,7 +31,6 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from myutil import MyEncoder
 import traceback
-import sys
 import xlrd
 from django.db import connection,transaction
 from docx import Document
@@ -121,105 +127,105 @@ def bjitems(items,items_chuku):
     # print("right")
     # print(printList(items_chuku))
     return(left,notequal,items_chuku)
-def writer(request):
-    # logging.info(request)
-    # output={}
-    # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    r=render_to_response("rest/writer.html",c)
-    return(r)
-@login_required
-def app_users_view(request):
-    start=int(request.GET.get("start","0"))
-    limit=int(request.GET.get("limit","20"))
-    total=User.objects.count()
-    objs =User.objects.all()[start:start+limit]
-    data=[]
-    for rec in objs:
-        data.append({"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name})
-    logging.info(data)
-    out={"total":total,"data":data}
-    return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
-@login_required    
-def app_users_update(request):
-    logging.info(request)
-    request2=Request(request,(JSONParser(),))
-    data = request2.DATA['data']
-    id1=data["id"]
-    rec=User.objects.get(id=id1)
-    if data.get("name")!=None:
-        rec.username=data["name"]
-    if data.get("email")!=None:
-        rec.email=data["email"]
-    if data.get("first")!=None:
-        rec.first_name=data["first"]
-    if data.get("last")!=None:
-        rec.last_name=data["last"]
-    rec.save()
-    output={"success":True,"message":"UPDATE new User" +str(rec.id)}
-    output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required    
-def app_users_destroy(request):
-    logging.info(request)
-    request2=Request(request,(JSONParser(),))
-    data = request2.DATA['data']
-    id1=data["id"]
-    rec=User.objects.get(id=id1)
-    rec.delete()
-    output={"success":True,"message":"delete User" +str(rec.id)}
-    output["data"]={"id":id1}#,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
-@login_required
-def app_users_create(request):
-    logging.info(request)
-    request2=Request(request,(JSONParser(),))
-    data = request2.DATA['data']
-    rec=User()#.objects.get(id=id1)
-    if data.get("name")!=None:
-        rec.username=data["name"]
-    if data.get("email")!=None:
-        rec.email=data["email"]
-    if data.get("first")!=None:
-        rec.first_name=data["first"]
-    if data.get("last")!=None:
-        rec.last_name=data["last"]
-    rec.save()
-    output={"success":True,"message":"create new User" +str(rec.id)}
-    output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
-def index(request):
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    return render_to_response("rest/index.html",c)
-def backbone(request):
-    r=csrf(request)["csrf_token"]
-    logging.info(dir(r))
-    logging.info(r)
-    c={"user":request.user,"csrf_token":r}
-    #c.update(csrf(request))
-    logging.info(dir(c))
-    logging.info(c)
-    r=render_to_response("rest/backbone.html",c)
-    return(r)    
-def restful(request):
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    r=render_to_response("rest/restful.html",c)
-    return(r)
-def jqm(request):
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    r=render_to_response("rest/jqm.html",c)
-    return(r)
-def index_2(request):
-    # logging.info(request)
-    # output={}
-    # return HttpResponse(json.dumps(output, ensure_ascii=False))
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    r=render_to_response("rest/index_2.html",c)
-    return(r) 
-def extjs6(request):
-    c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
-    r=render_to_response("rest/extjs6.html",c)
-    return(r)   
+# def writer(request):
+#     # logging.info(request)
+#     # output={}
+#     # return HttpResponse(json.dumps(output, ensure_ascii=False))
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     r=render_to_response("rest/writer.html",c)
+#     return(r)
+# @login_required
+# def app_users_view(request):
+#     start=int(request.GET.get("start","0"))
+#     limit=int(request.GET.get("limit","20"))
+#     total=User.objects.count()
+#     objs =User.objects.all()[start:start+limit]
+#     data=[]
+#     for rec in objs:
+#         data.append({"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name})
+#     logging.info(data)
+#     out={"total":total,"data":data}
+#     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
+# @login_required    
+# def app_users_update(request):
+#     logging.info(request)
+#     request2=Request(request,(JSONParser(),))
+#     data = request2.DATA['data']
+#     id1=data["id"]
+#     rec=User.objects.get(id=id1)
+#     if data.get("name")!=None:
+#         rec.username=data["name"]
+#     if data.get("email")!=None:
+#         rec.email=data["email"]
+#     if data.get("first")!=None:
+#         rec.first_name=data["first"]
+#     if data.get("last")!=None:
+#         rec.last_name=data["last"]
+#     rec.save()
+#     output={"success":True,"message":"UPDATE new User" +str(rec.id)}
+#     output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
+# @login_required    
+# def app_users_destroy(request):
+#     logging.info(request)
+#     request2=Request(request,(JSONParser(),))
+#     data = request2.DATA['data']
+#     id1=data["id"]
+#     rec=User.objects.get(id=id1)
+#     rec.delete()
+#     output={"success":True,"message":"delete User" +str(rec.id)}
+#     output["data"]={"id":id1}#,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
+# @login_required
+# def app_users_create(request):
+#     logging.info(request)
+#     request2=Request(request,(JSONParser(),))
+#     data = request2.DATA['data']
+#     rec=User()#.objects.get(id=id1)
+#     if data.get("name")!=None:
+#         rec.username=data["name"]
+#     if data.get("email")!=None:
+#         rec.email=data["email"]
+#     if data.get("first")!=None:
+#         rec.first_name=data["first"]
+#     if data.get("last")!=None:
+#         rec.last_name=data["last"]
+#     rec.save()
+#     output={"success":True,"message":"create new User" +str(rec.id)}
+#     output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
+# def index(request):
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     return render_to_response("rest/index.html",c)
+# def backbone(request):
+#     r=csrf(request)["csrf_token"]
+#     logging.info(dir(r))
+#     logging.info(r)
+#     c={"user":request.user,"csrf_token":r}
+#     #c.update(csrf(request))
+#     logging.info(dir(c))
+#     logging.info(c)
+#     r=render_to_response("rest/backbone.html",c)
+#     return(r)    
+# def restful(request):
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     r=render_to_response("rest/restful.html",c)
+#     return(r)
+# def jqm(request):
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     r=render_to_response("rest/jqm.html",c)
+#     return(r)
+# def index_2(request):
+#     # logging.info(request)
+#     # output={}
+#     # return HttpResponse(json.dumps(output, ensure_ascii=False))
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     r=render_to_response("rest/index_2.html",c)
+#     return(r) 
+# def extjs6(request):
+#     c={"user":request.user,"csrf_token":csrf(request)["csrf_token"]}
+#     r=render_to_response("rest/extjs6.html",c)
+#     return(r)   
 @login_required
 def item(request):
     logging.info("===================")
@@ -236,59 +242,59 @@ def item(request):
         return update_item(request)
     if request.method == 'DELETE':
         return destroy_item(request)    
-@login_required
-def application(request):
-    logging.info("===================")
-    logging.info(request)
-    logging.info("------------------")
-    request2=request
-    logging.info(request2)
-    if request.method == 'GET':
-        return view(request2)
-    if request.method == 'POST':
-        return create(request2)
-    if request.method == 'PUT':
-        return update(request2)
-    if request.method == 'DELETE':
-        return destroy(request2)
-def view(request):
-    objs=User.objects.all()
-    data=[]
-    for obj in objs:
-        data.append({"id":obj.id,"email":obj.email,"username":obj.username})
-    output={"data":data}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
-def create(request):
-    f=request.META["wsgi.input"]
-    logging.info(dir(f))
-    data="---"
-    logging.info(data)
-    rec=User()
-    rec.username=request.POST["username"]
-    rec.email=request.POST["email"]
-    rec.save()
-    output={"success":True,"message":"Created new User" +str(rec.id)}
-    output["data"]={"id":rec.id,"email":rec.email,"username":rec.username}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
-def update(request):
-    id1=int(request.POST["id"])
-    rec=User.objects.get(id=id1)
-    if request.POST.get("username")!=None:
-        rec.username=request.POST["username"]
-    if request.POST.get("email")!=None:
-        rec.email=request.POST["email"]
-    rec.save()
-    output={"success":True,"message":"Created new User" +str(rec.id)}
-    output["data"]={"id":rec.id,"email":rec.email,"username":rec.username}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
+# @login_required
+# def application(request):
+#     logging.info("===================")
+#     logging.info(request)
+#     logging.info("------------------")
+#     request2=request
+#     logging.info(request2)
+#     if request.method == 'GET':
+#         return view(request2)
+#     if request.method == 'POST':
+#         return create(request2)
+#     if request.method == 'PUT':
+#         return update(request2)
+#     if request.method == 'DELETE':
+#         return destroy(request2)
+# def view(request):
+#     objs=User.objects.all()
+#     data=[]
+#     for obj in objs:
+#         data.append({"id":obj.id,"email":obj.email,"username":obj.username})
+#     output={"data":data}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
+# def create(request):
+#     f=request.META["wsgi.input"]
+#     logging.info(dir(f))
+#     data="---"
+#     logging.info(data)
+#     rec=User()
+#     rec.username=request.POST["username"]
+#     rec.email=request.POST["email"]
+#     rec.save()
+#     output={"success":True,"message":"Created new User" +str(rec.id)}
+#     output["data"]={"id":rec.id,"email":rec.email,"username":rec.username}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
+# def update(request):
+#     id1=int(request.POST["id"])
+#     rec=User.objects.get(id=id1)
+#     if request.POST.get("username")!=None:
+#         rec.username=request.POST["username"]
+#     if request.POST.get("email")!=None:
+#         rec.email=request.POST["email"]
+#     rec.save()
+#     output={"success":True,"message":"Created new User" +str(rec.id)}
+#     output["data"]={"id":rec.id,"email":rec.email,"username":rec.username}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
 
-def destroy(request):
-    id=request.path.split("/")[-1]
-    id1=int(id)
-    rec=User.objects.get(id=id1)
-    rec.delete()
-    output={"success":True,"message":"OK"}
-    return HttpResponse(json.dumps(output, ensure_ascii=False))
+# def destroy(request):
+#     id=request.path.split("/")[-1]
+#     id1=int(id)
+#     rec=User.objects.get(id=id1)
+#     rec.delete()
+#     output={"success":True,"message":"OK"}
+#     return HttpResponse(json.dumps(output, ensure_ascii=False))
 def view_item(request):
     logging.info("here")
     #pack_id=int(request.GET.get("pack"))
@@ -305,7 +311,7 @@ def view_item(request):
     for rec in objs:
         data.append({"id":rec.id,"bh":rec.bh,"name":rec.name,"guige":rec.guige,"danwei":rec.danwei,"image":rec.image})
     logging.info(data)
-    out={"total":total,"data":data}
+    out={"total":total,"data":data,"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 def create_item(request):
     data = json.loads(request.body.decode("utf-8"))
@@ -1550,3 +1556,104 @@ def showcontact(request):
     dic["totalct"]=totalct
     dic["totalid"]=len(items)
     return HttpResponse(json.dumps(dic, ensure_ascii=False,cls=MyEncoder))     
+def allfile(request):
+    #try:
+        contact_id=request.GET["id"]
+        c=Contact.objects.get(id=contact_id)
+        
+        outfilename=c.yiqixinghao+"_"+c.yonghu
+        outfilename=outfilename[0:30]
+        dir1="证书_"+outfilename
+        #
+        #p="d:/parts/media/仪器资料/"+c.yiqibh
+        p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+        #证书
+        # dir1=p+"/"+outfilename
+        # logging.info(dir1)
+        if not os.path.exists(p):
+            os.makedirs(p)
+        # file1=dir1+"/证书数据表"+EXTNAME
+        # if not os.path.exists(file1):
+        #     fullfilepath = os.path.join(MEDIA_ROOT,"t_证书数据表"+EXTNAME)
+        #     data=genShujubiao(c,fullfilepath)
+        #     open(file1,"wb").write(data)
+        file2=p+"/"+c.hetongbh+"_"+c.yonghu+"_证书"+EXTNAME
+        if not os.path.exists(file2):
+            data2=getJiaoZhunFile(c)
+            open(file2,"wb").write(data2)
+        file3=p+"/"+outfilename+"_装箱单.docx"
+        if not os.path.exists(file3):
+            if c.yujifahuo_date<datetime.datetime.now().date():
+                c.yujifahuo_date=datetime.datetime.now().date()
+                c.save()
+            fullfilepath = os.path.join(MEDIA_ROOT,"t_装箱单.docx")
+            data_zxd=genPack(c,fullfilepath)
+            open(file3,"wb").write(data_zxd)
+        file4=p+"/"+"标签.lbx"
+        if not os.path.exists(file4):
+            data_lbl=genDoc.genLabel.genLabel(c.yiqixinghao,c.yiqibh,c.channels)
+            open(file4,"wb").write(data_lbl)
+        logging.info(c.method)
+        logging.info(type(c.method))
+        if c.method!=None:
+            try:
+                logging.info("here")
+                fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
+                logging.info(fullfilepath)
+                (data_record,data_xishu)=genRecord(fullfilepath,c)
+                file5=p+"/"+c.yiqibh+"调试记录.docx"
+                if not os.path.exists(file5):
+                    open(file5,"wb").write(data_record)
+                file6=p+"/"+"系数.lbx"
+                if not os.path.exists(file6):
+                    open(file6,"wb").write(data_xishu)
+            except ValueError as e:
+                logging.info(e)
+                try:
+                    (data_record,data_xishu)=genRecord("",c)
+                    file5=p+"/"+c.yiqibh+"调试记录.docx"
+                    if not os.path.exists(file5):
+                        open(file5,"wb").write(data_record)
+                except ValueError as e:
+                    logging.info(e)
+                    pass
+            except:
+                traceback.print_exc()
+                logging.info("except")
+        logging.info(p)
+        pf=platform.system()
+        if pf=="Linux":
+            os.system("xdg-open "+p)
+        elif  pf.split("-")[0]=="CYGWIN_NT":
+            os.system('cygstart "'+p+'"')
+        else:
+            os.system('start '+p)
+        out={"success":True}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
+def folder(request):
+    contact_id=request.GET["id"]
+    c=Contact.objects.get(id=contact_id)
+    #p="d:/parts/media/仪器资料/"+c.yiqibh
+    p=os.path.join(MEDIA_ROOT,"仪器资料/"+c.yiqibh)
+    logging.info(p)
+    
+    if not os.path.exists(p):
+        os.makedirs(p)
+    pf=platform.system()
+    logging.info(pf)
+    if pf=="Linux":
+        os.system("xdg-open "+p)
+    elif  pf.split("-")[0]=="CYGWIN_NT":
+        os.system('cygstart "'+p+'"')
+    else:
+        os.system('start '+p)
+    out={"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False))    

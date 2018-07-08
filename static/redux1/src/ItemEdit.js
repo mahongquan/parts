@@ -93,11 +93,11 @@ class ItemEdit extends Component{
     this.setState({packitem:contact2});
   }
   handleChange=(e)=>{
-    console.log("change");
-    console.log(e);
-    console.log(e.target);
-    console.log(e.target.value);
-    console.log(e.target.name);
+    // console.log("change");
+    // console.log(e);
+    // console.log(e.target);
+    // console.log(e.target.value);
+    // console.log(e.target.name);
     if(this.old[e.target.name]===e.target.value)
     {
       const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
@@ -112,7 +112,7 @@ class ItemEdit extends Component{
       this.setState({bg:bg2}); 
     }
     const contact2=update(this.state.packitem,{[e.target.name]: {$set:e.target.value}});
-    console.log(contact2);
+    // console.log(contact2);
     this.setState({packitem:contact2});
   }
   render=()=>{

@@ -22,12 +22,11 @@ class LoginFormComponent extends React.Component{
     this.props.onLoginSubmit(data);
     this.props.dlgclose();
   }
-  handleCandel=(e)=>{
+  handleCancel=(e)=>{
     this.props.dlgclose();
   }
   render=()=>{
     return (
-      <form className="loginForm" onSubmit={this.handleSubmit}>
       <table className="table-condensed">
         <tbody>
           <tr>
@@ -52,16 +51,14 @@ class LoginFormComponent extends React.Component{
           </tr>
           <tr>
                 <td>
-                    <input type="submit" value="确定" />
+                <button onClick={this.handleSubmit}>确定</button>
                 </td>
                 <td>
-                    <button onClick={this.handleCandel}>取消</button>
+                    <button onClick={this.handleCancel}>取消</button>
                 </td>
           </tr>
         </tbody>
         </table>
-        
-      </form>
     );
   }
 }
