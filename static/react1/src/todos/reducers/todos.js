@@ -1,17 +1,6 @@
 import {LOAD_TODO, ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
 // let todos=localStorage.getItem("todos");
 const initialState=[];
-// if (todos) {
-//   try{
-//     initialState=JSON.parse(todos);
-//   }
-//   catch(SyntaxError){
-//     initialState=[];
-//   }
-// }
-// else{
-//    initialState=[];
-// }
 export default function todos(state = initialState, action) {
   switch (action.type) {
     case LOAD_TODO:
