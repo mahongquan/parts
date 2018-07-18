@@ -91,13 +91,12 @@ class Contact(models.Model,myutil.MyModel):
         items=[]
         items2=[]
         for cp in self.usepack_set.all():
-            if cp.pack.name!="调试必备":
-                for pi in cp.pack.packitem_set.all():
-                    pi.item.ct=pi.ct
-                    if not pi.quehuo:
-                        items=addItem(items,pi.item)
-                    else:
-                        items2=addItem(items2,pi.item)
+            for pi in cp.pack.packitem_set.all():
+                pi.item.ct=pi.ct
+                if not pi.quehuo:
+                    items.append(pi.item)
+                else:
+                    items2.append(pi.item)#not leijia
         return (items,items2)        
 class Pack(models.Model):
     #=======销售===========
