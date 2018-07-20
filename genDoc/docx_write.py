@@ -98,7 +98,7 @@ def genPack(contact,fn):
     #             items=addItem(items,pi.item)
     #         else:
     #             items2=addItem(items2,pi.item)
-    (items,items2)=contact.huizong()
+    (items,items2)=contact.huizong2()
     for item in items:
         columns= tbl.add_row().cells
         if item.bh!=None:

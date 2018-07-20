@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from './react';
 //import Client from './Client';
 import myredux from './MyRedux';
 import {Table} from "react-bootstrap";

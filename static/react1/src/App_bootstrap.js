@@ -9,6 +9,7 @@ import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 //import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
+import DlgStat2 from './DlgStat2';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck';
@@ -46,6 +47,7 @@ class App extends Component {
     showDlgEdit:false,
     showDlgDetail:false,
     showDlgTodos:false,
+    showDlgStat2:false,
   }
   constructor(props) {
     super(props);
@@ -369,6 +371,10 @@ class App extends Component {
       handleClose={()=>{
         this.setState({showDlgDetail:false});
     }} />
+    <DlgStat2 showModal={this.state.showDlgStat2} 
+      handleClose={()=>{
+        this.setState({showDlgStat2:false});
+    }} />
     <DlgTodos showModal={this.state.showDlgTodos} close={()=>{
       this.setState({showDlgTodos:false});
     }}/> 
@@ -389,7 +395,10 @@ class App extends Component {
       <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>备件</NavItem>
       <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>复制包</NavItem>
       <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
-      <NavItem eventKey={5} href="#" onClick={()=>{
+      <NavItem eventKey={6} href="#" onClick={()=>{
+        this.setState({showDlgStat2:true});
+      }}>年统计</NavItem>
+      <NavItem eventKey={7} href="#" onClick={()=>{
         this.setState({showDlgTodos:true});
       }}>待办</NavItem>
     </Nav>

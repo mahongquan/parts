@@ -1464,7 +1464,30 @@ def ht(request):
     filename = f.name
     filetype = f.content_type
     return readHtFile(f,filename)
-    #return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))           
+    #return HttpResponse(json.dumps(output, ensure_ascii=False,cls=MyEncoder))  
+def year12(request):
+    logging.info("chart")
+    baoxiang=request.GET.get("baoxiang")
+    end_date=datetime.datetime.now()
+    start_date=datetime.datetime(end_date.year-12,1,1,0,0,0)
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    #更新操作
+    start_date_s=start_date.strftime("%Y-%m-%d")
+    end_date_s=end_date.strftime("%Y-%m-%d")
+    if baoxiang==None:
+        cmd="select strftime('%Y',tiaoshi_date) as year,count(id) from parts_contact  where tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by year"
+    else:
+        cmd="select strftime('%Y',tiaoshi_date) as year,count(id) from parts_contact  where baoxiang like '"+baoxiang+"'  and tiaoshi_date between '"+start_date_s+"' and '"+end_date_s+"' group by year"            
+    logging.info(cmd)
+    cursor.execute(cmd)    #执行sql语句
+    raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    lbls=[]
+    values=[]
+    for one in raw:
+        lbls.append(one[0]+"年")
+        values.append(one[1])
+    res={"success":True, "lbls":lbls,"values":values}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))     
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
