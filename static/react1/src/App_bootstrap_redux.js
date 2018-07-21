@@ -1,3 +1,6 @@
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as TodoActions from './actions'
 import React, { Component } from 'react';
 import DlgTodos from './DlgTodos';
 import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Tooltip,Overlay} from "react-bootstrap";
@@ -7,19 +10,16 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-//import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
-import DlgStat2 from './DlgStat2';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
-import DlgCheck from './DlgCheck';
+import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
-//import "./autosuggest.css"
-// var host="";
+
 class App extends Component {
   mystate = {
     start:0,
@@ -47,7 +47,6 @@ class App extends Component {
     showDlgEdit:false,
     showDlgDetail:false,
     showDlgTodos:false,
-    showDlgStat2:false,
   }
   constructor(props) {
     super(props);
@@ -74,8 +73,12 @@ class App extends Component {
   }
   componentDidMount=() => {
     this.load_data();
+    // this.props.actions.loadTodo();
+    console.log(this.props);
   }
   load_data=()=>{
+
+    
     Client.contacts(
       { start:this.mystate.start,
         limit:this.mystate.limit,
@@ -87,14 +90,15 @@ class App extends Component {
         if(user===undefined){
           user="AnonymousUser"
         }
-        this.mystate.total=contacts.total;//because async ,mystate set must before state;
-        this.setState({
-          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-          limit:this.mystate.limit,
-          user: user,
-          total:contacts.total,
-          start:this.mystate.start
-        });
+        this.props.actions.loadTodo(contacts.data);
+        // this.mystate.total=contacts.total;//because async ,mystate set must before state;
+        // this.setState({
+        //   contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        //   limit:this.mystate.limit,
+        //   user: user,
+        //   total:contacts.total,
+        //   start:this.mystate.start
+        // });
       },(error)=>{
           // console.log(typeof(error));
           if(error instanceof SyntaxError){
@@ -107,11 +111,11 @@ class App extends Component {
     console.log(idx);
     let contacts2
     if (idx!=null){
-      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      contacts2=update(this.props.todos,{[idx]: {$set:contact}});
       console.log(contacts2);
     }
     else{
-      contacts2=update(this.state.contacts,{$unshift: [contact]});
+      contacts2=update(this.props.todos,{$unshift: [contact]});
     }
     this.setState({contacts:contacts2});
   };
@@ -238,11 +242,11 @@ class App extends Component {
     console.log(idx);
     let contacts2
     if (idx!=null){
-      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      contacts2=update(this.props.todos,{[idx]: {$set:contact}});
       console.log(contacts2);
     }
     else{
-      contacts2=update(this.state.contacts,{$unshift: [contact]});
+      contacts2=update(this.props.todos,{$unshift: [contact]});
     }
     this.setState({contacts:contacts2});
   };
@@ -287,8 +291,10 @@ class App extends Component {
   }
   render() {
     //console.log("render=========================");
+    console.log(this.props);
+    console.log(this.state);
 
-    const contactRows = this.state.contacts.map((contact, idx) => (
+    const contactRows = this.props.todos.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
         
@@ -305,7 +311,7 @@ class App extends Component {
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
             <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
             <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
-            
+           
           </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td><td>{contact.channels}</td>
@@ -371,10 +377,6 @@ class App extends Component {
       handleClose={()=>{
         this.setState({showDlgDetail:false});
     }} />
-    <DlgStat2 showModal={this.state.showDlgStat2} 
-      handleClose={()=>{
-        this.setState({showDlgStat2:false});
-    }} />
     <DlgTodos showModal={this.state.showDlgTodos} close={()=>{
       this.setState({showDlgTodos:false});
     }}/> 
@@ -394,11 +396,8 @@ class App extends Component {
       <NavItem eventKey={2} href="#" onClick={this.openDlgPacks}>包</NavItem>
       <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>备件</NavItem>
       <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>复制包</NavItem>
-      <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>月统计</NavItem>
-      <NavItem eventKey={6} href="#" onClick={()=>{
-        this.setState({showDlgStat2:true});
-      }}>年统计</NavItem>
-      <NavItem eventKey={7} href="#" onClick={()=>{
+      <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>统计</NavItem>
+      <NavItem eventKey={5} href="#" onClick={()=>{
         this.setState({showDlgTodos:true});
       }}>待办</NavItem>
     </Nav>
@@ -447,4 +446,16 @@ class App extends Component {
     );
   }
 }
-export default App;
+const mapStateToProps = state => ({
+   todos: state.todos
+})
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(TodoActions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+

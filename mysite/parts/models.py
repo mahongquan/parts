@@ -12,6 +12,7 @@ def addItem(items,item):
     find=False
     for i in items:
         if i.id==item.id:
+            i.leijia=True
             i.ct +=item.ct
             find=True
             break
@@ -86,6 +87,9 @@ class Contact(models.Model,myutil.MyModel):
                     items=addItem(items,pi.item)
                 else:
                     items2=addItem(items2,pi.item)
+        for i in items:
+            logging.info(i)
+            logging.info(i.leijia)
         return (items,items2)
     def huizong2(self):
         items=[]
@@ -116,6 +120,7 @@ class UsePack(models.Model):
         verbose_name_plural=verbose_name
   
 class Item(models.Model):
+    leijia=False
     #ispack=models.BooleanField()
     bh = models.CharField(max_length=30,null=True,blank=True,verbose_name="库存编号")#库存编号
     name=models.CharField(max_length=30,verbose_name="备件名称")#备件名称
@@ -133,6 +138,7 @@ class Item(models.Model):
                 pass
             else:
                 exec("dic1['%s']=self.%s" %(f.name,f.name))
+        dic1["leijia"]=self.leijia
         dic1["_id"]=self.id
         return dic1    
     @classmethod
@@ -157,6 +163,7 @@ class Item(models.Model):
         verbose_name="备件"
         verbose_name_plural=verbose_name
 class PackItem(models.Model):
+    
     pack=models.ForeignKey(Pack,on_delete=CASCADE,verbose_name="包")#合同
     item=models.ForeignKey(Item,on_delete=CASCADE,verbose_name="备件")#备件
     ct=  models.FloatField(verbose_name="数量",default=1)#数量
