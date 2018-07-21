@@ -119,7 +119,7 @@ class ContactEdit2New  extends Component{
       this.setState({hiddenPacks:true});
     }
     else{
-      this.old=this.parent.props.todos[this.index];
+      this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
     this.old.dianqi=this.old.dianqi || "";

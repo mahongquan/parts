@@ -5,10 +5,21 @@ import logging
 from docx.enum.style import WD_STYLE_TYPE
 from docx.shared import Inches, Pt
 from lxml import etree as ET
+#  from docx import Document
+# >>> document = Document()
+# >>> style = document.styles['Normal']
+# >>> font = style.font
+# Typeface and size are set like this:
+
+# >>> from docx.shared import Pt
+# >>> font.name = 'Calibri'
+# >>> font.size = Pt(12)
 def changeGrid2(tbl,rowv,colv,value):
     tbl.cell(rowv,colv).text=value
-def setCell(column1,value):
+def setCell(column1,value,teshu):
     column1.text=value
+    # logging.info(column1.style)
+    # logging.info(dir(column1))
 def getGrid(tbl,rowv,colv):
     tbl_childs=tbl.getchildren()
     row1=tbl_childs[rowv+2]
@@ -62,9 +73,9 @@ def borderCells(cells):
     for cell in cells:
         border(cell)
 def genPack(contact,fn):
+    logging.info("genPack=================")
     document = Document(fn)
     tbl=document.tables[0]
-    logging.info(dir(tbl))
     changeGrid2(tbl,0,1,contact.yonghu)
     changeGrid2(tbl,1,1,contact.yiqixinghao)
     changeGrid2(tbl,2,1,contact.yiqibh)
@@ -100,20 +111,29 @@ def genPack(contact,fn):
     #             items2=addItem(items2,pi.item)
     (items,items2)=contact.huizong()
     for item in items:
-        columns= tbl.add_row().cells
-        logging.info(dir(columns[0]))
+
+        tmp_row=tbl.add_row()
+        
+        # if item.leijia:
+        #     tmp_row.style.font.italic = True
+        columns= tmp_row.cells
         if item.bh!=None:
-            setCell(columns[0],item.bh)
-        setCell(columns[1],item.name)
+            setCell(columns[0],item.bh,item.leijia)
+        setCell(columns[1],item.name,item.leijia)
         if item.guige!=None:
-            setCell(columns[2],item.guige)
-        if item.danwei!=None:
-            setCell(columns[3],str(item.ct)+item.danwei)
-        if item.beizhu!=None:
-            setCell(columns[5],item.beizhu)
+            setCell(columns[2],item.guige,item.leijia)
+        if item.danwei==None:
+            item.danwei=""
+        if item.leijia:
+            setCell(columns[3],"{{"+str(item.ct)+"}}"+item.danwei,item.leijia)
         else:
-            setCell(columns[5],"")
-        setCell(columns[4],"")
+            setCell(columns[3],str(item.ct)+item.danwei,item.leijia)
+
+        if item.beizhu!=None:
+            setCell(columns[5],item.beizhu,item.leijia)
+        else:
+            setCell(columns[5],"",item.leijia)
+        setCell(columns[4],"",item.leijia)
     if len(items2)>0:
         document.add_page_break()
         p=document.add_paragraph('短缺物资清单')
