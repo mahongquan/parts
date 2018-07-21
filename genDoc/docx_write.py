@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
+import os
+import sys
+import codecs
+import django
+from genDoc.recordXml import genRecord
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+django.setup()
+from mysite.parts.models import *
 from docx import Document
 from io import BytesIO,StringIO
 import logging
 from docx.enum.style import WD_STYLE_TYPE
 from docx.shared import Inches, Pt
 from lxml import etree as ET
-#  from docx import Document
-# >>> document = Document()
-# >>> style = document.styles['Normal']
-# >>> font = style.font
-# Typeface and size are set like this:
-
-# >>> from docx.shared import Pt
-# >>> font.name = 'Calibri'
-# >>> font.size = Pt(12)
+document=None
 def changeGrid2(tbl,rowv,colv,value):
     tbl.cell(rowv,colv).text=value
 def setCell(column1,value,teshu):
     column1.text=value
+    if teshu:
+        # column1.paragraphs[0].style.font.underline=True
+        column1.paragraphs[0].style=document.styles['me_underline']
     # logging.info(column1.style)
     # logging.info(dir(column1))
 def getGrid(tbl,rowv,colv):
@@ -73,7 +76,7 @@ def borderCells(cells):
     for cell in cells:
         border(cell)
 def genPack(contact,fn):
-    logging.info("genPack=================")
+    global document
     document = Document(fn)
     tbl=document.tables[0]
     changeGrid2(tbl,0,1,contact.yonghu)
@@ -102,6 +105,8 @@ def genPack(contact,fn):
     print(tbl.cell(0,0).text)
     items=[]
     items2=[]
+    style = document.styles.add_style('me_underline', WD_STYLE_TYPE.PARAGRAPH)
+    style.font.underline=True
     # for cp in contact.usepack_set.all():
     #     for pi in cp.pack.packitem_set.all():
     #         pi.item.ct=pi.ct
@@ -125,7 +130,7 @@ def genPack(contact,fn):
         if item.danwei==None:
             item.danwei=""
         if item.leijia:
-            setCell(columns[3],"{{"+str(item.ct)+"}}"+item.danwei,item.leijia)
+            setCell(columns[3],str(item.ct)+item.danwei,item.leijia)
         else:
             setCell(columns[3],str(item.ct)+item.danwei,item.leijia)
 
@@ -172,47 +177,12 @@ def genPack(contact,fn):
     s.seek(0)
     data=s.read()
     return data
-def genQue(contact,fn):
-    document = Document(fn)
-    tbl=document.tables[0]
-    logging.info(dir(tbl))
-    changeGrid2(tbl,0,1,contact.yonghu)
-    changeGrid2(tbl,1,1,contact.yiqixinghao)
-    changeGrid2(tbl,2,1,contact.yiqibh)
-    changeGrid2(tbl,3,1,contact.baoxiang)
-    changeGrid2(tbl,4,1,contact.shenhe)
-    changeGrid2(tbl,5,1,myformat_date(contact.yujifahuo_date))
-    changeGrid2(tbl,6,1,contact.hetongbh)
-    tbl=document.tables[1]
-    print(tbl.cell(0,0).text)
-    items=[]
-    items2=[]
-    for cp in contact.usepack_set.all():
-        for pi in cp.pack.packitem_set.all():
-            pi.item.ct=pi.ct
-            if not pi.quehuo:
-                items=addItem(items,pi.item)
-            else:
-                items2=addItem(items2,pi.item)
-    if len(items2)>0:
-        for item in items2:
-            columns= tbl.add_row().cells
-            setCell(columns[0],item.bh)
-            setCell(columns[1],item.name)
-            setCell(columns[2],item.guige)
-            setCell(columns[3],str(item.ct)+item.danwei)
-            if item.beizhu!=None:
-                setCell(columns[5],item.beizhu)
-            else:
-                setCell(columns[5],"")
-            setCell(columns[4],"")
-        s=BytesIO()
-        document.save(s)
-        s.seek(0)
-        data=s.read()
-    else:
-        data=""
-    return data
-
-if __name__=="__main__":
-    print(genPack("4111533499"))
+def test():
+    document = Document("t_装箱单.docx")
+    return document
+if __name__ == "__main__":
+    contact=Contact.objects.get(id=323)
+    data=genPack(contact,"media/t_装箱单.docx")
+    f=open("out.docx","wb")
+    f.write(data)
+    f.close()
