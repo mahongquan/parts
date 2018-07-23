@@ -5,7 +5,7 @@ import logging
 import json 
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 from genDoc.excel_write import *  #证书
-from genDoc.docx_write import genPack,genQue #装箱单
+from genDoc.docx_write import genPack #装箱单
 import genDoc.genLabel          #标签
 from genDoc.recordXml import genRecord #调试记录
 import re
