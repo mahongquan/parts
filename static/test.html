@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+ <html lang=en> 
+<head>  
+<meta charset=utf-8> <meta http-equiv=X-UA-Compatible content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="/static/typeaheadjs.css" rel="stylesheet">
+<title>装箱单</title> 
+</head>
+<body>
+<div class="well">
+    <input type="text" class="span3" id="search" data-provide="typeahead" data-items="4" />
+</div>
+<script src="/static/jquery-3.3.1.js"></script>
+<script src="/static/bootstrap3-typeahead.js"></script>
+<script>
+    var subjects = ['PHP', 'MySQL', 'SQL', 'PostgreSQL', 'HTML', 'CSS', 'HTML5', 'CSS3', 'JSON'];
+    $('#search').typeahead({source: subjects})
+</script>
+</body>
+</html>

@@ -65,7 +65,18 @@ class DlgDetail extends React.Component{
    this.setState({ showalert: false }); 
   }
     mapfunc=(contact, idx) => {
+      if (contact.leijia){
         return (<tr key={idx} >
+          <td><u><b>{contact.id}</b></u></td>
+          <td><u>{contact.bh}</u></td>
+          <td><u>{contact.name}</u></td>
+          <td><u>{contact.guige}</u></td>
+          <td><u>{contact.ct}</u></td>
+          <td><u>{contact.danwei}</u></td>
+        </tr>);
+      }
+    else{
+      return (<tr key={idx} >
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>{contact.name}</td>
@@ -73,6 +84,7 @@ class DlgDetail extends React.Component{
           <td>{contact.ct}</td>
           <td>{contact.danwei}</td>
         </tr>);
+    }
   }
 
   render=()=>{
