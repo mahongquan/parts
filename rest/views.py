@@ -1255,24 +1255,26 @@ def readStandardFile(fn,filename):
     if len(onedan)>0:
         dan.append(onedan)
     rs=[]
+    at=1
     for one in dan:
-        r=treatOne(one,filename)
+        r=treatOne(one,filename,at)
         if r!=None: 
             rs.append(r)
+        at+=1
     return rs
-def treatOne(rows,fn):
+def treatOne(rows,fn,at):
     logging.info(rows)
     r=None
     beizhu=rows[1][7]
     if beizhu[:2]=="CS" or beizhu[:2]=="ON":
-        name=rows[1][7]+"_"+fn
+        name=rows[1][7]+"_"+str(at)+"_"+fn
         d=Pack.objects.filter(name=name)
         logging.info(d)
         if len(d)>0:
             pass
         else:
             d=Pack()
-            d.name=rows[1][7]+"_"+fn
+            d.name=name
             d.save()
             n=len(rows)
             items=rows[4:n]

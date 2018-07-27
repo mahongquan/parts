@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from mysite.parts.models import *
-from mysite.parts.views import index
 
 class PackAdmin(admin.ModelAdmin):
     search_fields = ('name', )
