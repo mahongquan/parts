@@ -1583,8 +1583,8 @@ def allfile(request):
     #try:
         contact_id=request.GET["id"]
         c=Contact.objects.get(id=contact_id)
-        
-        outfilename=c.yiqixinghao+"_"+c.yonghu
+        thename=c.yonghu.replace(" ","")
+        outfilename=c.yiqixinghao+"_"+thename
         outfilename=outfilename[0:30]
         dir1="证书_"+outfilename
         #
