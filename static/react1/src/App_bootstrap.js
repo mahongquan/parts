@@ -144,6 +144,12 @@ class App extends Component {
       this.handleUserChange(this.state.user);
     });
   };
+  keypress=(e)=> {
+      if (e.which !== 13) return
+      // console.log('你按了回车键...');
+
+      this.search();
+  }
   handleSearchChange = (e) => {
     this.mystate.search=e.target.value;
     this.setState({search:this.mystate.search});
@@ -414,7 +420,7 @@ class App extends Component {
        </DropdownButton>
        <div className="input-group" style={{width:"250px"}}>
      
-      <input type="text" className="form-control" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
+      <input onKeyPress={this.keypress} type="text" className="form-control" value={this.state.search}  placeholder="合同 or 仪器编号 or 客户" onChange={this.handleSearchChange} />
        <span className="input-group-btn">
         <button className="btn btn-info" type="button" onClick={this.search}>搜索<span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
       </span>
