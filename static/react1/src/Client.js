@@ -36,7 +36,7 @@ function myFetch(method,url,body,cb,headers2,err_callback) {
     .then(cb).catch((error) => {
       if(err_callback) err_callback(error);
       else
-        alert(error+"\n请刷新网页/登录");
+        alert(error+"\n请检查服务器/刷新网页/登录");
     });
 }
 function getRaw(url,cb,err_callback) {

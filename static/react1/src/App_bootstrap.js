@@ -30,6 +30,7 @@ class App extends Component {
     search:""
   }
    state = {
+    connect_error:false,
     search2:"",
     search2tip:"",
     target:null,
@@ -97,8 +98,12 @@ class App extends Component {
         });
       },(error)=>{
           // console.log(typeof(error));
+          console.log(error)
           if(error instanceof SyntaxError){
             this.openDlgLogin();
+          }
+          else{
+            this.setState({connect_error:true});
           }
       }
      );
@@ -352,6 +357,7 @@ class App extends Component {
     }
     return (
 <div id="todoapp" className="table-responsive">
+    <div align="center" style={{display:this.state.connect_error?"":"none",textAlign: "center",color:"red"}} >!!!!!!!!!!连接错误,服务器未运行!!!!!!!</div>
     <Overlay target={this.state.target} 
         container={this} show={this.state.showcontext}  placement="bottom">
         <Tooltip id="tooltip1" >
