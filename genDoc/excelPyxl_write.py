@@ -17,9 +17,9 @@ def yearbeforeday(d):
         d1=d1+datetime.timedelta(-1)
     return d1
 def getElement(chanels,first):
-    if first=="":
-        return 
     print(first)
+    if first=="":
+        return
     eles=first.split("(")
     ele=eles[0]#2C
     if ele[0]=="2":
@@ -32,7 +32,7 @@ def getElement(chanels,first):
             chanels.append("H"+ele[1])
         else:
             chanels.append("L"+ele[1])
-    pass    
+    pass  
 def getchannels(peizhi):
     print(peizhi)
     elements=peizhi.split("+")
@@ -244,6 +244,7 @@ def genJiaozhunON(c,fn):
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))
     return save_virtual_workbook(xlBook)
 def genJiaozhunCS(c,fn):  
+    channels_fj=getchannels(c.channels)
     xlBook = load_workbook(filename = fn)
     table=xlBook.worksheets[0]  
     #Worksheet = Worksheets[0]
@@ -283,6 +284,13 @@ def genJiaozhunCS(c,fn):
     for i in range(6):
         setCell(table,16,8+i*2,errs[i])#setCell(table,16,8+i*2).Value=errs[i]
     # #jmd
+    if("HC" in channels_fj):
+        pass
+    else:#remove hc
+        setCell(table,13,8,"")#setCell(table,16,8+i*2).Value=errs[i]
+        setCell(table,14,8,"")#setCell(table,16,8+i*2).Value=errs[i]
+        setCell(table,15,8,"")#setCell(table,16,8+i*2).Value=errs[i]
+        setCell(table,16,8,"")#setCell(table,16,8+i*2).Value=errs[i]
     cave=0.0725
     crsd=0.3/100
     (rs,ave_str,rsd_str)=genjmd(cave,crsd)
