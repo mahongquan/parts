@@ -1494,7 +1494,7 @@ def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
     end_date=datetime.datetime.now()
-    start_date=datetime.datetime(end_date.year-1,1,1,0,0,0)
+    start_date=datetime.datetime(end_date.year-2,1,1,0,0,0)
     cursor = connection.cursor()            #获得一个游标(cursor)对象
     #更新操作
     start_date_s=start_date.strftime("%Y-%m-%d")
