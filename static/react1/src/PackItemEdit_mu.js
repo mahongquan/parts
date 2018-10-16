@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import update from 'immutability-helper';
 import Client from './Client';
 var createReactClass = require('create-react-class');
@@ -71,7 +71,7 @@ const PackItemEdit = createReactClass({
       maxWidth: 'none',
     };
     return (
-        <a onTouchTap={this.handleOpen}>{this.props.title}
+        <a onClick={this.handleOpen}>{this.props.title}
         <Dialog
           modal={false}
           open={this.state.open}

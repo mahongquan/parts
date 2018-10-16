@@ -1,7 +1,10 @@
 
 import React from 'react';
 import Client from './Client';
-import {Table, TableBody, TableRowColumn,  TableRow, } from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 //import AutoComplete from 'material-ui/AutoComplete';
 import Autosuggest from 'react-autosuggest';
 import UsePackEdit from "./UsePackEdit_mu";
@@ -125,15 +128,15 @@ class UsePacks extends React.Component {
     const { usepacks } = this.state;
     const foodRows = usepacks.map((food, idx) => (
       <TableRow key={idx} onClick={() => this.props.onFoodClick(food)}>
-        <TableRowColumn>{food.id}</TableRowColumn>
-        <TableRowColumn>{food.name}</TableRowColumn>
-        <TableRowColumn>{food.contact}</TableRowColumn>
-        <TableRowColumn>{food.pack}</TableRowColumn>
-        <TableRowColumn>{food.hetongbh}</TableRowColumn>
-        <TableRowColumn>
+        <TableCell>{food.id}</TableCell>
+        <TableCell>{food.name}</TableCell>
+        <TableCell>{food.contact}</TableCell>
+        <TableCell>{food.pack}</TableCell>
+        <TableCell>{food.hetongbh}</TableCell>
+        <TableCell>
         <UsePackEdit parent={this} index={idx} title="编辑" />
         <a  onClick={() => this.onDeleteClick(idx)} style={{marginLeft:"10px"}}>删除</a>
-        </TableRowColumn>
+        </TableCell>
       </TableRow>
     ));
 
@@ -142,12 +145,12 @@ class UsePacks extends React.Component {
         <Table>
         <TableBody>
         <TableRow>
-          <TableRowColumn>id</TableRowColumn>
-          <TableRowColumn>name</TableRowColumn>
-          <TableRowColumn>contact</TableRowColumn>
-          <TableRowColumn>pack</TableRowColumn>
-          <TableRowColumn>hetongbh</TableRowColumn>
-          <TableRowColumn>actions</TableRowColumn>
+          <TableCell>id</TableCell>
+          <TableCell>name</TableCell>
+          <TableCell>contact</TableCell>
+          <TableCell>pack</TableCell>
+          <TableCell>hetongbh</TableCell>
+          <TableCell>actions</TableCell>
         </TableRow>
         {foodRows}
         </TableBody>
@@ -156,7 +159,7 @@ class UsePacks extends React.Component {
           inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
           onSuggestionSelected={this.auto_select}
           onSuggestionsFetchRequested={this.auto_change}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionsClearRequested={()=>{}}
           getSuggestionValue={(item) => item.name}
           ref="autocomplete"
           suggestions={this.state.auto_items}

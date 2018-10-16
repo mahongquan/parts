@@ -125,8 +125,8 @@ class PackItems extends React.Component {
         输入备件<Autosuggest
           inputProps={{ id: 'states-autocomplete',value:this.state.auto_value,onChange:this.onChange}}
           onSuggestionSelected={this.auto_select}
+          onSuggestionsClearRequested={()=>{}}
           onSuggestionsFetchRequested={this.auto_change}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={(item) => item.name}
           ref="autocomplete"
           suggestions={this.state.auto_items}

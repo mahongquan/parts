@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
-import Button from 'material-ui/Button';
-import Popover from 'material-ui/Popover';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import TextField from 'material-ui/TextField';
-import Toolbar from 'material-ui/Toolbar';
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Button from '@material-ui/core/Button';
+// import Popover from '@material-ui/core/Popover';
+import Menu from '@material-ui/core/Menu';
+import MenuItem  from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Toolbar from '@material-ui/core/Toolbar';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import Client from './Client';
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
 import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
-import image from './logo.svg';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import blue from 'material-ui/colors/blue';
+// import image from './logo.svg';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
+import { withStyles } from '@material-ui/core/styles';
+// import Input, { InputLabel } from '@material-ui/core/Input';
+// import FormControl from '@material-ui/core/FormControl';
+// import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -45,7 +51,7 @@ class SimpleSelect extends React.Component {
     console.log("click");
   }
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     return (
           <Select
@@ -364,7 +370,6 @@ class App extends Component {
     return (
     <MuiThemeProvider theme={theme}>
       <div className="App">
-        <img src={image} width="100px"></img>
         <Toolbar>
           <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
                 </DialogExampleSimple>
@@ -383,7 +388,7 @@ class App extends Component {
          <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
          </div>
           <div>
-        <Button   variant="raised" onClick={this.handleTest}>test
+        <Button  onClick={this.handleTest}>test
         </Button>
         <Button
           aria-owns={anchorEl ? 'simple-menu' : null}

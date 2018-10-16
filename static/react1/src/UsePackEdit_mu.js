@@ -1,6 +1,6 @@
 import React from 'react';
 import PackItems from "./PackItems_mu";
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 var createReactClass = require('create-react-class');
 const UsePackEdit = createReactClass({
   getInitialState() {

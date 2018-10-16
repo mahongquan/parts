@@ -1,12 +1,12 @@
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import Button from 'material-ui/Button';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
 import Client from './Client';
 import UsePacks from './UsePacks';
-import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-//import AutoComplete from 'material-ui/AutoComplete';
-//import DatePicker from 'material-ui/DatePicker';
+// import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+//import AutoComplete from '@material-ui/core/AutoComplete';
+//import DatePicker from '@material-ui/core/DatePicker';
 import Autosuggest from 'react-autosuggest';
 //import areIntlLocalesSupported from 'intl-locales-supported';
 import update from 'immutability-helper';
@@ -207,7 +207,7 @@ export default class ContactEdit extends React.Component {
     //var m2 = new Date(this.state.tiaoshi_date.replace(/-/,"/"));
     return (
       <div>
-        <Button  variant="raised"  onClick={this.handleOpen}>{this.props.title}</Button>
+        <Button  onClick={this.handleOpen}>{this.props.title}</Button>
         <Dialog
           modal={false}
           open={this.state.open}
