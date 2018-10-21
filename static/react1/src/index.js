@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './parts_mui/App_mu';
+// import App from './parts_mui/App_mu';
+import App from './App_bootstrap';
 // import App from './UsePacks';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
