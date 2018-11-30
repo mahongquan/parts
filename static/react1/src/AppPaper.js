@@ -3,11 +3,7 @@ import React, { Component } from 'react';
 import 'paper-css/paper.css';
 class App extends Component {
   render() {
-    return (
-      <div class="A4">
-        hi
-      </div>
-    );
+    return <div class="A4">hi</div>;
   }
 }
 

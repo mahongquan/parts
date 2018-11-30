@@ -9,15 +9,15 @@ injectTapEventPlugin();
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 //import { Navbar, Jumbotron, Button } from 'react-bootstrap';
-var csrf_token="";
-var user="";
+var csrf_token = '';
+var user = '';
 class App extends Component {
   state = {
     user: null,
-  }
-  handleUserChange = (user) => {
+  };
+  handleUserChange = user => {
     this.setState({ user: user });
-  }
+  };
   render() {
     return (
       <div className="App">
@@ -27,7 +27,6 @@ class App extends Component {
         <MuiThemeProvider>
           <TableExampleSimple />
         </MuiThemeProvider>
-        
       </div>
     );
   }

@@ -1,11 +1,11 @@
-var update=require('immutability-helper').newContext();
-const state1 = [1,2,3];
-const state2 = update(state1, {$unshift:[-1]}); 
+var update = require('immutability-helper').newContext();
+const state1 = [1, 2, 3];
+const state2 = update(state1, { $unshift: [-1] });
 console.log(state1);
 console.log(state2);
 // var a=[1,2,3,4,5]
 // console.log(a);
-// const a2 = update(a, {$push:[5]}); 
+// const a2 = update(a, {$push:[5]});
 // console.log(a2);
 
 // function t1(){

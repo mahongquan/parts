@@ -24,6 +24,7 @@
     "immutability-helper": "^2.8.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "prettier": "^1.15.3",
     "querystring": "^0.2.0",
     "react": "^16.6.3",
     "react-autosuggest": "^9.4.2",
@@ -45,9 +46,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "dependencies": {
-    "react-scripts": "^2.0.5"
   },
   "browserslist": [
     ">0.2%",

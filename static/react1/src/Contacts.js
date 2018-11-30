@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Client from './Client';
 
@@ -10,14 +9,14 @@ class Contacts extends React.Component {
     showRemoveIcon: false,
     searchValue: '',
   };
-  componentDidMount=()=> {
-      Client.contacts("", (foods) => {
-        this.setState({
-          foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
-        });
+  componentDidMount = () => {
+    Client.contacts('', foods => {
+      this.setState({
+        foods: foods.data, //.slice(0, MATCHING_ITEM_LIMIT),
       });
+    });
   };
-  handleSearchChange = (e) => {
+  handleSearchChange = e => {
     const value = e.target.value;
 
     this.setState({
@@ -34,9 +33,9 @@ class Contacts extends React.Component {
         showRemoveIcon: true,
       });
 
-      Client.search(value, (foods) => {
+      Client.search(value, foods => {
         this.setState({
-          foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
+          foods: foods.data, //.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
     }
@@ -55,37 +54,34 @@ class Contacts extends React.Component {
     const removeIconStyle = showRemoveIcon ? {} : { visibility: 'hidden' };
 
     const foodRows = foods.map((food, idx) => (
-      <tr
-        key={idx}
-        onClick={() => this.props.onFoodClick(food)}
-      >
+      <tr key={idx} onClick={() => this.props.onFoodClick(food)}>
         <td>{food.yiqibh}</td>
-        <td className='right aligned'>{food.hetongbh}</td>
-        <td className='right aligned'>{food.yonghu}</td>
-        <td className='right aligned'>{food.addr}</td>
-        <td className='right aligned'>{food.yiqixinghao}</td>
+        <td className="right aligned">{food.hetongbh}</td>
+        <td className="right aligned">{food.yonghu}</td>
+        <td className="right aligned">{food.addr}</td>
+        <td className="right aligned">{food.yiqixinghao}</td>
       </tr>
     ));
 
     return (
-      <div id='food-search'>
-        <table className='ui selectable structured large table'>
+      <div id="food-search">
+        <table className="ui selectable structured large table">
           <thead>
             <tr>
-              <th colSpan='5'>
-                <div className='ui fluid search'>
-                  <div className='ui icon input'>
+              <th colSpan="5">
+                <div className="ui fluid search">
+                  <div className="ui icon input">
                     <input
-                      className='prompt'
-                      type='text'
-                      placeholder='Search yiqi...'
+                      className="prompt"
+                      type="text"
+                      placeholder="Search yiqi..."
                       value={this.state.searchValue}
                       onChange={this.handleSearchChange}
                     />
-                    <i className='search icon' />
+                    <i className="search icon" />
                   </div>
                   <i
-                    className='remove icon'
+                    className="remove icon"
                     onClick={this.handleSearchCancel}
                     style={removeIconStyle}
                   />
@@ -93,16 +89,14 @@ class Contacts extends React.Component {
               </th>
             </tr>
             <tr>
-              <th className='eight wide'>仪器编号</th>
+              <th className="eight wide">仪器编号</th>
               <th>合同编号</th>
               <th>用户单位</th>
               <th>客户地址</th>
               <th>仪器型号</th>
             </tr>
           </thead>
-          <tbody>
-            {foodRows}
-          </tbody>
+          <tbody>{foodRows}</tbody>
         </table>
       </div>
     );

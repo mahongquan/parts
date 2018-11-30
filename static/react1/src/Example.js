@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Button,Overlay,Tooltip,Navbar,Nav,NavItem,NavDropdown,MenuItem,DropdownButton,Table} from "react-bootstrap";
+import {
+  Button,
+  Overlay,
+  Tooltip,
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem,
+  DropdownButton,
+  Table,
+} from 'react-bootstrap';
 const Example = React.createClass({
   getInitialState() {
     return { show: false };
@@ -14,7 +25,7 @@ const Example = React.createClass({
     const sharedProps = {
       show: this.state.show,
       container: this,
-      target: () => ReactDOM.findDOMNode(this.refs.target)
+      target: () => ReactDOM.findDOMNode(this.refs.target),
     };
 
     return (
@@ -22,13 +33,15 @@ const Example = React.createClass({
         <Button ref="target" onClick={this.toggle}>
           Click me!
         </Button>
-        <Overlay show={this.state.show} container={this} target={() => ReactDOM.findDOMNode(this.refs.target)} 
+        <Overlay
+          show={this.state.show}
+          container={this}
+          target={() => ReactDOM.findDOMNode(this.refs.target)}
         >
           <label>用户名:</label>
-          
         </Overlay>
       </div>
     );
-  }
+  },
 });
 export default Example;
