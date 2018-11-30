@@ -120,7 +120,9 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <span onClick={() => this.handleEdit(contact.id)}>{contact.name}</span>
+            <span onClick={() => this.handleEdit(contact.id)}>
+              {contact.name}
+            </span>
           </td>
         </tr>
       );

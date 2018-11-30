@@ -157,7 +157,7 @@ class DlgCopyPack extends React.Component {
                       复制
                     </button>
                     {
-                    //<Spinner config={spinCfg} stopped={this.state.stopped} />
+                      //<Spinner config={spinCfg} stopped={this.state.stopped} />
                     }
                   </div>
                 </td>

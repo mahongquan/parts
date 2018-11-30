@@ -1,4 +1,5 @@
 import queryString from 'querystring';
+var _ = require('lodash');
 const axios = require('axios');
 axios.interceptors.request.use(config => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -13,42 +14,7 @@ let host = '';
 if (window.myremote) {
   host = 'http://127.0.0.1:8000';
 }
-function myFetch(method, url, body, cb, headers2, err_callback) {
-  // let data;
-  // let headers;
-  // if (headers2) {
-  //   headers = headers2;
-  // } else {
-  //   headers = { 'Content-Type': 'application/json' };
-  // }
-  if (method === 'GET') {
-    axios
-      .get(host + url)
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(cb)
-      .catch(error => {
-        if (err_callback) {
-          err_callback(error);
-        } else {
-          alert(error + '\n请检查服务器/刷新网页/登录');
-        }
-      });
-  } else if ((method = 'POST')) {
-    axios
-      .post(host + url)
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(cb)
-      .catch(error => {
-        if (err_callback) {
-          err_callback(error);
-        } else {
-          alert(error + '\n请检查服务器/刷新网页/登录');
-        }
-      });
-  }
-}
+
 function getRaw(url, cb, err_callback) {
   // return myFetch("GET",url,undefined,cb,undefined,err_callback)
   axios
@@ -70,27 +36,54 @@ function get(url, data, cb, err_callback) {
   return getRaw(url, cb, err_callback);
 }
 function delete1(url, data, cb) {
-  var method = 'DELETE';
-  return myFetch(method, url, JSON.stringify(data), cb);
+  // var method = 'DELETE';
+  // return myFetch(method, url, JSON.stringify(data), cb);
+  return delete2(url,data,cb)
 }
 function post(url, data, cb) {
   axios
     .post(host + url, data)
-    .then(function(response) {
-      cb(response);
-    })
-    .catch(function(error) {
-      console.log(error);
+.then(checkStatus)
+    .then(parseJSON)
+    .then(cb)
+    .catch(error => {
+        alert(error + '\n请检查服务器/刷新网页/登录');
     });
   // var method="POST"
   // return myFetch(method,url,JSON.stringify(data),cb)
 }
+function put(url, data, cb) {
+  axios
+    .put(host + url, data)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(cb)
+    .catch(error => {
+      alert(error + '\n请检查服务器/刷新网页/登录');
+    });
+  // var method="POST"
+  // return myFetch(method,url,JSON.stringify(data),cb)
+}
+function delete2(url, data, cb) {
+  axios
+    .delete(host + url, {data:data})
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(cb)
+    .catch(error => {
+      alert(error + '\n请检查服务器/刷新网页/登录');
+    });
+  // var method="POST"
+  // return myFetch(method,url,JSON.stringify(data),cb)
+}
+
 function postOrPut(url, data, cb) {
-  var method = 'POST';
   if (data.id) {
-    method = 'PUT';
+    return put(url,data,cb)
   }
-  return myFetch(method, url, JSON.stringify(data), cb);
+  else{
+    return post(url,data,cb)
+  }
 }
 function postForm(url, data, cb) {
   var method = 'POST';
@@ -136,11 +129,15 @@ function login(username, password, cb) {
     username: username,
     password: password,
   };
-  // var body= queryString.stringify( payload )
+  var body = queryString.stringify(payload);
   // return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
   let url = '/rest/login';
-  axios
-    .post(host + url, payload)
+  axios({
+    method: 'post',
+    url: url,
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: body,
+  })
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
@@ -161,8 +158,11 @@ function checkStatus(response) {
 
 function parseJSON(response) {
   console.log(response);
-  var r = response.data;
-  return r;
+  if (_.isObject(response.data)) {
+    return response.data;
+  } else {
+    return JSON.parse(response.data);
+  }
 }
 const Client = {
   getRaw,

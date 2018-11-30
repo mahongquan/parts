@@ -6,6 +6,7 @@ import {
   NavItem,
   MenuItem,
   DropdownButton,
+  Button,
   Tooltip,
   Overlay,
 } from 'react-bootstrap';
@@ -311,7 +312,7 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <span onClick={() => this.handleEdit(idx)}><u>{contact.yiqibh}</u></span>
+          <Button onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
           <DropdownButton title="" id="id_dropdown3">
             <MenuItem onSelect={() => this.onDetailClick(contact.id)}>
               详细
@@ -363,12 +364,12 @@ class App extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <span onClick={this.handlePrev}>前一页</span>;
+      prev = <Button onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <span onClick={this.handleNext}>后一页</span>;
+      next = <Button onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -490,10 +491,10 @@ class App extends Component {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropdownButton title={this.state.user} id="id_dropdown1">
             <li hidden={this.state.user !== 'AnonymousUser'}>
-              <span onClick={this.openDlgLogin}>登录</span>
+              <Button onClick={this.openDlgLogin}>登录</Button>
             </li>
             <li hidden={this.state.user === 'AnonymousUser'}>
-              <span onClick={this.handleLogout}>注销</span>
+              <Button onClick={this.handleLogout}>注销</Button>
             </li>
           </DropdownButton>
           <div className="input-group" style={{ width: '250px' }}>

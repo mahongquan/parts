@@ -1,6 +1,6 @@
 import React from 'react';
 import Client from './Client';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
 //import Autocomplete from './Autocomplete'
@@ -123,13 +123,13 @@ class PackItems extends React.Component {
           />
         </td>
         <td>
-          <span onClick={() => this.handleEdit(idx)}>编辑</span>
-          <span
+          <Button onClick={() => this.handleEdit(idx)}>编辑</Button>
+          <Button
             style={{ marginLeft: '10px' }}
             onClick={() => this.onDeleteClick(idx)}
           >
             删除
-          </span>
+          </Button>
         </td>
       </tr>
     ));

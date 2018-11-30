@@ -1,6 +1,6 @@
 import React from 'react';
 import Client from './Client';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import UsePackEditNew from './UsePackEditNew';
 import Autosuggest from 'react-autosuggest';
 //import Autocomplete from './Autocomplete'
@@ -180,13 +180,13 @@ class UsePacks2 extends React.Component {
         <td hidden={this.state.release}>{usepack.pack}</td>
         <td hidden={this.state.release}>{usepack.hetongbh}</td>
         <td>
-          <span onClick={() => this.handleEdit(idx)}>编辑</span>
-          <span
+          <Button onClick={() => this.handleEdit(idx)}>编辑</Button>
+          <Button
             onClick={() => this.onDeleteClick(idx)}
             style={{ marginLeft: '10px' }}
           >
             删除
-          </span>
+          </Button>
         </td>
       </tr>
     ));
