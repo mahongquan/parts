@@ -180,13 +180,13 @@ class UsePacks2 extends React.Component {
         <td hidden={this.state.release}>{usepack.pack}</td>
         <td hidden={this.state.release}>{usepack.hetongbh}</td>
         <td>
-          <a onClick={() => this.handleEdit(idx)}>编辑</a>
-          <a
+          <span onClick={() => this.handleEdit(idx)}>编辑</span>
+          <span
             onClick={() => this.onDeleteClick(idx)}
             style={{ marginLeft: '10px' }}
           >
             删除
-          </a>
+          </span>
         </td>
       </tr>
     ));

@@ -311,7 +311,7 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <a onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</a>
+          <span onClick={() => this.handleEdit(idx)}><u>{contact.yiqibh}</u></span>
           <DropdownButton title="" id="id_dropdown3">
             <MenuItem onSelect={() => this.onDetailClick(contact.id)}>
               详细
@@ -363,12 +363,12 @@ class App extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <a onClick={this.handlePrev}>前一页</a>;
+      prev = <span onClick={this.handlePrev}>前一页</span>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <a onClick={this.handleNext}>后一页</a>;
+      next = <span onClick={this.handleNext}>后一页</span>;
     } else {
       next = null;
     }
@@ -448,7 +448,7 @@ class App extends Component {
         <Navbar className="navbar-inverse">
           <Navbar.Header>
             <Navbar.Brand>
-              <a>装箱单</a>
+              <span>装箱单</span>
             </Navbar.Brand>
           </Navbar.Header>
           <Nav>
@@ -490,10 +490,10 @@ class App extends Component {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropdownButton title={this.state.user} id="id_dropdown1">
             <li hidden={this.state.user !== 'AnonymousUser'}>
-              <a onClick={this.openDlgLogin}>登录</a>
+              <span onClick={this.openDlgLogin}>登录</span>
             </li>
             <li hidden={this.state.user === 'AnonymousUser'}>
-              <a onClick={this.handleLogout}>注销</a>
+              <span onClick={this.handleLogout}>注销</span>
             </li>
           </DropdownButton>
           <div className="input-group" style={{ width: '250px' }}>

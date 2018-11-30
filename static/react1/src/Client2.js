@@ -14,13 +14,13 @@ if (window.myremote) {
   host = 'http://127.0.0.1:8000';
 }
 function myFetch(method, url, body, cb, headers2, err_callback) {
-  let data;
-  let headers;
-  if (headers2) {
-    headers = headers2;
-  } else {
-    headers = { 'Content-Type': 'application/json' };
-  }
+  // let data;
+  // let headers;
+  // if (headers2) {
+  //   headers = headers2;
+  // } else {
+  //   headers = { 'Content-Type': 'application/json' };
+  // }
   if (method === 'GET') {
     axios
       .get(host + url)
@@ -161,7 +161,7 @@ function checkStatus(response) {
 
 function parseJSON(response) {
   console.log(response);
-  var r = response.json();
+  var r = response.data;
   return r;
 }
 const Client = {

@@ -120,7 +120,7 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <a onClick={() => this.handleEdit(contact.id)}>{contact.name}</a>
+            <span onClick={() => this.handleEdit(contact.id)}>{contact.name}</span>
           </td>
         </tr>
       );
@@ -129,7 +129,7 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <a onClick={() => this.handleEdit(contact.id)}>[NONAME]</a>
+            <span onClick={() => this.handleEdit(contact.id)}>[NONAME]</span>
           </td>
         </tr>
       );
@@ -150,12 +150,12 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <a onClick={this.handlePrev}>前一页</a>;
+      prev = <span onClick={this.handlePrev}>前一页</span>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <a onClick={this.handleNext}>后一页</a>;
+      next = <span onClick={this.handleNext}>后一页</span>;
     } else {
       next = null;
     }

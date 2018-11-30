@@ -34,11 +34,11 @@ export default class Footer extends Component {
     const { filter: selectedFilter, onShow } = this.props
 
     return (
-      <a className={classnames({ selected: filter === selectedFilter })}
+      <span className={classnames({ selected: filter === selectedFilter })}
          style={{ cursor: 'pointer' }}
          onClick={() => onShow(filter)}>
         {title}
-      </a>
+      </span>
     )
   }
 

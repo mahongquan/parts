@@ -123,13 +123,13 @@ class PackItems extends React.Component {
           />
         </td>
         <td>
-          <a onClick={() => this.handleEdit(idx)}>编辑</a>
-          <a
+          <span onClick={() => this.handleEdit(idx)}>编辑</span>
+          <span
             style={{ marginLeft: '10px' }}
             onClick={() => this.onDeleteClick(idx)}
           >
             删除
-          </a>
+          </span>
         </td>
       </tr>
     ));

@@ -124,7 +124,7 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <a onClick={() => this.handleEdit(idx)}>{contact.name}</a>
+            <span onClick={() => this.handleEdit(idx)}>{contact.name}</span>
           </td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
@@ -137,7 +137,7 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <a onClick={() => this.handleEdit(idx)}>{contact.name}</a>
+            <span onClick={() => this.handleEdit(idx)}>{contact.name}</span>
           </td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
@@ -168,12 +168,12 @@ class DlgItems extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <a onClick={this.handlePrev}>前一页</a>;
+      prev = <span onClick={this.handlePrev}>前一页</span>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <a onClick={this.handleNext}>后一页</a>;
+      next = <span onClick={this.handleNext}>后一页</span>;
     } else {
       next = null;
     }
