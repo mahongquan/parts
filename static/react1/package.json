@@ -33,7 +33,8 @@
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",
     "react-rte": "^0.16.1",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "typescript": "^3.2.1"
   },
   "devDependencies": {
     "react-scripts": "^2.1.1"
