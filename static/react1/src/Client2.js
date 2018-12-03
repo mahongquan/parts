@@ -1,22 +1,29 @@
 import queryString from 'querystring';
 var _ = require('lodash');
+// let csrftoken;
+// function getCookie(name) 
+// { 
+//     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"); 
+// 　　 return (arr=document.cookie.match(reg))?unescape(arr[2]):null;
+// }
 const axios = require('axios');
-axios.interceptors.request.use(config => {
-  config.headers['X-Requested-With'] = 'XMLHttpRequest';
-  let regex = /.*csrftoken=([^;.]*).*$/; // 用于从cookie中匹配 csrftoken值
-  config.headers['X-CSRFToken'] =
-    document.cookie.match(regex) === null
-      ? null
-      : document.cookie.match(regex)[1];
-  return config;
-});
+axios.defaults.withCredentials=true;
+// axios.interceptors.request.use(config => {
+//   config.headers['X-Requested-With'] = 'XMLHttpRequest';
+//   console.log(document);
+//   console.log(getCookie("csrftoken"));
+//   let regex = /.*csrftoken=([^;.]*).*$/; // 用于从cookie中匹配 csrftoken值
+//   config.headers['X-CSRFToken'] =
+//     document.cookie.match(regex) === null
+//       ? null
+//       : document.cookie.match(regex)[1];
+//   return config;
+// });
 let host = '';
-if (window.myremote) {
+if (window.require) {
   host = 'http://127.0.0.1:8000';
 }
-
 function getRaw(url, cb, err_callback) {
-  // return myFetch("GET",url,undefined,cb,undefined,err_callback)
   axios
     .get(host + url)
     .then(checkStatus)
@@ -119,33 +126,36 @@ function items(query, cb) {
   return get('/rest/Item', data, cb);
 }
 function login_index(cb) {
-  return get('/rest/login', undefined, cb);
+  return get('/rest/login_index', undefined, cb,(error)=>{
+    alert(error + '\n请检查服务器/刷新网页/登录');
+  });
 }
 function logout(cb) {
   return get('/rest/logout', undefined, cb);
 }
 
 function login(username, password, cb) {
-  //post form
-  var payload = {
-    username: username,
-    password: password,
-  };
-  var body = queryString.stringify(payload);
-  // return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
-  let url =host+'/rest/login';
-  axios({
-    method: 'post',
-    url: url,
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    data: body,
-  })
+  login_index((res)=>{
+    // csrftoken=res.csrf_token;
+    var payload = {
+      username: username,
+      password: password,
+    };
+    var body = queryString.stringify(payload);
+    // return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
+    let url =host+'/rest/login';
+    axios.post(url,body,{
+      xsrfCookieName: 'XSRF-TOKEN', // default
+      xsrfHeaderName: 'X-XSRF-TOKEN', // d
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    })
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
     .catch(error => {
       alert(error + '\n请检查服务器/刷新网页/登录');
     });
+  });
 }
 
 function checkStatus(response) {

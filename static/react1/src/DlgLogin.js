@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginFormComponent from './LoginFormComponent';
 import { Modal } from 'react-bootstrap';
-
+// import Client from './Client';
 class DlgLogin extends React.Component {
   state = { showModal: false };
 
@@ -11,6 +11,9 @@ class DlgLogin extends React.Component {
 
   open = () => {
     this.setState({ showModal: true });
+    // Client.login_index((res)=>{
+    //   console.log(res);
+    // });
   };
   onLoginSubmit = data => {
     this.props.onLoginSubmit(data);
