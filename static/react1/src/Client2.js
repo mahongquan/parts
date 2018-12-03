@@ -43,7 +43,7 @@ function delete1(url, data, cb) {
 function post(url, data, cb) {
   axios
     .post(host + url, data)
-.then(checkStatus)
+    .then(checkStatus)
     .then(parseJSON)
     .then(cb)
     .catch(error => {
@@ -86,11 +86,13 @@ function postOrPut(url, data, cb) {
   }
 }
 function postForm(url, data, cb) {
-  var method = 'POST';
-  return fetch(url, {
-    method: method,
-    credentials: 'include',
-    body: data,
+  console.log(data);
+  // var body = queryString.stringify(data);
+  axios({
+    method: 'post',
+    url: host+url,
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: data,
   })
     .then(checkStatus)
     .then(parseJSON)
@@ -131,7 +133,7 @@ function login(username, password, cb) {
   };
   var body = queryString.stringify(payload);
   // return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
-  let url = '/rest/login';
+  let url =host+'/rest/login';
   axios({
     method: 'post',
     url: url,

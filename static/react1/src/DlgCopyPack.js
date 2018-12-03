@@ -3,8 +3,28 @@ import { Modal } from 'react-bootstrap';
 import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
-// import Spinner from './react-spin';
+import Spinner from './react-spin';
 var _ = require('lodash');
+const spinCfg = {
+      lines: 8, // The number of lines to draw
+      length: 5, // The length of each line
+      width: 30, // The line thickness
+      radius: 35, // The radius of the inner circle
+      scale: .25, // Scales overall size of the spinner
+      //corners: 1, // Corner roundness (0..1)
+      //color: '#ffffff', // CSS color or array of colors
+      //fadeColor: 'transparent', // CSS color or array of colors
+      // opacity: 0.25, // Opacity of the lines
+      // rotate: 0, // The rotation offset
+      // direction: 1, // 1: clockwise, -1: counterclockwise
+      // speed: 1, // Rounds per second
+      // trail: 60, // Afterglow percentage
+      // fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+      // zIndex: 2e9, // The z-index (defaults to 2000000000)
+       top: '85px', // Top position relative to parent
+       left: '100px', // Left position relative to parent
+       //position: 'realative' // Element positioning
+    };
 class DlgCopyPack extends React.Component {
   state = {
     showModal: false,
@@ -156,9 +176,7 @@ class DlgCopyPack extends React.Component {
                     >
                       复制
                     </button>
-                    {
-                      //<Spinner config={spinCfg} stopped={this.state.stopped} />
-                    }
+                    <Spinner config={spinCfg} stopped={this.state.stopped} />
                   </div>
                 </td>
               </tr>

@@ -27,10 +27,21 @@ import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
-//import "./autosuggest.css"
-// var host="";
 class App extends Component {
-  mystate = {
+  constructor(props) {
+    super(props);
+    this.dlgwait = React.createRef();
+    this.dlgitems = React.createRef();
+    this.dlgurl = React.createRef();
+    this.dlgfolder = React.createRef();
+    this.dlgcopypack = React.createRef();
+    this.dlgcheck = React.createRef();
+    this.dlgstat = React.createRef();
+    this.dlgpacks = React.createRef();
+    this.dlgimport = React.createRef();
+    this.dlglogin = React.createRef();
+    this.dlgimportHT = React.createRef();
+    this.mystate = {
     start: 0,
     limit: 20,
     total: 0,
@@ -38,7 +49,7 @@ class App extends Component {
     logined: false,
     search: '',
   };
-  state = {
+  this.state = {
     connect_error: false,
     search2: '',
     search2tip: '',
@@ -59,19 +70,6 @@ class App extends Component {
     showDlgTodos: false,
     showDlgStat2: false,
   };
-  constructor(props) {
-    super(props);
-    this.dlgwait = React.createRef();
-    this.dlgitems = React.createRef();
-    this.dlgurl = React.createRef();
-    this.dlgfolder = React.createRef();
-    this.dlgcopypack = React.createRef();
-    this.dlgcheck = React.createRef();
-    this.dlgstat = React.createRef();
-    this.dlgpacks = React.createRef();
-    this.dlgimport = React.createRef();
-    this.dlglogin = React.createRef();
-    this.dlgimportHT = React.createRef();
   }
   handleClickFilter = event => {
     //console.log(event);
