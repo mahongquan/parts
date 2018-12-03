@@ -20,7 +20,11 @@ let safeExit = false;
 // Keep a global reference of the window object, if you don't, the window will
 
 // be closed automatically when the JavaScript object is garbage collected.
-
+ipcMain.on('getpath', (event, arg) => {
+  // console.log("getpath")
+  // console.log(__dirname);
+  event.returnValue = __dirname;
+})
 let mainWindow;
 const devMode = (process.argv || []).indexOf('--dev') !== -1;
 const localMode = (process.argv || []).indexOf('--local') !== -1;
