@@ -228,13 +228,13 @@ class UsePacks2 extends React.Component {
             suggestions={this.state.auto_items}
             renderSuggestion={item => <span>{item.name}</span>}
           />
-          <button
+          <Button
             style={{ margin: '10px 10px 10px 10px' }}
             className="btn"
             onClick={this.bibei}
           >
             必备
-          </button>
+          </Button>
         </div>
 
         <div
@@ -250,13 +250,13 @@ class UsePacks2 extends React.Component {
             value={this.state.newPackName}
             onChange={this.newpackChange}
           />
-          <button
+          <Button
             className="btn btn-primary"
             id="id_new_usepack"
             onClick={this.new_pack}
           >
             新包
-          </button>
+          </Button>
         </div>
       </div>
     );

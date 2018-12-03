@@ -183,13 +183,13 @@ class PackItems extends React.Component {
             value={this.state.newPackName}
             onChange={this.newpackChange}
           />
-          <button
+          <Button
             className="btn btn-info"
             id="id_new_item"
             onClick={this.new_packitem}
           >
             新备件
-          </button>
+          </Button>
         </div>
         <div style={{ minHeight: '200px' }} />
         <PackItemEditNew ref="dlg" parent={this} />
