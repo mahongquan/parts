@@ -103,6 +103,7 @@ class App extends Component {
           user: user,
           total: contacts.total,
           start: this.mystate.start,
+          connect_error:false
         });
       },
       error => {
