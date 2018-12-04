@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
-import { Modal } from 'react-bootstrap';
+import { Button,Modal } from 'react-bootstrap';
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -618,13 +618,13 @@ class ContactEdit2New extends Component {
               </tr>
               <tr>
                 <td>
-                  <span
+                  <Button
                     onClick={() => {
                       this.setState({ editRich: !this.state.editRich });
                     }}
                   >
                     备注:
-                  </span>
+                  </Button>
                 </td>
                 <td colSpan="3">
                   <RichTextEditor
@@ -639,21 +639,21 @@ class ContactEdit2New extends Component {
             </tbody>
           </table>
           <div>
-            <button
+            <Button
               className="btn btn-primary"
               id="bt_save"
               onClick={this.handleSave}
             >
               保存
-            </button>
-            <button
+            </Button>
+            <Button
               className="btn"
               style={{ margin: '20px 20px 20px 20px' }}
               id="bt_clearid"
               onClick={this.handleCopy}
             >
               复制
-            </button>
+            </Button>
           </div>
           <div id="id_usepacks" hidden={this.state.hiddenPacks}>
             <UsePacks2

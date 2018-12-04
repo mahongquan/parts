@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import {Button} from 'react-bootstrap';
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
 
 const FILTER_TITLES = {
@@ -34,11 +35,11 @@ export default class Footer extends Component {
     const { filter: selectedFilter, onShow } = this.props
 
     return (
-      <span className={classnames({ selected: filter === selectedFilter })}
+      <Button className={classnames({ selected: filter === selectedFilter })}
          style={{ cursor: 'pointer' }}
          onClick={() => onShow(filter)}>
         {title}
-      </span>
+      </Button>
     )
   }
 
@@ -46,10 +47,10 @@ export default class Footer extends Component {
     const { completedCount, onClearCompleted } = this.props
     if (completedCount > 0) {
       return (
-        <button className="clear-completed"
+        <Button className="clear-completed"
                 onClick={onClearCompleted} >
           清除已完成
-        </button>
+        </Button>
       )
     }
   }
