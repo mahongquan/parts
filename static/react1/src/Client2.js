@@ -169,7 +169,7 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  console.log(response);
+  // console.log(response);
   if (_.isObject(response.data)) {
     return response.data;
   } else {
