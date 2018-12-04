@@ -1,11 +1,3 @@
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var defaults = {
     lines: 12,
     length: 7,
@@ -28,17 +20,17 @@ var defaults = {
     shadow: 'none',
     position: 'absolute',
 };
-var Spinner = /** @class */ (function () {
-    function Spinner(opts) {
+export class Spinner{
+    constructor(opts) {
         if (opts === void 0) { opts = {}; }
-        this.opts = __assign({}, defaults, opts);
+        this.opts = Object.assign({}, defaults, opts);
     }
     /**
      * Adds the spinner to the given target element. If this instance is already
      * spinning, it is automatically removed from its previous target by calling
      * stop() internally.
      */
-    Spinner.prototype.spin = function (target) {
+    spin = (target)=> {
         var _this = this;
         this.stop();
         this.el = document.createElement('div');
@@ -94,7 +86,7 @@ var Spinner = /** @class */ (function () {
      * Stops and removes the Spinner.
      * Stopped spinners may be reused by calling spin() again.
      */
-    Spinner.prototype.stop = function () {
+    stop =  ()=> {
         if (this.el) {
             if (typeof requestAnimationFrame !== 'undefined') {
                 cancelAnimationFrame(this.animateId);
@@ -109,9 +101,7 @@ var Spinner = /** @class */ (function () {
         }
         return this;
     };
-    return Spinner;
-}());
-module.exports= { Spinner };
+}
 function getAdvancePercentage(msSinceLastFrame, roundsPerSecond) {
     return msSinceLastFrame / 1000 * roundsPerSecond;
 }

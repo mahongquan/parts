@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Client from './Client';
-import { Table } from 'react-bootstrap';
+import {Button, Table } from 'react-bootstrap';
 import PackEdit from './PackEdit';
 var _ = require('lodash');
 class DlgPacks extends Component {
@@ -120,9 +120,9 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <span onClick={() => this.handleEdit(contact.id)}>
+            <Button onClick={() => this.handleEdit(contact.id)}>
               {contact.name}
-            </span>
+            </Button>
           </td>
         </tr>
       );
@@ -131,7 +131,7 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <span onClick={() => this.handleEdit(contact.id)}>[NONAME]</span>
+            <Button onClick={() => this.handleEdit(contact.id)}>[NONAME]</Button>
           </td>
         </tr>
       );
@@ -152,12 +152,12 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <span onClick={this.handlePrev}>前一页</span>;
+      prev = <Button onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <span onClick={this.handleNext}>后一页</span>;
+      next = <Button onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -178,13 +178,13 @@ class DlgPacks extends Component {
             placeholder=""
             onChange={this.handleSearchChange}
           />
-          <button
+          <Button
             id="id_bt_search"
             className="btm btn-info"
             onClick={this.search}
           >
             搜索
-          </button>
+          </Button>
           <Table responsive bordered condensed>
             <thead>
               <tr>
@@ -205,9 +205,9 @@ class DlgPacks extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <button id="page_go" className="btn btn-info" onClick={this.jump}>
+          <Button id="page_go" className="btn btn-info" onClick={this.jump}>
             跳转
-          </button>
+          </Button>
         </Modal.Body>
       </Modal>
     );

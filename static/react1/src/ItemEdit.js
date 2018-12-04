@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import {Button, Modal } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
 class ItemEdit extends Component {
@@ -178,13 +178,13 @@ class ItemEdit extends Component {
             </tbody>
           </table>
           <div>
-            <button
+            <Button
               className="btn btn-primary"
               id="bt_save"
               onClick={this.handleSave}
             >
               保存
-            </button>
+            </Button>
           </div>
         </Modal.Body>
       </Modal>

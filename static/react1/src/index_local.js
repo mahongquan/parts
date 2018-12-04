@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+console.log("index_local");
 const fs = require('fs');
 const path = require('path');
 function fileExist(p) {
