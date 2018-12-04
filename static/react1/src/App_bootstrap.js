@@ -244,8 +244,8 @@ class App extends Component {
     //this.setState({});
     //this.refs.contactedit.open2(idx);
   };
-  //<button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</button>
-  //<button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
+  //<Button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</Button>
+  //<Button onClick={()=>this.opendlgwait(contact.id)}>全部文件</Button>
   opendlgwait = contactid => {
     this.dlgwait.current.open(contactid);
   };
@@ -342,7 +342,6 @@ class App extends Component {
         <td>{contact.channels}</td>
         <td>{contact.baoxiang}</td>
         <td>{contact.yujifahuo_date}</td>
-
         <td>{contact.method}</td>
       </tr>
     ));
@@ -397,7 +396,7 @@ class App extends Component {
               placeholder={this.state.search2tip}
               onChange={this.handleSearch2Change}
             />
-            <button onClick={this.closeFilter}>close</button>
+            <Button onClick={this.closeFilter}>close</Button>
           </Tooltip>
         </Overlay>
         <DlgItems ref={this.dlgitems} />
@@ -452,9 +451,6 @@ class App extends Component {
             </Navbar.Brand>
           </Navbar.Header>
           <Nav>
-            <NavItem eventKey={1} href="#">
-              合同
-            </NavItem>
             <NavItem eventKey={2} href="#" onClick={this.openDlgPacks}>
               包
             </NavItem>
@@ -489,12 +485,12 @@ class App extends Component {
         </Navbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropdownButton title={this.state.user} id="id_dropdown1">
-            <li hidden={this.state.user !== 'AnonymousUser'}>
-              <Button onClick={this.openDlgLogin}>登录</Button>
-            </li>
-            <li hidden={this.state.user === 'AnonymousUser'}>
-              <Button onClick={this.handleLogout}>注销</Button>
-            </li>
+              <MenuItem   style={{display:this.state.user !== 'AnonymousUser'?"none":"block"}}
+              disabled={this.state.user !== 'AnonymousUser'} 
+              onSelect={this.openDlgLogin}>登录</MenuItem>
+              <MenuItem  style={{display:this.state.user === 'AnonymousUser'?"none":"block"}}
+              disabled={this.state.user === 'AnonymousUser'} 
+              onSelect={this.handleLogout}>注销</MenuItem>
           </DropdownButton>
           <div className="input-group" style={{ width: '250px' }}>
             <input
@@ -506,7 +502,7 @@ class App extends Component {
               onChange={this.handleSearchChange}
             />
             <span className="input-group-btn">
-              <button
+              <Button
                 className="btn btn-info"
                 type="button"
                 onClick={this.search}
@@ -516,27 +512,41 @@ class App extends Component {
                   className="glyphicon glyphicon-search"
                   aria-hidden="true"
                 />
-              </button>
+              </Button>
             </span>
           </div>
 
-          <button
+          <Button
             style={{ margin: '0px 10px 0px 10px' }}
             className="btn btn-primary"
             onClick={() => this.handleEdit(null)}
           >
             新仪器
-          </button>
-          <button className="btn btn-info" onClick={this.openDlgImport}>
+          </Button>
+          <Button className="btn btn-info" onClick={this.openDlgImport}>
             导入标样
-          </button>
-          <button
+          </Button>
+          <Button
             style={{ margin: '0px 10px 0px 10px', display: 'none' }}
             className="btn btn-primary"
             onClick={this.openDlgImportHT}
           >
             导入合同
-          </button>
+          </Button>
+          <DropdownButton style={{ margin: '0px 10px 0px 10px' }} title={"包箱:"+this.state.baoxiang} id="id_dropdown2">
+                  <MenuItem onSelect={() => this.onSelectBaoxiang('')}>
+                    *
+                  </MenuItem>
+                  <MenuItem onSelect={() => this.onSelectBaoxiang('马红权')}>
+                    马红权
+                  </MenuItem>
+                  <MenuItem onSelect={() => this.onSelectBaoxiang('陈旺')}>
+                    陈旺
+                  </MenuItem>
+                  <MenuItem onSelect={() => this.onSelectBaoxiang('吴振宁')}>
+                    吴振宁
+                  </MenuItem>
+            </DropdownButton>
         </div>
         <table className="table-condensed table-bordered">
           <thead>
@@ -552,23 +562,7 @@ class App extends Component {
               </th>
               <th>仪器型号</th>
               <th>通道配置</th>
-              <th>
-                包箱
-                <DropdownButton title="" id="id_dropdown2">
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('')}>
-                    *
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('马红权')}>
-                    马红权
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('陈旺')}>
-                    陈旺
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('吴振宁')}>
-                    吴振宁
-                  </MenuItem>
-                </DropdownButton>
-              </th>
+              <th>包箱</th>
               <th>入库时间</th>
               <th>方法</th>
             </tr>
@@ -586,9 +580,9 @@ class App extends Component {
           onChange={this.handlePageChange}
           value={this.state.start_input}
         />
-        <button id="page_go" className="btn btn-info" onClick={this.jump}>
+        <Button id="page_go" className="btn btn-info" onClick={this.jump}>
           跳转
-        </button>
+        </Button>
         <div style={{ minHeight: '200px' }} />
       </div>
     );
