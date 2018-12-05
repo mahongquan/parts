@@ -242,8 +242,8 @@ export default class App extends Component {
     //this.setState({});
     //this.refs.contactedit.open2(idx);
   };
-  //<button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</button>
-  //<button onClick={()=>this.opendlgwait(contact.id)}>全部文件</button>
+  //<Button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</Button>
+  //<Button onClick={()=>this.opendlgwait(contact.id)}>全部文件</Button>
   opendlgwait = contactid => {
     this.dlgwait.current.open(contactid);
   };
@@ -309,8 +309,9 @@ export default class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button style={{display:"inline"}} onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
-          <DropdownButton style={{display:"inline"}} title="" id="id_dropdown3">
+          <Button variant="secondary" 
+          style={{display:"inline"}} onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
+          <DropdownButton  variant="secondary" style={{display:"inline"}} title="" id="id_dropdown3">
             <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
             </Dropdown.Item>
@@ -340,7 +341,6 @@ export default class App extends Component {
         <td>{contact.channels}</td>
         <td>{contact.baoxiang}</td>
         <td>{contact.yujifahuo_date}</td>
-
         <td>{contact.method}</td>
       </tr>
     ));
@@ -361,12 +361,12 @@ export default class App extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button onClick={this.handlePrev}>前一页</Button>;
+      prev = <Button  variant="secondary" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button onClick={this.handleNext}>后一页</Button>;
+      next = <Button  variant="secondary" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -395,7 +395,7 @@ export default class App extends Component {
               placeholder={this.state.search2tip}
               onChange={this.handleSearch2Change}
             />
-            <button onClick={this.closeFilter}>close</button>
+            <Button onClick={this.closeFilter}>close</Button>
           </Tooltip>
         </Overlay>
         <DlgItems ref={this.dlgitems} />
@@ -482,7 +482,7 @@ export default class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <DropdownButton title={this.state.user} id="id_dropdown1">
+          <DropdownButton  variant="secondary" title={this.state.user} id="id_dropdown1">
             <Dropdown.Item style={{display:this.state.user !== 'AnonymousUser'?"none":"block"}}
             onSelect={this.openDlgLogin}>登录</Dropdown.Item>
             <Dropdown.Item style={{display:this.state.user === 'AnonymousUser'?"none":"block"}}              
@@ -498,9 +498,7 @@ export default class App extends Component {
               onChange={this.handleSearchChange}
             />
             <span className="input-group-btn">
-              <button
-                className="btn btn-info"
-                type="button"
+              <Button  variant="info"
                 onClick={this.search}
               >
                 搜索
@@ -508,27 +506,26 @@ export default class App extends Component {
                   className="glyphicon glyphicon-search"
                   aria-hidden="true"
                 />
-              </button>
+              </Button>
             </span>
           </div>
 
-          <button
+          <Button variant="primary"
             style={{ margin: '0px 10px 0px 10px' }}
-            className="btn btn-primary"
             onClick={() => this.handleEdit(null)}
           >
             新仪器
-          </button>
-          <button className="btn btn-info" onClick={this.openDlgImport}>
+          </Button>
+          <Button className="btn btn-info" onClick={this.openDlgImport}>
             导入标样
-          </button>
-          <button
+          </Button>
+          <Button
             style={{ margin: '0px 10px 0px 10px', display: 'none' }}
             className="btn btn-primary"
             onClick={this.openDlgImportHT}
           >
             导入合同
-          </button>
+          </Button>
         </div>
         <table className="table-condensed table-bordered">
           <thead>
@@ -546,7 +543,7 @@ export default class App extends Component {
               <th>通道配置</th>
               <th>
                 包箱
-                <DropdownButton style={{display:"inline"}} title="" id="id_dropdown2">
+                <DropdownButton  variant="secondary"  style={{display:"inline"}} title="" id="id_dropdown2">
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *
                   </Dropdown.Item>
@@ -578,9 +575,9 @@ export default class App extends Component {
           onChange={this.handlePageChange}
           value={this.state.start_input}
         />
-        <button id="page_go" className="btn btn-info" onClick={this.jump}>
+        <Button id="page_go" className="btn btn-info" onClick={this.jump}>
           跳转
-        </button>
+        </Button>
         <div style={{ minHeight: '200px' }} />
       </div>
     );

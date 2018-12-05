@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal,Button } from 'react-bootstrap';
 import Client from './Client';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
@@ -171,12 +171,12 @@ class DlgCopyPack extends React.Component {
               <tr>
                 <td>
                   <div>
-                    <button
+                    <Button  variant="secondary" 
                       style={{ display: showbutton }}
                       onClick={this.copy_pack}
                     >
                       复制
-                    </button>
+                    </Button>
                     <Spinner config={spinCfg} stopped={this.state.stopped} />
                   </div>
                 </td>

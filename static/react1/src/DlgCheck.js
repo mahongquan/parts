@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal ,Button} from 'react-bootstrap';
 import Client from './Client';
 class DlgCheck extends React.Component {
   state = {
@@ -110,14 +110,13 @@ class DlgCheck extends React.Component {
               name="file"
               ref={ref => (this.fileUpload = ref)}
             />
-            <button
+            <Button
               style={{ margin: '10px 10px 10px 10px' }}
               className="btn btn-primary"
               onClick={this.upload}
-              type="button"
             >
               上传
-            </button>
+            </Button>
           </form>
           <div hidden={this.state.hideTable} style={{ minHeight: '200px' }}>
             <table className="table-bordered">
