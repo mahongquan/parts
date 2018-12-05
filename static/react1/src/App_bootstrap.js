@@ -3,12 +3,10 @@ import DlgTodos from './DlgTodos';
 import {
   Navbar,
   Nav,
-  NavItem,
-  MenuItem,
-  DropdownButton,
+  DropdownButton,Dropdown,
   Button,
   Tooltip,
-  Overlay,
+  Overlay
 } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -27,7 +25,7 @@ import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.dlgwait = React.createRef();
@@ -311,12 +309,12 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
-          <DropdownButton title="" id="id_dropdown3">
-            <MenuItem onSelect={() => this.onDetailClick(contact.id)}>
+          <Button style={{display:"inline"}} onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
+          <DropdownButton style={{display:"inline"}} title="" id="id_dropdown3">
+            <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
-            </MenuItem>
-            <MenuItem
+            </Dropdown.Item>
+            <Dropdown.Item
               onSelect={() =>
                 this.opendlgurl('/rest/updateMethod', this, idx, {
                   id: contact.id,
@@ -324,18 +322,18 @@ class App extends Component {
               }
             >
               更新方法
-            </MenuItem>
-            <MenuItem onSelect={() => this.opendlgwait(contact.id)}>
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.opendlgwait(contact.id)}>
               全部文件
-            </MenuItem>
-            <MenuItem
+            </Dropdown.Item>
+            <Dropdown.Item
               onSelect={() => this.opendlgcheck(contact.id, contact.yiqibh)}
             >
               核对备料计划
-            </MenuItem>
-            <MenuItem onSelect={() => this.opendlgfolder(contact.id)}>
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.opendlgfolder(contact.id)}>
               资料文件夹
-            </MenuItem>
+            </Dropdown.Item>
           </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td>
@@ -445,56 +443,50 @@ class App extends Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Navbar className="navbar-inverse">
-          <Navbar.Header>
-            <Navbar.Brand>
+        <Navbar collapseOnSelect bg="light" expand="lg">
+          <Navbar.Brand>
               <span>装箱单</span>
-            </Navbar.Brand>
-          </Navbar.Header>
-          <Nav>
-            <NavItem eventKey={1} href="#">
-              合同
-            </NavItem>
-            <NavItem eventKey={2} href="#" onClick={this.openDlgPacks}>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" onClick={this.openDlgPacks}>
               包
-            </NavItem>
-            <NavItem eventKey={3} href="#" onClick={this.openDlgItems}>
+            </Nav.Link>
+            <Nav.Link href="#" onClick={this.openDlgItems}>
               备件
-            </NavItem>
-            <NavItem eventKey={4} href="#" onClick={this.openDlgCopyPack}>
+            </Nav.Link>
+            <Nav.Link href="#" onClick={this.openDlgCopyPack}>
               复制包
-            </NavItem>
-            <NavItem eventKey={5} href="#" onClick={this.openDlgStat}>
+            </Nav.Link>
+            <Nav.Link href="#" onClick={this.openDlgStat}>
               月统计
-            </NavItem>
-            <NavItem
-              eventKey={6}
+            </Nav.Link>
+            <Nav.Link
               href="#"
               onClick={() => {
                 this.setState({ showDlgStat2: true });
               }}
             >
               年统计
-            </NavItem>
-            <NavItem
-              eventKey={7}
+            </Nav.Link>
+            <Nav.Link
               href="#"
               onClick={() => {
                 this.setState({ showDlgTodos: true });
               }}
             >
               待办
-            </NavItem>
+            </Nav.Link>
           </Nav>
+          </Navbar.Collapse>
         </Navbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropdownButton title={this.state.user} id="id_dropdown1">
-            <li hidden={this.state.user !== 'AnonymousUser'}>
-              <Button onClick={this.openDlgLogin}>登录</Button>
-            </li>
-            <li hidden={this.state.user === 'AnonymousUser'}>
-              <Button onClick={this.handleLogout}>注销</Button>
-            </li>
+            <Dropdown.Item style={{display:this.state.user !== 'AnonymousUser'?"none":"block"}}
+            onSelect={this.openDlgLogin}>登录</Dropdown.Item>
+            <Dropdown.Item style={{display:this.state.user === 'AnonymousUser'?"none":"block"}}              
+            onSelect={this.handleLogout}>注销</Dropdown.Item>
           </DropdownButton>
           <div className="input-group" style={{ width: '250px' }}>
             <input
@@ -554,19 +546,19 @@ class App extends Component {
               <th>通道配置</th>
               <th>
                 包箱
-                <DropdownButton title="" id="id_dropdown2">
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('')}>
+                <DropdownButton style={{display:"inline"}} title="" id="id_dropdown2">
+                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('马红权')}>
+                  </Dropdown.Item>
+                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('马红权')}>
                     马红权
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('陈旺')}>
+                  </Dropdown.Item>
+                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
                     陈旺
-                  </MenuItem>
-                  <MenuItem onSelect={() => this.onSelectBaoxiang('吴振宁')}>
+                  </Dropdown.Item>
+                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
                     吴振宁
-                  </MenuItem>
+                  </Dropdown.Item>
                 </DropdownButton>
               </th>
               <th>入库时间</th>
@@ -594,4 +586,3 @@ class App extends Component {
     );
   }
 }
-export default App;

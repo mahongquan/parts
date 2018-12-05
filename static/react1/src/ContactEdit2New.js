@@ -364,7 +364,7 @@ class ContactEdit2New extends Component {
     // }
     // console.log("render contactedit");
     return (
-      <Modal show={this.props.showModal} onHide={this.props.handleClose}>
+      <Modal show={this.props.showModal} onHide={this.props.handleClose} dialogClassName="modal-90w">
         <Modal.Header closeButton>
           <Modal.Title>编辑仪器信息</Modal.Title>
         </Modal.Header>

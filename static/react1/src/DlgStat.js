@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Modal, DropdownButton,Dropdown } from 'react-bootstrap';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
@@ -90,16 +90,16 @@ class DlgStat extends Component {
         </Modal.Header>
         <Modal.Body>
           <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
-            <MenuItem onSelect={() => this.onSelectBaoxiang('马红权')}>
+            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('马红权')}>
               马红权
-            </MenuItem>
-            <MenuItem onSelect={() => this.onSelectBaoxiang('陈旺')}>
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
               陈旺
-            </MenuItem>
-            <MenuItem onSelect={() => this.onSelectBaoxiang('吴振宁')}>
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
               吴振宁
-            </MenuItem>
-            <MenuItem onSelect={() => this.onSelectBaoxiang('%')}>*</MenuItem>
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('%')}>*</Dropdown.Item>
           </DropdownButton>
           <Bar data={data} options={options} width={600} height={300} />
         </Modal.Body>
