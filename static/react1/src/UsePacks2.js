@@ -199,7 +199,7 @@ class UsePacks2 extends React.Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Table responsive bordered condensed>
+        <Table responsive bordered condensed="true">
           <thead>
             <tr>
               <td>id</td>

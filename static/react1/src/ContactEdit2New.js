@@ -645,7 +645,7 @@ class ContactEdit2New extends Component {
             >
               保存
             </Button>
-            <Button
+            <Button className="btn btn-raised"
                variant="secondary" 
               style={{ margin: '20px 20px 20px 20px' }}
               id="bt_clearid"
