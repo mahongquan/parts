@@ -443,7 +443,7 @@ export default class App extends Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Navbar collapseOnSelect bg="light" expand="lg">
+        <Navbar collapseOnSelect  expand="lg">
           <Navbar.Brand>
               <span>装箱单</span>
           </Navbar.Brand>

@@ -1,16 +1,26 @@
-const presets = [
-  [
-    "@babel/env",
-    {
-      targets: {
-        edge: "17",
-        firefox: "60",
-        chrome: "67",
-        safari: "11.1",
-      },
-      useBuiltIns: "usage",
-    },
-  ],
-];
+module.exports = function(api) {
+  api.cache(true);
 
-module.exports = { presets };
+  return {
+    highlightCode:false,
+    presets: [
+      ['@babel/preset-env',{targets: { electron: '3.0' }}],
+    ],
+    plugins: [
+      '@babel/plugin-syntax-jsx',
+      '@babel/plugin-transform-react-jsx',
+      '@babel/plugin-transform-react-display-name',
+      '@babel/plugin-proposal-class-properties',
+      '@babel/plugin-transform-react-jsx-self',
+      '@babel/plugin-transform-react-jsx-source',
+      '@babel/plugin-transform-flow-strip-types',
+      "@babel/plugin-proposal-export-default-from",
+      '@babel/plugin-proposal-export-namespace-from',
+      "@babel/plugin-proposal-logical-assignment-operators",
+      ["@babel/plugin-proposal-optional-chaining", { "loose": false }],
+      ["@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" }],
+      ["@babel/plugin-proposal-nullish-coalescing-operator", { "loose": false }],
+      "@babel/plugin-proposal-do-expressions",
+      ]
+  };
+};
