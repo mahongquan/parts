@@ -18,9 +18,10 @@ function link(where, module_name) {
   document.head.appendChild(thelink);
 }
 let where = window.require('electron').ipcRenderer.sendSync('getpath');
-let module_name = './App_bootstrap';
-link(where, 'node_modules/bootstrap/dist/css/bootstrap.min.css');
+// let module_name = './App_bootstrap';
+// link(where, 'node_modules/bootstrap/dist/css/bootstrap.min.css');
 link('./', 'autosuggest.css');
 link(where, 'node_modules/react-datetime/css/react-datetime.css');
+let module_name = './mui/App';
 let App = require(module_name).default;
 ReactDOM.render(<App />, document.getElementById('root'));
