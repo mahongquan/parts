@@ -5,20 +5,30 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-//import Modal from './MyModal';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
 import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
-// import './autosuggest.css';
-// import './react-datetime.css'
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
+import { withStyles } from '@material-ui/core/styles';
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 var DateTime = require('react-datetime');
-
+const styles = {
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
+  },
+};
 // class MyStatefulEditor extends Component {
 //   static propTypes = {
 //     onChange: PropTypes.func
@@ -341,8 +351,21 @@ class ContactEdit2New extends Component {
   };
   render = () => {
     return (
-      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
-        <DialogTitle>编辑仪器信息</DialogTitle>
+      <Dialog 
+      open={this.props.showModal} 
+      onClose={this.props.handleClose}
+      fullScreen
+      >
+        <AppBar className={this.props.classes.appBar}>
+            <Toolbar>
+              <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={this.props.classes.flex}>
+                编辑仪器信息
+              </Typography>
+            </Toolbar>
+          </AppBar>
         <DialogContent>
           <table id="table_input" className="table-condensed">
             <tbody>
@@ -635,4 +658,4 @@ class ContactEdit2New extends Component {
     );
   };
 }
-export default ContactEdit2New;
+export default withStyles(styles)(ContactEdit2New);
