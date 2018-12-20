@@ -351,21 +351,29 @@ class ContactEdit2New extends Component {
   };
   render = () => {
     return (
-      <Dialog 
-      open={this.props.showModal} 
-      onClose={this.props.handleClose}
-      fullScreen
+      <Dialog
+        open={this.props.showModal}
+        onClose={this.props.handleClose}
+        fullScreen
       >
         <AppBar className={this.props.classes.appBar}>
-            <Toolbar>
-              <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={this.props.classes.flex}>
-                编辑仪器信息
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={this.props.handleClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              color="inherit"
+              className={this.props.classes.flex}
+            >
+              编辑仪器信息
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
           <table id="table_input" className="table-condensed">
             <tbody>

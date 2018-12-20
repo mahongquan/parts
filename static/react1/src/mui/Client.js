@@ -1,5 +1,5 @@
-import client from '../client';
-export default client;
+import Client from '../Client';
+export default Client;
 // import queryString from 'querystring';
 // const Pooling = require('generic-pool');
 // console.log(Pooling);
