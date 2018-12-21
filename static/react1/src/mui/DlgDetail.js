@@ -88,11 +88,9 @@ class DlgDetail extends React.Component {
             <u>{contact.guige}</u>
           </td>
           <td>
-            <u>{contact.ct}</u>
+            <u>{contact.ct}{contact.danwei}</u>
           </td>
-          <td>
-            <u>{contact.danwei}</u>
-          </td>
+          
         </tr>
       );
     } else {
@@ -102,8 +100,8 @@ class DlgDetail extends React.Component {
           <td>{contact.bh}</td>
           <td>{contact.name}</td>
           <td>{contact.guige}</td>
-          <td>{contact.ct}</td>
-          <td>{contact.danwei}</td>
+          <td>{contact.ct}{contact.danwei}</td>
+         
         </tr>
       );
     }
@@ -136,8 +134,7 @@ class DlgDetail extends React.Component {
                 <td>名称</td>
                 <td>规格</td>
                 <td>数量</td>
-                <td>单位</td>
-              </tr>
+                   </tr>
             </thead>
             <tbody id="contact-list">{contactRows2}</tbody>
           </table>
@@ -209,7 +206,6 @@ class DlgDetail extends React.Component {
                 <td>名称</td>
                 <td>规格</td>
                 <td>数量</td>
-                <td>单位</td>
               </tr>
             </thead>
             <tbody id="contact-list">{contactRows}</tbody>

@@ -12,6 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PackEdit from './PackEdit';
 var _ = require('lodash');
+
 class DlgPacks extends Component {
   mystate = {
     start: 0,
@@ -128,7 +129,7 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button onClick={() => this.handleEdit(contact.id)}>
+            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
               {contact.name}
             </Button>
           </TableCell>
@@ -139,7 +140,7 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button onClick={() => this.handleEdit(contact.id)}>
+            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
               [NONAME]
             </Button>
           </TableCell>
@@ -162,17 +163,17 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <a onClick={this.handlePrev}>前一页</a>;
+      prev = <Button variant="contained" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <a onClick={this.handleNext}>后一页</a>;
+      next = <Button variant="contained" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.state.showModal} onClose={this.close}  >
         <DialogTitle>包</DialogTitle>
         <DialogContent>
           <PackEdit ref="edit1" title="编辑" />
@@ -183,13 +184,14 @@ class DlgPacks extends Component {
             onChange={this.handleSearchChange}
           />
           <Button
+            variant="contained"
             id="id_bt_search"
-            className="btm btn-info"
+            color="secondary"
             onClick={this.search}
           >
             搜索
           </Button>
-          <Table responsive bordered condensed>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
@@ -209,7 +211,7 @@ class DlgPacks extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <Button id="page_go" className="btn btn-info" onClick={this.jump}>
+          <Button id="page_go"  variant="contained"  className="btn btn-info" onClick={this.jump}>
             跳转
           </Button>
         </DialogContent>

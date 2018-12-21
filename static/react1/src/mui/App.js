@@ -107,11 +107,11 @@ class App extends Component {
     showDlgDetail: false,
     showDlgTodos: false,
     showDlgStat2: false,
+    showDlgItem:false
   };
   constructor(props) {
     super(props);
     this.dlgwait = React.createRef();
-    this.dlgitems = React.createRef();
     this.dlgurl = React.createRef();
     this.dlgfolder = React.createRef();
     this.dlgcopypack = React.createRef();
@@ -318,7 +318,9 @@ class App extends Component {
     this.dlgurl.current.open(url, data, this.handleContactChange2);
   };
   openDlgItems = () => {
-    this.dlgitems.current.open();
+    // this.dlgitems.current.open();
+    console.log("openDlgItems");
+    this.setState({showDlgItem:true});
   };
   opendlgfolder = contactid => {
     this.dlgfolder.current.open(contactid);
@@ -451,7 +453,10 @@ class App extends Component {
             <Button onClick={this.closeFilter}>close</Button>
           </Tooltip>
         </Overlay>
-        <DlgItems ref={this.dlgitems} />
+        <DlgItems showModal={this.state.showDlgItem}
+          handleClose={() => {
+            this.setState({ showDlgItem: false });
+          }} />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
         <DlgStat ref={this.dlgstat} />

@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import update from 'immutability-helper';
 import Client from './Client';
+import Button from '@material-ui/core/Button';
 class ItemEdit extends Component {
   state = {
     showModal: false,
@@ -179,13 +180,14 @@ class ItemEdit extends Component {
             </tbody>
           </table>
           <div>
-            <button
-              className="btn btn-primary"
+            <Button
+              color="primary"
+               variant="contained" 
               id="bt_save"
               onClick={this.handleSave}
             >
               保存
-            </button>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

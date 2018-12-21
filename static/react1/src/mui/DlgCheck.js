@@ -1,5 +1,9 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 import Client from './Client';
 class DlgCheck extends React.Component {
   state = {
@@ -88,15 +92,12 @@ class DlgCheck extends React.Component {
       </tr>
     ));
     return (
-      <Modal
-        show={this.state.showModal}
-        onHide={this.close}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.state.showModal}
+        onClose={this.close}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>核对备料计划</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <DialogTitle>核对备料计划</DialogTitle>
+        <DialogContent>
           <p>
             仪器编号{this.state.yiqibh}
             备料计划核对，请上传备料计划导出的Excel文件
@@ -110,14 +111,15 @@ class DlgCheck extends React.Component {
               name="file"
               ref={ref => (this.fileUpload = ref)}
             />
-            <button
+            <Button
               style={{ margin: '10px 10px 10px 10px' }}
-              className="btn btn-primary"
+              variant="outlined"
+              color="primary"
               onClick={this.upload}
               type="button"
             >
               上传
-            </button>
+            </Button>
           </form>
           <div hidden={this.state.hideTable} style={{ minHeight: '200px' }}>
             <table className="table-bordered">
@@ -135,8 +137,8 @@ class DlgCheck extends React.Component {
             </table>
           </div>
           <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   };
 }

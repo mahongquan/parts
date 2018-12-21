@@ -1,5 +1,9 @@
 import React from 'react';
-import { Alert, Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 import Client from './Client';
 import update from 'immutability-helper';
 var _ = require('lodash');
@@ -92,16 +96,14 @@ class DlgImport extends React.Component {
       );
     }
     return (
-      <Modal
-        show={this.props.showModal}
-        onHide={this.props.handleClose}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.props.showModal}
+        onClose={this.props.handleClose}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>导入标样</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {alert}
+        <DialogTitle>
+          导入标样
+        </DialogTitle>
+        <DialogContent>
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}
@@ -112,14 +114,14 @@ class DlgImport extends React.Component {
               ref={ref => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
-            <button
+            <Button
               style={{ margin: '10px 10px 10px 10px' }}
               className="btn btn-primary"
               onClick={this.upload}
               type="button"
             >
               上传
-            </button>
+            </Button>
           </form>
           <div style={{ minHeight: '200px' }}>
             <table className="table-bordered">
@@ -133,8 +135,8 @@ class DlgImport extends React.Component {
             </table>
           </div>
           <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   };
 }

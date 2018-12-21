@@ -12,11 +12,26 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import ItemEdit from './ItemEdit';
 import update from 'immutability-helper';
+import { withStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 var _ = require('lodash');
+const styles = {
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
+  },
+};
+
 class DlgItems extends Component {
   mystate = {
     start: 0,
-    limit: 5,
+    limit: 10,
     baoxiang: '',
     logined: false,
     search: '',
@@ -37,22 +52,18 @@ class DlgItems extends Component {
     auto_items: [],
     auto_loading: false,
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.showModal && !this.props.showModal) {
+      this.open();
+    }
+    if (nextProps.contact_id) {
+      this.load_data(nextProps.contact_id);
     }
   }
   close = () => {
     console.log('close');
-    this.setState({ showModal: false });
   };
   open = () => {
-    this.setState({ showModal: true });
     this.loaddata();
   };
   loaddata = () => {
@@ -175,18 +186,35 @@ class DlgItems extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <a onClick={this.handlePrev}>前一页</a>;
+      prev = <Button variant="contained" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <a onClick={this.handleNext}>后一页</a>;
+      next = <Button variant="contained" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
-        <DialogTitle>备件</DialogTitle>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose} fullScreen>
+      <AppBar className={this.props.classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={this.props.handleClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              color="inherit"
+              className={this.props.classes.flex}
+            >
+              备件
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
           <ItemEdit ref="dlg" parent={this} />
           <input
@@ -197,12 +225,13 @@ class DlgItems extends Component {
           />
           <Button
             id="id_bt_search"
-            className="btm btn-info"
+            color="secondary"
+            variant="contained" 
             onClick={this.search}
           >
             搜索
           </Button>
-          <Table responsive bordered condensed>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
@@ -226,7 +255,7 @@ class DlgItems extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <Button id="page_go" className="btn btn-info" onClick={this.jump}>
+          <Button variant="contained" id="page_go" className="btn btn-info" onClick={this.jump}>
             跳转
           </Button>
         </DialogContent>
@@ -234,4 +263,4 @@ class DlgItems extends Component {
     );
   };
 }
-export default DlgItems;
+export default withStyles(styles)(DlgItems);

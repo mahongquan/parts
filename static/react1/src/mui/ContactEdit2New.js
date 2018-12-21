@@ -622,13 +622,14 @@ class ContactEdit2New extends Component {
               </tr>
               <tr>
                 <td>
-                  <a
+                  <Button
+                    variant="outlined"
                     onClick={() => {
                       this.setState({ editRich: !this.state.editRich });
                     }}
                   >
                     备注:
-                  </a>
+                  </Button>
                 </td>
                 <td colSpan="3">
                   <RichTextEditor
