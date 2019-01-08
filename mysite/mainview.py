@@ -450,7 +450,7 @@ def loginpage(request):
 #     output["images"]=objs
 #     return HttpResponse(json.dumps(output, ensure_ascii=False))#,cls=MyEncoder))
 def favicon(request):
-    return HttpResponseRedirect("/static/images/item.png")   
+    return HttpResponseRedirect("/static/react1/build/favicon.ico")   
 # def service_worker(request): 
 #     filepath = mysite.settings.MEDIA_ROOT 
 #     fullfilepath = os.path.join( filepath, "../static/service-worker.js")
