@@ -79,14 +79,14 @@ const CustomTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 class App extends Component {
-  mystate = {
-    start: 0,
-    limit: 10,
-    total: 0,
-    baoxiang: '',
-    logined: false,
-    search: '',
-  };
+  // mystate = {
+  //   start: 0,
+  //   limit: 10,
+  //   total: 0,
+  //   baoxiang: '',
+  //   logined: false,
+  //   search: '',
+  // };
   state = {
     connect_error: false,
     search2: '',
@@ -139,23 +139,20 @@ class App extends Component {
   load_data = () => {
     Client.contacts(
       {
-        start: this.mystate.start,
-        limit: this.mystate.limit,
-        search: this.mystate.search,
-        baoxiang: this.mystate.baoxiang,
+        start: this.state.start,
+        limit: this.state.limit,
+        search: this.state.search,
+        baoxiang: this.state.baoxiang,
       },
       contacts => {
         var user = contacts.user;
         if (user === undefined) {
           user = 'AnonymousUser';
         }
-        this.mystate.total = contacts.total; //because async ,mystate set must before state;
         this.setState({
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-          limit: this.mystate.limit,
           user: user,
           total: contacts.total,
-          start: this.mystate.start,
         });
       },
       error => {
@@ -216,31 +213,35 @@ class App extends Component {
     this.search();
   };
   handleSearchChange = e => {
-    this.mystate.search = e.target.value;
-    this.setState({ search: this.mystate.search });
+    this.setState({ search: e.target.value });
   };
   handleSearch2Change = e => {
     this.setState({ search2: e.target.value });
   };
   handlePrev = e => {
-    this.mystate.start = this.mystate.start - this.mystate.limit;
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    let start = this.state.start - this.state.limit;
+    if (start < 0) {
+      start = 0;
     }
-    this.load_data();
+    this.setState({start:start},()=>{
+      this.load_data();
+    })
   };
   search = e => {
-    this.mystate.start = 0;
-    this.load_data();
+    this.setState({start:0},()=>{
+      this.load_data();
+    })
   };
   jump = () => {
-    this.mystate.start = parseInt(this.state.start_input, 10) - 1;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    let start = parseInt(this.state.start_input, 10) - 1;
+    if (start > this.state.total - this.state.limit)
+      start = this.state.total - this.state.limit; //total >limit
+    if (start < 0) {
+      start = 0;
     }
-    this.load_data();
+    this.setState({start:start},()=>{
+      this.load_data();
+    })
   };
   handlePageChange = e => {
     this.setState({ start_input: e.target.value });
@@ -252,19 +253,20 @@ class App extends Component {
     this.setState({ showDlgDetail: true, contactid: contactid });
   };
   handleNext = e => {
-    this.mystate.start = this.mystate.start + this.mystate.limit;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    let start = this.state.start + this.state.limit;
+    if (start > this.state.total - this.state.limit)
+      start = this.state.total - this.state.limit; //total >limit
+    if (start < 0) {
+      start = 0;
     }
-    this.load_data();
+    this.setState({start:start},()=>{
+      this.load_data();
+    })
   };
   onSelectBaoxiang = e => {
-    this.mystate.start = 0;
-    this.mystate.baoxiang = e;
-    this.setState({ baoxiang: e });
-    this.load_data();
+    this.setState({ baoxiang: e,start:0 },()=>{
+      this.load_data();
+    });
   };
   auto_change = (event, value) => {
     console.log('auto_change');
@@ -408,7 +410,7 @@ class App extends Component {
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.mystate);
+    //console.log(this.state);
     //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
