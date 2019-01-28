@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import Table from '@material-ui/core/Table';
@@ -18,7 +18,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-var _ = require('lodash');
+// var _ = require('lodash');
 const styles = {
   appBar: {
     position: 'relative',

@@ -13,12 +13,6 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
-    <script type="text/javascript">
-      console.log("index.html");
-      window.ELECTRON_DISABLE_SECURITY_WARNINGS=true;
-      window.require('@babel/register');
-      window.require('@babel/polyfill');
-      window.require('./index_local.js');
-    </script>
+    <script type="text/javascript" src="./boot.js"></script>
   </body>
 </html>

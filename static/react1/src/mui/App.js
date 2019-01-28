@@ -28,7 +28,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -524,7 +524,7 @@ class App extends Component {
                 年
               </MenuItem>
             </DropdownButton>
-            <DropdownButton title="包箱" id="id_dropdown2">
+            <DropdownButton title={"包箱:"+this.state.baoxiang} id="id_dropdown2">
               <MenuItem onClick={() => this.onSelectBaoxiang('')}>*</MenuItem>
               <MenuItem onClick={() => this.onSelectBaoxiang('马红权')}>
                 马红权
@@ -536,13 +536,7 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-            <DropdownButton title={this.state.user} id="id_dropdown1">
-              {this.state.user !== 'AnonymousUser' ? (
-                <MenuItem onClick={this.handleLogout}>注销</MenuItem>
-              ) : (
-                <MenuItem onClick={this.openDlgLogin}>登录</MenuItem>
-              )}
-            </DropdownButton>
+            
             <InputBase
               color="inherit"
               onKeyPress={this.keypress}
@@ -561,7 +555,6 @@ class App extends Component {
               color="inherit"
               style={{ margin: '0px 10px 0px 10px' }}
               variant="contained"
-              color="primary"
               onClick={() => this.handleEdit(null)}
             >
               新仪器
@@ -576,11 +569,17 @@ class App extends Component {
             <Button
               color="inherit"
               style={{ margin: '0px 10px 0px 10px', display: 'none' }}
-              color="primary"
               onClick={this.openDlgImportHT}
             >
               导入合同
             </Button>
+            <DropdownButton title={this.state.user} id="id_dropdown1">
+              {this.state.user !== 'AnonymousUser' ? (
+                <MenuItem onClick={this.handleLogout}>注销</MenuItem>
+              ) : (
+                <MenuItem onClick={this.openDlgLogin}>登录</MenuItem>
+              )}
+            </DropdownButton>
           </Toolbar>
         </AppBar>
         <div

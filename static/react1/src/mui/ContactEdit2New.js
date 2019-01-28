@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
-var _ = require('lodash');
+// var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
@@ -74,19 +74,19 @@ class ContactEdit2New extends Component {
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      // console.log(this.props);
-      // console.log(nextProps);
-      // console.log("props not eq");
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      // console.log("state not eq");
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
+  //     // console.log(this.props);
+  //     // console.log(nextProps);
+  //     // console.log("props not eq");
+  //     return true;
+  //   }
+  //   if (!_.isEqual(this.state, nextState)) {
+  //     // console.log("state not eq");
+  //     return true;
+  //   }
+  //   return false;
+  // }
   componentDidMount = () => {
     // console.log("ContactEdit2New mounted");
   };
