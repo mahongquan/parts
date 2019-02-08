@@ -384,7 +384,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="id"
                     name="id"
-                    disabled="disabled"
+                    disabled={true}
                     value={this.state.contact.id}
                   />
                 </td>
@@ -567,7 +567,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="method"
                     name="method"
-                    disabled="true"
+                    disabled={true}
                     defaultValue={this.state.contact.method}
                   />
                   {
@@ -596,6 +596,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     name="jixie"
                     value={this.state.contact.jixie}
+                    onChange={this.handleChange}
                   />
                 </td>
               </tr>
@@ -617,6 +618,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     name="redao"
                     value={this.state.contact.redao}
+                    onChange={this.handleChange}
                   />
                 </td>
               </tr>

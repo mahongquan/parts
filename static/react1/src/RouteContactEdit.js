@@ -416,7 +416,7 @@ class RouteContactEdit extends Component {
                   type="text"
                   id="method"
                   name="method"
-                  disabled="true"
+                  disabled={true}
                   defaultValue={this.state.contact.method}
                 />
                 {

@@ -104,7 +104,7 @@ export default class DialogEdit extends React.Component {
                     type="text"
                     id="id"
                     name="id"
-                    readOnly="true"
+                    readOnly={true}
                     disabled={true}
                     defaultValue={contact.id}
                   />
@@ -242,7 +242,7 @@ export default class DialogEdit extends React.Component {
                     type="text"
                     id="method"
                     name="method"
-                    readOnly="true"
+                    readOnly={true}
                     disabled={true}
                     defaultValue={contact.method}
                   />

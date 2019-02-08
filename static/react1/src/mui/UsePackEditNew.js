@@ -67,7 +67,7 @@ class UsePackEditNew extends Component {
                     type="text"
                     id="id"
                     name="id"
-                    readOnly="true"
+                    readOnly={true}
                     disabled="disabled"
                     defaultValue={this.state.usepack.pack}
                   />

@@ -456,7 +456,7 @@ class ContactEdit2 extends React.Component {
                         type="text"
                         id="method"
                         name="method"
-                        disabled="true"
+                        disabled={true}
                         defaultValue={this.state.contact.method}
                       />
                       {

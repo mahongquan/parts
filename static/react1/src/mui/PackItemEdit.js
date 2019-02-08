@@ -100,7 +100,7 @@ const PackItemEdit = createReactClass({
                       type="text"
                       id="id"
                       name="id"
-                      readOnly="true"
+                      readOnly={true}
                       disabled="disabled"
                       defaultValue={this.state.packitem.id}
                     />
