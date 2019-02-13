@@ -537,9 +537,12 @@ def mylogin(request):
         login(request, user)
         rec=user
         output={"success":True,"message":"User" +str(rec.id)}
+        output["csrftoken"]=str(csrf(request)["csrf_token"])
+        output["sessionid"]=request.session.session_key
         output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
-    logging.info(r)
+    logging.info(request.session)
+    logging.info(dir(request.session))
     return r
 def functions(request):
     logging.info("===================")
