@@ -39,7 +39,6 @@ export default class TablePages extends Component {
           total: Items2.total,
           start: this.state.start,
         });
-        this.state.total = Items2.total;
       }
     );
   };
@@ -78,40 +77,40 @@ export default class TablePages extends Component {
   mapfunc = (item, idx) => {
     if (item.image === '')
       return (
-        <tr key={idx}>
-          <td>{item.id}</td>
-          <td>{item.bh}</td>
-          <td>
+        <TableRow key={idx}>
+          <TableCell>{item.id}</TableCell>
+          <TableCell>{item.bh}</TableCell>
+          <TableCell>
             <Button variant="contained" onClick={() => this.handleEdit(idx)}>
               {item.name}
             </Button>
-          </td>
-          <td>{item.guige}</td>
-          <td>{item.danwei}</td>
-          <td />
-        </tr>
+          </TableCell>
+          <TableCell>{item.guige}</TableCell>
+          <TableCell>{item.danwei}</TableCell>
+          <TableCell />
+        </TableRow>
       );
     else
       return (
-        <tr key={idx}>
-          <td>{item.id}</td>
-          <td>{item.bh}</td>
-          <td>
+        <TableRow key={idx}>
+          <TableCell>{item.id}</TableCell>
+          <TableCell>{item.bh}</TableCell>
+          <TableCell>
             <Button variant="contained" onClick={() => this.handleEdit(idx)}>
               {item.name}
             </Button>
-          </td>
-          <td>{item.guige}</td>
-          <td>{item.danwei}</td>
-          <td>
+          </TableCell>
+          <TableCell>{item.guige}</TableCell>
+          <TableCell>{item.danwei}</TableCell>
+          <TableCell>
             <img
               alt="no"
               src={'/media/' + item.image}
               width="100"
               height="100"
             />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       );
   };
   handleEdit = idx => {
@@ -122,19 +121,19 @@ export default class TablePages extends Component {
     return (
       <div>
         <ItemEdit ref="dlg" parent={this} />
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>编号</th>
-              <th>名称</th>
-              <th>规格</th>
-              <th>单位</th>
-              <th>图片</th>
-            </tr>
-          </thead>
-          <tbody id="item-list">{contactRows}</tbody>
-        </table>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>编号</TableCell>
+              <TableCell>名称</TableCell>
+              <TableCell>规格</TableCell>
+              <TableCell>单位</TableCell>
+              <TableCell>图片</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody id="item-list">{contactRows}</TableBody>
+        </Table>
         <Button onClick={this.handlePrev}>前一页</Button>
         <label id="page">
           {this.state.start + 1}/{this.state.total}

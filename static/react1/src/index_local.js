@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import models from './data/models';
-import App from './mui/App';
 import myglobal from './myglobal';
 const path = require('path');
 function link(where, module_name) {
@@ -18,15 +17,25 @@ function getWhere() {
 // let where = getWhere();
 link('./', 'autosuggest.css');
 link('./', 'react-datetime.css');
+myglobal.api="models";
+if (myglobal.api === 'models') {
+  myglobal.Client = require('./Client_models').default;
+} else if (myglobal.api === 'seq') {
+  myglobal.Client = require('./Client_seq').default;
+} else
+if (myglobal.api === 'socketio') {
+  myglobal.Client = require('./Client_socketio').default;
+}
+if (myglobal.api === 'axios') {
+  myglobal.Client = require('./Client_axios').default;
+}
+var App =require('./mui/App').default;
 if (myglobal.api === 'models') {
   let models = require('./data/models').default;
-  // console.log(models);
   
   models.sequelize.sync().then(() => {
     ReactDOM.render(<App models={models} />, document.getElementById('root'));
   });
-} else if (myglobal.api === 'seq') {
+} else {
   ReactDOM.render(<App />, document.getElementById('root'));
-} else if (myglobal.api === 'socketio') {
-  ReactDOM.render(<App />, document.getElementById('root'));
-}
+} 

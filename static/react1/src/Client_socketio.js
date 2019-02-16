@@ -1,6 +1,4 @@
-import queryString from 'querystring';
 import io from 'socket.io-client';
-var _ = require('lodash');
 const HOST = 'http://localhost:8000';
 var socket = io.connect(HOST);
 function get(url, data, cb, err_callback) {
@@ -30,9 +28,6 @@ function put(url, data, cb) {
   let new_url = '/put/' + urls[2];
   console.log(new_url);
   socket.emit(new_url, data, cb);
-}
-function delete2(url, data, cb) {
-  socket.emit('/delete' + url, data, cb);
 }
 function postOrPut(url, data, cb) {
   if (data.id) {
@@ -74,25 +69,6 @@ function login(username, password, cb) {
     password: password,
   };
   socket.emit('/get/login', payload, cb);
-}
-
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(`HTTP Error ${response.statusText}`);
-  error.status = response.statusText;
-  error.response = response;
-  throw error;
-}
-
-function parseJSON(response) {
-  // console.log(response);
-  if (_.isObject(response.data)) {
-    return response.data;
-  } else {
-    return JSON.parse(response.data);
-  }
 }
 const Client = {
   init: (m, callback) => {
