@@ -177,6 +177,7 @@ function parseJSON(response) {
   }
 }
 const Client = {
+  init:(m,callback)=>{callback();},  
   getRaw,
   contacts,
   items,

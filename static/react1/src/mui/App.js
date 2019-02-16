@@ -132,9 +132,9 @@ class App extends Component {
     //     },5000);
   };
   componentDidMount = () => {
-    // socket.init(() => {
-    this.load_data();
-    // });
+    Client.init(null,() => {
+      this.load_data();
+    });
   };
   load_data = () => {
     Client.contacts(

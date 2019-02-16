@@ -1,14 +1,8 @@
-console.log("index_local");
 import React from 'react';
 import ReactDOM from 'react-dom';
-const fs = window.require('fs');
-const path = window.require('path');
-function fileExist(p) {
-  if (fs.existsSync(p)) {
-    return true;
-  }
-  return false;
-}
+import models from './data/models';
+import App from './mui/App';
+const path = require('path');
 function link(where, module_name) {
   // body...
   var thelink = document.createElement('link');
@@ -17,11 +11,24 @@ function link(where, module_name) {
   thelink.setAttribute('href', file1);
   document.head.appendChild(thelink);
 }
-let where = window.require('electron').ipcRenderer.sendSync('getpath');
-// let module_name = './App_bootstrap';
-// link(where, 'node_modules/bootstrap/dist/css/bootstrap.min.css');
-link('./', 'autosuggest.css');
-link(where, 'node_modules/react-datetime/css/react-datetime.css');
-let module_name = './mui/App';
-let App = require(module_name).default;
-ReactDOM.render(<App />, document.getElementById('root'));
+function getWhere() {
+  return window.require('electron').ipcRenderer.sendSync('getpath');
+}
+// let where = getWhere();
+link("./", 'autosuggest.css');
+link("./", 'react-datetime.css');
+
+var { myglobal } = require('./myglobal');
+// myglobal.api = 'seq';
+// myglobal.api="models";
+myglobal.api="socketio";
+if (myglobal.api === 'models') {
+  let models = require('./data/models').default;
+  models.sequelize.sync().then(() => {
+    ReactDOM.render(<App models={models} />, document.getElementById('root'));
+  });
+}else if (myglobal.api === 'seq') {
+  ReactDOM.render(<App />, document.getElementById('root'));
+}else if (myglobal.api === 'socketio') {
+  ReactDOM.render(<App />, document.getElementById('root'));
+}
