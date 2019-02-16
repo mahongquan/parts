@@ -96,13 +96,8 @@ class DlgImport extends React.Component {
     //   );
     // }
     return (
-      <Dialog
-        open={this.props.showModal}
-        onClose={this.props.handleClose}
-      >
-        <DialogTitle>
-          导入标样
-        </DialogTitle>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
+        <DialogTitle>导入标样</DialogTitle>
         <DialogContent>
           <form ref="form1" encType="multipart/form-data">
             <input

@@ -20,8 +20,12 @@ const styles = {
 class DlgItems extends Component {
   render = () => {
     return (
-      <Dialog open={this.props.showModal} onClose={this.props.handleClose} fullScreen>
-      <AppBar className={this.props.classes.appBar}>
+      <Dialog
+        open={this.props.showModal}
+        onClose={this.props.handleClose}
+        fullScreen
+      >
+        <AppBar className={this.props.classes.appBar}>
           <Toolbar>
             <IconButton
               color="inherit"

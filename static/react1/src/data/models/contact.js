@@ -25,4 +25,4 @@ export default function(sequelize, DataTypes) {
   );
 
   return Contact;
-};
+}

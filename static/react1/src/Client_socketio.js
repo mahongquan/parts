@@ -6,10 +6,10 @@ var socket = io.connect(HOST);
 function get(url, data, cb, err_callback) {
   console.log(url);
   console.log(data);
-  let urls=url.split("/");
-  let new_url='/get/' + urls[2];
+  let urls = url.split('/');
+  let new_url = '/get/' + urls[2];
   console.log(new_url);
-  socket.emit(new_url, data,cb);
+  socket.emit(new_url, data, cb);
 }
 function delete1(url, data, cb) {
   console.log(url);
@@ -18,16 +18,16 @@ function delete1(url, data, cb) {
 function post(url, data, cb) {
   console.log(url);
   console.log(data);
-  let urls=url.split("/");
-  let new_url='/post/' + urls[2];
+  let urls = url.split('/');
+  let new_url = '/post/' + urls[2];
   console.log(new_url);
   socket.emit(new_url, data, cb);
 }
 function put(url, data, cb) {
   console.log(url);
   console.log(data);
-  let urls=url.split("/");
-  let new_url='/put/' + urls[2];
+  let urls = url.split('/');
+  let new_url = '/put/' + urls[2];
   console.log(new_url);
   socket.emit(new_url, data, cb);
 }
@@ -69,11 +69,11 @@ function logout(cb) {
 }
 
 function login(username, password, cb) {
-    var payload = {
-      username: username,
-      password: password,
-    };
-    socket.emit("/get/login",payload,cb);
+  var payload = {
+    username: username,
+    password: password,
+  };
+  socket.emit('/get/login', payload, cb);
 }
 
 function checkStatus(response) {
@@ -95,7 +95,9 @@ function parseJSON(response) {
   }
 }
 const Client = {
-  init:(m,callback)=>{callback();},
+  init: (m, callback) => {
+    callback();
+  },
   contacts,
   items,
   login_index,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Client from './Client';
-import {Button, Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import PackEdit from './PackEdit';
 var _ = require('lodash');
 class DlgPacks extends Component {
@@ -120,7 +120,10 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <Button  variant="secondary" onClick={() => this.handleEdit(contact.id)}>
+            <Button
+              variant="secondary"
+              onClick={() => this.handleEdit(contact.id)}
+            >
               {contact.name}
             </Button>
           </td>
@@ -131,7 +134,12 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <Button variant="secondary"  onClick={() => this.handleEdit(contact.id)}>[NONAME]</Button>
+            <Button
+              variant="secondary"
+              onClick={() => this.handleEdit(contact.id)}
+            >
+              [NONAME]
+            </Button>
           </td>
         </tr>
       );

@@ -3,10 +3,11 @@ import DlgTodos from './DlgTodos';
 import {
   Navbar,
   Nav,
-  DropdownButton,Dropdown,
+  DropdownButton,
+  Dropdown,
   Button,
   Tooltip,
-  Overlay
+  Overlay,
 } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -40,34 +41,34 @@ export default class App extends Component {
     this.dlglogin = React.createRef();
     this.dlgimportHT = React.createRef();
     this.mystate = {
-    start: 0,
-    limit: 20,
-    total: 0,
-    baoxiang: '',
-    logined: false,
-    search: '',
-  };
-  this.state = {
-    connect_error: false,
-    search2: '',
-    search2tip: '',
-    target: null,
-    showcontext: false,
-    contacts: [],
-    limit: 10,
-    user: 'AnonymousUser',
-    start: 0,
-    total: 0,
-    search: '',
-    start_input: 1,
-    currentIndex: null,
-    baoxiang: '',
-    showDlgImport: false,
-    showDlgEdit: false,
-    showDlgDetail: false,
-    showDlgTodos: false,
-    showDlgStat2: false,
-  };
+      start: 0,
+      limit: 20,
+      total: 0,
+      baoxiang: '',
+      logined: false,
+      search: '',
+    };
+    this.state = {
+      connect_error: false,
+      search2: '',
+      search2tip: '',
+      target: null,
+      showcontext: false,
+      contacts: [],
+      limit: 10,
+      user: 'AnonymousUser',
+      start: 0,
+      total: 0,
+      search: '',
+      start_input: 1,
+      currentIndex: null,
+      baoxiang: '',
+      showDlgImport: false,
+      showDlgEdit: false,
+      showDlgDetail: false,
+      showDlgTodos: false,
+      showDlgStat2: false,
+    };
   }
   handleClickFilter = event => {
     //console.log(event);
@@ -101,7 +102,7 @@ export default class App extends Component {
           user: user,
           total: contacts.total,
           start: this.mystate.start,
-          connect_error:false
+          connect_error: false,
         });
       },
       error => {
@@ -309,9 +310,19 @@ export default class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button variant="secondary" 
-          style={{display:"inline"}} onClick={() => this.handleEdit(idx)}>{contact.yiqibh}</Button>
-          <DropdownButton  variant="secondary" style={{display:"inline"}} title="" id="id_dropdown3">
+          <Button
+            variant="secondary"
+            style={{ display: 'inline' }}
+            onClick={() => this.handleEdit(idx)}
+          >
+            {contact.yiqibh}
+          </Button>
+          <DropdownButton
+            variant="secondary"
+            style={{ display: 'inline' }}
+            title=""
+            id="id_dropdown3"
+          >
             <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
             </Dropdown.Item>
@@ -361,12 +372,20 @@ export default class App extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button  variant="secondary" onClick={this.handlePrev}>前一页</Button>;
+      prev = (
+        <Button variant="secondary" onClick={this.handlePrev}>
+          前一页
+        </Button>
+      );
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button  variant="secondary" onClick={this.handleNext}>后一页</Button>;
+      next = (
+        <Button variant="secondary" onClick={this.handleNext}>
+          后一页
+        </Button>
+      );
     } else {
       next = null;
     }
@@ -443,50 +462,66 @@ export default class App extends Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Navbar collapseOnSelect  expand="lg">
+        <Navbar collapseOnSelect expand="lg">
           <Navbar.Brand>
-              <span>装箱单</span>
+            <span>装箱单</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="#" onClick={this.openDlgPacks}>
-              包
-            </Nav.Link>
-            <Nav.Link href="#" onClick={this.openDlgItems}>
-              备件
-            </Nav.Link>
-            <Nav.Link href="#" onClick={this.openDlgCopyPack}>
-              复制包
-            </Nav.Link>
-            <Nav.Link href="#" onClick={this.openDlgStat}>
-              月统计
-            </Nav.Link>
-            <Nav.Link
-              href="#"
-              onClick={() => {
-                this.setState({ showDlgStat2: true });
-              }}
-            >
-              年统计
-            </Nav.Link>
-            <Nav.Link
-              href="#"
-              onClick={() => {
-                this.setState({ showDlgTodos: true });
-              }}
-            >
-              待办
-            </Nav.Link>
-          </Nav>
+            <Nav className="mr-auto">
+              <Nav.Link href="#" onClick={this.openDlgPacks}>
+                包
+              </Nav.Link>
+              <Nav.Link href="#" onClick={this.openDlgItems}>
+                备件
+              </Nav.Link>
+              <Nav.Link href="#" onClick={this.openDlgCopyPack}>
+                复制包
+              </Nav.Link>
+              <Nav.Link href="#" onClick={this.openDlgStat}>
+                月统计
+              </Nav.Link>
+              <Nav.Link
+                href="#"
+                onClick={() => {
+                  this.setState({ showDlgStat2: true });
+                }}
+              >
+                年统计
+              </Nav.Link>
+              <Nav.Link
+                href="#"
+                onClick={() => {
+                  this.setState({ showDlgTodos: true });
+                }}
+              >
+                待办
+              </Nav.Link>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <DropdownButton  variant="secondary" title={this.state.user} id="id_dropdown1">
-            <Dropdown.Item style={{display:this.state.user !== 'AnonymousUser'?"none":"block"}}
-            onSelect={this.openDlgLogin}>登录</Dropdown.Item>
-            <Dropdown.Item style={{display:this.state.user === 'AnonymousUser'?"none":"block"}}              
-            onSelect={this.handleLogout}>注销</Dropdown.Item>
+          <DropdownButton
+            variant="secondary"
+            title={this.state.user}
+            id="id_dropdown1"
+          >
+            <Dropdown.Item
+              style={{
+                display: this.state.user !== 'AnonymousUser' ? 'none' : 'block',
+              }}
+              onSelect={this.openDlgLogin}
+            >
+              登录
+            </Dropdown.Item>
+            <Dropdown.Item
+              style={{
+                display: this.state.user === 'AnonymousUser' ? 'none' : 'block',
+              }}
+              onSelect={this.handleLogout}
+            >
+              注销
+            </Dropdown.Item>
           </DropdownButton>
           <div className="input-group" style={{ width: '250px' }}>
             <input
@@ -498,9 +533,7 @@ export default class App extends Component {
               onChange={this.handleSearchChange}
             />
             <span className="input-group-btn">
-              <Button  variant="info"
-                onClick={this.search}
-              >
+              <Button variant="info" onClick={this.search}>
                 搜索
                 <span
                   className="glyphicon glyphicon-search"
@@ -510,7 +543,8 @@ export default class App extends Component {
             </span>
           </div>
 
-          <Button variant="primary"
+          <Button
+            variant="primary"
             style={{ margin: '0px 10px 0px 10px' }}
             onClick={() => this.handleEdit(null)}
           >
@@ -543,17 +577,26 @@ export default class App extends Component {
               <th>通道配置</th>
               <th>
                 包箱
-                <DropdownButton  variant="secondary"  style={{display:"inline"}} title="" id="id_dropdown2">
+                <DropdownButton
+                  variant="secondary"
+                  style={{ display: 'inline' }}
+                  title=""
+                  id="id_dropdown2"
+                >
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *
                   </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('马红权')}>
+                  <Dropdown.Item
+                    onSelect={() => this.onSelectBaoxiang('马红权')}
+                  >
                     马红权
                   </Dropdown.Item>
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
                     陈旺
                   </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
+                  <Dropdown.Item
+                    onSelect={() => this.onSelectBaoxiang('吴振宁')}
+                  >
                     吴振宁
                   </Dropdown.Item>
                 </DropdownButton>

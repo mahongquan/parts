@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
-import { Button,Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 //import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -364,7 +364,11 @@ class ContactEdit2New extends Component {
     // }
     // console.log("render contactedit");
     return (
-      <Modal show={this.props.showModal} onHide={this.props.handleClose} dialogClassName="modal-90w">
+      <Modal
+        show={this.props.showModal}
+        onHide={this.props.handleClose}
+        dialogClassName="modal-90w"
+      >
         <Modal.Header closeButton>
           <Modal.Title>编辑仪器信息</Modal.Title>
         </Modal.Header>
@@ -618,7 +622,8 @@ class ContactEdit2New extends Component {
               </tr>
               <tr>
                 <td>
-                  <Button  variant="secondary" 
+                  <Button
+                    variant="secondary"
                     onClick={() => {
                       this.setState({ editRich: !this.state.editRich });
                     }}
@@ -639,14 +644,12 @@ class ContactEdit2New extends Component {
             </tbody>
           </table>
           <div>
-            <Button  variant="primary" 
-              id="bt_save"
-              onClick={this.handleSave}
-            >
+            <Button variant="primary" id="bt_save" onClick={this.handleSave}>
               保存
             </Button>
-            <Button className="btn btn-raised"
-               variant="secondary" 
+            <Button
+              className="btn btn-raised"
+              variant="secondary"
               style={{ margin: '20px 20px 20px 20px' }}
               id="bt_clearid"
               onClick={this.handleCopy}

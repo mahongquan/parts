@@ -56,18 +56,18 @@ class TablePages extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
     });
   };
   handleNext = e => {
     let start = this.state.start + this.state.limit;
-    if (start > this.state.total - this.state.limit){
+    if (start > this.state.total - this.state.limit) {
       start = this.state.total - this.state.limit; //total >limit
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
-    });  
+    });
   };
   jump = () => {
     let start = parseInt(this.state.start_input, 10) - 1;
@@ -76,9 +76,9 @@ class TablePages extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
-    });  
+    });
   };
   handlePageChange = e => {
     this.setState({ start_input: e.target.value });

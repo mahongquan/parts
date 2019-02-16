@@ -12,7 +12,7 @@ export default class TablePages extends Component {
     items: [],
     start: 0,
     total: 0,
-    limit:10,
+    limit: 10,
     search: '',
     start_input: 1,
     showModal: false,
@@ -48,18 +48,18 @@ export default class TablePages extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
     });
   };
   handleNext = e => {
     let start = this.state.start + this.state.limit;
-    if (start > this.state.total - this.state.limit){
+    if (start > this.state.total - this.state.limit) {
       start = this.state.total - this.state.limit; //total >limit
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
-    });  
+    });
   };
   jump = () => {
     let start = parseInt(this.state.start_input, 10) - 1;
@@ -68,9 +68,9 @@ export default class TablePages extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.loaddata();
-    });  
+    });
   };
   handlePageChange = e => {
     this.setState({ start_input: e.target.value });
@@ -82,7 +82,9 @@ export default class TablePages extends Component {
           <td>{item.id}</td>
           <td>{item.bh}</td>
           <td>
-            <Button variant="contained" onClick={() => this.handleEdit(idx)}>{item.name}</Button>
+            <Button variant="contained" onClick={() => this.handleEdit(idx)}>
+              {item.name}
+            </Button>
           </td>
           <td>{item.guige}</td>
           <td>{item.danwei}</td>
@@ -95,7 +97,9 @@ export default class TablePages extends Component {
           <td>{item.id}</td>
           <td>{item.bh}</td>
           <td>
-            <Button variant="contained" onClick={() => this.handleEdit(idx)}>{item.name}</Button>
+            <Button variant="contained" onClick={() => this.handleEdit(idx)}>
+              {item.name}
+            </Button>
           </td>
           <td>{item.guige}</td>
           <td>{item.danwei}</td>

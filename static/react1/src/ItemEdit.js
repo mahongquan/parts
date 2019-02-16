@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
 class ItemEdit extends Component {

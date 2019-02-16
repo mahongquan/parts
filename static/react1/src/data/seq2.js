@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import models from('./models');
+import models from './models';
 function DateStr(date) {
   console.log(date);
   var year = date.getFullYear();

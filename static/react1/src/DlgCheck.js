@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal ,Button} from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import Client from './Client';
 class DlgCheck extends React.Component {
   state = {

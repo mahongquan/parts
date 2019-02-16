@@ -1,1 +1,1 @@
-export default {api:"seq"};
+export default { api: 'models' };

@@ -1,13 +1,13 @@
 import queryString from 'querystring';
 var _ = require('lodash');
 // let csrftoken;
-// function getCookie(name) 
-// { 
-//     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"); 
+// function getCookie(name)
+// {
+//     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
 // 　　 return (arr=document.cookie.match(reg))?unescape(arr[2]):null;
 // }
 const axios = require('axios');
-axios.defaults.withCredentials=true;
+axios.defaults.withCredentials = true;
 // axios.interceptors.request.use(config => {
 //   config.headers['X-Requested-With'] = 'XMLHttpRequest';
 //   console.log(document);
@@ -45,7 +45,7 @@ function get(url, data, cb, err_callback) {
 function delete1(url, data, cb) {
   // var method = 'DELETE';
   // return myFetch(method, url, JSON.stringify(data), cb);
-  return delete2(url,data,cb)
+  return delete2(url, data, cb);
 }
 function post(url, data, cb) {
   axios
@@ -54,7 +54,7 @@ function post(url, data, cb) {
     .then(parseJSON)
     .then(cb)
     .catch(error => {
-        alert(error + '\n请检查服务器/刷新网页/登录');
+      alert(error + '\n请检查服务器/刷新网页/登录');
     });
   // var method="POST"
   // return myFetch(method,url,JSON.stringify(data),cb)
@@ -73,7 +73,7 @@ function put(url, data, cb) {
 }
 function delete2(url, data, cb) {
   axios
-    .delete(host + url, {data:data})
+    .delete(host + url, { data: data })
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
@@ -86,10 +86,9 @@ function delete2(url, data, cb) {
 
 function postOrPut(url, data, cb) {
   if (data.id) {
-    return put(url,data,cb)
-  }
-  else{
-    return post(url,data,cb)
+    return put(url, data, cb);
+  } else {
+    return post(url, data, cb);
   }
 }
 function postForm(url, data, cb) {
@@ -97,7 +96,7 @@ function postForm(url, data, cb) {
   // var body = queryString.stringify(data);
   axios({
     method: 'post',
-    url: host+url,
+    url: host + url,
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: data,
   })
@@ -126,7 +125,7 @@ function items(query, cb) {
   return get('/rest/Item', data, cb);
 }
 function login_index(cb) {
-  return get('/rest/login_index', undefined, cb,(error)=>{
+  return get('/rest/login_index', undefined, cb, error => {
     alert(error + '\n请检查服务器/刷新网页/登录');
   });
 }
@@ -135,7 +134,7 @@ function logout(cb) {
 }
 
 function login(username, password, cb) {
-  login_index((res)=>{
+  login_index(res => {
     // csrftoken=res.csrf_token;
     var payload = {
       username: username,
@@ -143,18 +142,19 @@ function login(username, password, cb) {
     };
     var body = queryString.stringify(payload);
     // return myFetch("POST","/rest/login",body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
-    let url =host+'/rest/login';
-    axios.post(url,body,{
-      xsrfCookieName: 'XSRF-TOKEN', // default
-      xsrfHeaderName: 'X-XSRF-TOKEN', // d
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(cb)
-    .catch(error => {
-      alert(error + '\n请检查服务器/刷新网页/登录');
-    });
+    let url = host + '/rest/login';
+    axios
+      .post(url, body, {
+        xsrfCookieName: 'XSRF-TOKEN', // default
+        xsrfHeaderName: 'X-XSRF-TOKEN', // d
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(cb)
+      .catch(error => {
+        alert(error + '\n请检查服务器/刷新网页/登录');
+      });
   });
 }
 
@@ -177,7 +177,9 @@ function parseJSON(response) {
   }
 }
 const Client = {
-  init:(m,callback)=>{callback();},  
+  init: (m, callback) => {
+    callback();
+  },
   getRaw,
   contacts,
   items,

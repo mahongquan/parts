@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal,Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
 class PackItemEditNew extends Component {
@@ -203,11 +203,7 @@ class PackItemEditNew extends Component {
             </tbody>
           </table>
           <div>
-            <Button
-              variant="primary" 
-              id="bt_save"
-              onClick={this.handleSave}
-            >
+            <Button variant="primary" id="bt_save" onClick={this.handleSave}>
               保存
             </Button>
           </div>

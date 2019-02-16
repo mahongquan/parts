@@ -10,5 +10,5 @@ import myglobal from './myglobal';
 //     ReactDOM.render(<App models={models} />, document.getElementById('root'));
 //   });
 // }else {
-  ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 // }

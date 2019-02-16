@@ -123,8 +123,11 @@ class PackItems extends React.Component {
           />
         </td>
         <td>
-          <Button  variant="secondary" onClick={() => this.handleEdit(idx)}>编辑</Button>
-          <Button  variant="secondary" 
+          <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+            编辑
+          </Button>
+          <Button
+            variant="secondary"
             style={{ marginLeft: '10px' }}
             onClick={() => this.onDeleteClick(idx)}
           >

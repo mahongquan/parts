@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, DropdownButton,Dropdown } from 'react-bootstrap';
+import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
@@ -99,7 +99,9 @@ class DlgStat extends Component {
             <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
               吴振宁
             </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('%')}>*</Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('%')}>
+              *
+            </Dropdown.Item>
           </DropdownButton>
           <Bar data={data} options={options} width={600} height={300} />
         </Modal.Body>

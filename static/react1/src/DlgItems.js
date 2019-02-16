@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Client from './Client';
-import { Table,Button } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import ItemEdit from './ItemEdit';
 import update from 'immutability-helper';
 var _ = require('lodash');
@@ -124,7 +124,9 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <Button  variant="secondary" onClick={() => this.handleEdit(idx)}>{contact.name}</Button>
+            <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+              {contact.name}
+            </Button>
           </td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
@@ -137,7 +139,9 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <Button  variant="secondary" onClick={() => this.handleEdit(idx)}>{contact.name}</Button>
+            <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+              {contact.name}
+            </Button>
           </td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
