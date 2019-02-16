@@ -1,1 +1,1 @@
-export default {api:"socketio"};
+export default {api:"seq"};

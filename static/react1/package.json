@@ -60,6 +60,7 @@
     "react-scripts": "^2.1.3"
   },
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "start": "react-scripts start",
     "local": "electron . --local",
     "build": "react-scripts build",
