@@ -1,7 +1,9 @@
+console.log("index_local");
 import React from 'react';
 import ReactDOM from 'react-dom';
 import models from './data/models';
 import myglobal from './myglobal';
+console.log(myglobal);
 const path = require('path');
 function link(where, module_name) {
   // body...

@@ -129,10 +129,7 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button
-              variant="contained"
-              onClick={() => this.handleEdit(contact.id)}
-            >
+            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
               {contact.name}
             </Button>
           </TableCell>
@@ -143,10 +140,7 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button
-              variant="contained"
-              onClick={() => this.handleEdit(contact.id)}
-            >
+            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
               [NONAME]
             </Button>
           </TableCell>
@@ -169,25 +163,17 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = (
-        <Button variant="contained" onClick={this.handlePrev}>
-          前一页
-        </Button>
-      );
+      prev = <Button variant="contained" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = (
-        <Button variant="contained" onClick={this.handleNext}>
-          后一页
-        </Button>
-      );
+      next = <Button variant="contained" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.state.showModal} onClose={this.close}  >
         <DialogTitle>包</DialogTitle>
         <DialogContent>
           <PackEdit ref="edit1" title="编辑" />
@@ -225,12 +211,7 @@ class DlgPacks extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <Button
-            id="page_go"
-            variant="contained"
-            className="btn btn-info"
-            onClick={this.jump}
-          >
+          <Button id="page_go"  variant="contained"  className="btn btn-info" onClick={this.jump}>
             跳转
           </Button>
         </DialogContent>

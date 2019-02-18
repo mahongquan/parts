@@ -52,7 +52,7 @@ export default class SimpleMenu extends React.Component {
     }
     return (
       <span>
-        <Button
+        <span
           style={{ display: 'inline' }}
           color="inherit"
           aria-owns={anchorEl ? 'simple-menu' : undefined}
@@ -61,7 +61,7 @@ export default class SimpleMenu extends React.Component {
         >
           <Typography color="inherit">{this.props.title}</Typography>
           <ArrowDropDownIcon />
-        </Button>
+        </span>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}

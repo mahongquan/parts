@@ -182,7 +182,7 @@ class ItemEdit extends Component {
           <div>
             <Button
               color="primary"
-              variant="contained"
+               variant="contained" 
               id="bt_save"
               onClick={this.handleSave}
             >

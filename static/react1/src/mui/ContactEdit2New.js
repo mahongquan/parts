@@ -384,7 +384,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="id"
                     name="id"
-                    disabled={true}
+                    disabled="disabled"
                     value={this.state.contact.id}
                   />
                 </td>
@@ -595,8 +595,8 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.jixie }}
                     type="text"
                     name="jixie"
-                    value={this.state.contact.jixie}
                     onChange={this.handleChange}
+                    value={this.state.contact.jixie}
                   />
                 </td>
               </tr>
@@ -617,8 +617,8 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.redao }}
                     type="text"
                     name="redao"
-                    value={this.state.contact.redao}
                     onChange={this.handleChange}
+                    value={this.state.contact.redao}
                   />
                 </td>
               </tr>

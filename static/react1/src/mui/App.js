@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, Overlay } from 'react-bootstrap';
 import DropdownButton from './DropdownButton';
 import update from 'immutability-helper';
 import Client from './Client';
@@ -19,6 +18,7 @@ import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
+import DlgWorkMonth from './DlgWorkMonth';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
@@ -28,11 +28,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-// var socket = require('../data/seq');
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -79,14 +77,6 @@ const CustomTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 class App extends Component {
-  // mystate = {
-  //   start: 0,
-  //   limit: 10,
-  //   total: 0,
-  //   baoxiang: '',
-  //   logined: false,
-  //   search: '',
-  // };
   state = {
     connect_error: false,
     search2: '',
@@ -107,7 +97,8 @@ class App extends Component {
     showDlgDetail: false,
     showDlgTodos: false,
     showDlgStat2: false,
-    showDlgItem: false,
+    showDlgItem:false,
+    showDlgWorkMonth:false,
   };
   constructor(props) {
     super(props);
@@ -132,7 +123,7 @@ class App extends Component {
     //     },5000);
   };
   componentDidMount = () => {
-    Client.init(this.props.models, () => {
+    Client.init(this.props.models,() => {
       this.load_data();
     });
   };
@@ -223,14 +214,14 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({ start: start }, () => {
+    this.setState({start:start},()=>{
       this.load_data();
-    });
+    })
   };
   search = e => {
-    this.setState({ start: 0 }, () => {
+    this.setState({start:0},()=>{
       this.load_data();
-    });
+    })
   };
   jump = () => {
     let start = parseInt(this.state.start_input, 10) - 1;
@@ -239,9 +230,9 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({ start: start }, () => {
+    this.setState({start:start},()=>{
       this.load_data();
-    });
+    })
   };
   handlePageChange = e => {
     this.setState({ start_input: e.target.value });
@@ -259,12 +250,12 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({ start: start }, () => {
+    this.setState({start:start},()=>{
       this.load_data();
-    });
+    })
   };
   onSelectBaoxiang = e => {
-    this.setState({ baoxiang: e, start: 0 }, () => {
+    this.setState({ baoxiang: e,start:0 },()=>{
       this.load_data();
     });
   };
@@ -321,8 +312,8 @@ class App extends Component {
   };
   openDlgItems = () => {
     // this.dlgitems.current.open();
-    console.log('openDlgItems');
-    this.setState({ showDlgItem: true });
+    console.log("openDlgItems");
+    this.setState({showDlgItem:true});
   };
   opendlgfolder = contactid => {
     this.dlgfolder.current.open(contactid);
@@ -439,28 +430,17 @@ class App extends Component {
     }
     return (
       <div className={this.props.classes.root}>
-        <Overlay
-          target={this.state.target}
-          container={this}
-          show={this.state.showcontext}
-          placement="bottom"
-        >
-          <Tooltip id="tooltip1">
-            <input
-              type="text"
-              value={this.state.search2}
-              placeholder={this.state.search2tip}
-              onChange={this.handleSearch2Change}
-            />
-            <Button onClick={this.closeFilter}>close</Button>
-          </Tooltip>
-        </Overlay>
-        <DlgItems
-          showModal={this.state.showDlgItem}
+        <DlgWorkMonth
+          baoxiang={this.state.baoxiang}
+          showModal={this.state.showDlgWorkMonth}
           handleClose={() => {
-            this.setState({ showDlgItem: false });
+            this.setState({ showDlgWorkMonth: false });
           }}
         />
+        <DlgItems showModal={this.state.showDlgItem}
+          handleClose={() => {
+            this.setState({ showDlgItem: false });
+          }} />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
         <DlgStat ref={this.dlgstat} />
@@ -528,10 +508,7 @@ class App extends Component {
                 年
               </MenuItem>
             </DropdownButton>
-            <DropdownButton
-              title={'包箱:' + this.state.baoxiang}
-              id="id_dropdown2"
-            >
+            <DropdownButton title={"包箱:"+this.state.baoxiang} id="id_dropdown2">
               <MenuItem onClick={() => this.onSelectBaoxiang('')}>*</MenuItem>
               <MenuItem onClick={() => this.onSelectBaoxiang('马红权')}>
                 马红权
@@ -543,7 +520,7 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-
+            
             <InputBase
               color="inherit"
               onKeyPress={this.keypress}
@@ -579,6 +556,16 @@ class App extends Component {
               onClick={this.openDlgImportHT}
             >
               导入合同
+            </Button>
+            <Button
+              color="inherit"
+              variant="contained"
+              style={{ margin: '0px 10px 0px 10px'}}
+              onClick={()=>{
+                this.setState({showDlgWorkMonth:true});
+              }}
+            >
+              工作量
             </Button>
             <DropdownButton title={this.state.user} id="id_dropdown1">
               {this.state.user !== 'AnonymousUser' ? (
