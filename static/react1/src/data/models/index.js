@@ -678,6 +678,7 @@ models.Contact = sequelize.define(
     addr: Sequelize.STRING, // = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
     channels: Sequelize.STRING, // = models.CharField(max_length=30,verbose_name="通道配置",null=True,blank=True)#用户单位
     yiqixinghao: Sequelize.STRING, //=models.CharField(max_length=30,verbose_name="仪器型号",choices=ACHOICE)#仪器型号
+    method:Sequelize.STRING,
     yiqibh: Sequelize.STRING, //=models.CharField(max_length=30,verbose_name="仪器编号")#仪器编号
     baoxiang: Sequelize.STRING, // =  models.CharField(max_length=30,verbose_name="包箱")#包箱
     shenhe: Sequelize.STRING, // =  models.CharField(max_length=30,verbose_name="审核")#审核
