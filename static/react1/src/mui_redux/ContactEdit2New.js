@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
-import Client from './Client';
-// import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
-// var _ = require('lodash');
+import { types } from './reducers';
+var _ = require('lodash');
 var moment = require('moment');
-// eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 var DateTime = require('react-datetime');
 const styles = {
@@ -66,9 +62,7 @@ class ContactEdit2New extends Component {
   };
   onHide = () => {};
   open2 = idx => {
-    this.setState({ showModal: true });
     this.setState({ bg: {} });
-    this.parent = this.props.parent;
     this.index = idx;
     if (this.index == null) {
       this.old = {
@@ -85,7 +79,7 @@ class ContactEdit2New extends Component {
       };
       this.setState({ hiddenPacks: true });
     } else {
-      this.old = this.parent.props.store.state.contacts[this.index];
+      this.old = _.clone(this.props.contacts[this.index]);
       this.setState({ hiddenPacks: false });
     }
     this.old.dianqi = this.old.dianqi || '';
@@ -99,67 +93,21 @@ class ContactEdit2New extends Component {
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
   };
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   this.setState({bg:{}});
-  //   this.parent=this.props.parent;
-  //   if (this.index==null){
-  //     this.old={
-  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
-  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
-  //       addr:"",
-  //       channels:"",
-  //       baoxiang:"",
-  //       hetongbh:"",
-  //       shenhe:"",
-  //       yonghu:"",
-  //       yiqibh:"",
-  //       yiqixinghao:""
-  //     };
-  //   }
-  //   else{
-  //     this.old=this.parent.state.contacts[this.index];
-  //     this.setState({hiddenPacks:false});
-  //   }
-  //   this.setState({contact:this.old});
-  // }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
   handleCopy = data => {
     console.log('copy');
     this.index = null;
     var contact2 = update(this.state.contact, { id: { $set: '' } });
     console.log(contact2);
     this.setState({ contact: contact2 });
-    this.setState({ hiddenPacks: true });
+    this.props.dispatch({type:types.hiddenPacks});
+    // this.setState({ hiddenPacks: true });
   };
-  handleSave = data => {
-    var url = '/rest/Contact';
-    var dataSave = this.state.contact;
+  handleSave = () => {
+    let dataSave=this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    Client.postOrPut(url, dataSave, res => {
-      if (res.success) {
-        this.setState({ contact: res.data });
-        //console.log("after save======================")
-        //console.log(this.index);
-        this.parent.handleContactChange(this.index, res.data);
-        if (this.index) {
-          //console.log("true");
-        } else {
-          //console.log("false");
-          this.index = 0;
-        }
-        console.log(this.index);
-        this.old = res.data;
-        this.setState({ bg: {} });
-        this.setState({ hiddenPacks: false });
-      } else {
-        alert(res.message);
-      }
+    this.props.actions.saveContact(dataSave,this.props.index,()=>{
+      this.setState({bg:{}});
+      this.old=dataSave;
     });
   };
   tiaoshi_date_change = value => {
@@ -614,7 +562,7 @@ class ContactEdit2New extends Component {
               复制
             </Button>
           </div>
-          <div id="id_usepacks" hidden={this.state.hiddenPacks}>
+          <div id="id_usepacks" hidden={this.props.hiddenPacks}>
             <UsePacks2
               contact_hetongbh={this.state.contact.hetongbh}
               contact_id={this.state.contact.id}

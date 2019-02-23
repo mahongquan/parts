@@ -199,7 +199,8 @@ class App extends Component {
         baoxiang: e,});
   };
   handleEdit = idx => {
-    this.setState({ showDlgEdit: true, currentIndex: idx });
+    // this.setState({ showDlgEdit: true, currentIndex: idx });
+    this.props.dispatch({type:types.SHOW_DLGEDIT,visible:true,index:idx});
   };
   opendlgwait = contactid => {
     this.dlgwait.current.open(contactid);
@@ -259,7 +260,7 @@ class App extends Component {
   };
   render() {
     console.log('render====================================================');
-    console.log(this);
+    console.log(this.props);
     const contactRows = this.props.contacts.map((contact, idx) => (
       <TableRow key={idx} className={this.props.classes.row}>
         <CustomTableCell>{contact.yonghu}</CustomTableCell>
@@ -391,13 +392,15 @@ class App extends Component {
         />
 
         <ContactEdit2New
-          store={this.props.store}
           showModal={this.props.showDlgEdit}
           handleClose={() => {
-            this.setState({ showDlgEdit: false });
+            this.props.dispatch({type:types.SHOW_DLGEDIT,visible:false});
           }}
-          parent={this}
+          contacts={this.props.contacts}
+          dispatch={this.props.dispatch}
+          hiddenPacks={this.props.hiddenPacks}
           index={this.props.currentIndex}
+          actions={this.props.actions}
           title="编辑"
         />
         <AppBar position="static">
@@ -554,7 +557,7 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => {
-  console.log(state);
+  // console.log(state);
   return state.todos;
 };
 

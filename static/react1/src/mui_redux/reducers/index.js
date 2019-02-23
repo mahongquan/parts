@@ -19,8 +19,11 @@ const SEARCH_CHANGE = 'SEARCH_CHANGE';
 const LOG_OUT = 'LOG_OUT';
 const PAGE_CHANGE = 'PAGE_CHANGE';
 const LOGIN_RES = 'LOGIN_RES';
+const SHOW_DLGEDIT="SHOW_DLGEDIT"
+const SAVE_CONTACT_RES="SAVE_CONTACT_RES"
+const hiddenPacks="hiddenPacks";
 export const types = { HIDE_LOGIN, SHOW_LOGIN,LOAD_TODO,SEARCH_CHANGE
-  ,PAGE_CHANGE,LOG_OUT
+  ,PAGE_CHANGE,LOG_OUT,SHOW_DLGEDIT,hiddenPacks,
 };
 
 const onLoginSubmit = data => {
@@ -74,10 +77,26 @@ const handleLogout= () => {
     });
   };
 }
-
+const saveContact=(dataSave,index,callback)=>{
+  return async dispatch => {
+    var url = '/rest/Contact';
+    Client.postOrPut(url, dataSave, res => {
+      if (res.success) {
+        let result={contact:res.data,currentIndex:index}
+        dispatch({type:SAVE_CONTACT_RES,result:result})
+        callback();
+        // this.old = res.data;
+        // this.setState({ bg: {} });
+        // this.setState({ hiddenPacks: false });
+      } else {
+        alert(res.message);
+      }
+    });
+  };
+}
 export const TodoActions = {
   loadTodo,
-  onLoginSubmit,handleLogout,
+  onLoginSubmit,handleLogout,saveContact
 };
 
 const initialState = {
@@ -104,12 +123,45 @@ const initialState = {
   showDlgItem: false,
   showDlgWorkMonth: false,
   show_login: false,
+  //edit
+  hiddenPacks: true,
 };
 
 export function todos(state = initialState, action) {
   let new_state;
   console.log(action);
   switch (action.type) {
+    case hiddenPacks:
+      new_state = update(state, {
+        hiddenPacks: { $set: true},
+        currentIndex: { $set: null},
+      });
+      return new_state;
+
+    case SAVE_CONTACT_RES:
+      let contacts2;
+      if (action.result.currentIndex != null) {
+        contacts2 = update(state.contacts, 
+          { [action.result.currentIndex]: { $set: action.result.contact } 
+          });
+        console.log(contacts2);
+      } else {
+        contacts2 = update(state.contacts, { $unshift: [action.result.contact] });
+        action.result.currentIndex=0;
+      }
+      new_state = update(state, {
+        contacts:{ $set: contacts2},
+        hiddenPacks: { $set: false},
+        currentIndex: { $set: action.result.currentIndex},
+      });
+      return new_state;
+    case SHOW_DLGEDIT:
+      new_state = update(state, {
+        showDlgEdit: { $set: action.visible},
+        hiddenPacks:{$set: action.index===null?true:false},
+        currentIndex: { $set: action.index},
+      });
+      return new_state;
     case LOG_OUT:
       new_state = initialState;
       return new_state;
