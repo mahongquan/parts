@@ -678,7 +678,7 @@ models.Contact = sequelize.define(
     addr: Sequelize.STRING, // = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
     channels: Sequelize.STRING, // = models.CharField(max_length=30,verbose_name="通道配置",null=True,blank=True)#用户单位
     yiqixinghao: Sequelize.STRING, //=models.CharField(max_length=30,verbose_name="仪器型号",choices=ACHOICE)#仪器型号
-    method:Sequelize.STRING,
+    method: Sequelize.STRING,
     yiqibh: Sequelize.STRING, //=models.CharField(max_length=30,verbose_name="仪器编号")#仪器编号
     baoxiang: Sequelize.STRING, // =  models.CharField(max_length=30,verbose_name="包箱")#包箱
     shenhe: Sequelize.STRING, // =  models.CharField(max_length=30,verbose_name="审核")#审核
@@ -730,12 +730,12 @@ models.UsePack = sequelize.define(
     tableName: 'parts_usepack',
   }
 );
-  models.UsePack.belongsTo(models.Pack, {
-    foreignKey: 'pack_id',
-  });
-  models.UsePack.belongsTo(models.Contact, {
-    foreignKey: 'pack_id',
-  });
+models.UsePack.belongsTo(models.Pack, {
+  foreignKey: 'pack_id',
+});
+models.UsePack.belongsTo(models.Contact, {
+  foreignKey: 'pack_id',
+});
 models.PackItem = sequelize.define(
   'PackItem',
   {
@@ -749,10 +749,10 @@ models.PackItem = sequelize.define(
     tableName: 'parts_packitem',
   }
 );
-  models.PackItem.belongsTo(models.Item, {
-    foreignKey: 'item_id',
-  });
-  models.PackItem.belongsTo(models.Pack, {
-    foreignKey: 'item_id',
-  });
+models.PackItem.belongsTo(models.Item, {
+  foreignKey: 'item_id',
+});
+models.PackItem.belongsTo(models.Pack, {
+  foreignKey: 'item_id',
+});
 export default models;

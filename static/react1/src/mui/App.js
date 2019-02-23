@@ -97,8 +97,8 @@ class App extends Component {
     showDlgDetail: false,
     showDlgTodos: false,
     showDlgStat2: false,
-    showDlgItem:false,
-    showDlgWorkMonth:false,
+    showDlgItem: false,
+    showDlgWorkMonth: false,
   };
   constructor(props) {
     super(props);
@@ -123,7 +123,7 @@ class App extends Component {
     //     },5000);
   };
   componentDidMount = () => {
-    Client.init(this.props.models,() => {
+    Client.init(this.props.models, () => {
       this.load_data();
     });
   };
@@ -214,14 +214,14 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.load_data();
-    })
+    });
   };
   search = e => {
-    this.setState({start:0},()=>{
+    this.setState({ start: 0 }, () => {
       this.load_data();
-    })
+    });
   };
   jump = () => {
     let start = parseInt(this.state.start_input, 10) - 1;
@@ -230,9 +230,9 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.load_data();
-    })
+    });
   };
   handlePageChange = e => {
     this.setState({ start_input: e.target.value });
@@ -250,12 +250,12 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.setState({start:start},()=>{
+    this.setState({ start: start }, () => {
       this.load_data();
-    })
+    });
   };
   onSelectBaoxiang = e => {
-    this.setState({ baoxiang: e,start:0 },()=>{
+    this.setState({ baoxiang: e, start: 0 }, () => {
       this.load_data();
     });
   };
@@ -312,8 +312,8 @@ class App extends Component {
   };
   openDlgItems = () => {
     // this.dlgitems.current.open();
-    console.log("openDlgItems");
-    this.setState({showDlgItem:true});
+    console.log('openDlgItems');
+    this.setState({ showDlgItem: true });
   };
   opendlgfolder = contactid => {
     this.dlgfolder.current.open(contactid);
@@ -437,10 +437,12 @@ class App extends Component {
             this.setState({ showDlgWorkMonth: false });
           }}
         />
-        <DlgItems showModal={this.state.showDlgItem}
+        <DlgItems
+          showModal={this.state.showDlgItem}
           handleClose={() => {
             this.setState({ showDlgItem: false });
-          }} />
+          }}
+        />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
         <DlgStat ref={this.dlgstat} />
@@ -508,7 +510,10 @@ class App extends Component {
                 年
               </MenuItem>
             </DropdownButton>
-            <DropdownButton title={"包箱:"+this.state.baoxiang} id="id_dropdown2">
+            <DropdownButton
+              title={'包箱:' + this.state.baoxiang}
+              id="id_dropdown2"
+            >
               <MenuItem onClick={() => this.onSelectBaoxiang('')}>*</MenuItem>
               <MenuItem onClick={() => this.onSelectBaoxiang('马红权')}>
                 马红权
@@ -520,7 +525,7 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-            
+
             <InputBase
               color="inherit"
               onKeyPress={this.keypress}
@@ -560,9 +565,9 @@ class App extends Component {
             <Button
               color="inherit"
               variant="contained"
-              style={{ margin: '0px 10px 0px 10px'}}
-              onClick={()=>{
-                this.setState({showDlgWorkMonth:true});
+              style={{ margin: '0px 10px 0px 10px' }}
+              onClick={() => {
+                this.setState({ showDlgWorkMonth: true });
               }}
             >
               工作量
