@@ -40,6 +40,9 @@ var app = new Vue({
       this.baoxiang=e.target.text;
       this.load_data();
     },
+    caozuo_change:function(){
+      console.log("xiangxi");
+    },
   },
   data: {
     contacts:[{yonghu:"aaaaa"}],
