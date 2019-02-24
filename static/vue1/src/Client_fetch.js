@@ -1,9 +1,50 @@
 /////////////
-import queryString from 'querystring';
 let host = '';
-// if (window.myremote) {
-  host = 'http://127.0.0.1:8000';
-// }
+
+'use strict';
+
+var stringifyPrimitive = function(v) {
+  switch (typeof v) {
+    case 'string':
+      return v;
+
+    case 'boolean':
+      return v ? 'true' : 'false';
+
+    case 'number':
+      return isFinite(v) ? v : '';
+
+    default:
+      return '';
+  }
+};
+
+function queryString_stringify(obj, sep, eq, name) {
+  sep = sep || '&';
+  eq = eq || '=';
+  if (obj === null) {
+    obj = undefined;
+  }
+
+  if (typeof obj === 'object') {
+    return Object.keys(obj).map(function(k) {
+      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+      if (Array.isArray(obj[k])) {
+        return obj[k].map(function(v) {
+          return ks + encodeURIComponent(stringifyPrimitive(v));
+        }).join(sep);
+      } else {
+        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+      }
+    }).filter(Boolean).join(sep);
+
+  }
+
+  if (!name) return '';
+    return encodeURIComponent(stringifyPrimitive(name)) + eq +
+           encodeURIComponent(stringifyPrimitive(obj));
+};
+
 function myFetch(method, url, body, cb, headers2, err_callback) {
   let data;
   let headers;
@@ -39,7 +80,7 @@ function getRaw(url, cb, err_callback) {
   return myFetch('GET', url, undefined, cb, undefined, err_callback);
 }
 function get(url, data, cb, err_callback) {
-  url = url + '?' + queryString.stringify(data);
+  url = url + '?' + queryString_stringify(data);
   console.log(url);
   return getRaw(url, cb, err_callback);
 }
@@ -140,4 +181,3 @@ const Client = {
   delete1,
   postForm,
 };
-export default Client;

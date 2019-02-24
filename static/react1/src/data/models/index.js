@@ -755,4 +755,5 @@ models.PackItem.belongsTo(models.Item, {
 models.PackItem.belongsTo(models.Pack, {
   foreignKey: 'item_id',
 });
+models.init(()=>{});
 export default models;

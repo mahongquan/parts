@@ -1,10 +1,9 @@
-// var socket=require("./data/seq2");
-let socket;
+let socket=require("./data/models").default;
 function init(models, cb) {
-  socket = models;
-  socket.init(() => {
-    cb();
-  });
+  // socket = models;
+  // socket.init(() => {
+  cb();
+  // });
 }
 function getRaw(url, cb, err_callback) {
   console.log(url);
