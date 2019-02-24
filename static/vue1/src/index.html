@@ -1,0 +1,70 @@
+<html lang="zh-Hans">
+  <head>
+   <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <script type="text/javascript" src="../node_modules/vue/dist/vue.js"></script>
+    <title>vue parts</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+<div id="app">
+  {{ message }}
+  <div id="app-2">
+    <span v-bind:title="message">
+      鼠标悬停几秒钟查看此处动态绑定的提示信息！
+    </span>
+  </div>
+  <div id="app-3">
+    <p v-if="seen">现在你看到我了</p>
+  </div>
+  <div id="app-4">
+    <ol>
+      <li v-for="todo in todos">
+        {{ todo.text }}
+      </li>
+    </ol>
+  </div>   
+  <div id="app-5">
+    <p>{{ message }}</p>
+    <button v-on:click="reverseMessage">逆转消息</button>
+  </div> 
+  <div id="app-7">
+    <ol>
+      <todo-item
+        v-for="item in todos"
+        v-bind:todo="item"
+        v-bind:key="item.id"
+      ></todo-item>
+    </ol>
+  </div>  
+</div>
+<script type="text/javascript">
+Vue.component('todo-item', {
+  props: ['todo'],
+  template: '<li>{{ todo.text }}</li>'
+});
+var app = new Vue({
+  el: '#app',
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  },
+  data: {
+    message: 'Hello Vue!',
+    seen:true,
+    todos: [
+        { text: '学习 JavaScript',id:1 },
+        { text: '学习 Vue' ,id:2},
+        { text: '整个牛项目' ,id:3}
+      ],
+  }
+});
+</script> 
+  </body>
+</html>

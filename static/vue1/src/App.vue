@@ -6,7 +6,7 @@
     </span>
     <p v-if="seen">现在你看到我了</p>
     <ol>
-    <li v-for="todo in todos">
+    <li v-for="todo in todos" v-bind:key="todo.id">
       {{ todo.text }}
     </li>
   </ol>
@@ -34,14 +34,16 @@
   v-bind:key="post.id"
   v-bind:title="post.title"
 ></blogpost>
+<button v-on:click="load_data">load_data</button>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import ToDoItem from './components/ToDoItem.vue'
-import Client from './Client';
-import blogpost from './components/blogpost.vue'
+import Client from './Client_fetch.js';
+import blogpost from './components/blogpost.vue';
+console.log(Client);
 export default {
   name: 'app',
   data:()=>{
@@ -64,8 +66,16 @@ export default {
   },
   methods: {
     reverseMessage: function () {
-      console.log(this);
+      //console.log(this);
       this.message = this.message.split('').reverse().join('')
+    },
+    load_data: function () {
+      console.log(this);
+      Client.contacts({},(res)=>{
+        console.log(res);
+      },(err)=>{
+        console.log(err);
+      })
     }
   },
   components: {
