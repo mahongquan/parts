@@ -1,7 +1,6 @@
 console.log('index_local');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import models from './data/models';
 import myglobal from './myglobal';
 console.log(myglobal);
 const path = require('path');
@@ -19,7 +18,7 @@ function getWhere() {
 // let where = getWhere();
 link('./', 'autosuggest.css');
 link('./', 'react-datetime.css');
-myglobal.api = 'seq';
+myglobal.api = 'models';
 if (myglobal.api === 'models') {
   myglobal.Client = require('./Client_models').default;
 } else if (myglobal.api === 'seq') {
@@ -30,7 +29,14 @@ if (myglobal.api === 'models') {
 if (myglobal.api === 'axios') {
   myglobal.Client = require('./Client_axios').default;
 }
-var App = require('./mui_redux/index').default;
+// let AppName='./bs4/App';
+let AppName='./mui/App';
+if (AppName==='./bs4/App'){
+  let where=getWhere();
+  link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
+  link('./bs4', 'index.css');
+}
+var App = require(AppName).default;
 if (myglobal.api === 'models') {
   let models = require('./data/models').default;
 
