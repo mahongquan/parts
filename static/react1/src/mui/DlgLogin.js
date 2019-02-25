@@ -42,7 +42,7 @@ class DlgLogin extends React.Component {
   // }
   render() {
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>{this.props.title || ' '}</DialogTitle>
         <DialogContent>
           <table className="table-condensed">
