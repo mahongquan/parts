@@ -2,7 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 //import FlatButton from 'material-ui/FlatButton';
 import Button from 'material-ui/Button';
-import LoginFormComponent from "./LoginFormComponent";
+import LoginFormComponent from './LoginFormComponent';
 //import MenuItem from 'material-ui/MenuItem';
 /**
  * Dialog with action buttons. The actions are passed in as an array of React objects,
@@ -16,13 +16,13 @@ export default class DialogImportStandard extends React.Component {
   };
 
   handleOpen = () => {
-    this.setState({open: true});
+    this.setState({ open: true });
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
-  onLoginSubmit= (data) => {
+  onLoginSubmit = data => {
     this.props.onLoginSubmit(data);
   };
   render() {
@@ -42,13 +42,14 @@ export default class DialogImportStandard extends React.Component {
 
     return (
       <div>
-        <Button  variant="raised" onClick={this.handleOpen} >{this.props.title}</Button>
-        <Dialog
-          title={this.props.title}
-          modal={"false"}
-          open={this.state.open}
-        >
-          <LoginFormComponent onLoginSubmit={this.onLoginSubmit} dlgclose={this.handleClose}/>
+        <Button variant="raised" onClick={this.handleOpen}>
+          {this.props.title}
+        </Button>
+        <Dialog title={this.props.title} modal={'false'} open={this.state.open}>
+          <LoginFormComponent
+            onLoginSubmit={this.onLoginSubmit}
+            dlgclose={this.handleClose}
+          />
         </Dialog>
       </div>
     );

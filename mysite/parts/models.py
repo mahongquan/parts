@@ -88,9 +88,9 @@ class Contact(models.Model,myutil.MyModel):
                     items=addItem(items,pi.item)
                 else:
                     items2=addItem(items2,pi.item)
-        for i in items:
-            logging.info(i)
-            logging.info(i.leijia)
+        # for i in items:
+        #     logging.info(i)
+        #     logging.info(i.leijia)
         return (items,items2)
     def huizong2(self):
         items=[]

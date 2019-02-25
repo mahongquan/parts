@@ -1,15 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Contacts,{ItemStore} from "./Contacts";
+import Contacts, { ItemStore } from './Contacts';
 
-export default class App extends Component{
-  constructor(){
+export default class App extends Component {
+  constructor() {
     super();
-    this.store=new ItemStore();
+    this.store = new ItemStore();
   }
-  render=()=>{
-    return(<div>
-      <Contacts store={this.store} />
-    </div>);
-  }
+  render = () => {
+    return (
+      <div>
+        <Contacts store={this.store} />
+      </div>
+    );
+  };
 }
