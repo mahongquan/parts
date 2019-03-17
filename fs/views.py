@@ -55,12 +55,16 @@ def rename2(request):
 	os.rename(p, updated)
 	return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
 def upload(request):
-    p = toLocalPath(request.GET["path"])
-    name = request.GET["name"]
-    uploaded = request.files["file"]
-    uploadedPath = os.path.join(path, name)
-    uploaded.save(uploadedPath)
-    return HttpResponse(	json.dumps({"status":"success"}, ensure_ascii=False) ) 
+    p = toLocalPath(request.POST["path"])
+    name = request.POST["name"]
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    # uploaded = request.files["file"]
+    uploadedPath = os.path.join(p, name)
+    file=open(uploadedPath,"wb")
+    file.write(f.read())
+    file.close()
+    return HttpResponse(json.dumps({"status":"success"}, ensure_ascii=False) ) 
 def mkdir(request):
     p = toLocalPath(request.GET["path"])
     name = request.GET["name"]

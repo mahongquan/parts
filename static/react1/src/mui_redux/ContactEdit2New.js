@@ -99,15 +99,15 @@ class ContactEdit2New extends Component {
     var contact2 = update(this.state.contact, { id: { $set: '' } });
     console.log(contact2);
     this.setState({ contact: contact2 });
-    this.props.dispatch({type:types.hiddenPacks});
+    this.props.dispatch({ type: types.hiddenPacks });
     // this.setState({ hiddenPacks: true });
   };
   handleSave = () => {
-    let dataSave=this.state.contact;
+    let dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    this.props.actions.saveContact(dataSave,this.props.index,()=>{
-      this.setState({bg:{}});
-      this.old=dataSave;
+    this.props.actions.saveContact(dataSave, this.props.index, () => {
+      this.setState({ bg: {} });
+      this.old = dataSave;
     });
   };
   tiaoshi_date_change = value => {

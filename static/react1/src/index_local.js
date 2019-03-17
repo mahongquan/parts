@@ -30,9 +30,9 @@ if (myglobal.api === 'axios') {
   myglobal.Client = require('./Client_axios').default;
 }
 // let AppName='./bs4/App';
-let AppName='./mui/App';
-if (AppName==='./bs4/App'){
-  let where=getWhere();
+let AppName = './mui/App';
+if (AppName === './bs4/App') {
+  let where = getWhere();
   link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
   link('./bs4', 'index.css');
 }

@@ -1,4 +1,4 @@
-let socket=require("./data/models").default;
+let socket = require('./data/models').default;
 function init(models, cb) {
   // socket = models;
   // socket.init(() => {

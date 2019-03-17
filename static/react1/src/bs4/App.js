@@ -68,7 +68,7 @@ export default class App extends Component {
       showDlgDetail: false,
       showDlgTodos: false,
       showDlgStat2: false,
-      showDlgFolder2:false,
+      showDlgFolder2: false,
     };
   }
   handleClickFilter = event => {
@@ -272,7 +272,7 @@ export default class App extends Component {
     this.dlgfolder.current.open(contactid);
   };
   opendlgfolder2 = contactid => {
-    this.setState({showDlgFolder2:true});
+    this.setState({ showDlgFolder2: true });
   };
   opendlgcheck = (contactid, yiqibh) => {
     this.dlgcheck.current.open(contactid, yiqibh);
@@ -461,7 +461,7 @@ export default class App extends Component {
           }}
         />
         <DlgFolder2
-          showModal={this.state.showDlgFolder2 }
+          showModal={this.state.showDlgFolder2}
           close={() => {
             this.setState({ showDlgFolder2: false });
           }}

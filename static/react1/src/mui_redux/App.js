@@ -99,10 +99,10 @@ class App extends Component {
       this.props.actions.loadTodo({
         start: this.props.start,
         limit: this.props.limit,
-        search:this.props.search,
+        search: this.props.search,
         baoxiang: this.props.baoxiang,
-      })
-    } 
+      });
+    }
   }
 
   handleContactChange = (idx, contact) => {
@@ -117,11 +117,11 @@ class App extends Component {
   componentDidMount = () => {
     // this.props.dispatch({type:types.LOAD_TODO});
     this.props.actions.loadTodo({
-        start: this.props.start,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: this.props.baoxiang,
-      })
+      start: this.props.start,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: this.props.baoxiang,
+    });
   };
   onLoginSubmit = data => {
     this.props.actions.onLoginSubmit(data);
@@ -139,7 +139,7 @@ class App extends Component {
     this.search();
   };
   handleSearchChange = e => {
-    this.props.dispatch({type:types.SEARCH_CHANGE,value:e.target.value});
+    this.props.dispatch({ type: types.SEARCH_CHANGE, value: e.target.value });
   };
 
   handlePrev = e => {
@@ -148,16 +148,20 @@ class App extends Component {
       start = 0;
     }
     this.setState({ start: start });
-    this.props.actions.loadTodo({start: start,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: this.props.baoxiang,});
+    this.props.actions.loadTodo({
+      start: start,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: this.props.baoxiang,
+    });
   };
   search = e => {
-    this.props.actions.loadTodo({start: 0,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: this.props.baoxiang,});
+    this.props.actions.loadTodo({
+      start: 0,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: this.props.baoxiang,
+    });
   };
   jump = () => {
     let start = parseInt(this.props.start_input, 10) - 1;
@@ -166,13 +170,15 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({start: start,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: this.props.baoxiang,});
+    this.props.actions.loadTodo({
+      start: start,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: this.props.baoxiang,
+    });
   };
   handlePageChange = e => {
-    this.props.dispatch({type:types.PAGE_CHANGE,value:e.target.value});
+    this.props.dispatch({ type: types.PAGE_CHANGE, value: e.target.value });
   };
 
   onDetailClick = contactid => {
@@ -187,20 +193,28 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({start: start,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: this.props.baoxiang,});
+    this.props.actions.loadTodo({
+      start: start,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: this.props.baoxiang,
+    });
   };
   onSelectBaoxiang = e => {
-    this.props.actions.loadTodo({start: 0,
-        limit: this.props.limit,
-        search:this.props.search,
-        baoxiang: e,});
+    this.props.actions.loadTodo({
+      start: 0,
+      limit: this.props.limit,
+      search: this.props.search,
+      baoxiang: e,
+    });
   };
   handleEdit = idx => {
     // this.setState({ showDlgEdit: true, currentIndex: idx });
-    this.props.dispatch({type:types.SHOW_DLGEDIT,visible:true,index:idx});
+    this.props.dispatch({
+      type: types.SHOW_DLGEDIT,
+      visible: true,
+      index: idx,
+    });
   };
   opendlgwait = contactid => {
     this.dlgwait.current.open(contactid);
@@ -394,7 +408,7 @@ class App extends Component {
         <ContactEdit2New
           showModal={this.props.showDlgEdit}
           handleClose={() => {
-            this.props.dispatch({type:types.SHOW_DLGEDIT,visible:false});
+            this.props.dispatch({ type: types.SHOW_DLGEDIT, visible: false });
           }}
           contacts={this.props.contacts}
           dispatch={this.props.dispatch}
@@ -497,9 +511,13 @@ class App extends Component {
               {this.props.user !== 'AnonymousUser' ? (
                 <MenuItem onClick={this.handleLogout}>注销</MenuItem>
               ) : (
-                <MenuItem onClick={()=>{
-                  this.props.dispatch({ type: types.SHOW_LOGIN });
-                }}>登录</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    this.props.dispatch({ type: types.SHOW_LOGIN });
+                  }}
+                >
+                  登录
+                </MenuItem>
               )}
             </DropdownButton>
           </Toolbar>
@@ -563,7 +581,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(TodoActions, dispatch),
-  dispatch:dispatch,
+  dispatch: dispatch,
 });
 export default connect(
   mapStateToProps,

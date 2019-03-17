@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Overlay,
-  Tooltip,
-} from 'react-bootstrap';
+import { Overlay, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -491,20 +488,20 @@ class Browser extends React.Component {
             <div onClick={this.onRemove}>remove</div>
           </Tooltip>
         </Overlay>
-        <div style={{display: 'flex',position: 'absolute',border:"solid 1px" }}>
+        <div
+          style={{ display: 'flex', position: 'absolute', border: 'solid 1px' }}
+        >
           <button onClick={this.onBack}>
-            <FontAwesomeIcon icon="arrow-left"  />
+            <FontAwesomeIcon icon="arrow-left" />
           </button>
           <button onClick={this.onParent} disabled={this.state.isroot}>
-            <FontAwesomeIcon
-              icon="arrow-up"
-            />
+            <FontAwesomeIcon icon="arrow-up" />
           </button>
           <button onClick={this.alternateView}>
-            <FontAwesomeIcon icon={className}  />
+            <FontAwesomeIcon icon={className} />
           </button>
           <button onClick={this.rootclick}>
-            <FontAwesomeIcon  icon="chevron-right" />
+            <FontAwesomeIcon icon="chevron-right" />
           </button>
           {pathshow}
         </div>
@@ -557,10 +554,7 @@ class Browser extends React.Component {
         }}
       >
         {toolbar}
-        <div style={{marginTop:"30px"}}>
-        <br />
-        {dircontent}
-        </div>
+        <div style={{ marginTop: '30px' }}>{dircontent}</div>
       </div>
     );
   };

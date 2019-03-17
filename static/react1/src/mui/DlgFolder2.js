@@ -1,41 +1,33 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
-import Browser from './Browser';
-var createReactClass = require('create-react-class');
-const DlgFolder2 = createReactClass({
-  getInitialState() {
-    return {
-      showModal: false,
-      hiddenPacks: true,
-      error: '',
-    };
-  },
-
-  close() {
-    this.setState({ showModal: false });
-  },
-
-  open() {
-    this.setState({ showModal: true });
-  },
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Browser from './Browser2';
+export default class DlgFolder2 extends React.Component {
+  // constructor(props){
+  //   // this.state= {
+  //   //   error: '',
+  //   // };
+  // },
   render() {
     return (
-      <button onClick={this.open}>
-        {this.props.title}
-        <Modal
-          show={this.state.showModal}
-          onHide={this.close}
-          dialogClassName="custom-modal"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>文件浏览</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Browser initpath={this.props.initpath} />
-          </Modal.Body>
-        </Modal>
-      </button>
+      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen>
+        <DialogTitle>
+          <IconButton
+            color="inherit"
+            onClick={this.props.onClose}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </IconButton>
+          文件浏览
+        </DialogTitle>
+        <DialogContent>
+          <Browser initpath={this.props.initpath} />
+        </DialogContent>
+      </Dialog>
     );
-  },
-});
-export default DlgFolder2;
+  }
+}

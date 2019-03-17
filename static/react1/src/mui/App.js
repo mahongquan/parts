@@ -7,6 +7,7 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DlgFolder2 from './DlgFolder2';
 import { withStyles } from '@material-ui/core/styles';
 import DlgStat from './DlgStat';
 import DlgStat2 from './DlgStat2';
@@ -99,7 +100,8 @@ class App extends Component {
     showDlgStat2: false,
     showDlgItem: false,
     showDlgWorkMonth: false,
-    showDlgLogin:false,
+    showDlgLogin: false,
+    showDlgFolder2: false,
   };
   constructor(props) {
     super(props);
@@ -386,6 +388,13 @@ class App extends Component {
             <MenuItem onClick={() => this.opendlgfolder(contact.id)}>
               资料文件夹
             </MenuItem>
+            <MenuItem
+              onClick={() => {
+                this.setState({ showDlgFolder2: true });
+              }}
+            >
+              资料文件夹2
+            </MenuItem>
           </DropdownButton>
         </CustomTableCell>
         <CustomTableCell>{contact.yiqixinghao}</CustomTableCell>
@@ -458,11 +467,13 @@ class App extends Component {
         <DlgWait ref={this.dlgwait} />
         <DlgUrl ref={this.dlgurl} />
 
-        <DlgLogin showModal={this.state.showDlgLogin}
+        <DlgLogin
+          showModal={this.state.showDlgLogin}
           handleClose={() => {
             this.setState({ showDlgLogin: false });
           }}
-        onLoginSubmit={this.onLoginSubmit} />
+          onLoginSubmit={this.onLoginSubmit}
+        />
         <DlgDetail
           contactid={this.state.contactid}
           showModal={this.state.showDlgDetail}
@@ -476,7 +487,12 @@ class App extends Component {
             this.setState({ showDlgStat2: false });
           }}
         />
-
+        <DlgFolder2
+          open={this.state.showDlgFolder2}
+          onClose={() => {
+            this.setState({ showDlgFolder2: false });
+          }}
+        />
         <ContactEdit2New
           showModal={this.state.showDlgEdit}
           handleClose={() => {

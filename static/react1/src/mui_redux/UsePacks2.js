@@ -26,7 +26,10 @@ class UsePacks2 extends React.Component {
     if (nextProps.contact_hetongbh) {
       this.setState({ newPackName: nextProps.contact_hetongbh });
     }
-    if (nextProps.contact_id && this.props.contact_id !== nextProps.contact_id) {
+    if (
+      nextProps.contact_id &&
+      this.props.contact_id !== nextProps.contact_id
+    ) {
       this.load_data(nextProps.contact_id);
     }
   }

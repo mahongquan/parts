@@ -122,8 +122,8 @@ function parseJSON(response) {
   var r = response.json();
   return r;
 }
-function sql(cmd,callback){
-  get('/rest/sql', {cmd:cmd}, callback, null) 
+function sql(cmd, callback) {
+  get('/rest/sql', { cmd: cmd }, callback, null);
 }
 const Client = {
   init: (m, callback) => {
