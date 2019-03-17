@@ -99,6 +99,12 @@ class DlgItems extends Component {
       });
     });
   };
+  jump=()=>{
+    this.state.items.forEach((one,idx)=>{
+      console.log(idx);
+      this.handleEdit(idx);
+    })
+  }
   handleEdit = idx => {
     let contact = this.state.items[idx];
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct

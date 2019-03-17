@@ -15,7 +15,7 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-//import DlgFolder2 from './DlgFolder2';
+import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
 import DlgStat2 from './DlgStat2';
 import DlgImport from './DlgImport';
@@ -68,6 +68,7 @@ export default class App extends Component {
       showDlgDetail: false,
       showDlgTodos: false,
       showDlgStat2: false,
+      showDlgFolder2:false,
     };
   }
   handleClickFilter = event => {
@@ -270,6 +271,9 @@ export default class App extends Component {
   opendlgfolder = contactid => {
     this.dlgfolder.current.open(contactid);
   };
+  opendlgfolder2 = contactid => {
+    this.setState({showDlgFolder2:true});
+  };
   opendlgcheck = (contactid, yiqibh) => {
     this.dlgcheck.current.open(contactid, yiqibh);
   };
@@ -345,6 +349,9 @@ export default class App extends Component {
             </Dropdown.Item>
             <Dropdown.Item onSelect={() => this.opendlgfolder(contact.id)}>
               资料文件夹
+            </Dropdown.Item>
+            <Dropdown.Item onSelect={() => this.opendlgfolder2(contact.id)}>
+              资料文件夹2
             </Dropdown.Item>
           </DropdownButton>
         </td>
@@ -451,6 +458,12 @@ export default class App extends Component {
           showModal={this.state.showDlgTodos}
           close={() => {
             this.setState({ showDlgTodos: false });
+          }}
+        />
+        <DlgFolder2
+          showModal={this.state.showDlgFolder2 }
+          close={() => {
+            this.setState({ showDlgFolder2: false });
           }}
         />
         <ContactEdit2New

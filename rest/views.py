@@ -1492,7 +1492,34 @@ def year12(request):
         lbls.append(one[0]+"年")
         values.append(one[1])
     res={"success":True, "lbls":lbls,"values":values}
-    return HttpResponse(json.dumps(res, ensure_ascii=False))     
+    return HttpResponse(json.dumps(res, ensure_ascii=False))  
+def sql(request):
+    cmd=request.GET.get("cmd")
+    logging.info(cmd)
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    raw=cursor.execute(cmd)    #执行sql语句
+    # raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    # lbls=[]
+    # values=[]
+    # for one in raw:
+    #     lbls.append(one[0]+"月")
+    #     values.append(one[1])
+    res={"success":True, "data":myZhengli(raw)}
+    tmp=json.dumps(res, ensure_ascii=False,cls=MyEncoder)
+    logging.info(tmp)
+    return HttpResponse(tmp)      
+def myZhengli(raw):
+    # print(dir(raw))
+    fs=raw.description
+    res=[]
+    for one in raw:
+        o1={}
+        i=0
+        for a in one:
+            o1[fs[i][0]]=a
+            i+=1
+        res.append(o1)
+    return res
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
