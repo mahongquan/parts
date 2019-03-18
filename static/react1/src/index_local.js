@@ -2,6 +2,7 @@ console.log('index_local');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import myglobal from './myglobal';
+import App from './mui/App';
 console.log(myglobal);
 const path = require('path');
 function link(where, module_name) {
@@ -18,31 +19,22 @@ function getWhere() {
 // let where = getWhere();
 link('./', 'autosuggest.css');
 link('./', 'react-datetime.css');
-myglobal.api = 'models';
-if (myglobal.api === 'models') {
-  myglobal.Client = require('./Client_models').default;
-} else if (myglobal.api === 'seq') {
-  myglobal.Client = require('./Client_seq').default;
-} else if (myglobal.api === 'socketio') {
-  myglobal.Client = require('./Client_socketio').default;
-}
-if (myglobal.api === 'axios') {
-  myglobal.Client = require('./Client_axios').default;
-}
+// myglobal.api = 'models';
+// if (myglobal.api === 'models') {
+//   myglobal.Client = require('./Client_models').default;
+// } else if (myglobal.api === 'seq') {
+//   myglobal.Client = require('./Client_seq').default;
+// } else if (myglobal.api === 'socketio') {
+//   myglobal.Client = require('./Client_socketio').default;
+// }
+// if (myglobal.api === 'axios') {
+//   myglobal.Client = require('./Client_axios').default;
+// }
 // let AppName='./bs4/App';
 let AppName='./mui/App';
-if (AppName==='./bs4/App'){
-  let where=getWhere();
-  link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
-  link('./bs4', 'index.css');
-}
-var App = require(AppName).default;
-if (myglobal.api === 'models') {
-  let models = require('./data/models').default;
-
-  models.sequelize.sync().then(() => {
-    ReactDOM.render(<App models={models} />, document.getElementById('root'));
-  });
-} else {
-  ReactDOM.render(<App />, document.getElementById('root'));
-}
+// if (AppName==='./bs4/App'){
+//   let where=getWhere();
+//   link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
+//   link('./bs4', 'index.css');
+// }
+ReactDOM.render(<App />, document.getElementById('root'));
