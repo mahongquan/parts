@@ -7,6 +7,7 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DlgFolder2 from './DlgFolder2';
 import { withStyles } from '@material-ui/core/styles';
 import DlgStat from './DlgStat';
 import DlgStat2 from './DlgStat2';
@@ -91,6 +92,8 @@ class App extends Component {
     search: '',
     start_input: 1,
     currentIndex: null,
+    contactid:null,
+    url:'',//dlgurl
     baoxiang: '',
     showDlgImport: false,
     showDlgEdit: false,
@@ -99,13 +102,14 @@ class App extends Component {
     showDlgStat2: false,
     showDlgItem: false,
     showDlgWorkMonth: false,
-    showDlgLogin:false,
+    showDlgLogin: false,
+    showDlgFolder2: false,
+    showDlgFolder:false,
+    showDlgUrl:false,
   };
   constructor(props) {
     super(props);
     this.dlgwait = React.createRef();
-    this.dlgurl = React.createRef();
-    this.dlgfolder = React.createRef();
     this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
     this.dlgstat = React.createRef();
@@ -306,17 +310,14 @@ class App extends Component {
     }
     this.setState({ contacts: contacts2 });
   };
-  opendlgurl = (url, parent, idx, data) => {
-    this.currentIndex = idx;
-    this.dlgurl.current.open(url, data, this.handleContactChange2);
-  };
+  // opendlgurl = (url, parent, idx, data) => {
+  //   this.currentIndex = idx;
+  //   this.dlgurl.current.open(url, data, this.handleContactChange2);
+  // };
   openDlgItems = () => {
     // this.dlgitems.current.open();
     console.log('openDlgItems');
     this.setState({ showDlgItem: true });
-  };
-  opendlgfolder = contactid => {
-    this.dlgfolder.current.open(contactid);
   };
   opendlgcheck = (contactid, yiqibh) => {
     this.dlgcheck.current.open(contactid, yiqibh);
@@ -367,11 +368,16 @@ class App extends Component {
               详细
             </MenuItem>
             <MenuItem
-              onClick={() =>
-                this.opendlgurl('/rest/updateMethod', this, idx, {
-                  id: contact.id,
-                })
-              }
+              onClick={() =>{
+                // this.opendlgurl('/rest/updateMethod', this, idx, {
+                //   id: contact.id,
+                // })
+                this.setState({
+                  url:"/rest/updateMethod",
+                  contactid:contact.id,
+                  currentIndex:idx,
+                  showDlgUrl:true});
+              }}
             >
               更新方法
             </MenuItem>
@@ -383,8 +389,17 @@ class App extends Component {
             >
               核对备料计划
             </MenuItem>
-            <MenuItem onClick={() => this.opendlgfolder(contact.id)}>
+            <MenuItem onClick={() =>{
+              this.setState({contactid:contact.id,showDlgFolder:true});
+            }}>
               资料文件夹
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                this.setState({contactid:contact.id, showDlgFolder2: true });
+              }}
+            >
+              资料文件夹2
             </MenuItem>
           </DropdownButton>
         </CustomTableCell>
@@ -454,15 +469,29 @@ class App extends Component {
         />
         <DlgImportHT ref={this.dlgimportHT} parent={this} />
         <DlgCheck ref={this.dlgcheck} />
-        <DlgFolder ref={this.dlgfolder} />
+        <DlgFolder contactid={this.state.contactid}
+          open={this.state.showDlgFolder}
+          onClose={() => {
+            this.setState({ showDlgFolder: false });
+          }}
+        />
         <DlgWait ref={this.dlgwait} />
-        <DlgUrl ref={this.dlgurl} />
+        <DlgUrl  contactid={this.state.contactid}
+          url={this.state.url}
+          idx={this.state.currentIndex}
+          handleContactChange2={this.handleContactChange2}
+          open={this.state.showDlgUrl}
+          onClose={() => {
+            this.setState({ showDlgUrl: false });
+          }} />
 
-        <DlgLogin showModal={this.state.showDlgLogin}
+        <DlgLogin
+          showModal={this.state.showDlgLogin}
           handleClose={() => {
             this.setState({ showDlgLogin: false });
           }}
-        onLoginSubmit={this.onLoginSubmit} />
+          onLoginSubmit={this.onLoginSubmit}
+        />
         <DlgDetail
           contactid={this.state.contactid}
           showModal={this.state.showDlgDetail}
@@ -476,7 +505,12 @@ class App extends Component {
             this.setState({ showDlgStat2: false });
           }}
         />
-
+        <DlgFolder2
+          open={this.state.showDlgFolder2}
+          onClose={() => {
+            this.setState({ showDlgFolder2: false });
+          }}
+        />
         <ContactEdit2New
           showModal={this.state.showDlgEdit}
           handleClose={() => {

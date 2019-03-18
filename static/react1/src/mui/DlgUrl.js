@@ -1,45 +1,45 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
 class DlgUrl extends Component {
   state = {
-    showModal: false,
     error: '',
   };
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.open && nextProps.open) {
+      this.open(nextProps.url,nextProps.contactid);
+    } 
+    else if (this.props.open && !nextProps.open) {
+    }
+  }
 
-  close = () => {
-    this.setState({ showModal: false });
-  };
-
-  open = (url, data, callback) => {
-    //this.parent=parent;
-    //this.index=idx;
-    var self = this;
-    this.setState({ showModal: true });
-    Client.get(url, data, function(result) {
+  open = (url, contactid) => {
+    let data={id:contactid}
+    Client.get(url, data, (result)=> {
       console.info(result);
       if (!result.success) {
-        self.setState({ error: result.message });
+        this.setState({ error: result.message });
       } else {
-        callback(result.data);
-        self.close();
+        this.props.handleContactChange2(result.data);
+        this.props.onClose();
       }
     });
   };
   render = () => {
     return (
-      <Modal
-        show={this.state.showModal}
-        onHide={this.close}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.props.open}
+        onClose={this.props.onClose}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>请等待。。。</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <DialogTitle>
+          请等待。。。
+        </DialogTitle>
+        <DialogContent>
           <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   };
 }

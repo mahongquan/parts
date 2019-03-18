@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
 class DlgWait extends React.Component {
   state = {
@@ -26,18 +28,17 @@ class DlgWait extends React.Component {
   }
   render() {
     return (
-      <Modal
-        show={this.state.showModal}
-        onHide={this.close}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.state.showModal}
+        onClose={this.close}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>请等待。。。</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <DialogTitle>
+          请等待。。。
+        </DialogTitle>
+        <DialogContent>
           <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   }
 }

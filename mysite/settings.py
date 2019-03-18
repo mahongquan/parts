@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'mysite.parts',
     #'ajax_select',
     'rest',
-    # 'fs',
+    'fs',
     #'extjs'
 ]
 
