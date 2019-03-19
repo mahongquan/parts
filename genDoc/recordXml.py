@@ -118,6 +118,30 @@ def genRecord(fn,c):
     print(factors)
     print(channels)
     if yiqixinghao[0]=="C":
+        if factors!=None:
+            data2=genDoc.genLabel.genXishuCS(yiqibh,channels,factors)
+        else:
+            data2=""
+    else:
+        if factors!=None:
+            data2=genDoc.genLabel.genXishuONH(yiqibh,channels,factors)
+        else:
+            data2=""
+    return data2
+
+def genRecord_old(fn,c):
+    yiqibh=c.yiqibh
+    yiqixinghao=c.yiqixinghao
+    channels=getchannels(c.channels)
+    if fn=="":
+        factors=None
+    else:
+        factors=getFromIni(yiqixinghao,fn)
+    logging.info("===================")
+    print(yiqibh,yiqixinghao)
+    print(factors)
+    print(channels)
+    if yiqixinghao[0]=="C":
         data=genRecordCS(yiqixinghao,yiqibh,channels,factors,c.baoxiang)
         if factors!=None:
             data2=genDoc.genLabel.genXishuCS(yiqibh,channels,factors)
