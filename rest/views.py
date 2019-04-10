@@ -541,6 +541,8 @@ def mylogin(request):
         output["sessionid"]=request.session.session_key
         output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
+    r["Access-Control-Allow-Credentials"]="true";
+    r["Access-Control-Allow-Origin"]="127.0.0.1";
     logging.info(request.session)
     logging.info(dir(request.session))
     return r

@@ -333,7 +333,8 @@ class App extends Component {
   };
   openDlgLogin = () => {
     // console.log("openDlgLogin");
-    this.dlglogin.current.open();
+    // this.dlglogin.current.open();
+    this.setState({showDlgLogin:true});
   };
   openDlgImport = () => {
     //this.refs.dlgimport.open();

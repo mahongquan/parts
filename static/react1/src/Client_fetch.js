@@ -1,7 +1,7 @@
 /////////////
 import queryString from 'querystring';
 let host = '';
-if (window.myremote) {
+if (window.require) {
   host = 'http://127.0.0.1:8000';
 }
 function myFetch(method, url, body, cb, headers2, err_callback) {
