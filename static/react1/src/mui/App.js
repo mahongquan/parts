@@ -20,6 +20,7 @@ import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth';
+import DlgWebview from './DlgWebview';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
@@ -32,6 +33,7 @@ import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import myglobal from '../myglobal';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -54,10 +56,10 @@ const styles = theme => ({
     width: '132px',
   },
   inputInput: {
-    paddingTop: theme.spacing.unit,
+    paddingTop: theme.spacing(1),
     paddingRight: 0,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit,
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -106,9 +108,12 @@ class App extends Component {
     showDlgFolder2: false,
     showDlgFolder:false,
     showDlgUrl:false,
+    showWebview:false,
+    url:"about:blank",
   };
   constructor(props) {
     super(props);
+    myglobal.app=this;
     this.dlgwait = React.createRef();
     this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
@@ -116,6 +121,9 @@ class App extends Component {
     this.dlgpacks = React.createRef();
     this.dlgimport = React.createRef();
     this.dlgimportHT = React.createRef();
+  }
+  show_webview=(url)=>{
+    this.setState({showWebview:true,url:url});
   }
   handleClickFilter = event => {
     //console.log(event);
@@ -127,9 +135,9 @@ class App extends Component {
     //     },5000);
   };
   componentDidMount = () => {
-    Client.init(this.props.models, () => {
+    // Client.init(this.props.models, () => {
       this.load_data();
-    });
+    // });
   };
   load_data = () => {
     Client.contacts(
@@ -140,6 +148,7 @@ class App extends Component {
         baoxiang: this.state.baoxiang,
       },
       contacts => {
+        // myglobal.app.show_webview(contacts);
         var user = contacts.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -150,10 +159,9 @@ class App extends Component {
           total: contacts.total,
         });
       },
-      error => {
-        // console.log(typeof(error));
-        console.log(error);
-        if (error instanceof SyntaxError) {
+      (error)=>{
+        console.log(error)
+        if (error.type=="invalid-json") {
           this.openDlgLogin();
         } else {
           this.setState({ connect_error: true });
@@ -269,7 +277,9 @@ class App extends Component {
       this.setState({ auto_value: value, auto_loading: true });
       Client.get('/rest/Pack', { search: value }, items => {
         this.setState({ auto_items: items.data, auto_loading: false });
-      });
+      },(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
     } else {
       this.setState({ auto_value: value, auto_loading: false });
     }
@@ -286,6 +296,9 @@ class App extends Component {
         });
         this.handleUserChange(this.state.user);
       }
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleEdit = idx => {
@@ -446,6 +459,13 @@ class App extends Component {
     }
     return (
       <div className={this.props.classes.root}>
+        <DlgWebview
+          open={this.state.showWebview}
+          url={this.state.url}
+          onClose={() => {
+            this.setState({ showWebview: false });
+          }}
+        />
         <DlgWorkMonth
           baoxiang={this.state.baoxiang}
           showModal={this.state.showDlgWorkMonth}
@@ -453,7 +473,7 @@ class App extends Component {
             this.setState({ showDlgWorkMonth: false });
           }}
         />
-        <DlgItems
+        <DlgItems 
           showModal={this.state.showDlgItem}
           handleClose={() => {
             this.setState({ showDlgItem: false });
@@ -487,8 +507,8 @@ class App extends Component {
           }} />
 
         <DlgLogin
-          showModal={this.state.showDlgLogin}
-          handleClose={() => {
+          open={this.state.showDlgLogin}
+          onClose={() => {
             this.setState({ showDlgLogin: false });
           }}
           onLoginSubmit={this.onLoginSubmit}
@@ -530,6 +550,14 @@ class App extends Component {
             >
               装箱单
             </Typography>
+            <Button variant="contained" color="inherit" onClick={()=>{this.setState({showWebview:true})}}>
+              webview
+            </Button>
+            <Button color="inherit" onClick={()=>{
+              this.load_data();
+            }}>
+              reload 
+            </Button>
             <Button color="inherit" onClick={this.openDlgPacks}>
               包
             </Button>

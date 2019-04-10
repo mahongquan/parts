@@ -8,6 +8,7 @@ import Client from './Client';
 import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
 import Spinner from './react-spin';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 class DlgCopyPack extends React.Component {
   state = {
@@ -45,6 +46,8 @@ class DlgCopyPack extends React.Component {
     Client.postForm('/rest/copypack/', data1, result => {
       self.setState({ error: result.message });
       this.setState({ stopped: true });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   onSuggestionsClearRequested = () => {};
@@ -54,7 +57,9 @@ class DlgCopyPack extends React.Component {
     if (value.length > 1) {
       Client.get('/rest/Pack', { search: value }, items => {
         this.setState({ auto_items: items.data, auto_loading: false });
-      });
+      },(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
     }
   };
   // auto_change=(event, value)=>{

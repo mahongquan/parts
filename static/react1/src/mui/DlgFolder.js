@@ -3,7 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
-
+import myglobal from '../myglobal';
 class DlgFolder extends React.Component {
   constructor(){
     super();
@@ -30,6 +30,8 @@ class DlgFolder extends React.Component {
       } else {
         this.props.onClose();
       }
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   }
   render() {

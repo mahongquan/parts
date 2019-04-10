@@ -1,7 +1,7 @@
 import React from 'react';
 import Client from './Client';
 import Autosuggest from 'react-autosuggest';
-
+import myglobal from '../myglobal';
 class CopyPack extends React.Component {
   state = {
     showModal: false,
@@ -25,6 +25,8 @@ class CopyPack extends React.Component {
     data1.append('newname', this.state.newname);
     Client.postForm('/rest/copypack/', data1, result => {
       self.setState({ error: result.message });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   auto_change = data => {
@@ -33,7 +35,9 @@ class CopyPack extends React.Component {
     if (value.length > 1) {
       Client.get('/rest/Pack', { search: value }, items => {
         this.setState({ auto_items: items.data, auto_loading: false });
-      });
+      },(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
     }
   };
   auto_select = (value, item) => {

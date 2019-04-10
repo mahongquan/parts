@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PackEdit from './PackEdit';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 
 class DlgPacks extends Component {
@@ -80,7 +81,9 @@ class DlgPacks extends Component {
         });
         this.mystate.total = contacts2.total;
       }
-    );
+    ,(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
   };
   handlePrev = e => {
     this.mystate.start = this.mystate.start - this.mystate.limit;

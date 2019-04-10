@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import Table from '@material-ui/core/Table';
@@ -18,7 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-// var _ = require('lodash');
+import myglobal from '../myglobal';
 const styles = {
   appBar: {
     position: 'relative',
@@ -83,7 +81,9 @@ class DlgItems extends Component {
         });
         this.mystate.total = contacts2.total;
       }
-    );
+    ,(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
   };
   handlePrev = e => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
@@ -163,8 +163,6 @@ class DlgItems extends Component {
             <img
               alt="no"
               src={'/media/' + contact.image}
-              width="100"
-              height="100"
             />
           </TableCell>
         </TableRow>
@@ -274,6 +272,14 @@ class DlgItems extends Component {
             onClick={this.jump}
           >
             跳转
+          </Button>
+          <Button
+            variant="contained"
+            onClick={()=>{
+              myglobal.app.show_webview("http://localhost:8000");
+            }}
+          >
+            test
           </Button>
         </DialogContent>
       </Dialog>

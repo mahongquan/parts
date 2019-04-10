@@ -1,6 +1,6 @@
 import {runServer} from './requestServer';
-var queryString=require('querystring');
 import myglobal from './myglobal';
+var queryString=require('querystring');
 const request1 = require('request');
 var request = request1.defaults({jar: true})
 let cookies={};

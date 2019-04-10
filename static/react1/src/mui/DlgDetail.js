@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 // import Button from '@material-ui/core/Button';
 import Client from './Client';
 // import update from 'immutability-helper';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 class DlgDetail extends React.Component {
   state = {
@@ -34,6 +35,8 @@ class DlgDetail extends React.Component {
         totalid: res.totalid,
         totalct: res.totalct,
       });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   shouldComponentUpdate(nextProps, nextState) {

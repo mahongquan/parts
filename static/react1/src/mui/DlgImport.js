@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import update from 'immutability-helper';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 class DlgImport extends React.Component {
   state = {
@@ -33,6 +34,8 @@ class DlgImport extends React.Component {
         showalert: true,
         info: '导入了' + res.result.length + '个合同的标钢。',
       });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   shouldComponentUpdate(nextProps, nextState) {
@@ -71,6 +74,8 @@ class DlgImport extends React.Component {
       // else
       self.setState({ packs: result.data });
       console.log(result.data);
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleDismiss = () => {

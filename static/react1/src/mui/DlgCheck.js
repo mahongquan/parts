@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 // import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
+import myglobal from '../myglobal';
 class DlgCheck extends React.Component {
   state = {
     showModal: false,
@@ -72,6 +73,8 @@ class DlgCheck extends React.Component {
       console.log(showdata);
       self.setState({ packs: showdata });
       self.setState({ hideTable: false });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   open = (contact_id, yiqibh) => {
