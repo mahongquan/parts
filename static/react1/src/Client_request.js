@@ -1,5 +1,7 @@
-import {runServer} from './requestServer';
 import myglobal from './myglobal';
+if(window.require){
+  var runServer=require('./requestServer').runServer
+}
 var queryString=require('querystring');
 const request1 = require('request');
 var request = request1.defaults({jar: true})
@@ -52,28 +54,15 @@ function my_checkStatus(response,cb,err_callback) {
       cb(json);
     } 
     catch (error) {
-      // let err2={}
-      // if (error instanceof SyntaxError) {
-      //   err2["type"]="invalid-json"
-      // }else{
-      //   err2["type"]="not known"
-      // }
-      // if(err_callback){      err_callback(err2);}
-      // else{ console.log(error)}
-      response.url=response.req.path;
-      runServer(response);
-      myglobal.app.show_webview("http://127.0.0.1:8001"+response.url)
-      // myglobal.app.show_webview(response.url)
+      if(window.require){
+        response.url=response.req.path;
+        runServer(response);
+        myglobal.app.show_webview("http://127.0.0.1:8001"+response.url)
+      }
     }
   }else{
-    // let err2={}
-    // err2.status = response.statusCode;
-    // err2.response=response;
-    // if(err_callback){      err_callback(err2);}
-    // else{ console.log("statusCode not ok："+ response.statusCode)}
     response.url=response.req.path;
     runServer(response);
-    // myglobal.app.show_webview(response.url)
     myglobal.app.show_webview("http://127.0.0.1:8001"+response.url)
   }
 }
