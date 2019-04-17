@@ -22,5 +22,10 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": [
+      "src/data",
+        "node_modules",
+        "**/*.spec.ts"
+  ]  
 }

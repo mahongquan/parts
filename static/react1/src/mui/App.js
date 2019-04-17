@@ -56,10 +56,10 @@ const styles = theme => ({
     width: '132px',
   },
   inputInput: {
-    paddingTop: theme.spacing(1),
+    // paddingTop: theme.spacing(1),
     paddingRight: 0,
-    paddingBottom: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
+    // paddingLeft: theme.spacing(1),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -95,7 +95,6 @@ class App extends Component {
     start_input: 1,
     currentIndex: null,
     contactid:null,
-    url:'',//dlgurl
     baoxiang: '',
     showDlgImport: false,
     showDlgEdit: false,
@@ -161,7 +160,7 @@ class App extends Component {
       },
       (error)=>{
         console.log(error)
-        if (error.type=="invalid-json") {
+        if (error.type==="invalid-json") {
           this.openDlgLogin();
         } else {
           this.setState({ connect_error: true });

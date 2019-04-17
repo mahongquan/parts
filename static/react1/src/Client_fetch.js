@@ -1,6 +1,6 @@
 import queryString from 'querystring';
-import myglobal from './myglobal';
-const fetch = require('node-fetch');
+// import myglobal from './myglobal';
+// const fetch = require('node-fetch');
 let host = '';
 if (window.require) {
   host = 'http://127.0.0.1:8000';
