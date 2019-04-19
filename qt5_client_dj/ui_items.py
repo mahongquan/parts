@@ -2,11 +2,11 @@
 
 # Form implementation generated from reading ui file 'items.ui'
 #
-# Created by: PyQt5 UI code generator 5.5
+# Created by: PySide2 UI code generator 5.5
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):

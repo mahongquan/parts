@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'qt5_client\packitem.ui'
 #
 # Created: Tue May  2 11:01:14 2017
-#      by: PyQt5 UI code generator 5.4
+#      by: PySide2 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):

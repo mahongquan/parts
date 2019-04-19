@@ -3,8 +3,8 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtWidgets import QFileDialog
 from .ui_contacts import Ui_MainWindow
 from . import  backend  
 import logging
@@ -16,7 +16,7 @@ from . import contact
 import xlrd
 from genDoc.excel_write import *
 import datetime
-from genDoc.docx_write import genPack,genQue
+from genDoc.docx_write import genPack#,genQue
 import genDoc.genLabel
 from genDoc.recordXml import genRecord
 import traceback
@@ -292,7 +292,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         cs=backend.getContacts(self.nm,self.baoxiang)
         self.showdata(cs)
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def change(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         c=detail.ContactDlg(self)

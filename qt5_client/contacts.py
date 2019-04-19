@@ -3,8 +3,8 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtWidgets import QFileDialog
 from .ui_contacts import Ui_MainWindow
 from . import  backend  
 import logging

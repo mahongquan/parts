@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
-from PyQt5.QtCore import *
+from PySide2 import QtCore, QtGui,QtWidgets
+from PySide2.QtCore import *
 from .ui_chuku import Ui_Dialog
 import logging
 class ContactDlg(QtWidgets.QDialog):
@@ -57,10 +57,10 @@ class ContactDlg(QtWidgets.QDialog):
                 self.ui.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(one))
                 j+=1
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         self.done(1)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def reject(self):
         print("reject")
         self.done(0)

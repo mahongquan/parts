@@ -1,1 +1,1 @@
-python3.4 -m PyQt5.uic.pyuic ${1+"$@"}
+python3.4 -m PySide2.uic.pyuic ${1+"$@"}

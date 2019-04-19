@@ -3,7 +3,7 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets,QtWidgets
+from PySide2 import QtCore, QtWidgets,QtWidgets
 from .ui_packitems import Ui_DialogPack
 from . import  backend 
 import logging
@@ -44,29 +44,29 @@ class PackForm(QtWidgets.QDialog):
                 self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(str(one.item.id)))
                 self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(str(one.ct)))
             i+=1
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def add(self):
         self.done(0)
         pass
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def delete(self):
         self.done(0)
         pass
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def ok(self):
         #print "ok"
         self.done(0)
         pass
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def cancel(self):
         #print "cancel"
         self.done(1)
         pass
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def accept(self):
         self.done(0)
         pass
-    @QtCore.pyqtSlot()
+    # #@QtCore.pyqtSlot()
     def reject(self):
         self.done(1)
         pass
