@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DropdownButton from './DropdownButton';
+import DropdownButton2 from './DropdownButton2';
 import update from 'immutability-helper';
 import Client from './Client';
 import DlgLogin from './DlgLogin';
@@ -118,7 +119,6 @@ class App extends Component {
     this.dlgcheck = React.createRef();
     this.dlgstat = React.createRef();
     this.dlgpacks = React.createRef();
-    this.dlgimport = React.createRef();
     this.dlgimportHT = React.createRef();
   }
   show_webview=(url)=>{
@@ -369,14 +369,9 @@ class App extends Component {
         <CustomTableCell>{contact.yonghu}</CustomTableCell>
         <CustomTableCell>{contact.hetongbh}</CustomTableCell>
         <CustomTableCell>
-          <Button
-            variant="outlined"
-            style={{ display: 'inline' }}
-            onClick={() => this.handleEdit(idx)}
-          >
-            {contact.yiqibh}
-          </Button>
-          <DropdownButton title="" id="id_dropdown3">
+          <DropdownButton2 click_title={() => this.handleEdit(idx)} 
+            title={contact.yiqibh} 
+            >
             <MenuItem onClick={() => this.onDetailClick(contact.id)}>
               详细
             </MenuItem>
@@ -414,7 +409,7 @@ class App extends Component {
             >
               资料文件夹2
             </MenuItem>
-          </DropdownButton>
+          </DropdownButton2>
         </CustomTableCell>
         <CustomTableCell>{contact.yiqixinghao}</CustomTableCell>
         <CustomTableCell>{contact.channels}</CustomTableCell>
@@ -549,37 +544,12 @@ class App extends Component {
             >
               装箱单
             </Typography>
-            <Button variant="contained" color="inherit" onClick={()=>{this.setState({showWebview:true})}}>
-              webview
-            </Button>
-            <Button color="inherit" onClick={()=>{
-              this.load_data();
-            }}>
-              reload 
-            </Button>
-            <Button color="inherit" onClick={this.openDlgPacks}>
-              包
-            </Button>
-            <Button color="inherit" onClick={this.openDlgItems}>
-              备件
-            </Button>
-            <Button color="inherit" onClick={this.openDlgCopyPack}>
+            <Button variant="outlined" color="inherit" onClick={this.openDlgCopyPack}>
               复制包
             </Button>
-            <DropdownButton title="统计">
-              <MenuItem onClick={this.openDlgStat}>月</MenuItem>
-              <MenuItem
-                onClick={() => {
-                  this.setState({ showDlgStat2: true });
-                }}
-              >
-                年
-              </MenuItem>
-            </DropdownButton>
             <DropdownButton
               title={'包箱:' + this.state.baoxiang}
-              id="id_dropdown2"
-            >
+              id="id_dropdown2">
               <MenuItem onClick={() => this.onSelectBaoxiang('')}>*</MenuItem>
               <MenuItem onClick={() => this.onSelectBaoxiang('马红权')}>
                 马红权
@@ -591,53 +561,64 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-
-            <InputBase
-              color="inherit"
-              onKeyPress={this.keypress}
-              value={this.state.search}
-              placeholder="合同/仪器编号/客户"
-              classes={{
-                root: this.props.classes.inputRoot,
-                input: this.props.classes.inputInput,
-              }}
-              onChange={this.handleSearchChange}
-            />
-            <Button color="inherit" onClick={this.search}>
+            <Button variant="outlined" color="inherit" onClick={this.search}>
+              <InputBase variant="outlined"
+                color="inherit"
+                onKeyPress={this.keypress}
+                value={this.state.search}
+                placeholder="合同/仪器编号/客户"
+                classes={{
+                  root: this.props.classes.inputRoot,
+                  input: this.props.classes.inputInput,
+                }}
+                onChange={this.handleSearchChange}
+              />
               <SearchIcon />
             </Button>
             <Button
               color="inherit"
               style={{ margin: '0px 10px 0px 10px' }}
-              variant="contained"
+              variant="outlined" 
               onClick={() => this.handleEdit(null)}
             >
               新仪器
             </Button>
             <Button
               color="inherit"
-              variant="contained"
+              variant="outlined" 
               onClick={this.openDlgImport}
             >
               导入标样
             </Button>
-            <Button
-              color="inherit"
-              style={{ margin: '0px 10px 0px 10px', display: 'none' }}
-              onClick={this.openDlgImportHT}
-            >
-              导入合同
-            </Button>
-            <Button
-              color="inherit"
-              variant="contained"
-              style={{ margin: '0px 10px 0px 10px' }}
-              onClick={() => {
+            <DropdownButton title="杂项">
+              <MenuItem onClick={()=>{this.setState({showWebview:true})}}>
+                webview
+              </MenuItem>
+              <MenuItem onClick={()=>{
+                this.load_data();
+              }}>
+                reload 
+              </MenuItem>
+             <MenuItem onClick={this.openDlgPacks}>
+              包
+             </MenuItem>
+             <MenuItem onClick={this.openDlgItems}>
+              备件
+             </MenuItem>
+              <MenuItem onClick={this.openDlgStat}>月统计</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  this.setState({ showDlgStat2: true });
+                }}
+              >
+                年统计
+              </MenuItem>
+              <MenuItem onClick={() => {
                 this.setState({ showDlgWorkMonth: true });
-              }}
-            >
-              工作量
-            </Button>
+              }}>工作量</MenuItem>
+              <MenuItem style={{display: 'none' }} onClick={this.openDlgImportHT}>导入合同</MenuItem>
+
+            </DropdownButton>
             <DropdownButton title={this.state.user} id="id_dropdown1">
               {this.state.user !== 'AnonymousUser' ? (
                 <MenuItem onClick={this.handleLogout}>注销</MenuItem>

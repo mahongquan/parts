@@ -273,14 +273,6 @@ class DlgItems extends Component {
           >
             跳转
           </Button>
-          <Button
-            variant="contained"
-            onClick={()=>{
-              myglobal.app.show_webview("http://localhost:8000");
-            }}
-          >
-            test
-          </Button>
         </DialogContent>
       </Dialog>
     );
