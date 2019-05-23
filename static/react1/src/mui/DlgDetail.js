@@ -1,12 +1,13 @@
 import React from 'react';
-import DropdownButton from './DropdownButton';
+// import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import Button from '@material-ui/core/Button';
 import Client from './Client';
 // import update from 'immutability-helper';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 class DlgDetail extends React.Component {
   state = {
@@ -34,6 +35,8 @@ class DlgDetail extends React.Component {
         totalid: res.totalid,
         totalct: res.totalct,
       });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   shouldComponentUpdate(nextProps, nextState) {
@@ -88,9 +91,11 @@ class DlgDetail extends React.Component {
             <u>{contact.guige}</u>
           </td>
           <td>
-            <u>{contact.ct}{contact.danwei}</u>
+            <u>
+              {contact.ct}
+              {contact.danwei}
+            </u>
           </td>
-          
         </tr>
       );
     } else {
@@ -100,8 +105,10 @@ class DlgDetail extends React.Component {
           <td>{contact.bh}</td>
           <td>{contact.name}</td>
           <td>{contact.guige}</td>
-          <td>{contact.ct}{contact.danwei}</td>
-         
+          <td>
+            {contact.ct}
+            {contact.danwei}
+          </td>
         </tr>
       );
     }
@@ -134,7 +141,7 @@ class DlgDetail extends React.Component {
                 <td>名称</td>
                 <td>规格</td>
                 <td>数量</td>
-                   </tr>
+              </tr>
             </thead>
             <tbody id="contact-list">{contactRows2}</tbody>
           </table>

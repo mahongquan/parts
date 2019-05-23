@@ -1,7 +1,9 @@
 import React from 'react';
-import { Alert, Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
-var _ = require('lodash');
+import myglobal from '../myglobal';
 class DlgImportHT extends React.Component {
   state = {
     showModal: false,
@@ -10,16 +12,6 @@ class DlgImportHT extends React.Component {
     packs: [],
     info: '',
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   close = () => {
     this.setState({ showModal: false });
   };
@@ -28,32 +20,33 @@ class DlgImportHT extends React.Component {
     console.log(file);
     var data1 = new FormData();
     data1.append('file', file);
-    //console.log(data1)
-    var self = this;
-    Client.postForm('/rest/ht', data1, function(res) {
+    Client.postForm('/rest/ht', data1, (res)=> {
       if (res.success) {
-        self.props.parent.handleContactChange(null, res.data);
-        self.setState({ showModal: false });
+        this.props.parent.handleContactChange(null, res.data);
+        this.setState({ showModal: false });
       } else {
-        self.setState({ showalert: true, info: res.message });
+        this.setState({ showalert: true, info: res.message });
       }
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   open = () => {
-    var self = this;
     this.setState({ showModal: true, showalert: false });
     var data = { limit: 10, search: 'docx' };
     Client.get('/rest/Contact', data, function(result) {
       console.info(result);
-      self.setState({ packs: result.data });
+      this.setState({ packs: result.data });
       console.log(result.data);
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleDismiss = () => {
-    this.setState({ showalert: false });
+    // this.setState({ showalert: false });
   };
   inputChange = () => {
-    this.setState({ showalert: false });
+    // this.setState({ showalert: false });
   };
   render = () => {
     const contactRows = this.state.packs.map((pack, idx) => (
@@ -62,25 +55,16 @@ class DlgImportHT extends React.Component {
         <td>{pack.yiqibh}</td>
       </tr>
     ));
-    let alert;
-    if (this.state.showalert) {
-      alert = (
-        <Alert bsStyle="info" onDismiss={this.handleDismiss}>
-          <p>{this.state.info}</p>
-        </Alert>
-      );
-    }
     return (
-      <Modal
-        show={this.state.showModal}
-        onHide={this.close}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.state.showModal}
+        onClose={this.close}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>导入合同</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {alert}
+        <DialogTitle>
+          导入合同
+        </DialogTitle>
+        <DialogContent>
+          {this.state.info}
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}
@@ -112,8 +96,8 @@ class DlgImportHT extends React.Component {
             </table>
           </div>
           <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   };
 }

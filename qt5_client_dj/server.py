@@ -36,11 +36,11 @@ class CalculatorForm(QtGui.QMainWindow):
             self.ui.tableWidget.setItem(i, 2, QtGui.QTableWidgetItem(val))
 			self.ui.tableWidget.setItem(i, 2, QtGui.QTableWidgetItem(val))
             i+=1 
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def add(self):
         self.rows+=1
         self.ui.tableWidget.setRowCount(self.rows)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def delete(self):
         self.rows-=1
         self.ui.tableWidget.setRowCount(self.rows)
@@ -58,7 +58,7 @@ class CalculatorForm(QtGui.QMainWindow):
             val=self.ui.tableWidget.item(i, 1).text()
             d[adr]=val
         return d
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def change(self):
         d=self.tableTodict()
         backend.setStore(d)

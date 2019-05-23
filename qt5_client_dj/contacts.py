@@ -3,8 +3,8 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtWidgets import QFileDialog
 from .ui_contacts import Ui_MainWindow
 from . import  backend  
 import logging
@@ -16,7 +16,7 @@ from . import contact
 import xlrd
 from genDoc.excel_write import *
 import datetime
-from genDoc.docx_write import genPack,genQue
+from genDoc.docx_write import genPack#,genQue
 import genDoc.genLabel
 from genDoc.recordXml import genRecord
 import traceback
@@ -264,12 +264,11 @@ class CalculatorForm(QtWidgets.QMainWindow):
     def yiqi(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         c=contact.ContactDlg(self)
-        if it!=None:
-            contactid=int(it.text())
-            c.showdata(backend.getContact(contactid))
-        else:
-            c.showdata(None)
-            pass
+        contactid=int(it.text())
+        c.showdata(backend.getContact(contactid))
+        # else:
+        #     c.showdata(None)
+        #     pass
         c.exec()
         #refresh
         cs=backend.getContacts(self.nm,self.baoxiang)
@@ -277,10 +276,11 @@ class CalculatorForm(QtWidgets.QMainWindow):
         pass
     def itemchanged(self,i):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
-        if it!=None:
-            contactid=int(it.text())
-            print(contactid)
-            self.showtree(contactid)
+        # print(dir(it))
+        # if it!=None:
+        contactid=int(it.text())
+        print(contactid)
+        self.showtree(contactid)
         pass
     def search(self):
         self.nm=self.ui.lineEdit.text()
@@ -292,7 +292,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
         cs=backend.getContacts(self.nm,self.baoxiang)
         self.showdata(cs)
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def change(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         c=detail.ContactDlg(self)

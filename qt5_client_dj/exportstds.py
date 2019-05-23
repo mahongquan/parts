@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
+from PySide2 import QtCore, QtGui,QtWidgets
 from .ui_exportstds import Ui_Form
 import logging
 import datetime
-from PyQt5 import QtCore
-from PyQt5.QtCore import *
+from PySide2 import QtCore
+from PySide2.QtCore import *
 from . import  backend 
 class ExportStdsDlg(QtWidgets.QDialog):
     def __init__(self, parent=None):

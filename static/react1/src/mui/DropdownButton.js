@@ -1,9 +1,10 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 let _ = require('lodash');
 export default class SimpleMenu extends React.Component {
   state = {
@@ -51,12 +52,9 @@ export default class SimpleMenu extends React.Component {
       );
     }
     return (
-      <span>
-        <Button
-          style={{ display: 'inline' }}
+      <div>
+        <Button variant="outlined"
           color="inherit"
-          aria-owns={anchorEl ? 'simple-menu' : undefined}
-          aria-haspopup="true"
           onClick={this.handleClick}
         >
           <Typography color="inherit">{this.props.title}</Typography>
@@ -70,7 +68,7 @@ export default class SimpleMenu extends React.Component {
         >
           {cs}
         </Menu>
-      </span>
+      </div>
     );
   }
 }

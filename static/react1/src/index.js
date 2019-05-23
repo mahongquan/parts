@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App_bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap-material-design/dist/css/bootstrap-material-design.css';
-import './index.css';
 import './autosuggest.css';
 import 'react-datetime/css/react-datetime.css';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import './bs4/index.css';
+var App = require('./mui/App').default;
 ReactDOM.render(<App />, document.getElementById('root'));

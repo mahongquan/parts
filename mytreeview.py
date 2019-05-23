@@ -3,8 +3,8 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMenu
+from PySide2 import QtCore, QtWidgets
+from PySide2.QtWidgets import QMenu
 class MyTreeView(QtWidgets.QTreeView):
     # def mousePressEvent(self, event):
     #     #print(event,dir(event))

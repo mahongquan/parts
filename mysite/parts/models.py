@@ -37,6 +37,7 @@ class Contact(models.Model,myutil.MyModel):
     redao=models.CharField(null=True,blank=True,max_length=30,verbose_name="热导")#合同编号
     method=models.FileField(null=True,blank=True,verbose_name="方法")
     detail=models.TextField(null=True,blank=True,verbose_name="备注")
+    work_month = models.DateField(null=True,blank=True,verbose_name="工作月")#预计发货时间    
     def json(self):
         fields=type(self)._meta.fields
         dic1={}
@@ -87,9 +88,9 @@ class Contact(models.Model,myutil.MyModel):
                     items=addItem(items,pi.item)
                 else:
                     items2=addItem(items2,pi.item)
-        for i in items:
-            logging.info(i)
-            logging.info(i.leijia)
+        # for i in items:
+        #     logging.info(i)
+        #     logging.info(i.leijia)
         return (items,items2)
     def huizong2(self):
         items=[]

@@ -537,9 +537,14 @@ def mylogin(request):
         login(request, user)
         rec=user
         output={"success":True,"message":"User" +str(rec.id)}
+        output["csrftoken"]=str(csrf(request)["csrf_token"])
+        output["sessionid"]=request.session.session_key
         output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
-    logging.info(r)
+    r["Access-Control-Allow-Credentials"]="true";
+    r["Access-Control-Allow-Origin"]="127.0.0.1";
+    logging.info(request.session)
+    logging.info(dir(request.session))
     return r
 def functions(request):
     logging.info("===================")
@@ -1623,23 +1628,23 @@ def allfile(request):
                 logging.info("here")
                 fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
                 logging.info(fullfilepath)
-                (data_record,data_xishu)=genRecord(fullfilepath,c)
-                file5=p+"/"+c.yiqibh+"调试记录.docx"
-                if not os.path.exists(file5):
-                    open(file5,"wb").write(data_record)
+                data_xishu=genRecord(fullfilepath,c)
+                # file5=p+"/"+c.yiqibh+"调试记录.docx"
+                # if not os.path.exists(file5):
+                #     open(file5,"wb").write(data_record)
                 file6=p+"/"+"系数.lbx"
                 if not os.path.exists(file6):
                     open(file6,"wb").write(data_xishu)
             except ValueError as e:
                 logging.info(e)
-                try:
-                    (data_record,data_xishu)=genRecord("",c)
-                    file5=p+"/"+c.yiqibh+"调试记录.docx"
-                    if not os.path.exists(file5):
-                        open(file5,"wb").write(data_record)
-                except ValueError as e:
-                    logging.info(e)
-                    pass
+                # try:
+                #     (data_record,data_xishu)=genRecord("",c)
+                #     file5=p+"/"+c.yiqibh+"调试记录.docx"
+                #     if not os.path.exists(file5):
+                #         open(file5,"wb").write(data_record)
+                # except ValueError as e:
+                #     logging.info(e)
+                #     pass
             except:
                 traceback.print_exc()
                 logging.info("except")

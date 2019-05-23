@@ -1,14 +1,12 @@
 import React from 'react';
-import LoginFormComponent from './LoginFormComponent';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 class DlgLogin extends React.Component {
   state = {
-    showModal: false,
     name: 'mahongquan',
     pwd: '333333',
   };
@@ -28,21 +26,14 @@ class DlgLogin extends React.Component {
     data['username'] = this.state.name;
     data['password'] = this.state.pwd;
     this.props.onLoginSubmit(data);
-    this.close();
-  };
-  close = () => {
-    this.setState({ showModal: false });
-  };
-
-  open = () => {
-    this.setState({ showModal: true });
+    this.props.onClose();
   };
   // onLoginSubmit=(data)=>  {
   //   this.props.onLoginSubmit(data);
   // }
   render() {
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>{this.props.title || ' '}</DialogTitle>
         <DialogContent>
           <table className="table-condensed">

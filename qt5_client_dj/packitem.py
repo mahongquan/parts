@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
+from PySide2 import QtCore, QtGui,QtWidgets
 from .ui_packitem import Ui_Dialog
 from .  import backend
 import logging
@@ -32,7 +32,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.lineEdit_guige.setText(str(self.c.item.guige))
         self.ui.lineEdit_danwei.setText(str(self.c.item.danwei))
         self.ui.lineEdit_ct.setText(str(self.c.ct))
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         self.c.item.name=self.ui.lineEdit_name.text()
         self.c.item.bh=self.ui.lineEdit_bh.text()

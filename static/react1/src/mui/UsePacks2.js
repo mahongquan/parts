@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import UsePackEditNew from './UsePackEditNew';
 import Button from '@material-ui/core/Button';
 import Autosuggest from 'react-autosuggest';
+import myglobal from '../myglobal';
 //import Autocomplete from './Autocomplete'
 // import Select from 'react-select';
 // import 'react-select/dist/react-select.css';
@@ -46,7 +47,10 @@ class UsePacks2 extends React.Component {
     if (nextProps.contact_hetongbh) {
       this.setState({ newPackName: nextProps.contact_hetongbh });
     }
-    if (nextProps.contact_id) {
+    if (
+      nextProps.contact_id &&
+      this.props.contact_id !== nextProps.contact_id
+    ) {
       this.load_data(nextProps.contact_id);
     }
   }
@@ -56,6 +60,10 @@ class UsePacks2 extends React.Component {
         this.setState({
           usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
         });
+    },(error)=>{
+      // window.e=error;
+      // console.log(error);
+      myglobal.app.show_webview(error.response.url);
     });
   };
   componentDidMount = () => {
@@ -72,9 +80,11 @@ class UsePacks2 extends React.Component {
   auto_change = data => {
     var value = data.value;
     if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value, limit: 15 }, items => {
+      Client.get('/rest/Pack/', { search: value, limit: 15 }, items => {
         this.setState({ auto_items: items.data });
-      });
+      },(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
     }
   };
   auto_select = (event, data) => {
@@ -114,21 +124,25 @@ class UsePacks2 extends React.Component {
     //this.auto_change(null,"必备");
   };
   new_pack = id => {
-    var url = '/rest/UsePackEx';
+    var url = '/rest/UsePackEx/';
     var data = { name: this.state.newPackName, contact: this.props.contact_id };
     Client.postOrPut(url, data, res => {
       var p = res.data;
       const newFoods = this.state.usepacks.concat(p);
       this.setState({ usepacks: newFoods });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   addrow = pack_id => {
-    var url = '/rest/UsePack';
+    var url = '/rest/UsePack/';
     var data = { contact: this.props.contact_id, pack: pack_id };
     Client.postOrPut(url, data, res => {
       var p = res.data;
       const newFoods = this.state.usepacks.concat(p);
       this.setState({ usepacks: newFoods });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   newpackChange = e => {
@@ -136,12 +150,14 @@ class UsePacks2 extends React.Component {
   };
   onEditClick = id => {};
   onDeleteClick = itemIndex => {
-    var url = '/rest/UsePack';
+    var url = '/rest/UsePack/';
     Client.delete1(url, { id: this.state.usepacks[itemIndex].id }, res => {
       const filteredFoods = this.state.usepacks.filter(
         (item, idx) => itemIndex !== idx
       );
       this.setState({ usepacks: filteredFoods });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleEdit = idx => {

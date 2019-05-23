@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
-var _ = require('lodash');
+import myglobal from '../myglobal';
+// var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
@@ -74,19 +75,19 @@ class ContactEdit2New extends Component {
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      // console.log(this.props);
-      // console.log(nextProps);
-      // console.log("props not eq");
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      // console.log("state not eq");
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
+  //     // console.log(this.props);
+  //     // console.log(nextProps);
+  //     // console.log("props not eq");
+  //     return true;
+  //   }
+  //   if (!_.isEqual(this.state, nextState)) {
+  //     // console.log("state not eq");
+  //     return true;
+  //   }
+  //   return false;
+  // }
   componentDidMount = () => {
     // console.log("ContactEdit2New mounted");
   };
@@ -182,7 +183,7 @@ class ContactEdit2New extends Component {
     this.setState({ hiddenPacks: true });
   };
   handleSave = data => {
-    var url = '/rest/Contact';
+    var url = '/rest/Contact/';
     var dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
     Client.postOrPut(url, dataSave, res => {
@@ -204,6 +205,8 @@ class ContactEdit2New extends Component {
       } else {
         alert(res.message);
       }
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   tiaoshi_date_change = value => {
@@ -521,13 +524,10 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <DateTime
-                    ref="datetime1"
                     timeFormat={false}
                     inputProps={{
                       style: { backgroundColor: this.state.bg.yujifahuo_date },
                     }}
-                    id="yujifahuo_date"
-                    name="yujifahuo_date"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
                   />
@@ -535,12 +535,10 @@ class ContactEdit2New extends Component {
                 <td>调试时间:</td>
                 <td>
                   <DateTime
-                    ref="datetime2"
                     timeFormat={false}
                     inputProps={{
                       style: { backgroundColor: this.state.bg.tiaoshi_date },
                     }}
-                    name="tiaoshi_date"
                     value={this.state.contact.tiaoshi_date}
                     onChange={this.tiaoshi_date_change}
                   />
@@ -567,7 +565,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="method"
                     name="method"
-                    disabled="true"
+                    disabled={true}
                     defaultValue={this.state.contact.method}
                   />
                   {
@@ -595,6 +593,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.jixie }}
                     type="text"
                     name="jixie"
+                    onChange={this.handleChange}
                     value={this.state.contact.jixie}
                   />
                 </td>
@@ -616,6 +615,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.redao }}
                     type="text"
                     name="redao"
+                    onChange={this.handleChange}
                     value={this.state.contact.redao}
                   />
                 </td>

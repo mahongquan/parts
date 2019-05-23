@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import Table from '@material-ui/core/Table';
@@ -18,7 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-var _ = require('lodash');
+import myglobal from '../myglobal';
 const styles = {
   appBar: {
     position: 'relative',
@@ -83,7 +81,9 @@ class DlgItems extends Component {
         });
         this.mystate.total = contacts2.total;
       }
-    );
+    ,(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
   };
   handlePrev = e => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
@@ -163,8 +163,6 @@ class DlgItems extends Component {
             <img
               alt="no"
               src={'/media/' + contact.image}
-              width="100"
-              height="100"
             />
           </TableCell>
         </TableRow>
@@ -186,18 +184,30 @@ class DlgItems extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button variant="contained" onClick={this.handlePrev}>前一页</Button>;
+      prev = (
+        <Button variant="contained" onClick={this.handlePrev}>
+          前一页
+        </Button>
+      );
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button variant="contained" onClick={this.handleNext}>后一页</Button>;
+      next = (
+        <Button variant="contained" onClick={this.handleNext}>
+          后一页
+        </Button>
+      );
     } else {
       next = null;
     }
     return (
-      <Dialog open={this.props.showModal} onClose={this.props.handleClose} fullScreen>
-      <AppBar className={this.props.classes.appBar}>
+      <Dialog
+        open={this.props.showModal}
+        onClose={this.props.handleClose}
+        fullScreen
+      >
+        <AppBar className={this.props.classes.appBar}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -226,7 +236,7 @@ class DlgItems extends Component {
           <Button
             id="id_bt_search"
             color="secondary"
-            variant="contained" 
+            variant="contained"
             onClick={this.search}
           >
             搜索
@@ -255,7 +265,12 @@ class DlgItems extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <Button variant="contained" id="page_go" className="btn btn-info" onClick={this.jump}>
+          <Button
+            variant="contained"
+            id="page_go"
+            className="btn btn-info"
+            onClick={this.jump}
+          >
             跳转
           </Button>
         </DialogContent>

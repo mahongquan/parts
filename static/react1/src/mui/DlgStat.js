@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-// import {Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
@@ -90,7 +89,7 @@ class DlgStat extends Component {
     };
     return (
       <Dialog open={this.state.showModal} onClose={this.close}>
-        <DialogTitle>统计</DialogTitle>
+        <DialogTitle>月统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
             <MenuItem onClick={() => this.onClickBaoxiang('马红权')}>

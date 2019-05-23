@@ -2,10 +2,11 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import update from 'immutability-helper';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 class DlgImport extends React.Component {
   state = {
@@ -33,6 +34,8 @@ class DlgImport extends React.Component {
         showalert: true,
         info: '导入了' + res.result.length + '个合同的标钢。',
       });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   shouldComponentUpdate(nextProps, nextState) {
@@ -71,6 +74,8 @@ class DlgImport extends React.Component {
       // else
       self.setState({ packs: result.data });
       console.log(result.data);
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleDismiss = () => {
@@ -87,22 +92,17 @@ class DlgImport extends React.Component {
         <td>{pack.name}</td>
       </tr>
     ));
-    let alert;
-    if (this.state.showalert) {
-      alert = (
-        <Alert bsStyle="info" onDismiss={this.handleDismiss}>
-          <p>{this.state.info}</p>
-        </Alert>
-      );
-    }
+    // let alert;
+    // if (this.state.showalert) {
+    //   alert = (
+    //     <Alert bsStyle="info" onDismiss={this.handleDismiss}>
+    //       <p>{this.state.info}</p>
+    //     </Alert>
+    //   );
+    // }
     return (
-      <Dialog
-        open={this.props.showModal}
-        onClose={this.props.handleClose}
-      >
-        <DialogTitle>
-          导入标样
-        </DialogTitle>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
+        <DialogTitle>导入标样</DialogTitle>
         <DialogContent>
           <form ref="form1" encType="multipart/form-data">
             <input

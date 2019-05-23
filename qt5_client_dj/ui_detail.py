@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'qt5_client\detail.ui'
 #
 # Created: Tue May  2 11:01:15 2017
-#      by: PyQt5 UI code generator 5.4
+#      by: PySide2 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets,QtWebEngineWidgets
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -16,7 +16,7 @@ class Ui_Dialog(object):
         Dialog.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.webView = QtWebKitWidgets.QWebView(Dialog)
+        self.webView =QtWebEngineWidgets.QWebView(Dialog)
         self.webView.setUrl(QtCore.QUrl("about:blank"))
         self.webView.setObjectName("webView")
         self.verticalLayout.addWidget(self.webView)
@@ -35,4 +35,4 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
 
-from PyQt5 import QtWebKitWidgets
+# from PySide2 import QtWebKitWidgets

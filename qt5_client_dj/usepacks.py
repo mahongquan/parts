@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtWidgets,QtWidgets
+from PySide2 import QtCore, QtWidgets,QtWidgets
 from .ui_contact import Ui_Form
 from . import  backend 
 import logging
@@ -35,27 +35,27 @@ class ContactForm(QtWidgets.QDialog):
                 self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(str(one.pack.id)))
                 self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(one.pack.name))
             i+=1
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def add(self):
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def delete(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)#self.ui.tableWidget.currentColumn()))
         backend.deleteUsePack(int(it.text()))
         calculator.exec_()
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def change(self):
         #print "to change pack"
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),1)#self.ui.tableWidget.currentColumn()))
         calculator = packitems.PackForm()
         calculator.showdata(int(it.text()))
         calculator.exec_()
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         #print "accept"
         self.done(1)
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def reject(self):
         #print "reject"
         self.done(0)

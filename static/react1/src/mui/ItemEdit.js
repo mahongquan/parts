@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import update from 'immutability-helper';
 import Client from './Client';
 import Button from '@material-ui/core/Button';
@@ -99,7 +99,7 @@ class ItemEdit extends Component {
                     type="text"
                     id="id"
                     name="id"
-                    readOnly="true"
+                    readOnly={true}
                     disabled="disabled"
                     defaultValue={this.state.packitem.id}
                   />
@@ -182,7 +182,7 @@ class ItemEdit extends Component {
           <div>
             <Button
               color="primary"
-               variant="contained" 
+              variant="contained"
               id="bt_save"
               onClick={this.handleSave}
             >

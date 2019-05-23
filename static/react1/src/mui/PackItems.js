@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import DropdownButton from './DropdownButton';
 import Autosuggest from 'react-autosuggest';
 import MenuItem from '@material-ui/core/MenuItem';
+import myglobal from '../myglobal';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -26,6 +27,8 @@ class PackItems extends React.Component {
       this.setState({
         items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
       });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   auto_select = (event, data) => {
@@ -79,7 +82,7 @@ class PackItems extends React.Component {
     this.setState({ items: contacts2 });
   };
   addrow = item_id => {
-    var url = '/rest/PackItem';
+    var url = '/rest/PackItem/';
     var data = { pack: this.props.pack_id, itemid: item_id };
     Client.post(url, data, res => {
       var p = res.data;
@@ -92,7 +95,7 @@ class PackItems extends React.Component {
   };
   onEditClick = id => {};
   onDeleteClick = itemIndex => {
-    var url = '/rest/PackItem';
+    var url = '/rest/PackItem/';
     Client.delete1(url, { id: this.state.items[itemIndex].id }, res => {
       const filteredFoods = this.state.items.filter(
         (item, idx) => itemIndex !== idx

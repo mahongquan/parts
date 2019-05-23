@@ -1,24 +1,18 @@
-<!doctype html>
 <html lang="zh-Hans">
   <head>
-    <meta charset="utf-8">
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="../public/manifest.json">
-    <link rel="shortcut icon" href="../public/favicon.ico">
-    <title>React装箱单</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>react parts</title>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <script type="text/javascript">
-      console.log("index.html");
-      window.ELECTRON_DISABLE_SECURITY_WARNINGS=true;
-      window.require('@babel/register');
-      window.require('@babel/polyfill');
-      window.require('./index_local.js');
-    </script>
+    <div id="root"></div> 
+    <script type="text/javascript" >
+        require("@babel/register")
+        require('@babel/polyfill');
+        require("./index_local.js")
+      </script>
   </body>
 </html>

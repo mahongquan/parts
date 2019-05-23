@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
-from PyQt5.QtCore import *
+from PySide2 import QtCore, QtGui,QtWidgets
+from PySide2.QtCore import *
 from .ui_detail import Ui_Dialog
 from .  import backend
 import logging
@@ -16,10 +16,10 @@ class ContactDlg(QtWidgets.QDialog):
     def showdata(self,contactid):
         backend.genDetail(contactid)
         self.ui.webView.setUrl(QtCore.QUrl("file:///d:/parts/out.html"))
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         self.done(1)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def reject(self):
         print("reject")
         self.done(0)

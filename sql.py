@@ -9,7 +9,7 @@ def update1():
 	# c.execute('alter table parts_contact add column jixie varchar(30)')	
 	# c.execute('alter table parts_contact add column hongwai varchar(30)')	
 	# c.execute('alter table parts_contact add column redao varchar(30)')	
-	c.execute('alter table parts_contact add column detail text')	
+	c.execute('alter table parts_contact add column work_month date')	
 	conn.commit()
 update1()
 #c.execute('select * from parts_pack where name="ON必备英文"')

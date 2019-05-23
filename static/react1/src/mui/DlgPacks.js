@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import Table from '@material-ui/core/Table';
@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PackEdit from './PackEdit';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 
 class DlgPacks extends Component {
@@ -80,7 +81,9 @@ class DlgPacks extends Component {
         });
         this.mystate.total = contacts2.total;
       }
-    );
+    ,(error)=>{
+      myglobal.app.show_webview(error.response.url);
+    });
   };
   handlePrev = e => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
@@ -129,7 +132,10 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
+            <Button
+              variant="contained"
+              onClick={() => this.handleEdit(contact.id)}
+            >
               {contact.name}
             </Button>
           </TableCell>
@@ -140,7 +146,10 @@ class DlgPacks extends Component {
         <TableRow key={idx}>
           <TableCell>{contact.id}</TableCell>
           <TableCell>
-            <Button variant="contained" onClick={() => this.handleEdit(contact.id)}>
+            <Button
+              variant="contained"
+              onClick={() => this.handleEdit(contact.id)}
+            >
               [NONAME]
             </Button>
           </TableCell>
@@ -163,17 +172,25 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button variant="contained" onClick={this.handlePrev}>前一页</Button>;
+      prev = (
+        <Button variant="contained" onClick={this.handlePrev}>
+          前一页
+        </Button>
+      );
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button variant="contained" onClick={this.handleNext}>后一页</Button>;
+      next = (
+        <Button variant="contained" onClick={this.handleNext}>
+          后一页
+        </Button>
+      );
     } else {
       next = null;
     }
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}  >
+      <Dialog open={this.state.showModal} onClose={this.close}>
         <DialogTitle>包</DialogTitle>
         <DialogContent>
           <PackEdit ref="edit1" title="编辑" />
@@ -211,7 +228,12 @@ class DlgPacks extends Component {
             onChange={this.handlePageChange}
             value={this.state.start_input}
           />
-          <Button id="page_go"  variant="contained"  className="btn btn-info" onClick={this.jump}>
+          <Button
+            id="page_go"
+            variant="contained"
+            className="btn btn-info"
+            onClick={this.jump}
+          >
             跳转
           </Button>
         </DialogContent>
