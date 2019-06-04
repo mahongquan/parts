@@ -1,4 +1,3 @@
-console.log('index_local');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import myglobal from './myglobal';
