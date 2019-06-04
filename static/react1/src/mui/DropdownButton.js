@@ -53,7 +53,7 @@ export default class SimpleMenu extends React.Component {
     }
     return (
       <div>
-        <Button variant="outlined"
+        <Button variant="contained"
           color="inherit"
           onClick={this.handleClick}
         >

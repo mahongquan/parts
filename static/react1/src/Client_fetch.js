@@ -117,19 +117,19 @@ function login(username, password, cb) {
 }
 
 function checkStatus(response) {
-  let es,one;
-  es=response.headers.keys();
-  while(true){
-    one=es.next();
-    console.log(one.value);
-    if(one.done) break;
-  }  
-  es=response.headers.entries();
-  while(true){
-    one=es.next();
-    console.log(one.value);
-    if(one.done) break;
-  }  
+  // let es,one;
+  // es=response.headers.keys();
+  // while(true){
+  //   one=es.next();
+  //   console.log(one.value);
+  //   if(one.done) break;
+  // }  
+  // es=response.headers.entries();
+  // while(true){
+  //   one=es.next();
+  //   console.log(one.value);
+  //   if(one.done) break;
+  // }  
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
