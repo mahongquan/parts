@@ -141,7 +141,7 @@ def genDetail(contactid):
     f=codecs.open("out.html","w","utf-8")
     f.write(t.render(dic))
     f.close()     
-def getContacts(search,baoxiang):
+def getContacts(session,search,baoxiang):
     start=0
     limit=30
     if search!='':
