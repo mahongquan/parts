@@ -2,11 +2,11 @@
 
 # Form implementation generated from reading ui file 'contactEdit.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.2
+# Created by: PySide2 UI code generator 5.4.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):

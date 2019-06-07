@@ -3,6 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
+import myglobal from '../myglobal';
 class DlgImportHT extends React.Component {
   state = {
     showModal: false,
@@ -26,6 +27,8 @@ class DlgImportHT extends React.Component {
       } else {
         this.setState({ showalert: true, info: res.message });
       }
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   open = () => {
@@ -35,6 +38,8 @@ class DlgImportHT extends React.Component {
       console.info(result);
       this.setState({ packs: result.data });
       console.log(result.data);
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   handleDismiss = () => {

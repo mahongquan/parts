@@ -95,7 +95,7 @@ class DlgStat extends Component {
     };
     return (
       <Dialog open={this.props.showModal} onClose={this.close}>
-        <DialogTitle>统计</DialogTitle>
+        <DialogTitle>年统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
             <MenuItem onClick={() => this.onClickBaoxiang('马红权')}>

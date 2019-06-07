@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
+from PySide2 import QtCore, QtGui,QtWidgets
 from .ui_login import Ui_Dialog
 from .backend  import *
 import logging
@@ -13,7 +13,7 @@ class LoginDlg(QtWidgets.QDialog):
         super(LoginDlg, self).__init__(parent)
         self.ui=Ui_Dialog()
         self.ui.setupUi(self)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         print("accept")
         print(self.ui.lineEdit_username.text())
@@ -25,7 +25,7 @@ class LoginDlg(QtWidgets.QDialog):
             h=QtWidgets.QMessageBox.information(self,"",r["message"])
             print(h)
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def reject(self):
         print("reject")
         self.done(0)

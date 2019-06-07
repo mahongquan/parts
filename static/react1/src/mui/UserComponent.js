@@ -4,6 +4,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Client from './Client';
+import myglobal from '../myglobal';
 export default class UserComponent extends React.Component {
   constructor(props) {
     super(props);

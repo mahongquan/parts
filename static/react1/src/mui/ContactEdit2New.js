@@ -16,6 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
+import myglobal from '../myglobal';
 // var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -182,7 +183,7 @@ class ContactEdit2New extends Component {
     this.setState({ hiddenPacks: true });
   };
   handleSave = data => {
-    var url = '/rest/Contact';
+    var url = '/rest/Contact/';
     var dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
     Client.postOrPut(url, dataSave, res => {
@@ -204,6 +205,8 @@ class ContactEdit2New extends Component {
       } else {
         alert(res.message);
       }
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
   tiaoshi_date_change = value => {
@@ -521,13 +524,10 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <DateTime
-                    ref="datetime1"
                     timeFormat={false}
                     inputProps={{
                       style: { backgroundColor: this.state.bg.yujifahuo_date },
                     }}
-                    id="yujifahuo_date"
-                    name="yujifahuo_date"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
                   />
@@ -535,12 +535,10 @@ class ContactEdit2New extends Component {
                 <td>调试时间:</td>
                 <td>
                   <DateTime
-                    ref="datetime2"
                     timeFormat={false}
                     inputProps={{
                       style: { backgroundColor: this.state.bg.tiaoshi_date },
                     }}
-                    name="tiaoshi_date"
                     value={this.state.contact.tiaoshi_date}
                     onChange={this.tiaoshi_date_change}
                   />
