@@ -28,18 +28,20 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
     };
   }
   return fetch(host + url, data)
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(cb)
-    .catch(err_callback)
-  // return fetch(host + url, data)
-  //   .then(checkStatus)
-  //   .then(parseJSON)
-  //   .then(cb)
-  //   .catch(error => {
-  //     if (err_callback) err_callback(error);
-  //     else alert(error + '\n请检查服务器/刷新网页/登录');
-  //   });
+    .then((response)=>{
+    	  if (response.status >= 200 && response.status < 300) {
+    	  	var r = response.json();
+		    r.then(cb).catch(err_callback);
+		  }
+		  else{
+			  const error = new Error(`HTTP Error ${response.statusText}`);
+			  error.status = response.statusText;
+			  error.response = response;
+			  err_callback(error);
+		  }
+    }).catch((e)=>{
+    	err_callback(e);
+    })
 }
 function getRaw(url, cb, err_callback) {
   return myFetch('GET', url, undefined, cb, undefined, err_callback);
@@ -70,11 +72,21 @@ function postForm(url, data, cb,err_callback) {
     method: method,
     credentials: 'include',
     body: data,
+  }).then((response)=>{
+    	  if (response.status >= 200 && response.status < 300) {
+    	  	var r = response.json();
+		    r.then(cb).catch(err_callback);
+		  }
+		  else{
+			  const error = new Error(`HTTP Error ${response.statusText}`);
+			  error.status = response.statusText;
+			  error.response = response;
+			  err_callback(error);
+		  }
+  }).catch((e)=>{
+    	err_callback(e);
   })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(cb)
-    .catch(err_callback);
+
 }
 function contacts(data, cb, err_callback) {
   return get('/rest/Contact/', data, cb, err_callback);
@@ -116,33 +128,20 @@ function login(username, password, cb) {
   });
 }
 
-function checkStatus(response) {
-  // let es,one;
-  // es=response.headers.keys();
-  // while(true){
-  //   one=es.next();
-  //   console.log(one.value);
-  //   if(one.done) break;
-  // }  
-  // es=response.headers.entries();
-  // while(true){
-  //   one=es.next();
-  //   console.log(one.value);
-  //   if(one.done) break;
-  // }  
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(`HTTP Error ${response.statusText}`);
-  error.status = response.statusText;
-  error.response = response;
-  throw error;
-}
+// function checkStatus(response) {
+//   if (response.status >= 200 && response.status < 300) {
+//     return response;
+//   }
+//   const error = new Error(`HTTP Error ${response.statusText}`);
+//   error.status = response.statusText;
+//   error.response = response;
+//   throw error;
+// }
 
-function parseJSON(response) {
-  var r = response.json();
-  return r;
-}
+// function parseJSON(response) {
+//   var r = response.json();
+//   return r;
+// }
 function sql(cmd, callback) {
   get('/rest/sql', { cmd: cmd }, callback, null);
 }
