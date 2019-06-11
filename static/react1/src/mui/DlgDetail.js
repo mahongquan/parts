@@ -152,10 +152,10 @@ class DlgDetail extends React.Component {
       <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>详细</DialogTitle>
         <DialogContent>
-          <table id="table_input" className="table-condensed">
+          <table>
             <tbody>
               <tr>
-                <td>ID:</td>
+              <td><div style={{textAlign:"right"}}>ID:</div></td>
                 <td>{this.state.contact.id}</td>
                 <td>
                   <label>用户单位:</label>
@@ -180,10 +180,12 @@ class DlgDetail extends React.Component {
               </tr>
               <tr>
                 <td>
-                  <label>包箱:</label>
+                  <div style={{textAlign:"right"}}><label>包箱:</label></div>
                 </td>
                 <td>{this.state.contact.baoxiang}</td>
-                <td>审核:</td>
+                <td>
+                <div style={{textAlign:"right"}}>审核:</div>
+                </td>
                 <td>{this.state.contact.shenhe}</td>
               </tr>
               <tr>
@@ -199,13 +201,15 @@ class DlgDetail extends React.Component {
                   <label>合同编号:</label>
                 </td>
                 <td>{this.state.contact.hetongbh}</td>
-                <td>方法:</td>
+                <td>
+                <div style={{textAlign:"right"}}>方法:</div>
+                </td>
                 <td>{this.state.contact.method}</td>
               </tr>
             </tbody>
           </table>
           <h2>备件清单</h2>
-          <table responsive="true" bordered="true" condensed="true">
+          <table border="1">
             <thead>
               <tr>
                 <td>ID</td>

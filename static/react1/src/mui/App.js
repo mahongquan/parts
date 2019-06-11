@@ -88,7 +88,7 @@ class App extends Component {
     target: null,
     showcontext: false,
     contacts: [],
-    limit: 10,
+    limit: 15,
     user: 'AnonymousUser',
     start: 0,
     total: 0,
