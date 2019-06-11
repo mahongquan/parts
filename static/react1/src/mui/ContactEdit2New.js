@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-// import TextField from '@material-ui/core/TextField';
 import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,11 +14,23 @@ import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
 import myglobal from '../myglobal';
-// var _ = require('lodash');
-var moment = require('moment');
-// eslint-disable-next-line
-var locale = require('moment/locale/zh-cn');
-var DateTime = require('react-datetime');
+import MomentUtils from '@date-io/moment';
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import "moment/locale/zh-cn";
+// function App() {
+//   const [selectedDate, handleDateChange] = useState(new Date());
+
+//   return (
+//     <MuiPickersUtilsProvider utils={MomentUtils}>
+//       <DatePicker value={selectedDate} onChange={handleDateChange} 
+//         format="YYYY-MM-DD" />
+//     </MuiPickersUtilsProvider>
+//   );
+// }
+import moment from "moment";
 const styles = {
   appBar: {
     position: 'relative',
@@ -378,6 +387,7 @@ class ContactEdit2New extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
           <table id="table_input" className="table-condensed">
             <tbody>
               <tr>
@@ -523,22 +533,19 @@ class ContactEdit2New extends Component {
                   <label>入库时间:</label>
                 </td>
                 <td>
-                  <DateTime
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.yujifahuo_date },
-                    }}
+                  <DatePicker
+                    format="YYYY-MM-DD"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
+                    style={{ backgroundColor: this.state.bg.yujifahuo_date }}
                   />
                 </td>
                 <td>调试时间:</td>
                 <td>
-                  <DateTime
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.tiaoshi_date },
-                    }}
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    style={{ backgroundColor: this.state.bg.tiaoshi_date }}
+
                     value={this.state.contact.tiaoshi_date}
                     onChange={this.tiaoshi_date_change}
                   />
@@ -662,9 +669,14 @@ class ContactEdit2New extends Component {
               contact_id={this.state.contact.id}
             />
           </div>
+          </MuiPickersUtilsProvider>
         </DialogContent>
       </Dialog>
     );
   };
 }
 export default withStyles(styles)(ContactEdit2New);
+/*                    inputProps={{
+                      style: { backgroundColor: this.state.bg.tiaoshi_date },
+                    }}
+*/
