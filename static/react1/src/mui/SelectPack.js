@@ -49,13 +49,17 @@ const loadOptions = (inputValue, callback) => {
 export default class SelectItem extends Component{
   constructor(props){
     super();
-    this.state={inputValue:props.init_input}
+    this.state={
+      inputValue:""
+      ,menuIsOpen:false
+    }
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({inputValue:nextProps.init_input})
+  onClick=()=>{
+    this.setState({inputValue:"必备",menuIsOpen:true})
   }
   render() {
     return (
+  <div>      
         <AsyncSelect  
               components={components}
               styles={styles}
@@ -64,10 +68,17 @@ export default class SelectItem extends Component{
               clearable={false}
               inputValue={this.state.inputValue}
               onChange={this.props.onChange}
-              onInputChange={(value,meta)=>{
-                this.setState({inputValue:value});
+              onInputChange={(inputValue,meta) => {
+                console.log(inputValue);
+                console.log(meta);
+                this.setState({ inputValue:inputValue });
               }}
-            />
+              menuIsOpen={this.state.menuIsOpen}
+              onMenuOpen={() => this.setState({ menuIsOpen: true })}
+              onMenuClose={() => this.setState({ menuIsOpen: false })}
+        />
+        <button onClick={this.onClick}>必备</button>
+</div>
     );
   }
 }
