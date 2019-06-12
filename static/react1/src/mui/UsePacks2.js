@@ -7,7 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import UsePackEditNew from './UsePackEditNew';
 import Button from '@material-ui/core/Button';
-import Autosuggest from 'react-autosuggest';
+// import Autosuggest from 'react-autosuggest';
+import SelectPack from './SelectPack';
 import myglobal from '../myglobal';
 //import Autocomplete from './Autocomplete'
 // import Select from 'react-select';
@@ -87,10 +88,10 @@ class UsePacks2 extends React.Component {
     });
     }
   };
-  auto_select = (event, data) => {
+  auto_select = (data) => {
     console.log('selected');
     console.log(data);
-    this.addrow(data.suggestion.id);
+    this.addrow(data.id);
     //this.setState({auto_value:value, auto_items: [ item ] })
   };
   onSuggestionsClearRequested = () => {};
@@ -232,7 +233,8 @@ class UsePacks2 extends React.Component {
         </Table>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <label>输入包:</label>
-          <Autosuggest
+          <SelectPack onChange={this.auto_select} />
+{/*          <Autosuggest
             ref={this.auto1}
             inputProps={{
               id: 'states-autocomplete',
@@ -246,7 +248,7 @@ class UsePacks2 extends React.Component {
             suggestions={this.state.auto_items}
             renderSuggestion={item => <span>{item.name}</span>}
           />
-          <Button
+*/}          <Button
             variant="outlined"
             style={{ margin: '10px 10px 10px 10px' }}
             className="btn"

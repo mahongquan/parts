@@ -1010,7 +1010,7 @@ def view_pack1(request):
     for rec in objs:
         data.append({"id":rec.id,"name":rec.name})
     logging.info(data)
-    out={"total":total,"data":data}
+    out={"total":total,"data":data,"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 def create_pack1(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
