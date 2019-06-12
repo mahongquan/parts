@@ -47,6 +47,13 @@ const loadOptions = (inputValue, callback) => {
 };
 
 export default class SelectItem extends Component{
+  constructor(props){
+    super();
+    this.state={inputValue:props.init_input}
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({inputValue:nextProps.init_input})
+  }
   render() {
     return (
         <AsyncSelect  
@@ -55,7 +62,11 @@ export default class SelectItem extends Component{
               placeholder="Select Pack"
               loadOptions={loadOptions}
               clearable={false}
+              inputValue={this.state.inputValue}
               onChange={this.props.onChange}
+              onInputChange={(value,meta)=>{
+                this.setState({inputValue:value});
+              }}
             />
     );
   }
