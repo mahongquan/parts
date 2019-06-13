@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-import Autosuggest from 'react-autosuggest';
+// import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +15,8 @@ import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
 import myglobal from '../myglobal';
 import MomentUtils from '@date-io/moment';
-//import SelectYQXH from './SelectYQXH'
+import SelectYQXH from './SelectYQXH'
+import SelectChannels from './SelectChannels'
 import {
   DatePicker,
   MuiPickersUtilsProvider,
@@ -202,7 +203,7 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  channels_change = (event, { newValue }) => {
+  channels_change = ( newValue ) => {
     this.change1(newValue);
   };
   channels_change_fetch = () => {};
@@ -223,7 +224,8 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  yiqixinghao_change = (event, { newValue }) => {
+  yiqixinghao_change = (newValue) => {
+    console.log(newValue);
     this.change2(newValue);
   };
   yiqixinghao_select = (event, data) => {
@@ -305,7 +307,7 @@ class ContactEdit2New extends Component {
         </AppBar>
         <DialogContent>
         <MuiPickersUtilsProvider utils={MomentUtils}>
-          <table id="table_input" className="table-condensed">
+          <table style={{minWidth:"700px"}}>
             <tbody>
               <tr>
                 <td>ID:</td>
@@ -346,30 +348,10 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>通道配置:</td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'channels-autocomplete',
-                      style: { backgroundColor: this.state.bg.channels },
-                      value: this.state.contact.channels,
-                      onChange: this.channels_change,
-                    }}
-                    suggestions={[
-                      '1O(低氧)',
-                      '1O(高氧)',
-                      '1O(低氧)+2N',
-                      '1C(低碳)+2S',
-                      '1C(高碳)+2S',
-                      '2C+1S(低硫)',
-                      '2C+1S(高硫)',
-                      '2C+2S',
-                      '2O+2N',
-                      '2O',
-                    ]}
-                    getSuggestionValue={item => item}
-                    onSuggestionSelected={this.channels_select}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={item => <span>{item}</span>}
+                  <SelectChannels
+                      style={{ backgroundColor: this.state.bg.channels }}
+                      value={this.state.contact.channels}
+                      onChange={this.channels_change}
                   />
                 </td>
               </tr>
@@ -378,31 +360,10 @@ class ContactEdit2New extends Component {
                   <label>仪器型号:</label>
                 </td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'yiqixinghao-autocomplete',
-                      style: { backgroundColor: this.state.bg.yiqixinghao },
-                      value: this.state.contact.yiqixinghao,
-                      onChange: this.yiqixinghao_change,
-                    }}
-                    suggestions={[
-                      'CS-1011C',
-                      'CS-2800',
-                      'CS-3000',
-                      'CS-3000G',
-                      'HD-5',
-                      'N-3000',
-                      'O-3000',
-                      'OH-3000',
-                      'ON-3000',
-                      'ON-4000',
-                      'ONH-3000',
-                    ]}
-                    getSuggestionValue={item => item}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    onSuggestionSelected={this.yiqixinghao_select}
-                    renderSuggestion={item => <span>{item}</span>}
+                  <SelectYQXH 
+                    value={this.state.contact.yiqixinghao}
+                    onChange={this.yiqixinghao_change}
+                    style={{ backgroundColor: this.state.bg.yiqixinghao }}
                   />
                 </td>
                 <td>
