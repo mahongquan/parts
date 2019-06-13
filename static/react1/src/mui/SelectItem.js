@@ -33,7 +33,7 @@ const loadOptions = (inputValue, callback) => {
       '/rest/Item',
       {
         start: 0,
-        limit: 10,
+        limit: 20,
         query: inputValue,
       },
       res => {
@@ -53,6 +53,7 @@ export default class WithCallbacks extends Component{
               styles={styles}
               placeholder="Select item"
               loadOptions={loadOptions}
+              onChange={this.props.onChange}
               clearable={false}
             />
     );

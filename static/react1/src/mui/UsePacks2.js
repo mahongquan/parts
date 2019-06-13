@@ -221,7 +221,7 @@ class UsePacks2 extends React.Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Table responsive="true" bordered="true" condensed="true">
+        <Table style={{maxWidth:"500px"}}>
           <TableHead>
             <TableRow>
               <TableCell>id</TableCell>
@@ -234,28 +234,6 @@ class UsePacks2 extends React.Component {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <label>输入包:</label>
           <SelectPack onChange={this.auto_select} />
-{/*          <Autosuggest
-            ref={this.auto1}
-            inputProps={{
-              id: 'states-autocomplete',
-              value: this.state.auto_value,
-              onChange: this.onChange,
-            }}
-            onSuggestionSelected={this.auto_select}
-            onSuggestionsFetchRequested={this.auto_change}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={item => item.name}
-            suggestions={this.state.auto_items}
-            renderSuggestion={item => <span>{item.name}</span>}
-          />
-*/}          <Button
-            variant="outlined"
-            style={{ margin: '10px 10px 10px 10px' }}
-            className="btn"
-            onClick={this.bibei}
-          >
-            必备
-          </Button>
         </div>
 
         <div

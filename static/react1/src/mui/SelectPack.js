@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Client from './Client';
 import AsyncSelect from 'react-select/async';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 const styles={
  container:(provided,state)=>{
   return{
@@ -33,7 +35,7 @@ const loadOptions = (inputValue, callback) => {
       '/rest/Pack',
       {
         start: 0,
-        limit: 10,
+        limit: 20,
         search: inputValue,
       },
       res => {
@@ -52,22 +54,38 @@ export default class SelectItem extends Component{
     this.state={
       inputValue:""
       ,menuIsOpen:false
+      ,colourOptions:[]
     }
   }
   onClick=()=>{
     this.setState({inputValue:"必备",menuIsOpen:true})
+    Client.get(
+      '/rest/Pack',
+      {
+        start: 0,
+        limit: 20,
+        search: "必备",
+      },
+      res => {
+        if(res.success){
+          this.setState({colourOptions:res.data});
+        }
+      }
+    ,(error)=>{
+      console.log(error);
+    });
   }
   render() {
     return (
-  <div>      
+  <Grid container  spacing={1} style={{maxWidth:"400px"}}>      
+    <Grid item xs={9}>
         <AsyncSelect  
               components={components}
               styles={styles}
               placeholder="Select Pack"
+              defaultOptions={this.state.colourOptions}
               loadOptions={loadOptions}
-              clearable={false}
               inputValue={this.state.inputValue}
-              onChange={this.props.onChange}
               onInputChange={(inputValue,meta) => {
                 console.log(inputValue);
                 console.log(meta);
@@ -76,9 +94,13 @@ export default class SelectItem extends Component{
               menuIsOpen={this.state.menuIsOpen}
               onMenuOpen={() => this.setState({ menuIsOpen: true })}
               onMenuClose={() => this.setState({ menuIsOpen: false })}
+              onChange={this.props.onChange}
         />
-        <button onClick={this.onClick}>必备</button>
-</div>
+    </Grid>
+    <Grid item xs={3}>
+        <Button onClick={this.onClick} variant="outlined">必备</Button>
+    </Grid>
+</Grid>
     );
   }
 }
