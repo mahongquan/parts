@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './autosuggest.css';
-import App from './mui/App.js'
+// import App from './mui/App.js'
+// import App from './mui/SelectYQXH.js'
+import App from './SelectA'
 // import App from './SelectPack.js'
 // import 'bootstrap/dist/css/bootstrap.css';
 // import './bs4/index.css';

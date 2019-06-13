@@ -15,21 +15,13 @@ import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
 import myglobal from '../myglobal';
 import MomentUtils from '@date-io/moment';
+//import SelectYQXH from './SelectYQXH'
 import {
   DatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import "moment/locale/zh-cn";
-// function App() {
-//   const [selectedDate, handleDateChange] = useState(new Date());
 
-//   return (
-//     <MuiPickersUtilsProvider utils={MomentUtils}>
-//       <DatePicker value={selectedDate} onChange={handleDateChange} 
-//         format="YYYY-MM-DD" />
-//     </MuiPickersUtilsProvider>
-//   );
-// }
 import moment from "moment";
 const styles = {
   appBar: {
@@ -39,36 +31,6 @@ const styles = {
     flex: 1,
   },
 };
-// class MyStatefulEditor extends Component {
-//   static propTypes = {
-//     onChange: PropTypes.func
-//   };
-
-//   state = {
-//     value: RichTextEditor.createEmptyValue()
-//   }
-
-//   onChange = (value) => {
-//     this.setState({value});
-//     if (this.props.onChange) {
-//       // Send the changes up to the parent component as an HTML string.
-//       // This is here to demonstrate using `.toString()` but in a real app it
-//       // would be better to avoid generating a string on each change.
-//       this.props.onChange(
-//         value.toString('html')
-//       );
-//     }
-//   };
-
-//   render () {
-//     return (
-//       <RichTextEditor
-//         value={this.state.value}
-//         onChange={this.onChange}
-//       />
-//     );
-//   }
-// }
 
 class ContactEdit2New extends Component {
   state = {
@@ -83,22 +45,6 @@ class ContactEdit2New extends Component {
     date_open: false,
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
-  };
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-  //     // console.log(this.props);
-  //     // console.log(nextProps);
-  //     // console.log("props not eq");
-  //     return true;
-  //   }
-  //   if (!_.isEqual(this.state, nextState)) {
-  //     // console.log("state not eq");
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  componentDidMount = () => {
-    // console.log("ContactEdit2New mounted");
   };
 
   close = () => {
@@ -153,36 +99,7 @@ class ContactEdit2New extends Component {
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
   };
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   this.setState({bg:{}});
-  //   this.parent=this.props.parent;
-  //   if (this.index==null){
-  //     this.old={
-  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
-  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
-  //       addr:"",
-  //       channels:"",
-  //       baoxiang:"",
-  //       hetongbh:"",
-  //       shenhe:"",
-  //       yonghu:"",
-  //       yiqibh:"",
-  //       yiqixinghao:""
-  //     };
-  //   }
-  //   else{
-  //     this.old=this.parent.state.contacts[this.index];
-  //     this.setState({hiddenPacks:false});
-  //   }
-  //   this.setState({contact:this.old});
-  // }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
+
   handleCopy = data => {
     console.log('copy');
     this.index = null;
