@@ -28,7 +28,7 @@ def update1():
     # c.execute('alter table parts_contact add column redao varchar(30)')    
     c.execute('alter table parts_contact add column work_month date')    
     conn.commit()
-r=testRaw()
+# r=testRaw()
 # update1()
 #c.execute('select * from parts_pack where name="ON必备英文"')
 # # items=[]
@@ -49,15 +49,19 @@ r=testRaw()
 #         else:
 #             r+=c+"\n"
 #     return r
-# cmds=codecs.open("tableStruct.sql","r",'utf-8').read().split(";")
-# for cmd in cmds:
-#     try:
-#         print(remove(cmd))
-#         c.execute(cmd)
-#     except sqlite3.OperationalError as e:
-#         traceback.print_exc()
-#         if "already exists" in str(e):
-#             pass
-#         else:
-#             input("pause")
-# conn.commit()
+def updateDb():
+    cmds=codecs.open("tableStruct.sql","r",'gb18030').read().split(";")
+    for cmd in cmds:
+        try:
+            print(cmd)
+            c.execute(cmd)
+        except sqlite3.OperationalError as e:
+            traceback.print_exc()
+            if "already exists" in str(e):
+                pass
+            else:
+                input("pause")
+        except sqlite3.IntegrityError as e:
+            pass
+    conn.commit()
+updateDb()    

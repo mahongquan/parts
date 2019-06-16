@@ -15,9 +15,13 @@ class DlgStat extends Component {
     baoxiang: '',
     data : []
   };
-  close = () => {
-    this.setState({ showModal: false });
-  };
+  componentWillReceiveProps(nextProps) {
+    //console.log(nextProps)
+    if (!this.props.showModal && nextProps.showModal) {
+      this.open();
+    } else if (this.props.showModal && !nextProps.showModal) {
+    }
+  }
   open = () => {
     this.setState({ showModal: true });
     this.loaddata('%');
@@ -25,7 +29,7 @@ class DlgStat extends Component {
   loaddata = baoxiang => {
     var self = this;
     var data = { baoxiang: baoxiang };
-    Client.get('/rest/month12', data, function(result) {
+    Client.get('/rest/year12', data, function(result) {
       console.log(result);
       let data1=[]
       for(var i=0;i<result.lbls.length;i++){
@@ -50,8 +54,8 @@ class DlgStat extends Component {
   };
   render = () => {
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
-        <DialogTitle>月统计</DialogTitle>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
+        <DialogTitle>年统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} >
             <MenuItem onClick={() => this.onClickBaoxiang('马红权')}>
