@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "es6",
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -24,8 +24,7 @@
     "src"
   ],
   "exclude": [
-      "src/data",
-        "node_modules",
-        "**/*.ts"
+    "node_modules",
+    "**/*.ts"
   ]  
 }

@@ -3,6 +3,7 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import Grid from '@material-ui/core/Grid';
 // import DialogActions from '@material-ui/core/DialogActions';
 // import Button from '@material-ui/core/Button';
 import Client from './Client';
@@ -77,11 +78,6 @@ class DlgDetail extends React.Component {
       return (
         <tr key={idx}>
           <td>
-            <u>
-              <b>{contact.id}</b>
-            </u>
-          </td>
-          <td>
             <u>{contact.bh}</u>
           </td>
           <td>
@@ -101,7 +97,6 @@ class DlgDetail extends React.Component {
     } else {
       return (
         <tr key={idx}>
-          <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>{contact.name}</td>
           <td>{contact.guige}</td>
@@ -115,16 +110,6 @@ class DlgDetail extends React.Component {
   };
 
   render = () => {
-    // console.log("render ImportStandard")
-    // let alert;
-    // if (this.state.showalert) {
-    //     alert=(<Alert bsStyle="info" onDismiss={this.handleDismiss}>
-    //       <p>
-    //         {this.state.info}
-    //       </p>
-    //     </Alert>
-    //   );
-    // }
     const contactRows = this.state.items.map(this.mapfunc);
     let contactRows2, quehuo;
     if (this.state.items2.length > 0) {
@@ -133,17 +118,16 @@ class DlgDetail extends React.Component {
       quehuo = (
         <div>
           <h2>缺货清单</h2>
-          <table responsive bordered condensed>
+          <table border="1">
             <thead>
               <tr>
-                <td>ID</td>
                 <td>编号</td>
                 <td>名称</td>
                 <td>规格</td>
                 <td>数量</td>
               </tr>
             </thead>
-            <tbody id="contact-list">{contactRows2}</tbody>
+            <tbody>{contactRows2}</tbody>
           </table>
         </div>
       );
@@ -152,70 +136,93 @@ class DlgDetail extends React.Component {
       <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>详细</DialogTitle>
         <DialogContent>
-          <table id="table_input" className="table-condensed">
-            <tbody>
-              <tr>
-                <td>ID:</td>
-                <td>{this.state.contact.id}</td>
-                <td>
-                  <label>用户单位:</label>
-                </td>
-                <td>{this.state.contact.yonghu}</td>
-              </tr>
-              <tr>
-                <td>客户地址:</td>
-                <td>{this.state.contact.addr}</td>
-                <td>通道配置:</td>
-                <td>{this.state.contact.channels} </td>
-              </tr>
-              <tr>
-                <td>
-                  <label>仪器型号:</label>
-                </td>
-                <td>{this.state.contact.yiqixinghao}</td>
-                <td>
-                  <label>仪器编号:</label>
-                </td>
-                <td>{this.state.contact.yiqibh}</td>
-              </tr>
-              <tr>
-                <td>
-                  <label>包箱:</label>
-                </td>
-                <td>{this.state.contact.baoxiang}</td>
-                <td>审核:</td>
-                <td>{this.state.contact.shenhe}</td>
-              </tr>
-              <tr>
-                <td>
-                  <label>入库时间:</label>
-                </td>
-                <td>{this.state.contact.yujifahuo_date}</td>
-                <td>调试时间:</td>
-                <td>{this.state.contact.tiaoshi_date}</td>
-              </tr>
-              <tr>
-                <td>
-                  <label>合同编号:</label>
-                </td>
-                <td>{this.state.contact.hetongbh}</td>
-                <td>方法:</td>
-                <td>{this.state.contact.method}</td>
-              </tr>
-            </tbody>
-          </table>
-          <h2>备件清单</h2>
-          <table responsive="true" bordered="true" condensed="true">
+          <Grid container spacing={1}>
+            <Grid item xs={3}>
+                  ID:
+            </Grid>
+            <Grid item xs={3}>
+                  {this.state.contact.id}
+            </Grid>
+            <Grid item xs={3}>
+                  用户单位:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.yonghu}
+            </Grid>
+            <Grid item xs={3}>
+                  客户地址:
+            </Grid>
+            <Grid item xs={3}>
+                  {this.state.contact.addr}
+            </Grid>
+            <Grid item xs={3}>
+                  通道配置:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.channels}
+            </Grid>
+            <Grid item xs={3}>
+                  仪器型号:
+            </Grid>
+            <Grid item xs={3}>
+                  {this.state.contact.yiqixinghao}
+            </Grid>
+            <Grid item xs={3}>
+                  仪器编号:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.yiqibh}
+            </Grid>
+            <Grid item xs={3}>
+                  包箱:
+            </Grid>
+            <Grid item xs={3}>
+                  {this.state.contact.baoxiang}
+            </Grid>
+            <Grid item xs={3}>
+                  审核:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.shenhe}
+            </Grid>
+             <Grid item xs={3}>
+                  入库时间:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.yujifahuo_date}
+            </Grid>
+            <Grid item xs={3}>
+                  调试时间:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.tiaoshi_date}
+            </Grid>
+            <Grid item xs={3}>
+                  合同编号:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.hetongbh}
+            </Grid>
+            <Grid item xs={3}>
+                 方法:
+            </Grid>
+            <Grid item xs={3}>
+                 {this.state.contact.method}
+            </Grid>
+        </Grid>
+        <h2>备件清单</h2>
+          <table border="1">
             <thead>
               <tr>
-                <td>ID</td>
                 <td>编号</td>
                 <td>名称</td>
                 <td>规格</td>
                 <td>数量</td>
               </tr>
             </thead>
-            <tbody id="contact-list">{contactRows}</tbody>
+            <tbody>
+            {contactRows}
+            </tbody>
           </table>
           <p>
             共{this.state.totalid}项{this.state.totalct}个。

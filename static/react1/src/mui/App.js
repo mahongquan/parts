@@ -10,8 +10,8 @@ import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgFolder2 from './DlgFolder2';
 import { withStyles } from '@material-ui/core/styles';
-import DlgStat from './DlgStat';
-import DlgStat2 from './DlgStat2';
+import DlgStat from './DlgMonthStat';
+import DlgStat2 from './DlgYearStat';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck';
@@ -88,7 +88,7 @@ class App extends Component {
     target: null,
     showcontext: false,
     contacts: [],
-    limit: 10,
+    limit: 15,
     user: 'AnonymousUser',
     start: 0,
     total: 0,
@@ -156,6 +156,7 @@ class App extends Component {
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total: contacts.total,
+          connect_error:false,
         });
       },
       (error)=>{

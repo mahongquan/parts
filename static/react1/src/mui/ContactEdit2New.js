@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-// import TextField from '@material-ui/core/TextField';
-import Autosuggest from 'react-autosuggest';
+// import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
 import myglobal from '../myglobal';
-// var _ = require('lodash');
-var moment = require('moment');
-// eslint-disable-next-line
-var locale = require('moment/locale/zh-cn');
-var DateTime = require('react-datetime');
+import MomentUtils from '@date-io/moment';
+import SelectYQXH from './SelectYQXH'
+import SelectChannels from './SelectChannels'
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import "moment/locale/zh-cn";
+
+import moment from "moment";
 const styles = {
   appBar: {
     position: 'relative',
@@ -30,36 +32,6 @@ const styles = {
     flex: 1,
   },
 };
-// class MyStatefulEditor extends Component {
-//   static propTypes = {
-//     onChange: PropTypes.func
-//   };
-
-//   state = {
-//     value: RichTextEditor.createEmptyValue()
-//   }
-
-//   onChange = (value) => {
-//     this.setState({value});
-//     if (this.props.onChange) {
-//       // Send the changes up to the parent component as an HTML string.
-//       // This is here to demonstrate using `.toString()` but in a real app it
-//       // would be better to avoid generating a string on each change.
-//       this.props.onChange(
-//         value.toString('html')
-//       );
-//     }
-//   };
-
-//   render () {
-//     return (
-//       <RichTextEditor
-//         value={this.state.value}
-//         onChange={this.onChange}
-//       />
-//     );
-//   }
-// }
 
 class ContactEdit2New extends Component {
   state = {
@@ -74,22 +46,6 @@ class ContactEdit2New extends Component {
     date_open: false,
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
-  };
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-  //     // console.log(this.props);
-  //     // console.log(nextProps);
-  //     // console.log("props not eq");
-  //     return true;
-  //   }
-  //   if (!_.isEqual(this.state, nextState)) {
-  //     // console.log("state not eq");
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  componentDidMount = () => {
-    // console.log("ContactEdit2New mounted");
   };
 
   close = () => {
@@ -144,36 +100,7 @@ class ContactEdit2New extends Component {
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
   };
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   this.setState({bg:{}});
-  //   this.parent=this.props.parent;
-  //   if (this.index==null){
-  //     this.old={
-  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
-  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
-  //       addr:"",
-  //       channels:"",
-  //       baoxiang:"",
-  //       hetongbh:"",
-  //       shenhe:"",
-  //       yonghu:"",
-  //       yiqibh:"",
-  //       yiqixinghao:""
-  //     };
-  //   }
-  //   else{
-  //     this.old=this.parent.state.contacts[this.index];
-  //     this.setState({hiddenPacks:false});
-  //   }
-  //   this.setState({contact:this.old});
-  // }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
+
   handleCopy = data => {
     console.log('copy');
     this.index = null;
@@ -276,7 +203,7 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  channels_change = (event, { newValue }) => {
+  channels_change = ( newValue ) => {
     this.change1(newValue);
   };
   channels_change_fetch = () => {};
@@ -297,7 +224,8 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  yiqixinghao_change = (event, { newValue }) => {
+  yiqixinghao_change = (newValue) => {
+    console.log(newValue);
     this.change2(newValue);
   };
   yiqixinghao_select = (event, data) => {
@@ -378,7 +306,8 @@ class ContactEdit2New extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          <table id="table_input" className="table-condensed">
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <table style={{minWidth:"700px"}}>
             <tbody>
               <tr>
                 <td>ID:</td>
@@ -419,30 +348,10 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>通道配置:</td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'channels-autocomplete',
-                      style: { backgroundColor: this.state.bg.channels },
-                      value: this.state.contact.channels,
-                      onChange: this.channels_change,
-                    }}
-                    suggestions={[
-                      '1O(低氧)',
-                      '1O(高氧)',
-                      '1O(低氧)+2N',
-                      '1C(低碳)+2S',
-                      '1C(高碳)+2S',
-                      '2C+1S(低硫)',
-                      '2C+1S(高硫)',
-                      '2C+2S',
-                      '2O+2N',
-                      '2O',
-                    ]}
-                    getSuggestionValue={item => item}
-                    onSuggestionSelected={this.channels_select}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={item => <span>{item}</span>}
+                  <SelectChannels
+                      style={{ backgroundColor: this.state.bg.channels }}
+                      value={this.state.contact.channels}
+                      onChange={this.channels_change}
                   />
                 </td>
               </tr>
@@ -451,31 +360,10 @@ class ContactEdit2New extends Component {
                   <label>仪器型号:</label>
                 </td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'yiqixinghao-autocomplete',
-                      style: { backgroundColor: this.state.bg.yiqixinghao },
-                      value: this.state.contact.yiqixinghao,
-                      onChange: this.yiqixinghao_change,
-                    }}
-                    suggestions={[
-                      'CS-1011C',
-                      'CS-2800',
-                      'CS-3000',
-                      'CS-3000G',
-                      'HD-5',
-                      'N-3000',
-                      'O-3000',
-                      'OH-3000',
-                      'ON-3000',
-                      'ON-4000',
-                      'ONH-3000',
-                    ]}
-                    getSuggestionValue={item => item}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    onSuggestionSelected={this.yiqixinghao_select}
-                    renderSuggestion={item => <span>{item}</span>}
+                  <SelectYQXH 
+                    value={this.state.contact.yiqixinghao}
+                    onChange={this.yiqixinghao_change}
+                    style={{ backgroundColor: this.state.bg.yiqixinghao }}
                   />
                 </td>
                 <td>
@@ -523,22 +411,19 @@ class ContactEdit2New extends Component {
                   <label>入库时间:</label>
                 </td>
                 <td>
-                  <DateTime
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.yujifahuo_date },
-                    }}
+                  <DatePicker
+                    format="YYYY-MM-DD"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
+                    style={{ backgroundColor: this.state.bg.yujifahuo_date }}
                   />
                 </td>
                 <td>调试时间:</td>
                 <td>
-                  <DateTime
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.tiaoshi_date },
-                    }}
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    style={{ backgroundColor: this.state.bg.tiaoshi_date }}
+
                     value={this.state.contact.tiaoshi_date}
                     onChange={this.tiaoshi_date_change}
                   />
@@ -662,9 +547,14 @@ class ContactEdit2New extends Component {
               contact_id={this.state.contact.id}
             />
           </div>
+          </MuiPickersUtilsProvider>
         </DialogContent>
       </Dialog>
     );
   };
 }
 export default withStyles(styles)(ContactEdit2New);
+/*                    inputProps={{
+                      style: { backgroundColor: this.state.bg.tiaoshi_date },
+                    }}
+*/

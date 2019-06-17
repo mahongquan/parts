@@ -9,7 +9,8 @@ import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
 import Button from '@material-ui/core/Button';
 import DropdownButton from './DropdownButton';
-import Autosuggest from 'react-autosuggest';
+// import Autosuggest from 'react-autosuggest';
+import SelectItem from './SelectItem'
 import MenuItem from '@material-ui/core/MenuItem';
 import myglobal from '../myglobal';
 class PackItems extends React.Component {
@@ -31,11 +32,10 @@ class PackItems extends React.Component {
       myglobal.app.show_webview(error.response.url);
     });
   };
-  auto_select = (event, data) => {
+  auto_select = (data) => {
     console.log('selected');
     console.log(data);
-    this.addrow(data.suggestion.id);
-    //this.setState({auto_value:value, auto_items: [ item ] })
+    this.addrow(data.id);
   };
   auto_change = data => {
     var value = data.value;
@@ -46,25 +46,6 @@ class PackItems extends React.Component {
       });
     }
   };
-  /*auto_select=(value, item) => {
-      console.log("selected");
-      console.log(item);
-      this.addrow(item.id);
-      //this.setState({auto_value:value, auto_items: [ item ] })
-  }
-  auto_change=(event, value)=>{
-    console.log("auto_change");
-    if (value.length>1)
-    {
-      this.setState({ auto_value:value, auto_loading: true });
-      Client.get("/rest/Item",{query:value} ,(items) => {
-          this.setState({ auto_items: items.data, auto_loading: false })
-      });
-    }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
-  };*/
   new_packitem = id => {
     var url = '/rest/BothPackItem';
     var data = { name: this.state.newPackName, pack: this.props.pack_id };
@@ -146,26 +127,7 @@ class PackItems extends React.Component {
         </Table>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <label>输入备件</label>
-          <Autosuggest
-            inputProps={{
-              id: 'states-autocomplete',
-              value: this.state.auto_value,
-              onChange: this.onChange,
-            }}
-            onSuggestionSelected={this.auto_select}
-            onSuggestionsFetchRequested={this.auto_change}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={item => item.name}
-            ref="autocomplete"
-            suggestions={this.state.auto_items}
-            renderSuggestion={item => (
-              <span>
-                {item.id + ': ' + item.bh + ' '}
-                <b>{item.name}</b>
-                {' ' + item.guige}
-              </span>
-            )}
-          />
+          <SelectItem onChange={this.auto_select} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <label>新备件名称：</label>
@@ -184,6 +146,7 @@ class PackItems extends React.Component {
             新备件
           </Button>
         </div>
+        <div style={{minHeight:"200px"}}></div>
         <PackItemEditNew ref="dlg" parent={this} />
       </div>
     );
