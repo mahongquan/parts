@@ -26,6 +26,6 @@
   "exclude": [
       "src/data",
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.ts"
   ]  
 }
