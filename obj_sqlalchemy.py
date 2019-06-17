@@ -171,6 +171,16 @@ class PartsContact(Base):
     channels = Column(Text(30))
     tiaoshi_date = Column(Date)
     method = Column(Text(200))
+    def json(self):
+        fields=self._sa_class_manager.items()
+        dic1={}
+        for f in fields:
+            # print(f)
+            # if f.name in ["image"]:
+            #     pass
+            # else:
+            exec("dic1['%s']=self.%s" %(f[0],f[0]))
+        return dic1
     def tablerow(self):
         return "%s\t%s\t%s\t%s\t%s\t%s\n" % (self.yonghu,self.addr,self.yiqixinghao,self.yiqibh,self.hetongbh,self.yujifahuo_date)
     def huizong(self):

@@ -48,33 +48,33 @@ function get(url,data,cb,err_callback) {
   return getRaw(url,cb,err_callback)
 }
 function delete1(url,data,cb) {
-  var method="DELETE";
-  return myFetch(method,url,JSON.stringify(data),cb)
+  var body= queryString.stringify( data )
+  return myFetch("DELETE",url,body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
+
 }
 function post(url,data,cb) {
-  var method="POST"
-  return myFetch(method,url,JSON.stringify(data),cb)
+  return postForm(url,data,cb)
+  // var method="POST"
+  // return myFetch(method,url,JSON.stringify(data),cb)
 }
 function postOrPut(url,data,cb) {
   var method="POST"
   if (data.id){
     method="PUT"
+    return putForm(url,data,cb)
   }
-  return myFetch(method,url,JSON.stringify(data),cb)
+  else{
+    return postForm(url,data,cb)
+  }
+  // return myFetch(method,url,JSON.stringify(data),cb)
+}
+function putForm(url,data,cb) {
+ var body= queryString.stringify( data )
+  return myFetch("PUT",url,body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
 }
 function postForm(url,data,cb) {
-  var method="POST"
-  return fetch(url,
-  {
-      method: method,
-      credentials: 'include',
-      body: data
-  }).then(checkStatus)
-    .then(parseJSON)
-    .then(cb).catch((error) => {
-      //console.log(error)
-      alert(error+"\n请刷新网页/登录");
-    });
+  var body= queryString.stringify( data )
+  return myFetch("POST",url,body,cb, {'Content-Type':'application/x-www-form-urlencoded'})
 }
 function contacts(data, cb,err_callback) {
   //console.log(data);

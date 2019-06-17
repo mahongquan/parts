@@ -296,6 +296,11 @@ class App extends Component {
   closeFilter=()=>{
     this.setState({showcontext:false});
   }
+  deleteContact=(contactid)=>{
+    Client.delete1("rest/Contact",{id:contactid},(res)=>{
+      console.log(res);
+    });
+  }
   render() {
     //console.log("render=========================");
 
@@ -316,6 +321,7 @@ class App extends Component {
             <MenuItem onSelect={()=>this.opendlgwait(contact.id)}>全部文件</MenuItem>
             <MenuItem onSelect={()=>this.opendlgcheck(contact.id,contact.yiqibh)}>核对备料计划</MenuItem>
             <MenuItem onSelect={()=>this.opendlgfolder(contact.id)}>资料文件夹</MenuItem>
+            <MenuItem onSelect={()=>this.deleteContact(contact.id)}>delete</MenuItem>
             
           </DropdownButton>
         </td>

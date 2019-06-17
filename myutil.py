@@ -48,4 +48,3 @@ class MyEncoder(json.JSONEncoder):
             return obj.json() 
         if isinstance(obj,mysite.parts.models.Item):
             return obj.json() 
-        return json.JSONEncoder.default(self, obj)

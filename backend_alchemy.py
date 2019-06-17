@@ -8,18 +8,16 @@ logging.basicConfig()
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 import codecs
-import xlrd
+# import xlrd
 import os
 from sqlalchemy import create_engine,desc,or_,and_
 from sqlalchemy.orm import sessionmaker
 import getpath
 print(getpath.getpath())
 yqzl=getpath.getpath()+r"media\仪器资料"
-filedb=getpath.getpath()+r"data.sqlite"
+filedb=getpath.getpath()+r"/data.sqlite"
 engine = create_engine('sqlite:///'+filedb, echo=True)
 Session = sessionmaker(bind=engine)
-session = Session()
-print(yqzl)
 token=None
 islogin=False
 def readStandardFile(fn):
@@ -142,8 +140,7 @@ def genDetail(contactid):
     f.write(t.render(dic))
     f.close()     
 def getContacts(search,baoxiang):
-    start=0
-    limit=30
+    session = Session()
     if search!='':
         search="%"+search+"%"
         if baoxiang!="":
@@ -222,6 +219,7 @@ def addPack(c,pid):
     session.add(up)
     session.commit()
 def newContact():
+    session = Session()
     c=PartsContact()
     c.yujifahuo_date=datetime.datetime.now().date()
     c.tiaoshi_date=c.yujifahuo_date
@@ -349,8 +347,8 @@ if __name__=="__main__":
     #print(cs.count())
     cs=getPacks("%17%")
     print(cs.count())
-    # for c in cs:
-    #     print(c,c.id)
+    for c in cs:
+        print(c,c.id)
     # usepacks=getContactPack(9)
     # print usepacks
     # usepack1=usepacks[0]
