@@ -1,1 +1,1 @@
-django python-docx numpy openpyxl xlrd pillow wsgiserver
+django python-docx numpy openpyxl xlrd pillow waitress
