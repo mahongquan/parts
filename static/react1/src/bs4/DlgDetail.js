@@ -202,7 +202,7 @@ class DlgDetail extends React.Component {
             </tbody>
           </table>
           <h2>备件清单</h2>
-          <Table responsive bordered condensed>
+          <Table responsive bordered condensed="true">
             <thead>
               <tr>
                 <th>ID</th>

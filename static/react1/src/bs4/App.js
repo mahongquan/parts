@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DlgTodos from './DlgTodos';
+// import DlgTodos from './DlgTodos';
 import {
   Navbar,
   Nav,
@@ -16,8 +16,8 @@ import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgFolder2 from './DlgFolder2';
-import DlgStat from './DlgStat';
-import DlgStat2 from './DlgStat2';
+import DlgStat from './DlgMonthStat';
+import DlgStat2 from './DlgYearStat';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck';
@@ -35,7 +35,6 @@ export default class App extends Component {
     this.dlgfolder = React.createRef();
     this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
-    this.dlgstat = React.createRef();
     this.dlgpacks = React.createRef();
     this.dlgimport = React.createRef();
     this.dlglogin = React.createRef();
@@ -67,6 +66,7 @@ export default class App extends Component {
       showDlgEdit: false,
       showDlgDetail: false,
       showDlgTodos: false,
+      showDlgStat:false,
       showDlgStat2: false,
       showDlgFolder2: false,
     };
@@ -284,7 +284,8 @@ export default class App extends Component {
     this.dlgcopypack.current.open();
   };
   openDlgStat = () => {
-    this.dlgstat.current.open();
+    // this.dlgstat.current.open();
+    this.setState({showDlgStat:true});
   };
   openDlgLogin = () => {
     // console.log("openDlgLogin");
@@ -427,7 +428,7 @@ export default class App extends Component {
         <DlgItems ref={this.dlgitems} />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
-        <DlgStat ref={this.dlgstat} />
+        
         <DlgImport
           showModal={this.state.showDlgImport}
           handleClose={() => {
@@ -448,16 +449,14 @@ export default class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
+        <DlgStat showModal={this.state.showDlgStat}
+          handleClose={() => {
+            this.setState({ showDlgStat: false });
+          }} />
         <DlgStat2
           showModal={this.state.showDlgStat2}
           handleClose={() => {
             this.setState({ showDlgStat2: false });
-          }}
-        />
-        <DlgTodos
-          showModal={this.state.showDlgTodos}
-          close={() => {
-            this.setState({ showDlgTodos: false });
           }}
         />
         <DlgFolder2
@@ -475,7 +474,7 @@ export default class App extends Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Navbar collapseOnSelect expand="lg">
+        <Navbar collapseOnSelect expand="lg" className="navbar-dark bg-primary">
           <Navbar.Brand>
             <span>装箱单</span>
           </Navbar.Brand>

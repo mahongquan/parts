@@ -205,7 +205,7 @@ class DlgItems extends Component {
           >
             搜索
           </Button>
-          <Table responsive bordered condensed>
+          <Table responsive bordered condensed="true">
             <thead>
               <tr>
                 <th>ID</th>
