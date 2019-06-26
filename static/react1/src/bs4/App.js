@@ -316,14 +316,14 @@ export default class App extends Component {
         <td>{contact.hetongbh}</td>
         <td>
           <Button
-            variant="secondary"
+            variant="light"
             style={{ display: 'inline' }}
             onClick={() => this.handleEdit(idx)}
           >
             {contact.yiqibh}
           </Button>
           <DropdownButton
-            variant="secondary"
+            variant="light"
             style={{ display: 'inline' }}
             title=""
             id="id_dropdown3"
@@ -381,7 +381,7 @@ export default class App extends Component {
     }
     if (hasprev) {
       prev = (
-        <Button variant="secondary" onClick={this.handlePrev}>
+        <Button variant="light" onClick={this.handlePrev}>
           前一页
         </Button>
       );
@@ -390,7 +390,7 @@ export default class App extends Component {
     }
     if (hasnext) {
       next = (
-        <Button variant="secondary" onClick={this.handleNext}>
+        <Button variant="light" onClick={this.handleNext}>
           后一页
         </Button>
       );
@@ -474,7 +474,7 @@ export default class App extends Component {
           index={this.state.currentIndex}
           title="编辑"
         />
-        <Navbar collapseOnSelect expand="lg" className="navbar-dark bg-primary">
+        <Navbar collapseOnSelect expand="lg" className="navbar-dark bg-dark">
           <Navbar.Brand>
             <span>装箱单</span>
           </Navbar.Brand>
@@ -514,7 +514,7 @@ export default class App extends Component {
         </Navbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropdownButton
-            variant="secondary"
+            variant="light"
             title={this.state.user}
             id="id_dropdown1"
           >
@@ -590,7 +590,7 @@ export default class App extends Component {
               <th>
                 包箱
                 <DropdownButton
-                  variant="secondary"
+                  variant="light"
                   style={{ display: 'inline' }}
                   title=""
                   id="id_dropdown2"
