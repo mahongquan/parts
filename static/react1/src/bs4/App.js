@@ -353,7 +353,7 @@ export default class App extends Component {
             <Dropdown.Item onSelect={() => this.opendlgfolder(contact.id)}>
               资料文件夹
             </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.opendlgfolder2(contact.id)}>
+            <Dropdown.Item style={{display:"none"}} onSelect={() => this.opendlgfolder2(contact.id)}>
               资料文件夹2
             </Dropdown.Item>
           </DropdownButton>
