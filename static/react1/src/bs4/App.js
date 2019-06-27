@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import DlgTodos from './DlgTodos';
 import {
+  Badge,
   Navbar,
   Nav,
   DropdownButton,
@@ -40,22 +41,15 @@ export default class App extends Component {
     this.dlgimport = React.createRef();
     this.dlglogin = React.createRef();
     this.dlgimportHT = React.createRef();
-    this.mystate = {
-      start: 0,
-      limit: 20,
-      total: 0,
-      baoxiang: '',
-      logined: false,
-      search: '',
-    };
     this.state = {
+      logined:false,
       connect_error: false,
       search2: '',
       search2tip: '',
       target: null,
       showcontext: false,
       contacts: [],
-      limit: 10,
+      limit: 20,
       user: 'AnonymousUser',
       start: 0,
       total: 0,
@@ -88,23 +82,20 @@ export default class App extends Component {
   load_data = () => {
     Client.contacts(
       {
-        start: this.mystate.start,
-        limit: this.mystate.limit,
-        search: this.mystate.search,
-        baoxiang: this.mystate.baoxiang,
+        start: this.state.start,
+        limit: this.state.limit,
+        search: this.state.search,
+        baoxiang: this.state.baoxiang,
       },
       contacts => {
         var user = contacts.user;
         if (user === undefined) {
           user = 'AnonymousUser';
         }
-        this.mystate.total = contacts.total; //because async ,mystate set must before state;
         this.setState({
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-          limit: this.mystate.limit,
           user: user,
           total: contacts.total,
-          start: this.mystate.start,
           connect_error: false,
         });
       },
@@ -147,9 +138,7 @@ export default class App extends Component {
     this.load_data();
   };
   handleLogout = () => {
-    console.log('logout');
     Client.logout(data => {
-      console.log('logout' + data);
       this.setState({
         logined: false,
         user: 'AnonymousUser',
@@ -166,29 +155,28 @@ export default class App extends Component {
     this.search();
   };
   handleSearchChange = e => {
-    this.mystate.search = e.target.value;
-    this.setState({ search: this.mystate.search });
+    this.setState({ search: e.target.value });
   };
   handleSearch2Change = e => {
     this.setState({ search2: e.target.value });
   };
   handlePrev = e => {
-    this.mystate.start = this.mystate.start - this.mystate.limit;
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start - this.state.limit;
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.load_data();
   };
   search = e => {
-    this.mystate.start = 0;
+    this.state.start = 0;
     this.load_data();
   };
   jump = () => {
-    this.mystate.start = parseInt(this.state.start_input, 10) - 1;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = parseInt(this.state.start_input, 10) - 1;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.load_data();
   };
@@ -202,18 +190,17 @@ export default class App extends Component {
     this.setState({ showDlgDetail: true, contactid: contactid });
   };
   handleNext = e => {
-    this.mystate.start = this.mystate.start + this.mystate.limit;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start + this.state.limit;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.load_data();
   };
   onSelectBaoxiang = e => {
-    this.mystate.start = 0;
-    this.mystate.baoxiang = e;
-    this.setState({ baoxiang: e });
+    this.state.start = 0;
+    this.state.baoxiang = e;
     this.load_data();
   };
   auto_change = (event, value) => {
@@ -372,7 +359,7 @@ export default class App extends Component {
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.mystate);
+    //console.log(this.state);
     //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
@@ -628,10 +615,11 @@ export default class App extends Component {
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
         </table>
+        <div style={{ display: 'flex', alignItems: 'center'}}>
         {prev}
-        <label id="page">
+        <Badge>
           {this.state.start + 1}../{this.state.total}
-        </label>
+        </Badge>
         {next}
         <input
           maxLength="6"
@@ -642,6 +630,7 @@ export default class App extends Component {
         <Button id="page_go" className="btn btn-info" onClick={this.jump}>
           跳转
         </Button>
+        </div>
         <div style={{ minHeight: '200px' }} />
       </div>
     );
