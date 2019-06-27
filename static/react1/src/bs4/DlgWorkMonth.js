@@ -180,6 +180,7 @@ class DlgItems extends Component {
           <div style={{ display: 'flex',width:"100%" }}>
             <div style={{ border: 'solid 1px' }}>
               未报工作量仪器
+              <hr style={{height:"1px",border:"none",borderTop:"1px solid #006600"}} />
               <table>
                 <thead>
                   <tr>
@@ -200,6 +201,7 @@ class DlgItems extends Component {
             </div>
             <div style={{ border: 'solid 1px' }}>
               本月({this.current_str})工作量
+              <hr style={{height:"1px",border:"none",borderTop:"1px solid #006600"}} />
               {right}
             </div>
           </div>
