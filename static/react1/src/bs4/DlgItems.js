@@ -124,7 +124,7 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+            <Button variant="light" onClick={() => this.handleEdit(idx)}>
               {contact.name}
             </Button>
           </td>
@@ -139,7 +139,7 @@ class DlgItems extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+            <Button variant="light" onClick={() => this.handleEdit(idx)}>
               {contact.name}
             </Button>
           </td>

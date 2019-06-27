@@ -180,11 +180,11 @@ class UsePacks2 extends React.Component {
         <td hidden={this.state.release}>{usepack.pack}</td>
         <td hidden={this.state.release}>{usepack.hetongbh}</td>
         <td>
-          <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+          <Button variant="light" onClick={() => this.handleEdit(idx)}>
             编辑
           </Button>
           <Button
-            variant="secondary"
+            variant="light"
             onClick={() => this.onDeleteClick(idx)}
             style={{ marginLeft: '10px' }}
           >
@@ -233,7 +233,7 @@ class UsePacks2 extends React.Component {
           />
           <Button
             style={{ margin: '10px 10px 10px 10px' }}
-            variant="secondary"
+            variant="light"
             onClick={this.bibei}
           >
             必备

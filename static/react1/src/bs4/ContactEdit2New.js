@@ -623,7 +623,7 @@ class ContactEdit2New extends Component {
               <tr>
                 <td>
                   <Button
-                    variant="secondary"
+                    variant="light"
                     onClick={() => {
                       this.setState({ editRich: !this.state.editRich });
                     }}
@@ -649,7 +649,7 @@ class ContactEdit2New extends Component {
             </Button>
             <Button
               className="btn btn-raised"
-              variant="secondary"
+              variant="light"
               style={{ margin: '20px 20px 20px 20px' }}
               id="bt_clearid"
               onClick={this.handleCopy}

@@ -26,6 +26,7 @@ import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
+import DlgWorkMonth from './DlgWorkMonth'
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -69,6 +70,7 @@ export default class App extends Component {
       showDlgStat:false,
       showDlgStat2: false,
       showDlgFolder2: false,
+      showDlgWork:false,
     };
   }
   handleClickFilter = event => {
@@ -459,6 +461,13 @@ export default class App extends Component {
             this.setState({ showDlgStat2: false });
           }}
         />
+        <DlgWorkMonth
+          baoxiang={this.state.baoxiang}
+          showModal={this.state.showDlgWork}
+          handleClose={() => {
+            this.setState({ showDlgWork: false });
+          }}
+        />
         <DlgFolder2
           showModal={this.state.showDlgFolder2}
           close={() => {
@@ -504,10 +513,10 @@ export default class App extends Component {
               <Nav.Link
                 href="#"
                 onClick={() => {
-                  this.setState({ showDlgTodos: true });
+                  this.setState({ showDlgWork: true });
                 }}
               >
-                待办
+                工作量
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
