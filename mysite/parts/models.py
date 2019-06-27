@@ -25,7 +25,7 @@ class Contact(models.Model,myutil.MyModel):
     addr = models.CharField(max_length=30,verbose_name="客户地址",null=True,blank=True)#用户单位
     channels = models.CharField(max_length=30,verbose_name="通道配置",null=True,blank=True)#用户单位
     yiqixinghao=models.CharField(max_length=30,verbose_name="仪器型号")#仪器型号
-    yiqibh=models.CharField(unique=True,max_length=30,verbose_name="仪器编号")#仪器编号
+    yiqibh=models.CharField(blank=False,unique=True,max_length=30,verbose_name="仪器编号")#仪器编号
     baoxiang =  models.CharField(max_length=30,verbose_name="包箱")#包箱
     shenhe =  models.CharField(max_length=30,verbose_name="审核")#审核
     yujifahuo_date = models.DateField(verbose_name="预计发货时间")#预计发货时间
