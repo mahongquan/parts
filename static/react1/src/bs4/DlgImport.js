@@ -2,17 +2,12 @@ import React from 'react';
 import { Alert, Modal } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
-var _ = require('lodash');
 class DlgImport extends React.Component {
   state = {
     error: '',
     packs: [],
     info: '',
   };
-
-  // close=()=>{
-  //   this.setState({ showModal: false });
-  // }
   upload = () => {
     const file = this.fileUpload.files[0];
     console.log(file);
@@ -31,19 +26,6 @@ class DlgImport extends React.Component {
       });
     });
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      console.log(this.props);
-      console.log(nextProps);
-      console.log('props not eq');
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      console.log('state not eq');
-      return true;
-    }
-    return false;
-  }
   componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow();
@@ -70,6 +52,7 @@ class DlgImport extends React.Component {
     });
   };
   handleDismiss = () => {
+    console.log("onClose");
     this.setState({ showalert: false });
   };
   inputChange = () => {
@@ -86,7 +69,7 @@ class DlgImport extends React.Component {
     let alert;
     if (this.state.showalert) {
       alert = (
-        <Alert bsStyle="info" onDismiss={this.handleDismiss}>
+        <Alert variant="info" onClose={this.handleDismiss} dismissible>
           <p>{this.state.info}</p>
         </Alert>
       );
