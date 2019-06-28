@@ -65,7 +65,7 @@ class DlgStat extends Component {
             </Dropdown.Item>
             <Dropdown.Item onSelect={() => this.onClickBaoxiang('%')}>*</Dropdown.Item>
           </DropdownButton>
-      <div style={{ width: '500px', height: 300 }}>
+      <div style={{ width: '700px', height: 300 }}>
         <ResponsiveContainer>
           <ComposedChart
             width={500}
@@ -79,7 +79,7 @@ class DlgStat extends Component {
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="count" barSize={20} fill="#413ea0" />
+            <Bar dataKey="count" barSize={90} fill="#413ea0" />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

@@ -113,7 +113,7 @@ class DlgDetail extends React.Component {
       quehuo = (
         <div>
           <h2>缺货清单</h2>
-          <Table responsive bordered condensed="true">
+          <Table responsive bordered condensed="true"  size="sm" >
             <thead>
               <tr>
                 <th>编号</th>
@@ -137,7 +137,7 @@ class DlgDetail extends React.Component {
           <Modal.Title>详细</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <table>
+          <Table size="sm">
             <tbody>
               <tr>
                 <td>ID:</td>
@@ -188,9 +188,9 @@ class DlgDetail extends React.Component {
                 <td>{this.state.contact.method}</td>
               </tr>
             </tbody>
-          </table>
+          </Table>
           <h2>备件清单</h2>
-          <Table responsive bordered condensed="true">
+          <Table size="sm" responsive bordered condensed="true">
             <thead>
               <tr>
                 <th>编号</th>

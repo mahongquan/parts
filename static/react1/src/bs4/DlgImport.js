@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Modal } from 'react-bootstrap';
+import {Toast, Alert, Modal } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
 class DlgImport extends React.Component {
@@ -7,6 +7,7 @@ class DlgImport extends React.Component {
     error: '',
     packs: [],
     info: '',
+    showA:true,
   };
   upload = () => {
     const file = this.fileUpload.files[0];
@@ -84,7 +85,16 @@ class DlgImport extends React.Component {
           <Modal.Title>导入标样</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {alert}
+          {
+            alert
+// <Toast  show={this.state.showA} onClose={()=>{this.setState({showA:false});}}>
+//   <Toast.Header>
+//     <strong className="mr-auto">Bootstrap</strong>
+//     <small>11 mins ago</small>
+//   </Toast.Header>
+//   <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+  // </Toast>
+}
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}

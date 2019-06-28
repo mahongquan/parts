@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import DlgTodos from './DlgTodos';
 import {
-  Badge,
+  Badge,Table,
   Navbar,
   Nav,
   DropdownButton,
@@ -569,7 +569,7 @@ export default class App extends Component {
             导入合同
           </Button>
         </div>
-        <table className="table-condensed table-bordered">
+        <Table condensed="true" striped bordered>
           <thead>
             <tr>
               <th>ID</th>
@@ -614,7 +614,7 @@ export default class App extends Component {
             </tr>
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
-        </table>
+        </Table>
         <div style={{ display: 'flex', alignItems: 'center'}}>
         {prev}
         <Badge>
