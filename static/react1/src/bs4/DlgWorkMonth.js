@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, DropdownButton, Dropdown,Button } from 'react-bootstrap';
+import { Table,Modal, DropdownButton, Dropdown,Button } from 'react-bootstrap';
 import Client from './Client';
 var moment = require('moment');
 class DlgItems extends Component {
@@ -107,8 +107,7 @@ class DlgItems extends Component {
       <tr key={idx}>
         <td>{contact.tiaoshi_date}</td>
         <td>
-          <Button className="btn btn-raised"
-              variant="light" onClick={() => this.handleEdit(idx)}>
+          <Button variant="primary" onClick={() => this.handleEdit(idx)}>
             {contact.yiqibh}
           </Button>
         </td>
@@ -121,8 +120,8 @@ class DlgItems extends Component {
       <tr key={idx}>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button className="btn btn-raised"
-              variant="light" onClick={() => this.handleEdit2(idx)}>
+          <Button 
+              variant="info" onClick={() => this.handleEdit2(idx)}>
             {contact.yiqibh}
           </Button>
         </td>
@@ -142,7 +141,7 @@ class DlgItems extends Component {
     const contactRows2 = this.state.items2.map(this.mapfunc2);
     let right = (
       <div>
-        <table>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <td>合同号</td>
@@ -153,11 +152,11 @@ class DlgItems extends Component {
             </tr>
           </thead>
           <tbody id="contact-list">{contactRows2}</tbody>
-        </table>
+        </Table>
       </div>
     );
     return (
-      <Modal show={this.props.showModal} onHide={this.props.handleClose} size="lg">
+      <Modal show={this.props.showModal} onHide={this.props.handleClose} dialogClassName="custom-modal">
           <Modal.Header>
               工作量
           </Modal.Header>
@@ -178,9 +177,9 @@ class DlgItems extends Component {
               </Dropdown.Item>
             </DropdownButton>
           <div style={{ display: 'flex',width:"100%" }}>
-            <div style={{ border: 'solid 1px' }}>
+            <div style={{ border: 'solid 1px'}}>
               未报工作量仪器
-              <table>
+              <Table striped bordered hover>
                 <thead>
                   <tr>
                     <td>日期</td>
@@ -189,16 +188,15 @@ class DlgItems extends Component {
                   </tr>
                 </thead>
                 <tbody id="contact-list">{contactRows}</tbody>
-              </table>
+              </Table>
               <Button
-                className="btn btn-raised"
-                variant="light"
+                variant="secondary"
                 onClick={this.jump}
               >
                 全部
               </Button>
             </div>
-            <div style={{ border: 'solid 1px' }}>
+            <div style={{ border: 'solid 1px'}}>
               本月({this.current_str})工作量
               {right}
             </div>

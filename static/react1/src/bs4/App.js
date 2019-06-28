@@ -305,7 +305,7 @@ export default class App extends Component {
         <td>{contact.hetongbh}</td>
         <td>
           <Button
-            variant="light"
+            variant="link"
             style={{ display: 'inline' }}
             onClick={() => this.handleEdit(idx)}
           >
@@ -558,7 +558,7 @@ export default class App extends Component {
           >
             新仪器
           </Button>
-          <Button className="btn btn-info" onClick={this.openDlgImport}>
+          <Button variant="success" onClick={this.openDlgImport}>
             导入标样
           </Button>
           <Button

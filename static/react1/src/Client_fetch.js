@@ -37,10 +37,10 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
 			  const error = new Error(`HTTP Error ${response.statusText}`);
 			  error.status = response.statusText;
 			  error.response = response;
-			  err_callback(error);
+			  if(err_callback)err_callback(error);
 		  }
     }).catch((e)=>{
-    	err_callback(e);
+    	if(err_callback)err_callback(e);
     })
 }
 function getRaw(url, cb, err_callback) {

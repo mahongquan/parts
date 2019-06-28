@@ -180,11 +180,11 @@ class UsePacks2 extends React.Component {
         <td hidden={this.state.release}>{usepack.pack}</td>
         <td hidden={this.state.release}>{usepack.hetongbh}</td>
         <td>
-          <Button variant="light" onClick={() => this.handleEdit(idx)}>
+          <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
             编辑
           </Button>
           <Button
-            variant="light"
+            variant="danger"
             onClick={() => this.onDeleteClick(idx)}
             style={{ marginLeft: '10px' }}
           >
@@ -223,6 +223,7 @@ class UsePacks2 extends React.Component {
               id: 'states-autocomplete',
               value: this.state.auto_value,
               onChange: this.onChange,
+              style:{ border: "#8888ff solid 2px"}
             }}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
@@ -233,7 +234,7 @@ class UsePacks2 extends React.Component {
           />
           <Button
             style={{ margin: '10px 10px 10px 10px' }}
-            variant="light"
+            variant="info"
             onClick={this.bibei}
           >
             必备
@@ -253,7 +254,7 @@ class UsePacks2 extends React.Component {
             value={this.state.newPackName}
             onChange={this.newpackChange}
           />
-          <Button variant="primary" id="id_new_usepack" onClick={this.new_pack}>
+          <Button variant="secondary" id="id_new_usepack" onClick={this.new_pack}>
             新包
           </Button>
         </div>
