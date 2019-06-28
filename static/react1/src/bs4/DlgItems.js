@@ -4,20 +4,13 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import ItemEdit from './ItemEdit';
 import update from 'immutability-helper';
-var _ = require('lodash');
 class DlgItems extends Component {
-  mystate = {
-    start: 0,
-    limit: 5,
-    baoxiang: '',
-    logined: false,
-    search: '',
-  };
   state = {
     items: [],
     user: 'AnonymousUser',
     start: 0,
     total: 0,
+    limit:10,
     search: '',
     start_input: 1,
     showModal: false,
@@ -30,16 +23,6 @@ class DlgItems extends Component {
     auto_items: [],
     auto_loading: false,
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   close = () => {
     console.log('close');
     this.setState({ showModal: false });
@@ -52,9 +35,9 @@ class DlgItems extends Component {
     Client.get(
       '/rest/Item',
       {
-        start: this.mystate.start,
-        limit: this.mystate.limit,
-        query: this.mystate.search,
+        start: this.state.start,
+        limit: this.state.limit,
+        query: this.state.search,
       },
       contacts2 => {
         var user = contacts2.user;
@@ -65,18 +48,16 @@ class DlgItems extends Component {
           items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total: contacts2.total,
-          start: this.mystate.start,
+          start: this.state.start,
         });
-        this.mystate.total = contacts2.total;
       }
     );
   };
   handlePrev = e => {
-    this.mystate.start = this.mystate.start - this.mystate.limit;
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start - this.state.limit;
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
-    //this.setState({start:start});
     this.loaddata();
   };
   handlePackItemChange = (idx, contact) => {
@@ -86,20 +67,20 @@ class DlgItems extends Component {
     this.setState({ items: contacts2 });
   };
   handleNext = e => {
-    this.mystate.start = this.mystate.start + this.mystate.limit;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start + this.state.limit;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.loaddata();
   };
   jump = () => {
-    this.mystate.start = parseInt(this.state.start_input, 10) - 1;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = parseInt(this.state.start_input, 10) - 1;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.loaddata();
   };
@@ -107,11 +88,10 @@ class DlgItems extends Component {
     this.setState({ start_input: e.target.value });
   };
   handleSearchChange = e => {
-    this.mystate.search = e.target.value;
-    this.setState({ search: this.mystate.search });
+    this.setState({ search: e.target.value });
   };
   search = e => {
-    this.mystate.start = 0;
+    this.state.start = 0;
     this.loaddata();
   };
   handleEdit = idx => {
@@ -162,13 +142,13 @@ class DlgItems extends Component {
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.mystate);
+    //console.log(this.state);
     //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
     }
-    //console.log(this.state.start+this.mystate.limit>=this.state.total);
-    if (this.state.start + this.mystate.limit >= this.state.total) {
+    //console.log(this.state.start+this.state.limit>=this.state.total);
+    if (this.state.start + this.state.limit >= this.state.total) {
       hasnext = false;
     }
     if (hasprev) {
