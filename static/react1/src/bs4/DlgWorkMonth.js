@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, DropdownButton, Dropdown,Button } from 'react-bootstrap';
+import {Table, Modal, DropdownButton, Dropdown,Button } from 'react-bootstrap';
 import Client from './Client';
 var moment = require('moment');
 class DlgItems extends Component {
@@ -142,7 +142,7 @@ class DlgItems extends Component {
     const contactRows2 = this.state.items2.map(this.mapfunc2);
     let right = (
       <div>
-        <table>
+        <Table striped>
           <thead>
             <tr>
               <td>合同号</td>
@@ -153,7 +153,7 @@ class DlgItems extends Component {
             </tr>
           </thead>
           <tbody id="contact-list">{contactRows2}</tbody>
-        </table>
+        </Table>
       </div>
     );
     return (
@@ -180,8 +180,7 @@ class DlgItems extends Component {
           <div style={{ display: 'flex',width:"100%" }}>
             <div style={{ border: 'solid 1px' }}>
               未报工作量仪器
-              <hr style={{height:"1px",border:"none",borderTop:"1px solid #006600"}} />
-              <table>
+             <Table striped>
                 <thead>
                   <tr>
                     <td>日期</td>
@@ -190,7 +189,7 @@ class DlgItems extends Component {
                   </tr>
                 </thead>
                 <tbody id="contact-list">{contactRows}</tbody>
-              </table>
+              </Table>
               <Button
                 className="btn btn-raised"
                 variant="light"
@@ -201,7 +200,6 @@ class DlgItems extends Component {
             </div>
             <div style={{ border: 'solid 1px' }}>
               本月({this.current_str})工作量
-              <hr style={{height:"1px",border:"none",borderTop:"1px solid #006600"}} />
               {right}
             </div>
           </div>
