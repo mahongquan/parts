@@ -6,6 +6,10 @@ import update from 'immutability-helper';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
 class PackItems extends React.Component {
+  constructor(){
+    super();
+    this.auto_ref=React.createRef();
+  }
   state = {
     items: [],
     showRemoveIcon: false,
@@ -16,6 +20,7 @@ class PackItems extends React.Component {
     release: true,
   };
   componentDidMount = () => {
+    // this.auto_ref.current.input.focus();
     Client.PackItems(this.props.pack_id, items => {
       this.setState({
         items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -106,12 +111,10 @@ class PackItems extends React.Component {
     const { items } = this.state;
     const itemRows = items.map((item, idx) => (
       <tr key={idx}>
-        <td>{item.id}</td>
         <td>{item.itemid}</td>
         <td>{item.name}</td>
         <td>{item.guige}</td>
-        <td>{item.ct}</td>
-        <td>{item.danwei}</td>
+        <td>{item.ct}{item.danwei}</td>
         <td>{item.bh}</td>
         <td hidden={this.state.release}>{item.pack}</td>
         <td>
@@ -123,12 +126,11 @@ class PackItems extends React.Component {
           />
         </td>
         <td>
-          <Button variant="secondary" onClick={() => this.handleEdit(idx)}>
+          <Button size="sm" variant="light" onClick={() => this.handleEdit(idx)}>
             编辑
           </Button>
           <Button
-            variant="secondary"
-            style={{ marginLeft: '10px' }}
+            variant="warning" size="sm"
             onClick={() => this.onDeleteClick(idx)}
           >
             删除
@@ -138,15 +140,13 @@ class PackItems extends React.Component {
     ));
     return (
       <div>
-        <Table responsive bordered condensed>
+        <Table responsive bordered condensed="true">
           <thead>
             <tr>
-              <td>id</td>
               <td>备件id</td>
               <td>名称</td>
               <td>规格</td>
               <td>数量</td>
-              <td>单位</td>
               <td>编号</td>
               <td hidden={this.state.release}>pack</td>
               <td>缺货</td>
@@ -156,18 +156,20 @@ class PackItems extends React.Component {
           <tbody>{itemRows}</tbody>
         </Table>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <label>输入备件</label>
+          <label>输入已有备件</label>
           <Autosuggest
             inputProps={{
               id: 'states-autocomplete',
               value: this.state.auto_value,
               onChange: this.onChange,
+              style:{ border: "#8888ff solid 2px"},
+              placeholder:"输入已有备件"
             }}
+            ref={this.auto_ref}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             getSuggestionValue={item => item.name}
-            ref="autocomplete"
             suggestions={this.state.auto_items}
             renderSuggestion={item => (
               <span>

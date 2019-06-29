@@ -1,31 +1,7 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button,Spinner } from 'react-bootstrap';
 import Client from './Client';
-//import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
-import Spinner from './react-spin';
-
-var _ = require('lodash');
-const spinCfg = {
-  lines: 8, // The number of lines to draw
-  length: 5, // The length of each line
-  width: 30, // The line thickness
-  radius: 35, // The radius of the inner circle
-  scale: 0.25, // Scales overall size of the spinner
-  //corners: 1, // Corner roundness (0..1)
-  //color: '#ffffff', // CSS color or array of colors
-  //fadeColor: 'transparent', // CSS color or array of colors
-  // opacity: 0.25, // Opacity of the lines
-  // rotate: 0, // The rotation offset
-  // direction: 1, // 1: clockwise, -1: counterclockwise
-  // speed: 1, // Rounds per second
-  // trail: 60, // Afterglow percentage
-  // fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
-  // zIndex: 2e9, // The z-index (defaults to 2000000000)
-  top: '85px', // Top position relative to parent
-  left: '100px', // Left position relative to parent
-  //position: 'realative' // Element positioning
-};
 class DlgCopyPack extends React.Component {
   state = {
     showModal: false,
@@ -39,16 +15,6 @@ class DlgCopyPack extends React.Component {
     auto_loading: false,
     stopped: true,
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   newnameChange = event => {
     this.setState({ newname: event.target.value });
   };
@@ -74,19 +40,6 @@ class DlgCopyPack extends React.Component {
       });
     }
   };
-  // auto_change=(event, value)=>{
-  //   console.log("auto_change");
-  //   if (value.length>1)
-  //   {
-  //     this.setState({ auto_value:value, auto_loading: true });
-  //     Client.get("/rest/Pack",{search:value} ,(items) => {
-  //         this.setState({ auto_items: items.data, auto_loading: false })
-  //     });
-  //   }
-  //   else{
-  //     this.setState({ auto_value:value, auto_loading: false });
-  //   };
-  // }
   auto_select = (event, data) => {
     console.log('selected');
     console.log(data);
@@ -111,13 +64,14 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    let showbutton;
+    let showbutton,spin;
     if (this.state.stopped) {
       showbutton = 'block';
+      spin=null;
     } else {
+      spin=<Spinner animation="border" variant="primary"/>;
       showbutton = 'none';
     }
-    // console.log(this.state);
     return (
       <Modal
         show={this.state.showModal}
@@ -178,7 +132,7 @@ class DlgCopyPack extends React.Component {
                     >
                       复制
                     </Button>
-                    <Spinner config={spinCfg} stopped={this.state.stopped} />
+                    {spin}
                   </div>
                 </td>
               </tr>

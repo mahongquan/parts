@@ -13,7 +13,7 @@ from django.shortcuts import render_to_response
 # from django.template.context import RequestContext
 from django.template.context_processors import csrf
 def index(request):
-    r=HttpResponseRedirect("/static/react1/build_bs3/index.html")
+    r=HttpResponseRedirect("/static/react1/build/index.html")
     return(r)
 def loginpage(request):
     c={}

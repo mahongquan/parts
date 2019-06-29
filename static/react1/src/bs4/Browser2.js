@@ -242,8 +242,8 @@ class Browser extends React.Component {
   };
   uploadFile = evt => {
     console.log(evt);
-    var path = this.currentPath();
-    const file = evt.target.files[0];
+    // var path = this.currentPath();
+    // const file = evt.target.files[0];
     // var stream = ss.createStream();
     // // upload a file to the server.
     // ss(socket).emit(
@@ -455,21 +455,21 @@ class Browser extends React.Component {
   };
   render = () => {
     // console.log(this.state.paths);
-    const tooltipback = (
-      <Tooltip id="tooltipback">
-        <strong>back</strong>
-      </Tooltip>
-    );
-    const tooltipparent = (
-      <Tooltip id="tooltipparent">
-        <strong>parent</strong>
-      </Tooltip>
-    );
-    const tooltipupload = (
-      <Tooltip id="tooltipparent">
-        <strong>upload</strong>
-      </Tooltip>
-    );
+    // const tooltipback = (
+    //   <Tooltip id="tooltipback">
+    //     <strong>back</strong>
+    //   </Tooltip>
+    // );
+    // const tooltipparent = (
+    //   <Tooltip id="tooltipparent">
+    //     <strong>parent</strong>
+    //   </Tooltip>
+    // );
+    // const tooltipupload = (
+    //   <Tooltip id="tooltipparent">
+    //     <strong>upload</strong>
+    //   </Tooltip>
+    // );
     const files = this.state.files.map(this.mapfunc);
     var pathshow = this.genpath(this.state.current_path);
     var gridGlyph = 'th-large';
