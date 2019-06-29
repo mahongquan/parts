@@ -98,8 +98,7 @@ class DlgCheck extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <p>
-            仪器编号{this.state.yiqibh}
-            备料计划核对，请上传备料计划导出的Excel文件
+            仪器编号:{this.state.yiqibh},请上传备料计划导出的Excel文件
           </p>
           <form ref="form1" encType="multipart/form-data">
             <input

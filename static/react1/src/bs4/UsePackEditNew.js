@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PackItems from './PackItems';
-import { Form,Modal,Badge } from 'react-bootstrap';
+import { Form,Modal } from 'react-bootstrap';
 class UsePackEditNew extends Component {
   state = {
     showModal: false,

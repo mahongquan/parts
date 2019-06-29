@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toast, Alert, Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
 class DlgImport extends React.Component {

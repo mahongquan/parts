@@ -138,12 +138,12 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button onClick={this.handlePrev}>前一页</Button>;
+      prev = <Button variant="light" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button onClick={this.handleNext}>后一页</Button>;
+      next = <Button variant="light" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -165,8 +165,7 @@ class DlgPacks extends Component {
             onChange={this.handleSearchChange}
           />
           <Button
-            id="id_bt_search"
-            className="btm btn-info"
+            className="btn-primary"
             onClick={this.search}
           >
             搜索

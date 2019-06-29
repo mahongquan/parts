@@ -3,26 +3,6 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import UsePackEditNew from './UsePackEditNew';
 import Autosuggest from 'react-autosuggest';
-//import Autocomplete from './Autocomplete'
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-// let styles = {
-//   item: {
-//     padding: '2px 6px',
-//     cursor: 'default'
-//   },
-
-//   highlightedItem: {
-//     color: 'white',
-//     background: 'hsl(200, 50%, 50%)',
-//     padding: '2px 6px',
-//     cursor: 'default'
-//   },
-
-//   menu: {
-//     border: 'solid 1px #ccc'
-//   }
-// }
 class UsePacks2 extends React.Component {
   state = {
     usepacks: [],
@@ -220,10 +200,8 @@ class UsePacks2 extends React.Component {
           <Autosuggest
             ref={this.auto1}
             inputProps={{
-              id: 'states-autocomplete',
               value: this.state.auto_value,
               onChange: this.onChange,
-              style:{ border: "#8888ff solid 2px"}
             }}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}

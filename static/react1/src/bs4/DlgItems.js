@@ -152,12 +152,12 @@ class DlgItems extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button onClick={this.handlePrev}>前一页</Button>;
+      prev = <Button variant="light" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button onClick={this.handleNext}>后一页</Button>;
+      next = <Button  variant="light" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -175,12 +175,11 @@ class DlgItems extends Component {
           <input
             type="text"
             value={this.state.search}
-            placeholder=""
+            placeholder="name"
             onChange={this.handleSearchChange}
           />
           <Button
-            id="id_bt_search"
-            className="btm btn-info"
+            variant="primary"
             onClick={this.search}
           >
             搜索

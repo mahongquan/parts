@@ -6,10 +6,6 @@ import update from 'immutability-helper';
 //import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
 class PackItems extends React.Component {
-  constructor(){
-    super();
-    this.auto_ref=React.createRef();
-  }
   state = {
     items: [],
     showRemoveIcon: false,
@@ -159,13 +155,10 @@ class PackItems extends React.Component {
           <label>输入已有备件</label>
           <Autosuggest
             inputProps={{
-              id: 'states-autocomplete',
               value: this.state.auto_value,
               onChange: this.onChange,
-              style:{ border: "#8888ff solid 2px"},
-              placeholder:"输入已有备件"
+              placeholder:"输入备件"
             }}
-            ref={this.auto_ref}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
