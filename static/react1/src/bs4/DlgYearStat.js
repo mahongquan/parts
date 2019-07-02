@@ -4,19 +4,19 @@ import Client from './Client';
 import {
   ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip 
 } from 'recharts';
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active) {
-    return (
-      <div style={{padding:"10px 10px 10px 10px"
-      ,backgroundColor:"#ffffff"
-      ,border:"solid 1px #000000"}}>
-        <label>{`${label} : ${payload[0].value}台`}</label>
-      </div>
-    );
-  }
+// const CustomTooltip = ({ active, payload, label }) => {
+//   if (active) {
+//     return (
+//       <div style={{padding:"10px 10px 10px 10px"
+//       ,backgroundColor:"#ffffff"
+//       ,border:"solid 1px #000000"}}>
+//         <label>{`${label} : ${payload[0].value}台`}</label>
+//       </div>
+//     );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 class DlgStat extends Component {
   state = {
     showModal: false,
@@ -92,7 +92,7 @@ class DlgStat extends Component {
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis dataKey="month" />
             <YAxis />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip />
             <Bar dataKey="count" barSize={90} fill="#413ea0" />
           </ComposedChart>
         </ResponsiveContainer>
