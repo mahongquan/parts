@@ -2,17 +2,16 @@ import Client from './Client_fetch.js';
 import NullContactEdit from "./ContactEdit.js";
 var app = new Vue({
   template:`<div>
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar toggleable="lg" type="dark" variant="dark">
     <b-navbar-brand href="#">备件</b-navbar-brand>
-      <b-navbar-nav small>
-          <b-nav-item href="/parts/items/">备件</b-nav-item>
-          <b-nav-item href="/parts/copypack/">复制包</b-nav-item>
+      <b-navbar-nav >
+          <b-nav-item href="/">home</b-nav-item>
       </b-navbar-nav>
-          <b-input size="sm"  placeholder="合同 or 仪器编号" v-model="search">
+          <b-input  style="max-width:200px" placeholder="合同 or 仪器编号" v-model="search">
           </b-input>
-          <b-button size="sm"  v-on:click="go_search" >搜索</b-button>
-          <b-button size="sm"  v-on:click="edit" index="null">新仪器</b-button>
-          <b-dropdown id="dropdown-1" :text="'包箱:'+baoxiang" >
+          <b-button   variant="info" v-on:click="go_search" >搜索</b-button>
+          <b-button  variant="primary" v-on:click="edit" index="null">新仪器</b-button>
+          <b-dropdown variant="light" :text="'包箱:'+baoxiang" >
             <b-dropdown-item v-on:click="baoxiang_change">马红权</b-dropdown-item>
             <b-dropdown-item v-on:click="baoxiang_change">陈旺</b-dropdown-item>
             <b-dropdown-item v-on:click="baoxiang_change">吴振宁</b-dropdown-item>
@@ -138,6 +137,6 @@ var app = new Vue({
     search: '',
     total: 0,
     start: 1,
-    limit: 3,
+    limit: 7,
   },
 });
