@@ -29,7 +29,8 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
   }
   return fetch(host + url, data)
     .then((response)=>{
-    	  if (response.status >= 200 && response.status < 300) {
+      console.log(response);
+    	if (response.status >= 200 && response.status < 300) {
     	  	var r = response.json();
 		    r.then(cb).catch(err_callback);
 		  }
@@ -40,6 +41,7 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
 			  if (err_callback) err_callback(error);
 		  }
     }).catch((e)=>{
+      console.log(e);
     	if (err_callback) err_callback(e);
     })
 }

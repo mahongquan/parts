@@ -3,6 +3,7 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import UsePackEditNew from './UsePackEditNew';
 import Autosuggest from 'react-autosuggest';
+import myglobal from '../myglobal';
 class UsePacks2 extends React.Component {
   state = {
     usepacks: [],
@@ -31,6 +32,9 @@ class UsePacks2 extends React.Component {
         this.setState({
           usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
         });
+    },(error)=>{
+      console.log("UsePacks2 error");
+      myglobal.app.show_webview(error.response.url);
     });
   };
   componentDidMount = () => {
