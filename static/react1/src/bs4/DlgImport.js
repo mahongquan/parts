@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Modal } from 'react-bootstrap';
+import { Alert, Modal,Table } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
 class DlgImport extends React.Component {
@@ -115,7 +115,7 @@ class DlgImport extends React.Component {
             </button>
           </form>
           <div style={{ minHeight: '200px' }}>
-            <table className="table-bordered">
+            <Table className="table-bordered">
               <thead>
                 <tr>
                   <td>ID</td>
@@ -123,7 +123,7 @@ class DlgImport extends React.Component {
                 </tr>
               </thead>
               <tbody>{contactRows}</tbody>
-            </table>
+            </Table>
           </div>
           <div>{this.state.error}</div>
         </Modal.Body>

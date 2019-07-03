@@ -36,7 +36,7 @@ urlpatterns = [
     # Uncomment the next line to enable the admin:
     #url(r'^admin/lookups/', include(ajax_select_urls)),
     path('admin/', admin.site.urls),
-    #url(r'^explore/',include('explore.urls')), 
+    url(r'^explore/',include('explore.urls')), 
     url(r'^accounts/login/$', mainview.loginpage),
     url(r'^sql/$', mainview.sql),
     # url(r'^login/',mainview.mylogin),  
