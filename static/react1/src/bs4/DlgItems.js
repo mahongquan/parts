@@ -4,6 +4,7 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import ItemEdit from './ItemEdit';
 import update from 'immutability-helper';
+import myglobal from '../myglobal';
 class DlgItems extends Component {
   state = {
     items: [],
@@ -50,8 +51,10 @@ class DlgItems extends Component {
           total: contacts2.total,
           start: this.state.start,
         });
-      }
-    );
+      },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
+    });
   };
   handlePrev = e => {
     this.state.start = this.state.start - this.state.limit;

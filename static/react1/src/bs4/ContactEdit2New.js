@@ -9,6 +9,7 @@ import Autosuggest from 'react-autosuggest';
 // import './autosuggest.css';
 // import './react-datetime.css'
 import RichTextEditor from 'react-rte';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -190,6 +191,9 @@ class ContactEdit2New extends Component {
       } else {
         alert(res.message);
       }
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
     });
   };
   tiaoshi_date_change = value => {

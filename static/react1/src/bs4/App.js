@@ -69,8 +69,12 @@ export default class App extends Component {
       showDlgWork:false,
     };
   }
-  show_webview=(url)=>{
-    this.setState({connect_error:true});
+  show_webview=(error)=>{
+    if (error instanceof SyntaxError) {
+      this.openDlgLogin();
+    } else {
+      this.setState({ connect_error: true });
+    }
   }
   handleClickFilter = event => {
     //console.log(event);

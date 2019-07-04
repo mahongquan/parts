@@ -3,8 +3,8 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
-//import Autocomplete from './Autocomplete'
 import Autosuggest from 'react-autosuggest';
+import myglobal from '../myglobal';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -21,6 +21,9 @@ class PackItems extends React.Component {
       this.setState({
         items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
       });
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
     });
   };
   auto_select = (event, data) => {

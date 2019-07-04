@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import Client from './Client';
 import { Button, Table } from 'react-bootstrap';
 import PackEdit from './PackEdit';
+import myglobal from '../myglobal';
 class DlgPacks extends Component {
   state = {
     contacts: [],
@@ -49,8 +50,10 @@ class DlgPacks extends Component {
           start: this.state.start,
         });
         this.state.total = contacts2.total;
-      }
-    );
+      },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
+    });
   };
   handlePrev = e => {
     this.state.start = this.state.start - this.state.limit;
