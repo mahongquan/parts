@@ -21,6 +21,8 @@ var app = new Vue({
       <div class="container table-responsive">
         <div id="todoapp">
           <div id="main" style="min-height:200px;">
+            <b-table striped hover :items="contacts" :fields="fields" ></b-table>
+            <!--
             <table class="table-bordered">
               <thead>
                 <tr>
@@ -59,7 +61,7 @@ var app = new Vue({
                   <td><a>{{ contact.method }}</a></td>
                 </tr>
               </tbody>
-            </table>
+            </table> !-->
             <button v-on:click="prev" id="bt_prev">前一页</button>
             <label id="page">{{start}}/{{total}}</label>
             <button v-on:click="next" id="bt_next">后一页</button>
@@ -129,6 +131,7 @@ var app = new Vue({
     },
   },
   data: {
+    fields: [{key:'id',sortable: true,label: 'ID'},{key:'yonghu',label:"用户"},'addr','channels','yiqixinghao','yiqibh','baoxiang','yujifahuo_date','hetongbh','method'],
     contacts: [],
     contact: {},
     currentIndex:null,
@@ -140,3 +143,19 @@ var app = new Vue({
     limit: 7,
   },
 });
+ // <td>{{ contact.yonghu }}</td>
+ //                  <td>{{ contact.addr }}</td>
+ //                  <td>{{ contact.channels }}</td>
+ //                  <td>{{ contact.yiqixinghao }}</td>
+ //                  <td>
+ //                    <button v-on:click="edit"  v-bind:index="index">{{ contact.yiqibh }}</button>
+ //          <b-dropdown id="dropdown-1" class="m-md-2">
+ //            <b-dropdown-item>详细</b-dropdown-item>
+ //          </b-dropdown>
+ //                  </td>
+ //                  <td>{{ contact.baoxiang }}</td>
+ //                  <td>{{ contact.shenhe }}</td>
+ //                  <td>{{ contact.yujifahuo_date }}</td>
+ //                  <td>{{ contact.tiaoshi_date }}</td>
+ //                  <td>{{ contact.hetongbh }}</td>
+ //                  <td><a>{{ contact.method }}</a></td>
