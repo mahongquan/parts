@@ -21,7 +21,20 @@ var app = new Vue({
       <div class="container table-responsive">
         <div id="todoapp">
           <div id="main" style="min-height:200px;">
-            <b-table striped hover :items="contacts" :fields="fields" ></b-table>
+            <b-button @click="toggleBusy">Toggle Busy State</b-button>
+            <b-table :busy="isBusy" striped responsive hover primary-key="id" :items="contacts" :fields="fields" >
+              <template slot="table-caption">This is a table caption.</template>
+      <div slot="table-busy" class="text-center text-danger my-2">
+        <b-spinner class="align-middle"></b-spinner>
+        <strong>Loading...</strong>
+      </div>
+      <template slot="yiqibh" slot-scope="data">
+      <button v-on:click="edit"  v-bind:index="index">{{ data.item.yiqibh }}</button>
+      <b-dropdown id="dropdown-1" class="m-md-2">
+            <b-dropdown-item>详细</b-dropdown-item>
+          </b-dropdown>
+      </template>
+            </b-table>
             <!--
             <table class="table-bordered">
               <thead>
@@ -77,6 +90,9 @@ var app = new Vue({
     this.load_data();
   },
   methods: {
+     toggleBusy() {
+        this.isBusy = !this.isBusy
+      },
     load_data: function() {
       Client.contacts(
         {
@@ -141,6 +157,7 @@ var app = new Vue({
     total: 0,
     start: 1,
     limit: 7,
+    isBusy:false,
   },
 });
  // <td>{{ contact.yonghu }}</td>
