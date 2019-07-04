@@ -405,7 +405,7 @@ export default class App extends Component {
             color: 'red',
           }}
         >
-          !!!!!!!!!!连接错误,服务器未运行或需要重新登录!!!!!!!
+          !!!!!!!!!!连接错误,服务器未运行!!!!!!!
         </div>
         <Overlay
           target={this.state.target}
