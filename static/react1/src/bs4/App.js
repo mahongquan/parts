@@ -28,9 +28,11 @@ import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth'
+import myglobal from '../myglobal';
 export default class App extends Component {
   constructor(props) {
     super(props);
+    myglobal.app=this;
     this.dlgwait = React.createRef();
     this.dlgitems = React.createRef();
     this.dlgurl = React.createRef();
@@ -66,6 +68,9 @@ export default class App extends Component {
       showDlgFolder2: false,
       showDlgWork:false,
     };
+  }
+  show_webview=(url)=>{
+    this.setState({connect_error:true});
   }
   handleClickFilter = event => {
     //console.log(event);
@@ -396,7 +401,7 @@ export default class App extends Component {
             color: 'red',
           }}
         >
-          !!!!!!!!!!连接错误,服务器未运行!!!!!!!
+          !!!!!!!!!!连接错误,服务器未运行或需要重新登录!!!!!!!
         </div>
         <Overlay
           target={this.state.target}

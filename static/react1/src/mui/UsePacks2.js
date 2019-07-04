@@ -62,8 +62,7 @@ class UsePacks2 extends React.Component {
           usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
         });
     },(error)=>{
-      // window.e=error;
-      // console.log(error);
+      console.log("UsePacks2 error");
       myglobal.app.show_webview(error.response.url);
     });
   };
