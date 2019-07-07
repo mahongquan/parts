@@ -537,9 +537,14 @@ def mylogin(request):
         login(request, user)
         rec=user
         output={"success":True,"message":"User" +str(rec.id)}
+        output["csrftoken"]=str(csrf(request)["csrf_token"])
+        output["sessionid"]=request.session.session_key
         output["data"]={"id":rec.id,"name":str(rec.username),"email":str(rec.email),"first":str(rec.first_name),"last":rec.last_name}
     r=HttpResponse(json.dumps(output, ensure_ascii=False))
-    logging.info(r)
+    r["Access-Control-Allow-Credentials"]="true";
+    r["Access-Control-Allow-Origin"]="127.0.0.1";
+    logging.info(request.session)
+    logging.info(dir(request.session))
     return r
 def functions(request):
     logging.info("===================")
@@ -1005,7 +1010,7 @@ def view_pack1(request):
     for rec in objs:
         data.append({"id":rec.id,"name":rec.name})
     logging.info(data)
-    out={"total":total,"data":data}
+    out={"total":total,"data":data,"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))
 def create_pack1(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
@@ -1489,7 +1494,34 @@ def year12(request):
         lbls.append(one[0]+"年")
         values.append(one[1])
     res={"success":True, "lbls":lbls,"values":values}
-    return HttpResponse(json.dumps(res, ensure_ascii=False))     
+    return HttpResponse(json.dumps(res, ensure_ascii=False))  
+def sql(request):
+    cmd=request.GET.get("cmd")
+    logging.info(cmd)
+    cursor = connection.cursor()            #获得一个游标(cursor)对象
+    raw=cursor.execute(cmd)    #执行sql语句
+    # raw = cursor.fetchall()                 #返回结果行 或使用 #raw = cursor.fetchall()
+    # lbls=[]
+    # values=[]
+    # for one in raw:
+    #     lbls.append(one[0]+"月")
+    #     values.append(one[1])
+    res={"success":True, "data":myZhengli(raw)}
+    tmp=json.dumps(res, ensure_ascii=False,cls=MyEncoder)
+    logging.info(tmp)
+    return HttpResponse(tmp)      
+def myZhengli(raw):
+    # print(dir(raw))
+    fs=raw.description
+    res=[]
+    for one in raw:
+        o1={}
+        i=0
+        for a in one:
+            o1[fs[i][0]]=a
+            i+=1
+        res.append(o1)
+    return res
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
@@ -1623,23 +1655,23 @@ def allfile(request):
                 logging.info("here")
                 fullfilepath = os.path.join(MEDIA_ROOT,c.method.path)
                 logging.info(fullfilepath)
-                (data_record,data_xishu)=genRecord(fullfilepath,c)
-                file5=p+"/"+c.yiqibh+"调试记录.docx"
-                if not os.path.exists(file5):
-                    open(file5,"wb").write(data_record)
+                data_xishu=genRecord(fullfilepath,c)
+                # file5=p+"/"+c.yiqibh+"调试记录.docx"
+                # if not os.path.exists(file5):
+                #     open(file5,"wb").write(data_record)
                 file6=p+"/"+"系数.lbx"
                 if not os.path.exists(file6):
                     open(file6,"wb").write(data_xishu)
             except ValueError as e:
                 logging.info(e)
-                try:
-                    (data_record,data_xishu)=genRecord("",c)
-                    file5=p+"/"+c.yiqibh+"调试记录.docx"
-                    if not os.path.exists(file5):
-                        open(file5,"wb").write(data_record)
-                except ValueError as e:
-                    logging.info(e)
-                    pass
+                # try:
+                #     (data_record,data_xishu)=genRecord("",c)
+                #     file5=p+"/"+c.yiqibh+"调试记录.docx"
+                #     if not os.path.exists(file5):
+                #         open(file5,"wb").write(data_record)
+                # except ValueError as e:
+                #     logging.info(e)
+                #     pass
             except:
                 traceback.print_exc()
                 logging.info("except")

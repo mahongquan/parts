@@ -139,8 +139,14 @@ def genDetail(contactid):
     f=codecs.open("out.html","w","utf-8")
     f.write(t.render(dic))
     f.close()     
+<<<<<<< HEAD
 def getContacts(search,baoxiang):
     session = Session()
+=======
+def getContacts(session,search,baoxiang):
+    start=0
+    limit=30
+>>>>>>> refs/remotes/origin/master
     if search!='':
         search="%"+search+"%"
         if baoxiang!="":

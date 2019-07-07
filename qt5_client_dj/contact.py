@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5 import QtCore, QtGui,QtWidgets
+from PySide2 import QtCore, QtGui,QtWidgets
 from .ui_contact import Ui_Form
 from .  import backend
 from . import packitems
@@ -20,8 +20,8 @@ import datetime
 #     tiaoshi_date = models.DateField(null=True,blank=True,verbose_name="调试时间",default=datetime.datetime.now)#预计发货时间
 #     hetongbh=models.CharField(max_length=30,verbose_name="合同编号")#合同编号
 #     method=models.FileField(null=True,blank=True,verbose_name="方法")
-from PyQt5 import QtCore
-from PyQt5.QtCore import *
+from PySide2 import QtCore
+from PySide2.QtCore import *
 class MyStringListModel(QtCore.QAbstractListModel):
     def __init__(self):
         super(MyStringListModel, self).__init__(None)
@@ -56,7 +56,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.lineEdit_pack.textChanged['QString'].connect(self.packinput)
         self.ui.lineEdit_pack.setFocus()
         self.ui.pushButton_deletemethod.clicked.connect(self.deletemethod)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def bibei(self):
         n="必备"
         self.packinput(n)
@@ -168,7 +168,7 @@ class ContactDlg(QtWidgets.QDialog):
                 self.ui.tableWidget_2.setItem(i, 6, QtWidgets.QTableWidgetItem(str(one.item.danwei)))
             i+=1
         self.ui.tableWidget_2.scrollToItem(theitem)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def editpack(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),1)
         p=packitems.PackForm()
@@ -179,7 +179,7 @@ class ContactDlg(QtWidgets.QDialog):
             pass
         p.exec()
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def itemselect(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),1)
         if it!=None:
@@ -189,7 +189,7 @@ class ContactDlg(QtWidgets.QDialog):
         else:
             #c.showdata(-1)
             pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def editpackitem(self):
         it=self.ui.tableWidget_2.item(self.ui.tableWidget_2.currentRow(),0)
         if it!=None:
@@ -203,7 +203,7 @@ class ContactDlg(QtWidgets.QDialog):
             #c.showdata(-1)
             pass   
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def newpackitem(self):
         if self.pid!=None:
             nm=self.ui.lineEdit_itemname.text()
@@ -228,7 +228,7 @@ class ContactDlg(QtWidgets.QDialog):
             backend.addItem(self.pid,iid)
             self.showpackitems(self.pid)
         pass              
-    #@QtCore.pyqtSlot()
+    ##@QtCore.pyqtSlot()
     def selectpack(self,data):
         #print(dir(self.ui.comboBox))
         pid=self.ui.comboBox.itemData(self.ui.comboBox.currentIndex())
@@ -236,11 +236,11 @@ class ContactDlg(QtWidgets.QDialog):
             backend.addPack(self.c,pid)
             self.showpack()
         pass      
-    #@QtCore.pyqtSlot()
+    ##@QtCore.pyqtSlot()
     def selectpack2(self,intdata):
         pass                         
  
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def iteminput(self):
         n=self.ui.lineEdit_item.text()
         r=backend.getItems(n)
@@ -253,7 +253,7 @@ class ContactDlg(QtWidgets.QDialog):
             at+=1
         #self.ui.comboBox_2.showPopup()
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def deletepack(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         if it!=None:
@@ -264,10 +264,10 @@ class ContactDlg(QtWidgets.QDialog):
             #c.showdata(-1)
             pass        
         pass        
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def accept(self):
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def reject(self):
         print("reject")
         self.done(0)
@@ -318,7 +318,7 @@ class ContactDlg(QtWidgets.QDialog):
         self.resetbg()
         self.ui.pushButton_save.setEnabled(True)
         pass 
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def copy(self):
         old=self.c
         self.c=backend.newContact()
@@ -335,16 +335,16 @@ class ContactDlg(QtWidgets.QDialog):
             self.c.yujifahuo_date=datetime.datetime.now().date()
         self.showdata(self.c)
         pass 
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def clear(self):
         self.c=backend.newContact()
         self.showdata(self.c)
         pass                        
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def method(self):
         print("method")
         pass                        
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def newpack(self):
         nm=self.ui.lineEdit_packname.text()
         if nm!="":

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /////////////
 import queryString from 'querystring';
 let host=""
@@ -139,3 +140,7 @@ function parseJSON(response) {
 }
 const Client = {getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
 export default Client;
+=======
+import myglobal from './myglobal';
+export default myglobal.Client;
+>>>>>>> refs/remotes/origin/master

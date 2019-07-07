@@ -3,7 +3,7 @@
 import sys
 import os
 import pickle
-from PyQt5 import QtCore, QtWidgets,QtWidgets
+from PySide2 import QtCore, QtWidgets,QtWidgets
 from .ui_contactEdit import  Ui_Form
 import logging
 class CalculatorForm(QtWidgets.QDialog):
@@ -42,15 +42,15 @@ class CalculatorForm(QtWidgets.QDialog):
             self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(val))
             self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(tm))
             i+=1 
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def add(self):
         row=self.ui.tableWidget.currentRow()
         it=self.ui.tableWidget.item(row,0)
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def delete(self):
         pass
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def change(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)#self.ui.tableWidget.currentColumn()))
         calculator = usepacks.ContactForm()

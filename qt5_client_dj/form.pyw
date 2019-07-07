@@ -19,7 +19,7 @@ class CalculatorForm(QtGui.QWidget):
         for com in gports:
             self.ui.inputSpinBox_com.addItem(com)
         self.client=c1.Plc()
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def readClick(self):
         slave=int(self.ui.lineEdit_slaveid.text())
         num=int(self.ui.lineEdit_registernum.text())
@@ -33,17 +33,17 @@ class CalculatorForm(QtGui.QWidget):
     def myprint(self,s):
         #print dir(self.ui.textEdit)
         self.ui.textEdit.append(s)
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def writeClick(self):
         print "write click"#self.ui.outputWidget.setText(str(value + self.ui.inputSpinBox2.value()))
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def setClick(self):
         print "set click"#self.ui.outputWidget.setText(str(value + self.ui.inputSpinBox2.value()))
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def clearClick(self):
         print "clear click"#self.ui.outputWidget.setText(str(value + self.ui.inputSpinBox2.value()))
 
-    @QtCore.pyqtSlot()
+    #@QtCore.pyqtSlot()
     def on_inputSpinBox2_valueChanged(self, value):
         self.ui.outputWidget.setText(str(value + self.ui.inputSpinBox1.value()))
 if __name__ == '__main__':
