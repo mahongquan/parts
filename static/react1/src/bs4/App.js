@@ -69,8 +69,12 @@ export default class App extends Component {
       showDlgWork:false,
     };
   }
-  show_webview=(url)=>{
-    this.setState({connect_error:true});
+  show_webview=(error)=>{
+    if (error instanceof SyntaxError) {
+      this.openDlgLogin();
+    } else {
+      this.setState({ connect_error: true });
+    }
   }
   handleClickFilter = event => {
     //console.log(event);
@@ -401,7 +405,7 @@ export default class App extends Component {
             color: 'red',
           }}
         >
-          !!!!!!!!!!连接错误,服务器未运行或需要重新登录!!!!!!!
+          !!!!!!!!!!连接错误,服务器未运行!!!!!!!
         </div>
         <Overlay
           target={this.state.target}
