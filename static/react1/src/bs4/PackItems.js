@@ -157,8 +157,7 @@ class PackItems extends React.Component {
             inputProps={{
               value: this.state.auto_value,
               onChange: this.onChange,
-              placeholder:"输入备件"
-            }}
+              }}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}

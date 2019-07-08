@@ -7,9 +7,9 @@ import App from './bs4/App'
 // import App from './SelectA'
 // import App from './SelectPack.js'
 import 'bootstrap/dist/css/bootstrap.css';
-import './autosuggest.css';
 import './react-datetime.css';
 import './bs4/index.css';
+import './autosuggest.css';
 // var App = require('./mui/App').default;
 // var App = require('./Select0.js').default;
 // var App = require('./MPicker').default;
