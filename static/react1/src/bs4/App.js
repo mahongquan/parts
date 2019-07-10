@@ -313,13 +313,12 @@ export default class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button
-            variant="link"
-            style={{ display: 'inline' }}
+          <span
+            className="mylink"
             onClick={() => this.handleEdit(idx)}
           >
             {contact.yiqibh}
-          </Button>
+          </span>
           <DropdownButton
             variant="light"
             style={{ display: 'inline' }}
