@@ -577,7 +577,7 @@ export default class App extends Component {
             导入合同
           </Button>
         </div>
-        <Table size="sm" condensed="true" striped bordered>
+        <table className="table-sm table-striped table-bordered">
           <thead>
             <tr>
               <th>ID</th>
@@ -622,7 +622,7 @@ export default class App extends Component {
             </tr>
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
-        </Table>
+        </table>
         <div style={{ display: 'flex', alignItems: 'center'}}>
         {prev}
         <Badge>
