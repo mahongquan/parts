@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import {
   SHOW_ALL,
   SHOW_COMPLETED,
   SHOW_ACTIVE,
 } from '../constants/TodoFilters';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
-import MailIcon from '@material-ui/icons/Mail';
 import Typography from '@material-ui/core/Typography';
 const styles = theme => ({
   button: {
@@ -56,7 +53,7 @@ class Footer extends Component {
 
   renderFilterLink(filter) {
     const title = FILTER_TITLES[filter];
-    const { filter: selectedFilter, onShow } = this.props;
+    const { onShow } = this.props;
 
     return (
       <Button

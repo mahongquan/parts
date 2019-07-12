@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import DlgTodos from './DlgTodos';
 import {
-  Badge,Table,InputGroup,FormControl,
+  Badge,InputGroup,FormControl,
   Navbar,
   Nav,
   DropdownButton,
@@ -29,6 +29,10 @@ import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth'
 import myglobal from '../myglobal';
+import 'bootstrap/dist/css/bootstrap.css';
+import '../react-datetime.css';
+import './index.css';
+import '../autosuggest.css';
 export default class App extends Component {
   constructor(props) {
     super(props);
