@@ -21,7 +21,7 @@ urlpatterns = [
         # url(r'^index_2',views.index_2),
         # url(r'^extjs6',views.extjs6),
         # url(r'^application', views.application),
-
+        url(r'^Todo', views.todo),
         url(r'^Item', views.item),
         url(r'^BothPackItem', views.BothPackItem),
         url(r'^UsePackEx', views.UsePackEx),
