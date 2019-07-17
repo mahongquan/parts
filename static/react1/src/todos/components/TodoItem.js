@@ -47,7 +47,7 @@ export default class TodoItem extends Component {
             className="toggle"
             type="checkbox"
             checked={todo.completed}
-            onChange={() => completeTodo(todo.id)}
+            onChange={() => completeTodo(todo.id,!todo.completed)}
           />
           <label onDoubleClick={this.handleDoubleClick}>{todo.text}</label>
           <button className="destroy" onClick={() => deleteTodo(todo.id)} />
