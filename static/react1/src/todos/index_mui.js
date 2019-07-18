@@ -1,12 +1,17 @@
+import App from './mui/containers/App';
 import React from 'react';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import App from './containers/App';
 import reducer from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
 class App2 extends React.Component {
   constructor() {
     super();
-    this.store = createStore(reducer);
+    this.store = createStore(
+      reducer,
+      applyMiddleware(thunk)
+    );
   }
   render() {
     return (

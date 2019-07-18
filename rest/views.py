@@ -1623,7 +1623,8 @@ def update_todo(request):
 def destroy_todo(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
     id1=int(data["id"])
-    rec=UsePack.objects.get(id=id1)
+    rec=Todo.objects.get(id=id1)
     rec.delete()
     output={"success":True,"message":"OK"}
+    output["data"]={"id":rec.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))

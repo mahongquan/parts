@@ -1,9 +1,9 @@
 import {
   LOAD_TODO,
   LOAD_TODO_RES,
-  ADD_TODO,
-  DELETE_TODO,
-  EDIT_TODO,
+  ADD_TODO,ADD_TODO_RES,
+  DELETE_TODO,DELETE_TODO_RES,
+  EDIT_TODO,EDIT_TODO_RES,
   COMPLETE_TODO,
   COMPLETE_TODO_RES,
   COMPLETE_ALL,
@@ -43,17 +43,38 @@ export default function todos(state = initialState, action) {
       ];
       localStorage.setItem('todos', JSON.stringify(state));
       return state;
-
+    case ADD_TODO_RES:
+      console.log(action);
+      state = [
+        action.res.data,
+        ...state,
+      ];
+      return state;
     case DELETE_TODO:
       state = state.filter(todo => todo.id !== action.id);
       localStorage.setItem('todos', JSON.stringify(state));
       return state;
+    case DELETE_TODO_RES:
+      state = state.filter(todo => todo.id !== action.res.data.id);
+      return state;      
     case EDIT_TODO:
       state = state.map(todo =>
         todo.id === action.id ? { ...todo, text: action.text } : todo
       );
       localStorage.setItem('todos', JSON.stringify(state));
       return state;
+    case EDIT_TODO_RES:
+      console.log(state,action);
+      state = state.map((todo) =>{
+          if(todo.id === action.res.data.id)
+            { return action.res.data }
+          else
+            {return  todo}
+        }
+      );
+      console.log(state);
+      return state;
+
     case COMPLETE_TODO_RES:
       console.log(action);
       state = state.map(todo =>

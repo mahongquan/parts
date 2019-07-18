@@ -4,7 +4,7 @@ import {
   SHOW_ALL,
   SHOW_COMPLETED,
   SHOW_ACTIVE,
-} from '../constants/TodoFilters';
+} from '../../constants/TodoFilters';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';

@@ -8,7 +8,7 @@ import {
   SHOW_ALL,
   SHOW_COMPLETED,
   SHOW_ACTIVE,
-} from '../constants/TodoFilters';
+} from '../../constants/TodoFilters';
 import List from '@material-ui/core/List';
 import Tooltip from '@material-ui/core/Tooltip';
 const TODO_FILTERS = {
