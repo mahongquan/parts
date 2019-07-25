@@ -31,7 +31,7 @@ const localMode = (process.argv || []).indexOf('--local') !== -1;
 console.log(__dirname);
 let entryBasePath;
   if(localMode){//local mode
-    entryBasePath =  `file://${__dirname}/src/index.html`;  
+    entryBasePath =  `file://${__dirname}/src_electron/index.html`;  
   }
   else{         //devMode  productionMode
     if(devMode){
@@ -48,7 +48,9 @@ const createWindow = () => {
   // Create the browser window.
 
   mainWindow = new BrowserWindow({
-
+    webPreferences: {
+        nodeIntegration: true
+    },
     width: 800,
 
     height: 600,
