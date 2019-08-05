@@ -364,19 +364,13 @@ export default class App extends Component {
         <td>{contact.method}</td>
       </tr>
     ));
-    // const tooltipdw = (
-    //       <Tooltip id="tooltipdw"><strong>dw</strong></Tooltip>
-    //     );
     var hasprev = true;
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.state);
-    //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
     }
-    //console.log(this.state.start+this.state.limit>=this.state.total);
     if (this.state.start + this.state.limit >= this.state.total) {
       hasnext = false;
     }
