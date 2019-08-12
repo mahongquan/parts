@@ -778,7 +778,7 @@ def update_UsePackEx(request):
         rec1.name=data["name"]
     rec1.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
-    output["data"]={"id":rec.id,"name":rec1.name,"contact":rec.contact.id}
+    output["data"]={"itemid":rec1.id,"id":rec.id,"name":rec1.name,"contact":rec.contact.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))          
 def create_BothPackItem(request):
     data = json.loads(request.body.decode("utf-8"))#extjs read data from body
@@ -826,7 +826,7 @@ def update_BothPackItem(request):
     if recChange:
         rec.save()
     output={"success":True,"message":"update UsePack " +str(rec.id)}
-    output["data"]={"quehuo":rec.quehuo,"id":rec.id,"name":rec1.name,"danwei":rec1.danwei,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
+    output["data"]={"itemid":rec1.id,"quehuo":rec.quehuo,"id":rec.id,"name":rec1.name,"danwei":rec1.danwei,"guige":rec1.guige,"ct":rec.ct,"bh":rec1.bh,"pack":rec.pack.id}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
 @login_required
 def pack(request):
