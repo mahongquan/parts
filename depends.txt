@@ -1,1 +1,1 @@
-django python-docx numpy openpyxl==2.3.5 xlrd pillow wsgiserver
+django python-docx numpy openpyxl xlrd pillow waitress

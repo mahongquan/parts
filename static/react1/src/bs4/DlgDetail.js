@@ -69,11 +69,6 @@ class DlgDetail extends React.Component {
       return (
         <tr key={idx}>
           <td>
-            <u>
-              <b>{contact.id}</b>
-            </u>
-          </td>
-          <td>
             <u>{contact.bh}</u>
           </td>
           <td>
@@ -83,22 +78,17 @@ class DlgDetail extends React.Component {
             <u>{contact.guige}</u>
           </td>
           <td>
-            <u>{contact.ct}</u>
-          </td>
-          <td>
-            <u>{contact.danwei}</u>
+            <u>{contact.ct}{contact.danwei}</u>
           </td>
         </tr>
       );
     } else {
       return (
         <tr key={idx}>
-          <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>{contact.name}</td>
           <td>{contact.guige}</td>
-          <td>{contact.ct}</td>
-          <td>{contact.danwei}</td>
+          <td>{contact.ct}{contact.danwei}</td>
         </tr>
       );
     }
@@ -123,15 +113,13 @@ class DlgDetail extends React.Component {
       quehuo = (
         <div>
           <h2>缺货清单</h2>
-          <Table responsive bordered condensed>
+          <Table responsive bordered condensed="true"  size="sm" >
             <thead>
               <tr>
-                <th>ID</th>
                 <th>编号</th>
                 <th>名称</th>
                 <th>规格</th>
                 <th>数量</th>
-                <th>单位</th>
               </tr>
             </thead>
             <tbody id="contact-list">{contactRows2}</tbody>
@@ -149,7 +137,7 @@ class DlgDetail extends React.Component {
           <Modal.Title>详细</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <table id="table_input" className="table-condensed">
+          <Table size="sm">
             <tbody>
               <tr>
                 <td>ID:</td>
@@ -200,17 +188,15 @@ class DlgDetail extends React.Component {
                 <td>{this.state.contact.method}</td>
               </tr>
             </tbody>
-          </table>
+          </Table>
           <h2>备件清单</h2>
-          <Table responsive bordered condensed>
+          <Table size="sm" responsive bordered condensed="true">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>编号</th>
                 <th>名称</th>
                 <th>规格</th>
                 <th>数量</th>
-                <th>单位</th>
               </tr>
             </thead>
             <tbody id="contact-list">{contactRows}</tbody>

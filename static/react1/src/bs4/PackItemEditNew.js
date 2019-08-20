@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
+import myglobal from '../myglobal';
 class PackItemEditNew extends Component {
   state = {
     showModal: false,
@@ -45,6 +46,9 @@ class PackItemEditNew extends Component {
       this.parent.handlePackItemChange(this.index, res.data);
       this.old = res.data;
       this.close();
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
     });
   };
   quehuoChange = e => {

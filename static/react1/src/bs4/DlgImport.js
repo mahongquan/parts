@@ -1,18 +1,14 @@
 import React from 'react';
-import { Alert, Modal } from 'react-bootstrap';
+import { Alert, Modal,Table } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
-var _ = require('lodash');
 class DlgImport extends React.Component {
   state = {
     error: '',
     packs: [],
     info: '',
+    showA:true,
   };
-
-  // close=()=>{
-  //   this.setState({ showModal: false });
-  // }
   upload = () => {
     const file = this.fileUpload.files[0];
     console.log(file);
@@ -31,19 +27,6 @@ class DlgImport extends React.Component {
       });
     });
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      console.log(this.props);
-      console.log(nextProps);
-      console.log('props not eq');
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      console.log('state not eq');
-      return true;
-    }
-    return false;
-  }
   componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow();
@@ -70,6 +53,7 @@ class DlgImport extends React.Component {
     });
   };
   handleDismiss = () => {
+    console.log("onClose");
     this.setState({ showalert: false });
   };
   inputChange = () => {
@@ -86,7 +70,7 @@ class DlgImport extends React.Component {
     let alert;
     if (this.state.showalert) {
       alert = (
-        <Alert bsStyle="info" onDismiss={this.handleDismiss}>
+        <Alert variant="info" onClose={this.handleDismiss} dismissible>
           <p>{this.state.info}</p>
         </Alert>
       );
@@ -101,7 +85,16 @@ class DlgImport extends React.Component {
           <Modal.Title>导入标样</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {alert}
+          {
+            alert
+// <Toast  show={this.state.showA} onClose={()=>{this.setState({showA:false});}}>
+//   <Toast.Header>
+//     <strong className="mr-auto">Bootstrap</strong>
+//     <small>11 mins ago</small>
+//   </Toast.Header>
+//   <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+  // </Toast>
+}
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}
@@ -122,7 +115,7 @@ class DlgImport extends React.Component {
             </button>
           </form>
           <div style={{ minHeight: '200px' }}>
-            <table className="table-bordered">
+            <Table className="table-bordered">
               <thead>
                 <tr>
                   <td>ID</td>
@@ -130,7 +123,7 @@ class DlgImport extends React.Component {
                 </tr>
               </thead>
               <tbody>{contactRows}</tbody>
-            </table>
+            </Table>
           </div>
           <div>{this.state.error}</div>
         </Modal.Body>

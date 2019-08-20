@@ -1271,7 +1271,7 @@ def treatOne(rows,fn,at):
     logging.info(rows)
     r=None
     beizhu=rows[1][7]
-    if beizhu[:2]=="CS" or beizhu[:2]=="ON":
+    if beizhu[:2]=="CS" or beizhu[:2]=="ON" or beizhu[:3]=="DON" or beizhu[:3]=="DCS":
         name=rows[1][7]+"_"+str(at)+"_"+fn
         d=Pack.objects.filter(name=name)
         logging.info(d)

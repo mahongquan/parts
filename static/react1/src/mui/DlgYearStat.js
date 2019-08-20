@@ -10,20 +10,17 @@ import {
 } from 'recharts';
 class DlgStat extends Component {
   state = {
-    showModal: false,
     error: '',
     baoxiang: '',
     data : []
   };
   componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
     if (!this.props.showModal && nextProps.showModal) {
       this.open();
     } else if (this.props.showModal && !nextProps.showModal) {
     }
   }
   open = () => {
-    this.setState({ showModal: true });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
@@ -33,7 +30,7 @@ class DlgStat extends Component {
       console.log(result);
       let data1=[]
       for(var i=0;i<result.lbls.length;i++){
-        data1.push({month:result.lbls[i],count:result.values[i]});
+        data1.push({year:result.lbls[i],count:result.values[i]});
       }
       self.setState({ data:data1 });
     });
@@ -80,7 +77,7 @@ class DlgStat extends Component {
             }}
           >
             <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="month" />
+            <XAxis dataKey="year" />
             <YAxis />
             <Tooltip />
             <Bar dataKey="count" barSize={20} fill="#413ea0" />

@@ -3,26 +3,7 @@ import Client from './Client';
 import { Table, Button } from 'react-bootstrap';
 import UsePackEditNew from './UsePackEditNew';
 import Autosuggest from 'react-autosuggest';
-//import Autocomplete from './Autocomplete'
-// import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-// let styles = {
-//   item: {
-//     padding: '2px 6px',
-//     cursor: 'default'
-//   },
-
-//   highlightedItem: {
-//     color: 'white',
-//     background: 'hsl(200, 50%, 50%)',
-//     padding: '2px 6px',
-//     cursor: 'default'
-//   },
-
-//   menu: {
-//     border: 'solid 1px #ccc'
-//   }
-// }
+import myglobal from '../myglobal';
 class UsePacks2 extends React.Component {
   state = {
     usepacks: [],
@@ -51,6 +32,9 @@ class UsePacks2 extends React.Component {
         this.setState({
           usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
         });
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
     });
   };
   componentDidMount = () => {
@@ -184,7 +168,7 @@ class UsePacks2 extends React.Component {
             编辑
           </Button>
           <Button
-            variant="secondary"
+            variant="danger"
             onClick={() => this.onDeleteClick(idx)}
             style={{ marginLeft: '10px' }}
           >
@@ -220,7 +204,6 @@ class UsePacks2 extends React.Component {
           <Autosuggest
             ref={this.auto1}
             inputProps={{
-              id: 'states-autocomplete',
               value: this.state.auto_value,
               onChange: this.onChange,
             }}
@@ -233,7 +216,7 @@ class UsePacks2 extends React.Component {
           />
           <Button
             style={{ margin: '10px 10px 10px 10px' }}
-            variant="secondary"
+            variant="info"
             onClick={this.bibei}
           >
             必备
@@ -253,7 +236,7 @@ class UsePacks2 extends React.Component {
             value={this.state.newPackName}
             onChange={this.newpackChange}
           />
-          <Button variant="primary" id="id_new_usepack" onClick={this.new_pack}>
+          <Button variant="secondary" id="id_new_usepack" onClick={this.new_pack}>
             新包
           </Button>
         </div>

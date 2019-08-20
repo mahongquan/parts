@@ -116,7 +116,7 @@ class DlgImport extends React.Component {
             />
             <Button
               style={{ margin: '10px 10px 10px 10px' }}
-              className="btn btn-primary"
+              variant="outlined"
               onClick={this.upload}
               type="button"
             >
@@ -124,7 +124,7 @@ class DlgImport extends React.Component {
             </Button>
           </form>
           <div style={{ minHeight: '200px' }}>
-            <table className="table-bordered">
+            <table border="1">
               <thead>
                 <tr>
                   <td>ID</td>

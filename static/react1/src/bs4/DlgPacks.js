@@ -3,19 +3,13 @@ import { Modal } from 'react-bootstrap';
 import Client from './Client';
 import { Button, Table } from 'react-bootstrap';
 import PackEdit from './PackEdit';
-var _ = require('lodash');
+import myglobal from '../myglobal';
 class DlgPacks extends Component {
-  mystate = {
-    start: 0,
-    limit: 5,
-    baoxiang: '',
-    logined: false,
-    search: '',
-  };
   state = {
     contacts: [],
     user: 'AnonymousUser',
     start: 0,
+    limit:10,
     total: 0,
     search: '',
     start_input: 1,
@@ -29,20 +23,6 @@ class DlgPacks extends Component {
     auto_items: [],
     auto_loading: false,
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    // if (_.isEqual(this.props, nextProps) || !_.isEmpty(this.props)) {
-    //     return false
-    // }
-    // return true;
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   close = () => {
     this.setState({ showModal: false });
   };
@@ -54,9 +34,9 @@ class DlgPacks extends Component {
     Client.get(
       '/rest/Pack',
       {
-        start: this.mystate.start,
-        limit: this.mystate.limit,
-        search: this.mystate.search,
+        start: this.state.start,
+        limit: this.state.limit,
+        search: this.state.search,
       },
       contacts2 => {
         var user = contacts2.user;
@@ -67,35 +47,37 @@ class DlgPacks extends Component {
           contacts: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total: contacts2.total,
-          start: this.mystate.start,
+          start: this.state.start,
         });
-        this.mystate.total = contacts2.total;
-      }
-    );
+        this.state.total = contacts2.total;
+      },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
+    });
   };
   handlePrev = e => {
-    this.mystate.start = this.mystate.start - this.mystate.limit;
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start - this.state.limit;
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     //this.setState({start:start});
     this.loaddata();
   };
   handleNext = e => {
-    this.mystate.start = this.mystate.start + this.mystate.limit;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = this.state.start + this.state.limit;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.loaddata();
   };
   jump = () => {
-    this.mystate.start = parseInt(this.state.start_input, 10) - 1;
-    if (this.mystate.start > this.mystate.total - this.mystate.limit)
-      this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
-    if (this.mystate.start < 0) {
-      this.mystate.start = 0;
+    this.state.start = parseInt(this.state.start_input, 10) - 1;
+    if (this.state.start > this.state.total - this.state.limit)
+      this.state.start = this.state.total - this.state.limit; //total >limit
+    if (this.state.start < 0) {
+      this.state.start = 0;
     }
     this.loaddata();
   };
@@ -103,11 +85,10 @@ class DlgPacks extends Component {
     this.setState({ start_input: e.target.value });
   };
   handleSearchChange = e => {
-    this.mystate.search = e.target.value;
-    this.setState({ search: this.mystate.search });
+    this.setState({ search: e.target.value });
   };
   search = e => {
-    this.mystate.start = 0;
+    this.state.start = 0;
     this.loaddata();
   };
   handleEdit = pack_id => {
@@ -121,7 +102,7 @@ class DlgPacks extends Component {
           <td>{contact.id}</td>
           <td>
             <Button
-              variant="secondary"
+              variant="light"
               onClick={() => this.handleEdit(contact.id)}
             >
               {contact.name}
@@ -135,7 +116,7 @@ class DlgPacks extends Component {
           <td>{contact.id}</td>
           <td>
             <Button
-              variant="secondary"
+              variant="light"
               onClick={() => this.handleEdit(contact.id)}
             >
               [NONAME]
@@ -150,22 +131,22 @@ class DlgPacks extends Component {
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.mystate);
+    //console.log(this.state);
     //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
     }
-    //console.log(this.state.start+this.mystate.limit>=this.state.total);
-    if (this.state.start + this.mystate.limit >= this.state.total) {
+    //console.log(this.state.start+this.state.limit>=this.state.total);
+    if (this.state.start + this.state.limit >= this.state.total) {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button onClick={this.handlePrev}>前一页</Button>;
+      prev = <Button variant="light" onClick={this.handlePrev}>前一页</Button>;
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button onClick={this.handleNext}>后一页</Button>;
+      next = <Button variant="light" onClick={this.handleNext}>后一页</Button>;
     } else {
       next = null;
     }
@@ -187,13 +168,12 @@ class DlgPacks extends Component {
             onChange={this.handleSearchChange}
           />
           <Button
-            id="id_bt_search"
-            className="btm btn-info"
+            className="btn-primary"
             onClick={this.search}
           >
             搜索
           </Button>
-          <Table responsive bordered condensed>
+          <Table size="sm" responsive bordered condensed="true">
             <thead>
               <tr>
                 <th>ID</th>

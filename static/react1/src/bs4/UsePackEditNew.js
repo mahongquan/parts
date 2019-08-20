@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PackItems from './PackItems';
-import { Modal } from 'react-bootstrap';
+import { Form,Modal } from 'react-bootstrap';
 class UsePackEditNew extends Component {
   state = {
     showModal: false,
@@ -59,29 +59,23 @@ class UsePackEditNew extends Component {
           <Modal.Title>编辑包</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <table id="table_input" className="table-condensed">
-            <tbody>
-              <tr>
-                <td>ID:</td>
-                <td>
-                  <input
-                    type="text"
-                    id="id"
-                    name="id"
-                    readOnly={true}
-                    disabled="disabled"
-                    defaultValue={this.state.usepack.pack}
-                  />
-                </td>
-                <td>
-                  <label>名称:</label>
-                </td>
-                <td>
-                  <label>{this.state.usepack.name}</label>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <Form>
+  <Form.Group controlId="formBasicEmail">
+    <Form.Label>名称:</Form.Label>
+    <Form.Label>{this.state.usepack.name}</Form.Label>
+    <Form.Label>(ID:</Form.Label>
+    <Form.Label>{this.state.usepack.pack})</Form.Label>
+  </Form.Group>
+  </Form>{
+          // <div style={{display:"flex"}}>
+          //       <Badge>ID:</Badge>
+          //         <Badge>
+          //           {this.state.usepack.pack}
+          //         </Badge>
+          //         <Badge>名称:</Badge>
+          //         <Badge>{this.state.usepack.name}</Badge>
+          // </div>
+        }
           <div id="id_useusepacks">
             <PackItems pack_id={this.state.usepack.pack} />
           </div>

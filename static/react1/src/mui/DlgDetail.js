@@ -25,7 +25,7 @@ class DlgDetail extends React.Component {
   loaddata = contactid => {
     if (!contactid) return;
     var data1 = { id: contactid };
-    console.log(data1);
+    // console.log(data1);
     Client.get('/rest/showcontact', data1, res => {
       console.log(res);
       if (!res.items2) res.items2 = [];
@@ -42,13 +42,13 @@ class DlgDetail extends React.Component {
   };
   shouldComponentUpdate(nextProps, nextState) {
     if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      console.log(this.props);
-      console.log(nextProps);
-      console.log('props not eq');
+      // console.log(this.props);
+      // console.log(nextProps);
+      // console.log('props not eq');
       return true;
     }
     if (!_.isEqual(this.state, nextState)) {
-      console.log('state not eq');
+      // console.log('state not eq');
       return true;
     }
     return false;

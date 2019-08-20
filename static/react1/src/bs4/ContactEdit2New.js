@@ -9,6 +9,7 @@ import Autosuggest from 'react-autosuggest';
 // import './autosuggest.css';
 // import './react-datetime.css'
 import RichTextEditor from 'react-rte';
+import myglobal from '../myglobal';
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -190,6 +191,9 @@ class ContactEdit2New extends Component {
       } else {
         alert(res.message);
       }
+    },(error)=>{
+      console.log(error);
+      myglobal.app.show_webview(error);
     });
   };
   tiaoshi_date_change = value => {
@@ -376,7 +380,7 @@ class ContactEdit2New extends Component {
           <table id="table_input" className="table-condensed">
             <tbody>
               <tr>
-                <td>ID:</td>
+                <td align="right">ID:</td>
                 <td>
                   <input
                     type="text"
@@ -488,7 +492,7 @@ class ContactEdit2New extends Component {
                 </td>
               </tr>
               <tr>
-                <td>
+                <td align="right">
                   <label>包箱:</label>
                 </td>
                 <td>
@@ -501,7 +505,7 @@ class ContactEdit2New extends Component {
                     onChange={this.handleChange}
                   />
                 </td>
-                <td>审核:</td>
+                <td align="right">审核:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.shenhe }}
@@ -558,7 +562,7 @@ class ContactEdit2New extends Component {
                     onChange={this.handleChange}
                   />
                 </td>
-                <td>方法:</td>
+                <td align="right">方法:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.method }}
@@ -577,7 +581,7 @@ class ContactEdit2New extends Component {
               </tr>
 
               <tr>
-                <td>电气:</td>
+                <td align="right">电气:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.dianqi }}
@@ -587,7 +591,7 @@ class ContactEdit2New extends Component {
                     onChange={this.handleChange}
                   />
                 </td>
-                <td>机械:</td>
+                <td align="right">机械:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.jixie }}
@@ -599,7 +603,7 @@ class ContactEdit2New extends Component {
                 </td>
               </tr>
               <tr>
-                <td>红外:</td>
+                <td align="right">红外:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.hongwai }}
@@ -609,7 +613,7 @@ class ContactEdit2New extends Component {
                     onChange={this.handleChange}
                   />
                 </td>
-                <td>热导:</td>
+                <td align="right">热导:</td>
                 <td>
                   <input
                     style={{ backgroundColor: this.state.bg.redao }}
@@ -621,9 +625,9 @@ class ContactEdit2New extends Component {
                 </td>
               </tr>
               <tr>
-                <td>
+                <td align="right">
                   <Button
-                    variant="secondary"
+                    variant="light"
                     onClick={() => {
                       this.setState({ editRich: !this.state.editRich });
                     }}
@@ -649,7 +653,7 @@ class ContactEdit2New extends Component {
             </Button>
             <Button
               className="btn btn-raised"
-              variant="secondary"
+              variant="light"
               style={{ margin: '20px 20px 20px 20px' }}
               id="bt_clearid"
               onClick={this.handleCopy}
