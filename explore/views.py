@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 import time
 import os
 import logging
@@ -43,5 +43,5 @@ def index(request):
 	files=os.listdir(true_path(path,None))
 	output={"path":path,"files":files}
 	#return HttpResponse(json.dumps(output, ensure_ascii=False))
-	r=render_to_response("explore/index.html",output)
+	r=render(request,"explore/index.html",output)
 	return r

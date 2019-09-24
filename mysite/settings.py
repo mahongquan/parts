@@ -126,7 +126,7 @@ LOCALE_PATHS = [
 USE_TZ = True
 TIME_ZONE ='Asia/Shanghai'
 
-LANGUAGE_CODE = 'zh-Hans'
+# LANGUAGE_CODE = 'zh-Hans'
 
 SITE_ID = 1
 

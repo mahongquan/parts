@@ -6,7 +6,8 @@ from django.db import connection,transaction
 from myutil import MyEncoder
 # import datetime
 import json
-from django.shortcuts import render_to_response
+# from django.shortcuts import render
+# from django.http import HttpResponse
 # #from rest_framework.request import Request
 # #from rest_framework.parsers import JSONParser
 # import extjs
@@ -18,8 +19,8 @@ def index(request):
 def loginpage(request):
     c={}
     c.update(csrf(request))
-    r=render_to_response("registration/login.html",c)
-    return(r)
+    # r=render_to_response(,c)
+    return render(request, "registration/login.html", c, content_type='application/xhtml+xml')
 # def mylogin(request):
 #     username = request.POST['username']
 #     password = request.POST['password']
