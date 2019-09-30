@@ -1,3 +1,4 @@
+console.log("Contacts.js")
 import Client from './Client_fetch.js';
 import NullContactEdit from "./ContactEdit.js";
 import NUllDlgPacks from "./DlgPacks.js";
