@@ -10,7 +10,7 @@ import genDoc.genLabel          #标签
 from genDoc.recordXml import genRecord #调试记录
 import re
 import django
-from django.shortcuts import render_to_response
+from django.shortcuts import render#_to_response
 import time
 import os
 from django.http import HttpResponse,HttpResponseRedirect
@@ -538,7 +538,7 @@ def destroy_item2(request):
 def organize(request):
     c=RequestContext(request,{})
     c.update(csrf(request))
-    r=render_to_response("rest/organizer.html",c)
+    r=render(request,"rest/organizer.html",c)
     return(r)
 def geticons(request):
     logging.info("here")

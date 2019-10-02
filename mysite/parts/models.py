@@ -4,7 +4,7 @@ import datetime
 import logging
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.encoding import python_2_unicode_compatible
+# from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.db.models.deletion import CASCADE, SET_DEFAULT, SET_NULL
 import myutil
