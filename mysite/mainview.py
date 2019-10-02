@@ -6,7 +6,7 @@ from django.db import connection,transaction
 from myutil import MyEncoder
 # import datetime
 import json
-# from django.shortcuts import render
+from django.shortcuts import render
 # from django.http import HttpResponse
 # #from rest_framework.request import Request
 # #from rest_framework.parsers import JSONParser
