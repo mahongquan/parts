@@ -190,30 +190,4 @@ class PackItem(models.Model):
 #     class Meta:
 #         verbose_name="标样"
 #         verbose_name_plural=verbose_name
-
-class Danju(models.Model):
-    danjuhao = models.CharField(max_length=30,verbose_name="单据号")
-    danju_date = models.DateField(null=True,blank=True,verbose_name="单据日期",default=datetime.datetime.now)
-    cangku = models.CharField(max_length=30,verbose_name="仓库",null=True,blank=True)
-    bumeng = models.CharField(max_length=30,verbose_name="部门",null=True,blank=True)
-    gongying=models.CharField(max_length=30,verbose_name="供应商")
-    shenhe=models.DateField(null=True,blank=True,verbose_name="审核日期")
-    leibie =  models.CharField(max_length=30,verbose_name="入库类别")
-    beizhu =  models.CharField(max_length=30,verbose_name="备注")
-    filename =  models.CharField(max_length=30,verbose_name="文件名")
-    zhidan =  models.CharField(max_length=30,verbose_name="制单人")
-    qianzi =  models.CharField(max_length=30,verbose_name="签字人")
-    def __str__(self):
-        return str(self.filename)+":"+self.beizhu
-    class Meta:
-        verbose_name="单据"
-        verbose_name_plural="单据"
-class DanjuItem(models.Model):
-    danju=models.ForeignKey(Danju,on_delete=CASCADE,verbose_name="单据")#合同
-    item=models.ForeignKey(Item,on_delete=CASCADE,verbose_name="备件")#备件
-    ct=  models.IntegerField(verbose_name="数量",default=1)#数量
-    def __str__(self):
-        return self.danju.beizhu+"_"+self.item.name+"_"+self.item.guige+"_"+str(self.ct)+self.item.danwei
-    class Meta:
-        verbose_name="单据条目"
-        verbose_name_plural=verbose_name         
+      

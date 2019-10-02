@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     #'ajax_select',
     'rest',
     'fs',
+    'todos',
     #'extjs'
 ]
 

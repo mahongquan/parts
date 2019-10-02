@@ -26,7 +26,7 @@ class PackEdit extends React.Component {
           <Modal.Title>编辑包</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <label>id:{this.state.pack_id}</label>
+          <label>name:{this.state.name}</label>
           <div id="id_useusepacks">
             <PackItems pack_id={this.state.pack_id} />
           </div>

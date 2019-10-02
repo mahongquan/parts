@@ -1,11 +1,13 @@
 import Client from './Client_fetch.js';
 import NullContactEdit from "./ContactEdit.js";
+import NUllDlgPacks from "./DlgPacks.js";
 var app = new Vue({
   template:`<div>
   <b-navbar toggleable="lg" type="dark" variant="dark">
     <b-navbar-brand href="#">备件</b-navbar-brand>
       <b-navbar-nav >
           <b-nav-item href="/">home</b-nav-item>
+          <b-nav-item v-on:click="openDlgPack">包</b-nav-item>
       </b-navbar-nav>
           <b-input  style="max-width:200px" placeholder="合同 or 仪器编号" v-model="search">
           </b-input>
@@ -21,6 +23,7 @@ var app = new Vue({
       <div class="container table-responsive">
         <div id="todoapp">
           <div id="main" style="min-height:200px;">
+     <!--          
             <b-button @click="toggleBusy">Toggle Busy State</b-button>
             <b-table :busy="isBusy" striped responsive hover primary-key="id" :items="contacts" :fields="fields" >
               <template slot="table-caption">This is a table caption.</template>
@@ -34,8 +37,7 @@ var app = new Vue({
             <b-dropdown-item>详细</b-dropdown-item>
           </b-dropdown>
       </template>
-            </b-table>
-            <!--
+            </b-table> !-->
             <table class="table-bordered">
               <thead>
                 <tr>
@@ -74,13 +76,13 @@ var app = new Vue({
                   <td><a>{{ contact.method }}</a></td>
                 </tr>
               </tbody>
-            </table> !-->
+            </table>
             <button v-on:click="prev" id="bt_prev">前一页</button>
             <label id="page">{{start}}/{{total}}</label>
             <button v-on:click="next" id="bt_next">后一页</button>
           </div>
-
           <contact-edit ref="dlgEdit" v-bind:contact="contact" v-bind:index="currentIndex"/>
+          <dlg-packs ref="dlgPacks" />
           <div style="min-height: 300px"></div>
         </div>
       </div></div>
@@ -90,7 +92,12 @@ var app = new Vue({
     this.load_data();
   },
   methods: {
-     toggleBusy() {
+    openDlgPack(){
+      console.log("openDlgPack");
+      console.log(this.$refs.dlgPacks);
+      this.$refs.dlgPacks.open();
+    },
+    toggleBusy() {
         this.isBusy = !this.isBusy
       },
     load_data: function() {

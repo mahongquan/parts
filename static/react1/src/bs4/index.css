@@ -19,5 +19,9 @@ body {
     width: 700px;
     max-width: none !important;
 }
-
-
+.mylink{
+  color:#00f;
+}
+.mylink:hover {
+    text-decoration: underline;
+}

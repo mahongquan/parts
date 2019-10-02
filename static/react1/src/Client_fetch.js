@@ -61,6 +61,10 @@ function post(url, data, cb,err_callback) {
   var method = 'POST';
   return myFetch(method, url, JSON.stringify(data), cb,undefined,err_callback);
 }
+function put(url, data, cb,err_callback) {
+  var method = 'PUT';
+  return myFetch(method, url, JSON.stringify(data), cb,undefined,err_callback);
+}
 function postOrPut(url, data, cb,err_callback) {
   var method = 'POST';
   if (data.id) {
@@ -160,7 +164,7 @@ const Client = {
   logout,
   UsePacks,
   PackItems,
-  get,
+  get,put,
   post,
   postOrPut,
   delete1,

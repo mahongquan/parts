@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import DlgTodos from './DlgTodos';
 import {
-  Badge,Table,InputGroup,FormControl,
+  Badge,InputGroup,FormControl,
   Navbar,
   Nav,
   DropdownButton,
@@ -29,6 +29,10 @@ import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth'
 import myglobal from '../myglobal';
+import 'bootstrap/dist/css/bootstrap.css';
+import '../react-datetime.css';
+import './index.css';
+import '../autosuggest.css';
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -313,13 +317,12 @@ export default class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <Button
-            variant="link"
-            style={{ display: 'inline' }}
+          <span
+            className="mylink"
             onClick={() => this.handleEdit(idx)}
           >
             {contact.yiqibh}
-          </Button>
+          </span>
           <DropdownButton
             variant="light"
             style={{ display: 'inline' }}
@@ -361,19 +364,13 @@ export default class App extends Component {
         <td>{contact.method}</td>
       </tr>
     ));
-    // const tooltipdw = (
-    //       <Tooltip id="tooltipdw"><strong>dw</strong></Tooltip>
-    //     );
     var hasprev = true;
     var hasnext = true;
     let prev;
     let next;
-    //console.log(this.state);
-    //console.log(this.state);
     if (this.state.start === 0) {
       hasprev = false;
     }
-    //console.log(this.state.start+this.state.limit>=this.state.total);
     if (this.state.start + this.state.limit >= this.state.total) {
       hasnext = false;
     }
@@ -578,7 +575,7 @@ export default class App extends Component {
             导入合同
           </Button>
         </div>
-        <Table size="sm" condensed="true" striped bordered>
+        <table className="table-sm table-striped table-bordered">
           <thead>
             <tr>
               <th>ID</th>
@@ -623,7 +620,7 @@ export default class App extends Component {
             </tr>
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
-        </Table>
+        </table>
         <div style={{ display: 'flex', alignItems: 'center'}}>
         {prev}
         <Badge>
