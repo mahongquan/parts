@@ -20,7 +20,7 @@ admin.site.register(UsePack,UsePackAdmin)
 
 class ContactAdmin(admin.ModelAdmin):
     date_hierarchy = 'tiaoshi_date'
-    list_display =  ('yiqibh','yiqixinghao','hetongbh', 'yonghu')
+    list_display =  ('yiqibh','tiaoshi_date','yiqixinghao','hetongbh', 'yonghu')
     list_filter = ('baoxiang','yiqixinghao')
     search_fields = ('hetongbh', 'yonghu','yiqibh')
     list_per_page=10
