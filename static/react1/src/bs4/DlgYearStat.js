@@ -32,7 +32,7 @@ class DlgStat extends Component {
     }
   }
   open = () => {
-    this.setState({ showModal: true });
+    this.setState({ showModal: true,baoxiang:"" });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
