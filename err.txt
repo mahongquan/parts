@@ -1,2 +1,3 @@
 ﻿2017-8-21 从python34升级至python36导致pyopenxl更改表格后，边框消失，回退至python34;可能是python36的lxml库有问题。
 2018-1-23 发现使用openpyxl2.3.5版本可以解决上面问题，2.4.*有上面问题。
+2019-10-11 strict MIME type checking is enabled脚本突然不能运行
