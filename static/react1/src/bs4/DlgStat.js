@@ -4,7 +4,6 @@ import Client from './Client';
 import { Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
 //import 'react-select/dist/react-select.css';
-var _ = require('lodash');
 class DlgStat extends Component {
   state = {
     showModal: false,
