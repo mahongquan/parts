@@ -16,13 +16,19 @@ class DlgStat extends Component {
     baoxiang: '',
     data : []
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
-    if (!this.props.showModal && nextProps.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
       this.open();
-    } else if (this.props.showModal && !nextProps.showModal) {
+    } else if (prevProps.showModal && !this.props.showModal) {
     }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   //console.log(nextProps)
+  //   if (!this.props.showModal && nextProps.showModal) {
+  //     this.open();
+  //   } else if (this.props.showModal && !nextProps.showModal) {
+  //   }
+  // }
   close = () => {
     this.setState({ showModal: false });
   };

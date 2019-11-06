@@ -11,17 +11,6 @@ class PackItemEditNew extends Component {
     bg: {},
     date_open: false,
   };
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ showModal: nextProps.showModal });
-  //   if (nextProps.index==null){
-  //     this.old={};
-  //   }
-  //   else{
-  //     this.parent=nextProps.parent;
-  //     this.old=this.parent.state.items[nextProps.index];
-  //   }
-  //   this.setState({packitem:this.old});
-  // }
   close = () => {
     this.setState({ showModal: false });
   };

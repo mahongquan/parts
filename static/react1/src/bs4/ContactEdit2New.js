@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import { Button, Modal } from 'react-bootstrap';
-//import Modal from './MyModal';
 import update from 'immutability-helper';
 import Client from './Client';
-//import Autocomplete from './Autocomplete';
 import Autosuggest from 'react-autosuggest';
-// import './autosuggest.css';
-// import './react-datetime.css'
 import RichTextEditor from 'react-rte';
 import myglobal from '../myglobal';
 var moment = require('moment');
@@ -25,7 +21,7 @@ class ContactEdit2New extends Component {
       tiaoshi_date: moment(),
         addr: '',
         baoxiang: '',channels:"",        dianqi:"",
-        hetongbh: '',
+        hetongbh: '',hongwai:"",redao:"",
         id:"",
         jixie:"",
         shenhe: '',
@@ -66,7 +62,7 @@ class ContactEdit2New extends Component {
         tiaoshi_date: moment().format('YYYY-MM-DD'),
         addr: '',
         baoxiang: '',channels:"",        dianqi:"",
-        hetongbh: '',
+        hetongbh: '',hongwai:"",redao:"",
         id:"",
         jixie:"",
         shenhe: '',

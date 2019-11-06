@@ -27,13 +27,20 @@ class DlgImport extends React.Component {
       });
     });
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
       this.onShow();
-    } else if (this.props.showModal && !nextProps.showModal) {
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (!this.props.showModal && nextProps.showModal) {
+  //     this.onShow();
+  //   } else if (this.props.showModal && !nextProps.showModal) {
+  //     this.onHide();
+  //   }
+  // }
   onShow = () => {
     this.open();
   };

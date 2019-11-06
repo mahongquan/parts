@@ -13,17 +13,24 @@ class DlgItems extends Component {
     start_input: 1,
     baoxiang: '',
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.showModal && !this.props.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
       this.open();
-    }
-    if (nextProps.contact_id) {
-      this.load_data(nextProps.contact_id);
-    }
-    if (nextProps.baoxiang != null) {
-      this.setState({ baoxiang: nextProps.baoxiang });
+    } else if (prevProps.showModal && !this.props.showModal) {
+      // this.onHide();
     }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (nextProps.showModal && !this.props.showModal) {
+  //     this.open();
+  //   }
+  //   if (nextProps.contact_id) {
+  //     this.load_data(nextProps.contact_id);
+  //   }
+  //   if (nextProps.baoxiang != null) {
+  //     this.setState({ baoxiang: nextProps.baoxiang });
+  //   }
+  // }
   close = () => {
     console.log('close');
   };

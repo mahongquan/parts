@@ -12,9 +12,6 @@ class App extends React.Component {
     super(props);
     props.actions.loadTodo();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // console.log(nextProps)
-  }
   render = () => {
     // console.log(this.props);
     return (
