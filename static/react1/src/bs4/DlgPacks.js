@@ -49,6 +49,7 @@ class DlgPacks extends Component {
           total: contacts2.total,
           start: this.state.start,
         });
+        // eslint-disable-next-line
         this.state.total = contacts2.total;
       },(error)=>{
       console.log(error);
@@ -56,27 +57,35 @@ class DlgPacks extends Component {
     });
   };
   handlePrev = e => {
+    // eslint-disable-next-line
     this.state.start = this.state.start - this.state.limit;
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     //this.setState({start:start});
     this.loaddata();
   };
   handleNext = e => {
+    // eslint-disable-next-line
     this.state.start = this.state.start + this.state.limit;
     if (this.state.start > this.state.total - this.state.limit)
+      // eslint-disable-next-line
       this.state.start = this.state.total - this.state.limit; //total >limit
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     this.loaddata();
   };
   jump = () => {
+    // eslint-disable-next-line
     this.state.start = parseInt(this.state.start_input, 10) - 1;
     if (this.state.start > this.state.total - this.state.limit)
+      // eslint-disable-next-line
       this.state.start = this.state.total - this.state.limit; //total >limit
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     this.loaddata();
@@ -88,6 +97,7 @@ class DlgPacks extends Component {
     this.setState({ search: e.target.value });
   };
   search = e => {
+    // eslint-disable-next-line
     this.state.start = 0;
     this.loaddata();
   };

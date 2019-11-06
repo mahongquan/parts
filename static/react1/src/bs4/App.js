@@ -176,21 +176,27 @@ export default class App extends Component {
     this.setState({ search2: e.target.value });
   };
   handlePrev = e => {
+    // eslint-disable-next-line
     this.state.start = this.state.start - this.state.limit;
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     this.load_data();
   };
   search = e => {
+    // eslint-disable-next-line
     this.state.start = 0;
     this.load_data();
   };
   jump = () => {
+    // eslint-disable-next-line
     this.state.start = parseInt(this.state.start_input, 10) - 1;
     if (this.state.start > this.state.total - this.state.limit)
+      // eslint-disable-next-line
       this.state.start = this.state.total - this.state.limit; //total >limit
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     this.load_data();
@@ -205,16 +211,21 @@ export default class App extends Component {
     this.setState({ showDlgDetail: true, contactid: contactid });
   };
   handleNext = e => {
+    // eslint-disable-next-line
     this.state.start = this.state.start + this.state.limit;
     if (this.state.start > this.state.total - this.state.limit)
+      // eslint-disable-next-line
       this.state.start = this.state.total - this.state.limit; //total >limit
     if (this.state.start < 0) {
+      // eslint-disable-next-line
       this.state.start = 0;
     }
     this.load_data();
   };
   onSelectBaoxiang = e => {
+    // eslint-disable-next-line
     this.state.start = 0;
+    // eslint-disable-next-line
     this.state.baoxiang = e;
     this.load_data();
   };

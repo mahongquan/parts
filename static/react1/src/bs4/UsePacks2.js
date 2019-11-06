@@ -44,6 +44,7 @@ class UsePacks2 extends React.Component {
     if (this.props.contact_id) {
       this.load_data(this.props.contact_id);
     }
+    this.unload=false;
   };
   componentWillUnmount = () => {
     this.unload = true;
