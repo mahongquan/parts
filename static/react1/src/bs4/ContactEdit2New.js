@@ -10,42 +10,11 @@ import Autosuggest from 'react-autosuggest';
 // import './react-datetime.css'
 import RichTextEditor from 'react-rte';
 import myglobal from '../myglobal';
-var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 var DateTime = require('react-datetime');
 
-// class MyStatefulEditor extends Component {
-//   static propTypes = {
-//     onChange: PropTypes.func
-//   };
-
-//   state = {
-//     value: RichTextEditor.createEmptyValue()
-//   }
-
-//   onChange = (value) => {
-//     this.setState({value});
-//     if (this.props.onChange) {
-//       // Send the changes up to the parent component as an HTML string.
-//       // This is here to demonstrate using `.toString()` but in a real app it
-//       // would be better to avoid generating a string on each change.
-//       this.props.onChange(
-//         value.toString('html')
-//       );
-//     }
-//   };
-
-//   render () {
-//     return (
-//       <RichTextEditor
-//         value={this.state.value}
-//         onChange={this.onChange}
-//       />
-//     );
-//   }
-// }
 
 class ContactEdit2New extends Component {
   state = {
@@ -54,6 +23,15 @@ class ContactEdit2New extends Component {
     contact: {
       yujifahuo_date: moment(),
       tiaoshi_date: moment(),
+        addr: '',
+        baoxiang: '',channels:"",        dianqi:"",
+        hetongbh: '',
+        id:"",
+        jixie:"",
+        shenhe: '',
+        yiqibh: '',
+        yiqixinghao: '',
+        yonghu: '',
     },
     hiddenPacks: true,
     bg: {},
@@ -61,32 +39,15 @@ class ContactEdit2New extends Component {
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      // console.log(this.props);
-      // console.log(nextProps);
-      // console.log("props not eq");
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      // console.log("state not eq");
-      return true;
-    }
-    return false;
-  }
-  componentDidMount = () => {
-    // console.log("ContactEdit2New mounted");
-  };
 
   close = () => {
     console.log('close');
     this.setState({ showModal: false });
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps.index);
-    } else if (this.props.showModal && !nextProps.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow(this.props.index);
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }
@@ -104,13 +65,14 @@ class ContactEdit2New extends Component {
         yujifahuo_date: moment().format('YYYY-MM-DD'),
         tiaoshi_date: moment().format('YYYY-MM-DD'),
         addr: '',
-        channels: '',
-        baoxiang: '',
+        baoxiang: '',channels:"",        dianqi:"",
         hetongbh: '',
+        id:"",
+        jixie:"",
         shenhe: '',
-        yonghu: '',
         yiqibh: '',
         yiqixinghao: '',
+        yonghu: '',
       };
       this.setState({ hiddenPacks: true });
     } else {
@@ -125,41 +87,10 @@ class ContactEdit2New extends Component {
     this.old.detail = this.old.detail || '';
     this.old.addr = this.old.addr || '';
     var val1 = RichTextEditor.createValueFromString(this.old.detail, 'html');
-    // console.log(val1);
-
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
   };
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   this.setState({bg:{}});
-  //   this.parent=this.props.parent;
-  //   if (this.index==null){
-  //     this.old={
-  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
-  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
-  //       addr:"",
-  //       channels:"",
-  //       baoxiang:"",
-  //       hetongbh:"",
-  //       shenhe:"",
-  //       yonghu:"",
-  //       yiqibh:"",
-  //       yiqixinghao:""
-  //     };
-  //   }
-  //   else{
-  //     this.old=this.parent.state.contacts[this.index];
-  //     this.setState({hiddenPacks:false});
-  //   }
-  //   this.setState({contact:this.old});
-  // }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
+
   handleCopy = data => {
     console.log('copy');
     this.index = null;
@@ -338,35 +269,8 @@ class ContactEdit2New extends Component {
   detailchange = value => {
     console.log(value);
     this.setState({ rich: value });
-    // const contact2=update(this.state.contact,{["detail"]: {$set:value.toString('html')}});
-    // this.setState({contact:contact2});
-    // if (this.props.onChange) {
-    //   // Send the changes up to the parent component as an HTML string.
-    //   // This is here to demonstrate using `.toString()` but in a real app it
-    //   // would be better to avoid generating a string on each change.
-    //   this.props.onChange(
-    //     value.toString('html')
-    //   );
-    // }
   };
   render = () => {
-    // var o=[
-    //                     "1O(低氧)",
-    //                     "1O(高氧)",
-    //                     "1O(低氧)+2N",
-    //                     "1C(低碳)+2S",
-    //                     "1C(高碳)+2S",
-    //                     "2C+1S(低硫)",
-    //                     "2C+1S(高硫)",
-    //                     "2C+2S",
-    //                     "2O+2N",
-    //                     "2O",
-    //                   ];
-    // var options_channels=[];
-    // for(var i in o){
-    //   options_channels.push({label:o[i],value:o[i]});
-    // }
-    // console.log("render contactedit");
     return (
       <Modal
         show={this.props.showModal}
