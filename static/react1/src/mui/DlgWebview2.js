@@ -34,7 +34,7 @@ class HtmlEditor extends Component {
       title: '',
     };
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.url && nextProps.url!==this.props.url) {
       this.setState({filename:nextProps.url})
     }

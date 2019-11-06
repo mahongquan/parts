@@ -13,7 +13,7 @@ class DlgItems extends Component {
     start_input: 1,
     baoxiang: '',
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.showModal && !this.props.showModal) {
       this.open();
     }

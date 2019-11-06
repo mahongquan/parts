@@ -26,7 +26,7 @@ class DlgStat extends Component {
   //      return false
   //   }
   // }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps);
     } else if (this.props.showModal && !nextProps.showModal) {

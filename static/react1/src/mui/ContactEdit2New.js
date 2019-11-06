@@ -52,7 +52,18 @@ class ContactEdit2New extends Component {
     console.log('close');
     this.setState({ showModal: false });
   };
-  componentWillReceiveProps(nextProps) {
+ //  static getDerivedStateFromProps(nextProps, prevState) {
+ //    const {type} = nextProps;
+ //    // 当传入的type发生变化的时候，更新state
+ //    if (type !== prevState.type) {
+ //        return {
+ //            type,
+ //        };
+ //    }
+ //    // 否则，对于state不进行任何操作
+ //    return null;
+ // }
+  UNSAFE_componentWillReceiveProps(nextProps) {
     //console.log(nextProps)
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps.index);

@@ -9,7 +9,7 @@ class DlgFolder extends React.Component {
     super();
     this.state={error:""}
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.open && nextProps.open) {
       this.onShow(nextProps.contactid);
     } else if (this.props.open && !nextProps.open) {

@@ -7,7 +7,7 @@ class DlgUrl extends Component {
   state = {
     error: '',
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.open && nextProps.open) {
       this.open(nextProps.url,nextProps.contactid);
     } 

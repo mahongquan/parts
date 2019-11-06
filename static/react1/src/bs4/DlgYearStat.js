@@ -24,7 +24,7 @@ class DlgStat extends Component {
     baoxiang: '',
     data : []
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     //console.log(nextProps)
     if (!this.props.showModal && nextProps.showModal) {
       this.open();

@@ -3,8 +3,16 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import FormGroup from '@material-ui/core/FormGroup';
-import Typography from '@material-ui/core/Typography';
+// import FormGroup from '@material-ui/core/FormGroup';
+// import { makeStyles } from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
+// import Typography from '@material-ui/core/Typography';
+
+// const useStyles = makeStyles(theme => ({
+//   link: {
+//     margin: theme.spacing(1),
+//   },
+// }));
 let _ = require('lodash');
 export default class SimpleMenu extends React.Component {
   state = {
@@ -21,6 +29,7 @@ export default class SimpleMenu extends React.Component {
   };
 
   render() {
+    // const classes = useStyles();
     const { anchorEl } = this.state;
     // console.log(this.props.children);
     let cs;
@@ -53,13 +62,12 @@ export default class SimpleMenu extends React.Component {
     }
     return (
       <div>
-        <FormGroup style={{border:"solid 1px",borderRadius:"6px"}} row>
-          <Typography 
-            onClick={this.props.click_title} 
-            color="inherit">{this.props.title}
-          </Typography>
-          <ArrowDropDownIcon   onClick={this.handleClick} />
-        </FormGroup>
+        <div>
+        <Link onClick={this.props.click_title}  href="#" >
+          {this.props.title}
+        </Link>
+        <ArrowDropDownIcon   onClick={this.handleClick} />
+        </div>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}

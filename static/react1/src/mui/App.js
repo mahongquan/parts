@@ -540,12 +540,11 @@ class App extends Component {
           <Toolbar>
             <Typography
               variant="h6"
-              color="inherit"
               className={this.props.classes.grow}
             >
               装箱单
             </Typography>
-            <Button variant="outlined" color="inherit" onClick={this.openDlgCopyPack}>
+            <Button variant="outlined" onClick={this.openDlgCopyPack}>
               复制包
             </Button>
             <DropdownButton
@@ -562,9 +561,8 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-            <Button variant="outlined" color="inherit" onClick={this.search}>
+            <Button variant="outlined"  onClick={this.search}>
               <InputBase variant="outlined"
-                color="inherit"
                 onKeyPress={this.keypress}
                 value={this.state.search}
                 placeholder="合同/仪器编号/客户"
@@ -585,7 +583,6 @@ class App extends Component {
               新仪器
             </Button>
             <Button
-              color="inherit"
               variant="outlined" 
               onClick={this.openDlgImport}
             >

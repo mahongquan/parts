@@ -18,7 +18,7 @@ class UsePacks2 extends React.Component {
     super(props);
     this.auto1 = React.createRef();
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.contact_hetongbh) {
       this.setState({ newPackName: nextProps.contact_hetongbh });
     }

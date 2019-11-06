@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     props.actions.loadTodo();
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // console.log(nextProps)
   }
   render = () => {

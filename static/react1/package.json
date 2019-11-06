@@ -39,6 +39,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "trim-right": "^1.0.1",
     "typescript": "^3.7.2"
   },
   "devDependencies": {
