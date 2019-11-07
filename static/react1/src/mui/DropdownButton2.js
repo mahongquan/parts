@@ -63,7 +63,7 @@ export default class SimpleMenu extends React.Component {
     return (
       <div>
         <div>
-        <Link onClick={this.props.click_title}  href="#" >
+        <Link onClick={this.props.click_title}  >
           {this.props.title}
         </Link>
         <ArrowDropDownIcon   onClick={this.handleClick} />

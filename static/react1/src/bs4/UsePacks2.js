@@ -18,12 +18,24 @@ class UsePacks2 extends React.Component {
     super(props);
     this.auto1 = React.createRef();
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (nextProps.contact_hetongbh) {
+  //     this.setState({ newPackName: nextProps.contact_hetongbh });
+  //   }
+  //   if (
+  //     nextProps.contact_id &&
+  //     this.props.contact_id !== nextProps.contact_id
+  //   ) {
+  //     this.load_data(nextProps.contact_id);
+  //   }
+  // }
   componentDidUpdate(prevProps) {
     if(this.unload) return;
     if (this.props.contact_hetongbh !==prevProps.contact_hetongbh) {
       this.setState({ newPackName: this.props.contact_hetongbh });
     }
     if (prevProps.contact_id !== this.props.contact_id) {
+      console.log("did update")
       this.load_data(this.props.contact_id);
     }
   }
@@ -43,6 +55,7 @@ class UsePacks2 extends React.Component {
       this.setState({ newPackName: this.props.contact_hetongbh });
     }
     if (this.props.contact_id) {
+      console.log("did mount")
       this.load_data(this.props.contact_id);
     }
     this.unload=false;
