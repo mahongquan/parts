@@ -544,9 +544,6 @@ class App extends Component {
             >
               装箱单
             </Typography>
-            <Button variant="outlined" onClick={this.openDlgCopyPack}>
-              复制包
-            </Button>
             <DropdownButton
               title={'包箱:' + this.state.baoxiang}
               id="id_dropdown2">
@@ -588,6 +585,10 @@ class App extends Component {
             >
               导入标样
             </Button>
+            <Button variant="outlined" onClick={this.openDlgCopyPack}>
+              复制包
+            </Button>
+            
             <DropdownButton title="杂项">
               <MenuItem onClick={()=>{this.setState({showWebview:true})}}>
                 webview

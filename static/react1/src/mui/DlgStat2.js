@@ -26,10 +26,10 @@ class DlgStat extends Component {
   //      return false
   //   }
   // }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps);
-    } else if (this.props.showModal && !nextProps.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow();
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }

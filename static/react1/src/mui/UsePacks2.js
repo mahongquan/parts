@@ -44,17 +44,27 @@ class UsePacks2 extends React.Component {
     super(props);
     this.auto1 = React.createRef();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.contact_hetongbh) {
-      this.setState({ newPackName: nextProps.contact_hetongbh });
+  componentDidUpdate(prevProps) {
+    if(this.unload) return;
+    if (this.props.contact_hetongbh !==prevProps.contact_hetongbh) {
+      this.setState({ newPackName: this.props.contact_hetongbh });
     }
-    if (
-      nextProps.contact_id &&
-      this.props.contact_id !== nextProps.contact_id
-    ) {
-      this.load_data(nextProps.contact_id);
+    if (prevProps.contact_id !== this.props.contact_id) {
+      console.log("did update")
+      this.load_data(this.props.contact_id);
     }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (nextProps.contact_hetongbh) {
+  //     this.setState({ newPackName: nextProps.contact_hetongbh });
+  //   }
+  //   if (
+  //     nextProps.contact_id &&
+  //     this.props.contact_id !== nextProps.contact_id
+  //   ) {
+  //     this.load_data(nextProps.contact_id);
+  //   }
+  // }
   load_data = contact_id => {
     Client.UsePacks(contact_id, usepacks => {
       if (!this.unload)
@@ -91,28 +101,8 @@ class UsePacks2 extends React.Component {
     console.log('selected');
     console.log(data);
     this.addrow(data.id);
-    //this.setState({auto_value:value, auto_items: [ item ] })
   };
   onSuggestionsClearRequested = () => {};
-  // auto_change=(event, value)=>{
-  //   console.log("auto_change");
-  //   if (value.length>1)
-  //   {
-  //     this.setState({ auto_value:value, auto_loading: true });
-  //     Client.get("/rest/Pack",{search:value} ,(items) => {
-  //         this.setState({ auto_items: items.data, auto_loading: false })
-  //     });
-  //   }
-  //   else{
-  //     this.setState({ auto_value:value, auto_loading: false });
-  //   };
-  // };
-  // auto_select=(value, item) => {
-  //     console.log("selected");
-  //     console.log(item);
-  //     this.addrow(item.id);
-  //     //this.setState({auto_value:value, auto_items: [ item ] })
-  // }
   bibei = id => {
     this.setState({ auto_value: '必备' });
     console.log(this.auto1);

@@ -9,10 +9,17 @@ class DlgFolder extends React.Component {
     super();
     this.state={error:""}
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.open && nextProps.open) {
-      this.onShow(nextProps.contactid);
-    } else if (this.props.open && !nextProps.open) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (!this.props.open && nextProps.open) {
+  //     this.onShow(nextProps.contactid);
+  //   } else if (this.props.open && !nextProps.open) {
+  //     this.onHide();
+  //   }
+  // }
+    componentDidUpdate(prevProps) {
+    if (!prevProps.open && this.props.open ) {
+      this.onShow(this.props.contactid);
+    } else if (prevProps.open && !this.props.open) {
       this.onHide();
     }
   }
