@@ -63,11 +63,18 @@ class ContactEdit2New extends Component {
  //    // 否则，对于state不进行任何操作
  //    return null;
  // }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps.index);
-    } else if (this.props.showModal && !nextProps.showModal) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   //console.log(nextProps)
+  //   if (!this.props.showModal && nextProps.showModal) {
+  //     this.onShow(nextProps.index);
+  //   } else if (this.props.showModal && !nextProps.showModal) {
+  //     this.onHide();
+  //   }
+  // }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow(this.props.index);
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }

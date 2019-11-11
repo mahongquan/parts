@@ -47,12 +47,17 @@ class HtmlEditor extends Component {
     console.log(this.w);
     // this.w.loadURL(this.state.filename);
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
-    if (nextProps.url && nextProps.url!==this.props.url) {
+  componentDidUpdate(prevProps) {
+    if (this.props.url  && this.props.url!=prevProps.url ) {
       this.setState({filename:nextProps.url})
     }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   //console.log(nextProps)
+  //   if (nextProps.url && nextProps.url!==this.props.url) {
+  //     this.setState({filename:nextProps.url})
+  //   }
+  // }
   componentWillUnmount() {}
   filename_input_change = e => {
     this.setState({ filename_input: e.target.value });

@@ -53,10 +53,17 @@ class DlgDetail extends React.Component {
     }
     return false;
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps.contactid);
-    } else if (this.props.showModal && !nextProps.showModal) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (!this.props.showModal && nextProps.showModal) {
+  //     this.onShow(nextProps.contactid);
+  //   } else if (this.props.showModal && !nextProps.showModal) {
+  //     this.onHide();
+  //   }
+  // }
+    componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow(this.props.contactid);
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }

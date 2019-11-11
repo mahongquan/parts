@@ -8,8 +8,7 @@ export default class DlgOkCancel extends React.Component {
   constructor(props) {
     super();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-  }
+
   ok = () => {
     this.props.ok();
     this.props.onClose();

@@ -7,13 +7,18 @@ class DlgUrl extends Component {
   state = {
     error: '',
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.open && nextProps.open) {
-      this.open(nextProps.url,nextProps.contactid);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.open(this.props.url,this.props.contactid);
     } 
-    else if (this.props.open && !nextProps.open) {
-    }
   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (!this.props.open && nextProps.open) {
+  //     this.open(nextProps.url,nextProps.contactid);
+  //   } 
+  //   else if (this.props.open && !nextProps.open) {
+  //   }
+  // }
 
   open = (url, contactid) => {
     let data={id:contactid}

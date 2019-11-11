@@ -51,10 +51,11 @@ class DlgImport extends React.Component {
     }
     return false;
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
+  
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
       this.onShow();
-    } else if (this.props.showModal && !nextProps.showModal) {
+    } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }

@@ -9,10 +9,9 @@ export default class DlgInput extends React.Component {
     super();
     this.state = {color: props.value };
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // console.log(nextProps)
-    if (nextProps.value) {
-      this.setState({ color: nextProps.value });
+  componentDidUpdate(prevProps) {
+    if (this.props.value) {
+      this.props.setState({color:this.props.value});
     }
   }
   ok = () => {

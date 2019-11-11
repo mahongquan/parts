@@ -50,12 +50,9 @@ class DlgItems extends Component {
     auto_items: [],
     auto_loading: false,
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.showModal && !this.props.showModal) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
       this.open();
-    }
-    if (nextProps.contact_id) {
-      this.load_data(nextProps.contact_id);
     }
   }
   close = () => {

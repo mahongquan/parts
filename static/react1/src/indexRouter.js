@@ -3,6 +3,7 @@ import App from './bs4/App';
 import App_mui from './mui/App';
 import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
+import App_redux from './mui_redux/index';
 import {Router, Route,Switch,Link} from 'react-router-dom'
 // import createHashHistory from "history/createHashHistory";
 let createHashHistory= require("history").createHashHistory;
@@ -20,6 +21,7 @@ class Index extends Component{
                 <Link to="/todos" >bs4 Todos</Link>
                 <Link to="/mui_todos" >mui Todos</Link>
                 <Link to="/mui_app" >mui App</Link>
+                <Link to="/mui_redux" >mui reudx App</Link>
               </div>);
   }
 }
@@ -30,6 +32,7 @@ class Routers extends Component{
                 <Route exact path="/todos" component={Todos} />
                 <Route exact path="/mui_todos" component={Todos_mui} />
                 <Route exact path="/mui_app" component={App_mui} />
+                <Route exact path="/mui_redux" component={App_redux} />
                 <Route exact path="/index" component={Index} />
                 <Route component={App}/>
               </Switch>);
