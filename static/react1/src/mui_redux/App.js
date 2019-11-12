@@ -33,7 +33,7 @@ import InputBase from '@material-ui/core/InputBase';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TodoActions, types } from './reducers';
+import { CONTACTActions, types } from './reducers';
 
 const styles = theme => ({
   root: {
@@ -96,7 +96,7 @@ class App extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.logined && nextProps.logined) {
-      this.props.actions.loadTodo({
+      this.props.actions.loadCONTACT({
         start: this.props.start,
         limit: this.props.limit,
         search: this.props.search,
@@ -115,8 +115,8 @@ class App extends Component {
     this.setState({ target: event.target, showcontext: true });
   };
   componentDidMount = () => {
-    // this.props.dispatch({type:types.LOAD_TODO});
-    this.props.actions.loadTodo({
+    // this.props.dispatch({type:types.LOAD_CONTACT});
+    this.props.actions.loadCONTACT({
       start: this.props.start,
       limit: this.props.limit,
       search: this.props.search,
@@ -148,7 +148,7 @@ class App extends Component {
       start = 0;
     }
     this.setState({ start: start });
-    this.props.actions.loadTodo({
+    this.props.actions.loadCONTACT({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -156,7 +156,7 @@ class App extends Component {
     });
   };
   search = e => {
-    this.props.actions.loadTodo({
+    this.props.actions.loadCONTACT({
       start: 0,
       limit: this.props.limit,
       search: this.props.search,
@@ -170,7 +170,7 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({
+    this.props.actions.loadCONTACT({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -193,7 +193,7 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({
+    this.props.actions.loadCONTACT({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -201,7 +201,7 @@ class App extends Component {
     });
   };
   onSelectBaoxiang = e => {
-    this.props.actions.loadTodo({
+    this.props.actions.loadCONTACT({
       start: 0,
       limit: this.props.limit,
       search: this.props.search,
@@ -576,11 +576,11 @@ App.propTypes = {
 };
 const mapStateToProps = state => {
   // console.log(state);
-  return state.todos;
+  return state.CONTACTs;
 };
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch),
+  actions: bindActionCreators(CONTACTActions, dispatch),
   dispatch: dispatch,
 });
 export default connect(
@@ -623,7 +623,7 @@ export default connect(
 
 // import { bindActionCreators } from 'redux';
 // import { connect } from 'react-redux';
-// import { TodoActions, types } from './reducers';
+// import { CONTACTActions, types } from './reducers';
 
 // const styles = theme => ({
 //   root: {
@@ -686,7 +686,7 @@ export default connect(
 //   }
 //   componentWillReceiveProps(nextProps) {
 //     if (!this.props.logined && nextProps.logined) {
-//       this.props.actions.loadTodo({
+//       this.props.actions.loadCONTACT({
 //         start: this.props.start,
 //         limit: this.props.limit,
 //         search:this.props.search,
@@ -705,8 +705,8 @@ export default connect(
 //     this.setState({ target: event.target, showcontext: true });
 //   };
 //   componentDidMount = () => {
-//     // this.props.dispatch({type:types.LOAD_TODO});
-//     this.props.actions.loadTodo({
+//     // this.props.dispatch({type:types.LOAD_CONTACT});
+//     this.props.actions.loadCONTACT({
 //         start: this.props.start,
 //         limit: this.props.limit,
 //         search:this.props.search,
@@ -738,13 +738,13 @@ export default connect(
 //       start = 0;
 //     }
 //     this.setState({ start: start });
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadCONTACT({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
 //   };
 //   search = e => {
-//     this.props.actions.loadTodo({start: 0,
+//     this.props.actions.loadCONTACT({start: 0,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
@@ -756,7 +756,7 @@ export default connect(
 //     if (start < 0) {
 //       start = 0;
 //     }
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadCONTACT({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
@@ -777,13 +777,13 @@ export default connect(
 //     if (start < 0) {
 //       start = 0;
 //     }
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadCONTACT({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
 //   };
 //   onSelectBaoxiang = e => {
-//     this.props.actions.loadTodo({start: 0,
+//     this.props.actions.loadCONTACT({start: 0,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: e,});
@@ -1148,11 +1148,11 @@ export default connect(
 // };
 // const mapStateToProps = state => {
 //   // console.log(state);
-//   return state.todos;
+//   return state.CONTACTs;
 // };
 
 // const mapDispatchToProps = dispatch => ({
-//   actions: bindActionCreators(TodoActions, dispatch),
+//   actions: bindActionCreators(CONTACTActions, dispatch),
 //   dispatch:dispatch,
 // });
 // export default connect(

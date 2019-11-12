@@ -39,7 +39,7 @@ class CopyPack extends React.Component {
   auto_select = (value, item) => {
     console.log('selected');
     console.log(item);
-    //todo this.addrow(item.id);
+    //CONTACT this.addrow(item.id);
     this.src_id = item.id;
     this.setState({ auto_value: value, auto_items: [item] });
   };
