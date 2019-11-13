@@ -34,7 +34,7 @@ class UsePacks2 extends React.Component {
     if (this.props.contact_hetongbh !==prevProps.contact_hetongbh) {
       this.setState({ newPackName: this.props.contact_hetongbh });
     }
-    if (prevProps.contact_id !== this.props.contact_id) {
+    if (prevProps.contact_id !== this.props.contact_id && this.props.contact_id) {
       console.log("did update")
       this.load_data(this.props.contact_id);
     }
