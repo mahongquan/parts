@@ -11,7 +11,20 @@ class DlgWait extends React.Component {
   close = () => {
     this.setState({ showModal: false });
   };
-
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.showModal && nextProps.showModal) {
+      this.open(nextProps);
+    } else if (this.props.showModal && !nextProps.showModal) {
+      this.close();
+    }
+  }
+  // close = () => {
+  //   this.setState({ showModal: false });
+  // };
+  // open = () => {
+  //   this.setState({ showModal: true });
+  //   this.loaddata('%');
+  // };
   open(contact_id) {
     var self = this;
     this.setState({ showModal: true });

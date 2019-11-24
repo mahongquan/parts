@@ -11,7 +11,7 @@ import { Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
 //import 'react-select/dist/react-select.css';
 // var _ = require('lodash');
-class DlgStat extends Component {
+class DlgStatMonth extends Component {
   state = {
     showModal: false,
     error: '',
@@ -115,4 +115,4 @@ class DlgStat extends Component {
     );
   };
 }
-export default DlgStat;
+export default DlgStatMonth;

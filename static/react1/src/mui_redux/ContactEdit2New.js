@@ -15,6 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { types } from './reducers';
 var _ = require('lodash');
 var moment = require('moment');
+// eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 var DateTime = require('react-datetime');
 const styles = {

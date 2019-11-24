@@ -7,7 +7,7 @@ import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import { withStyles } from '@material-ui/core/styles';
-import DlgStat from './DlgStat';
+import DlgStatMonth from './DlgStatMonth';
 import DlgStat2 from './DlgStat2';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
@@ -89,7 +89,6 @@ class App extends Component {
     this.dlgfolder = React.createRef();
     this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
-    this.dlgstat = React.createRef();
     this.dlgpacks = React.createRef();
     this.dlgimport = React.createRef();
     this.dlgimportHT = React.createRef();
@@ -211,7 +210,7 @@ class App extends Component {
   handleEdit = idx => {
     // this.setState({ showDlgEdit: true, currentIndex: idx });
     this.props.dispatch({
-      type: types.SHOW_DLGEDIT,
+      type: types.SHOW_DLG_EDIT,
       visible: true,
       index: idx,
     });
@@ -356,11 +355,11 @@ class App extends Component {
     return (
       <div className={this.props.classes.root}>
         <DlgWorkMonth
-          baoxiang={this.props.baoxiang}
           showModal={this.props.showDlgWorkMonth}
           handleClose={() => {
-            this.setState({ showDlgWorkMonth: false });
+            this.props.dispatch({ type: types.SHOW_DLG_WORKMONTH, visible: false });
           }}
+          baoxiang={this.props.baoxiang}
         />
         <DlgItems
           showModal={this.props.showDlgItem}
@@ -370,7 +369,11 @@ class App extends Component {
         />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
-        <DlgStat ref={this.dlgstat} />
+        <DlgStatMonth showModal={this.props.show_dlgstatmonth}
+          handleClose={() => {
+            this.props.dispatch({ type: types.HIDE_DLGSTAT_MONTH });
+          }}
+        />
         <DlgImport
           showModal={this.props.showDlgImport}
           handleClose={() => {
@@ -380,7 +383,11 @@ class App extends Component {
         <DlgImportHT ref={this.dlgimportHT} parent={this} />
         <DlgCheck ref={this.dlgcheck} />
         <DlgFolder ref={this.dlgfolder} />
-        <DlgWait ref={this.dlgwait} />
+        <DlgWait showModal={this.props.show_dlgwait}
+          handleClose={() => {
+            this.props.dispatch({ type: types.SHOW_DLG_WAIT, visible: false });
+          }}
+        />
         <DlgUrl ref={this.dlgurl} />
 
         <DlgLogin
@@ -398,17 +405,15 @@ class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
-        <DlgStat2
-          showModal={this.props.showDlgStat2}
+        <DlgStat2 showModal={this.props.show_dlgstat2}
           handleClose={() => {
-            this.setState({ showDlgStat2: false });
+            this.props.dispatch({ type: types.HIDE_DLGSTAT_YEAR });
           }}
         />
-
         <ContactEdit2New
           showModal={this.props.showDlgEdit}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLGEDIT, visible: false });
+            this.props.dispatch({ type: types.SHOW_DLG_EDIT, visible: false });
           }}
           contacts={this.props.contacts}
           dispatch={this.props.dispatch}
@@ -597,7 +602,7 @@ export default connect(
 // import DlgWait from './DlgWait';
 // import DlgFolder from './DlgFolder';
 // import { withStyles } from '@material-ui/core/styles';
-// import DlgStat from './DlgStat';
+// import DlgStatMonth from './DlgStatMonth';
 // import DlgStat2 from './DlgStat2';
 // import DlgImport from './DlgImport';
 // import DlgImportHT from './DlgImportHT';
@@ -790,7 +795,7 @@ export default connect(
 //   };
 //   handleEdit = idx => {
 //     // this.setState({ showDlgEdit: true, currentIndex: idx });
-//     this.props.dispatch({type:types.SHOW_DLGEDIT,visible:true,index:idx});
+//     this.props.dispatch({type:types.SHOW_DLG_EDIT,visible:true,index:idx});
 //   };
 //   opendlgwait = contactid => {
 //     this.dlgwait.current.open(contactid);
@@ -946,7 +951,7 @@ export default connect(
 //         />
 //         <DlgPacks ref={this.dlgpacks} />
 //         <DlgCopyPack ref={this.dlgcopypack} />
-//         <DlgStat ref={this.dlgstat} />
+//         <DlgStatMonth ref={this.dlgstat} />
 //         <DlgImport
 //           showModal={this.props.showDlgImport}
 //           handleClose={() => {
@@ -984,7 +989,7 @@ export default connect(
 //         <ContactEdit2New
 //           showModal={this.props.showDlgEdit}
 //           handleClose={() => {
-//             this.props.dispatch({type:types.SHOW_DLGEDIT,visible:false});
+//             this.props.dispatch({type:types.SHOW_DLG_EDIT,visible:false});
 //           }}
 //           contacts={this.props.contacts}
 //           dispatch={this.props.dispatch}
