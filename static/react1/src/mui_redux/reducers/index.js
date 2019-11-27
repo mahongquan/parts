@@ -1,42 +1,37 @@
 import { combineReducers } from 'redux';
 import Client from '../Client';
 import update from 'immutability-helper';
-export const ADD_CONTACT = 'ADD_CONTACT';
-export const LOAD_CONTACT = 'LOAD_CONTACT';
-export const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
-export const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
-export const DELETE_CONTACT = 'DELETE_CONTACT';
-export const EDIT_CONTACT = 'EDIT_CONTACT';
-export const COMPLETE_CONTACT = 'COMPLETE_CONTACT';
-export const COMPLETE_ALL = 'COMPLETE_ALL';
-export const CLEAR_COMPLETED = 'CLEAR_COMPLETED';
-export const SHOW_ALL = 'show_all';
-export const SHOW_COMPLETED = 'show_completed';
-export const SHOW_ACTIVE = 'show_active';
+const ADD_CONTACT = 'ADD_CONTACT';
+const LOAD_CONTACT = 'LOAD_CONTACT';
+const EDIT_CONTACT = 'EDIT_CONTACT';
 const SHOW_DLG_WORKMONTH="SHOW_DLG_WORKMONTH"
 const SHOW_LOGIN = 'SHOW_LOGIN';
 const SHOW_DLGSTAT_MONTH = 'SHOW_DLGSTAT_MONTH';
 const SHOW_DLGSTAT_YEAR = 'SHOW_DLGSTAT_YEAR';
-const HIDE_LOGIN = 'HIDE_LOGIN';
-const HIDE_DLGSTAT_MONTH = 'HIDE_DLGSTAT_MONTH';
-const HIDE_DLGSTAT_YEAR = 'HIDE_DLGSTAT_YEAR';
 const SEARCH_CHANGE = 'SEARCH_CHANGE';
 const LOG_OUT = 'LOG_OUT';
 const PAGE_CHANGE = 'PAGE_CHANGE';
-const LOGIN_RES = 'LOGIN_RES';
 const SHOW_DLG_EDIT = 'SHOW_DLG_EDIT';
 const SHOW_DLG_WAIT="SHOW_DLG_WAIT"
-const SAVE_CONTACT_RES = 'SAVE_CONTACT_RES';
+const SHOW_DLG_ITEMS="SHOW_DLG_ITEMS"
 const hiddenPacks = 'hiddenPacks';
+
+const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
+const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
+const LOGIN_RES = 'LOGIN_RES';
+const SAVE_CONTACT_RES = 'SAVE_CONTACT_RES';
+
 export const types = {
-  SHOW_LOGIN,HIDE_LOGIN,
-  SHOW_DLGSTAT_MONTH,HIDE_DLGSTAT_MONTH,
-  SHOW_DLGSTAT_YEAR,HIDE_DLGSTAT_YEAR,
+  SHOW_LOGIN,
+  SHOW_DLG_ITEMS,
+  SHOW_DLGSTAT_MONTH,
+  SHOW_DLGSTAT_YEAR,
   LOAD_CONTACT,
   SEARCH_CHANGE,
   PAGE_CHANGE,
   LOG_OUT,
-  SHOW_DLG_EDIT,SHOW_DLG_WORKMONTH,
+  SHOW_DLG_EDIT,
+  SHOW_DLG_WORKMONTH,
   hiddenPacks,
 };
 
@@ -76,7 +71,7 @@ const loadCONTACT = data => {
         // console.log(typeof(error));
         console.log(error);
         if (error instanceof SyntaxError) {
-          dispatch({ type: SHOW_LOGIN });
+          dispatch({ type: SHOW_LOGIN ,visible:true});
         } else {
           dispatch({ type: LOAD_CONTACT_FAIL, error });
         }
@@ -135,12 +130,12 @@ const initialState = {
   showDlgEdit: false,
   showDlgDetail: false,
   showDlgCONTACTs: false,
-  showDlgStat2: false,
+  showDlgStatYear: false,
+  showDlgStatMonth: false,
   showDlgItem: false,
   showDlgWorkMonth: false,
   showdlgWait:false,
   show_login: false,
-  show_dlgstatmonth:false,
   //edit
   hiddenPacks: true,
 };
@@ -191,7 +186,12 @@ export function CONTACTs(state = initialState, action) {
       new_state = update(state, {
         showDlgWorkMonth: { $set: action.visible },
       });
-      return new_state;      
+      return new_state;   
+    case SHOW_DLG_ITEMS:
+      new_state = update(state, {
+        showDlgItem: { $set: action.visible },
+      });
+      return new_state;          
     case LOG_OUT:
       new_state = initialState;
       return new_state;
@@ -221,39 +221,22 @@ export function CONTACTs(state = initialState, action) {
         baoxiang: { $set: action.res.baoxiang },
       });
       return new_state;
-    case HIDE_LOGIN:
-      new_state = update(state, {
-        show_login: { $set: false },
-      });
-      return new_state;
-
     case SHOW_LOGIN:
       new_state = update(state, {
-        show_login: { $set: true },
+        show_login: { $set: action.visible },
       });
-      return new_state;
-    case HIDE_DLGSTAT_MONTH:
-      new_state = update(state, {
-        show_dlgstatmonth: { $set: false },
-      });
-      return new_state;
-      
+      return new_state;      
     case SHOW_DLGSTAT_MONTH:
       new_state = update(state, {
-        show_dlgstatmonth: { $set: true },
+        showDlgStatMonth: { $set: action.visible },
       });
-      return new_state;
-    case HIDE_DLGSTAT_YEAR:
-      new_state = update(state, {
-        show_dlgstat2: { $set: false },
-      });
-      return new_state;
-      
+      return new_state;      
+    
     case SHOW_DLGSTAT_YEAR:
       new_state = update(state, {
-        show_dlgstat2: { $set: true },
+        showDlgStatYear: { $set: action.visible },
       });
-      return new_state;
+      return new_state;      
     case LOAD_CONTACT_FAIL:
       new_state = update(state, {
         connect_error: { $set: true },

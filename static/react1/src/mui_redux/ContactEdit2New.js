@@ -50,7 +50,7 @@ class ContactEdit2New extends Component {
     console.log('close');
     this.setState({ showModal: false });
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     //console.log(nextProps)
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps.index);
@@ -627,7 +627,7 @@ export default withStyles(styles)(ContactEdit2New);
 //     console.log('close');
 //     this.setState({ showModal: false });
 //   };
-//   componentWillReceiveProps(nextProps) {
+//   UNSAFE_componentWillReceiveProps(nextProps) {
 //     //console.log(nextProps)
 //     if (!this.props.showModal && nextProps.showModal) {
 //       this.onShow(nextProps.index);

@@ -29,7 +29,7 @@ export default class ReactSpinner extends React.Component {
     }
   };
 
-  componentWillReceiveProps = newProps => {
+  UNSAFE_componentWillReceiveProps = newProps => {
     if (newProps.stopped === true && !this.props.stopped) {
       this.spinner.stop();
     } else if (!newProps.stopped && this.props.stopped === true) {

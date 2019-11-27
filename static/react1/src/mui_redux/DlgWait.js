@@ -11,7 +11,7 @@ class DlgWait extends React.Component {
   close = () => {
     this.setState({ showModal: false });
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.open(nextProps);
     } else if (this.props.showModal && !nextProps.showModal) {

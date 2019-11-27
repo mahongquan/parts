@@ -49,7 +49,7 @@ class DlgDetail extends React.Component {
     }
     return false;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps.contactid);
     } else if (this.props.showModal && !nextProps.showModal) {

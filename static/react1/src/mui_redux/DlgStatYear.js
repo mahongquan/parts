@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-// import {Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
-//import Select from 'react-select';
-//import 'react-select/dist/react-select.css';
-class DlgStatMonth extends Component {
+class DlgStatYear extends Component {
   state = {
     error: '',
     lbls: [],
@@ -19,20 +14,28 @@ class DlgStatMonth extends Component {
     baoxiang: '',
   };
   UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(this.props)
+    console.log(nextProps)
     if (!this.props.open && nextProps.open) {
-      this.open(nextProps);
+      this.onShow(nextProps);
     } else if (this.props.open && !nextProps.open) {
-      // this.close();
+      this.onHide();
     }
   }
+  onShow = () => {
+    this.open();
+  };
+  onHide = () => {};
+  close = () => {
+    this.props.handleClose();
+  };
   open = () => {
     this.loaddata('%');
   };
   loaddata = baoxiang => {
     var self = this;
     var data = { baoxiang: baoxiang };
-    Client.get('/rest/month12', data, function(result) {
-      console.log(result);
+    Client.get('/rest/year12', data, function(result) {
       self.setState({ lbls: result.lbls, values: result.values, baoxiang: '' });
     });
   };
@@ -100,4 +103,4 @@ class DlgStatMonth extends Component {
     );
   };
 }
-export default DlgStatMonth;
+export default DlgStatYear;
