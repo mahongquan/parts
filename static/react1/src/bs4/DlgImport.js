@@ -1,7 +1,8 @@
 import React from 'react';
-import { Alert, Modal,Table } from 'react-bootstrap';
+import { Alert, Table,Modal,Button} from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
+import PackEdit from './PackEdit';
 class DlgImport extends React.Component {
   state = {
     error: '',
@@ -66,12 +67,22 @@ class DlgImport extends React.Component {
   inputChange = () => {
     this.setState({ showalert: false });
   };
+  handleEdit = pack_id => {
+    this.refs.edit1.open(pack_id);
+  };
   render = () => {
     // console.log("render ImportStandard")
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx}>
-        <td>{pack.id}</td>
-        <td>{pack.name}</td>
+        <td>{pack.id}
+        </td>
+        <td><Button
+              variant="light"
+              onClick={() => this.handleEdit(pack.id)}
+            >
+              {pack.name}
+            </Button>
+        </td>
       </tr>
     ));
     let alert;
@@ -88,20 +99,14 @@ class DlgImport extends React.Component {
         onHide={this.props.handleClose}
         dialogClassName="custom-modal"
       >
+        <PackEdit ref="edit1" title="编辑" />
         <Modal.Header closeButton>
           <Modal.Title>导入标样</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {
             alert
-// <Toast  show={this.state.showA} onClose={()=>{this.setState({showA:false});}}>
-//   <Toast.Header>
-//     <strong className="mr-auto">Bootstrap</strong>
-//     <small>11 mins ago</small>
-//   </Toast.Header>
-//   <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
-  // </Toast>
-}
+          }
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}

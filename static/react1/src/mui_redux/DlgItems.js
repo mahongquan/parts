@@ -31,7 +31,7 @@ const styles = {
 class DlgItems extends Component {
   mystate = {
     start: 0,
-    limit: 10,
+    limit: 7,
     baoxiang: '',
     logined: false,
     search: '',
@@ -52,7 +52,7 @@ class DlgItems extends Component {
     auto_items: [],
     auto_loading: false,
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.showModal && !this.props.showModal) {
       this.open();
     }
@@ -225,11 +225,7 @@ class DlgItems extends Component {
             >
               备件
             </Typography>
-          </Toolbar>
-        </AppBar>
-        <DialogContent>
-          <ItemEdit ref="dlg" parent={this} />
-          <input
+             <input
             type="text"
             value={this.state.search}
             placeholder=""
@@ -243,6 +239,10 @@ class DlgItems extends Component {
           >
             搜索
           </Button>
+          </Toolbar>
+        </AppBar>
+        <DialogContent>
+          <ItemEdit ref="dlg" parent={this} />
           <Table>
             <TableHead>
               <TableRow>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import {Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,44 +11,28 @@ import Client from './Client';
 import { Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
 //import 'react-select/dist/react-select.css';
-// var _ = require('lodash');
 class DlgStatMonth extends Component {
   state = {
-    showModal: false,
     error: '',
     lbls: [],
     values: [],
     baoxiang: '',
   };
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
-  //      return true
-  //   } else {
-  //      return false
-  //   }
-  // }
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps);
-    } else if (this.props.showModal && !nextProps.showModal) {
-      this.onHide();
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!this.props.open && nextProps.open) {
+      this.open(nextProps);
+    } else if (this.props.open && !nextProps.open) {
+      // this.close();
     }
   }
-  onShow = () => {
-    this.open();
-  };
-  onHide = () => {};
-  close = () => {
-    this.props.handleClose();
-  };
   open = () => {
-    this.setState({ showModal: true });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
     var self = this;
-    var data = { limit: 10, search: 'xls', baoxiang: baoxiang };
-    Client.get('/rest/year12', data, function(result) {
+    var data = { baoxiang: baoxiang };
+    Client.get('/rest/month12', data, function(result) {
+      console.log(result);
       self.setState({ lbls: result.lbls, values: result.values, baoxiang: '' });
     });
   };
@@ -94,7 +79,7 @@ class DlgStatMonth extends Component {
       },
     };
     return (
-      <Dialog open={this.props.showModal} onClose={this.close}>
+      <Dialog open={this.props.open} onClose={this.props.handleClose}>
         <DialogTitle>统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} id="id_dropdown2">

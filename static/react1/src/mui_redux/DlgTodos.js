@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import Todos from './todos';
+import CONTACTs from './CONTACTs';
 class DlgItems extends Component {
   render = () => {
     return (
@@ -15,7 +15,7 @@ class DlgItems extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Todos />
+          <CONTACTs />
         </Modal.Body>
       </Modal>
     );

@@ -3,6 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 // import DialogActions from '@material-ui/core/DialogActions';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import Table from '@material-ui/core/Table';
@@ -11,8 +12,18 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PackEdit from './PackEdit';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
 var _ = require('lodash');
-
+const styles = {
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
+  },
+};
 class DlgPacks extends Component {
   mystate = {
     start: 0,
@@ -188,10 +199,16 @@ class DlgPacks extends Component {
     }
     return (
       <Dialog open={this.state.showModal} onClose={this.close}>
-        <DialogTitle>包</DialogTitle>
-        <DialogContent>
-          <PackEdit ref="edit1" title="编辑" />
-          <input
+      <AppBar  className={this.props.classes.appBar}>
+      <Toolbar>
+      <Typography
+              variant="h6"
+              color="inherit"
+              className={this.props.classes.flex}
+            >
+              包
+            </Typography>
+        <input
             type="text"
             value={this.state.search}
             placeholder=""
@@ -204,7 +221,11 @@ class DlgPacks extends Component {
             onClick={this.search}
           >
             搜索
-          </Button>
+          </Button></
+          Toolbar>
+        </AppBar>
+        <DialogContent>
+          <PackEdit ref="edit1" title="编辑" />
           <Table>
             <TableHead>
               <TableRow>
@@ -238,4 +259,4 @@ class DlgPacks extends Component {
     );
   };
 }
-export default DlgPacks;
+export default withStyles(styles)(DlgPacks);

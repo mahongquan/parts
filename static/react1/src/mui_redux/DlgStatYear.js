@@ -1,48 +1,41 @@
 import React, { Component } from 'react';
-// import {Modal,DropdownButton,MenuItem} from "react-bootstrap";
 import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
-
-//import Select from 'react-select';
-//import 'react-select/dist/react-select.css';
-var _ = require('lodash');
-class DlgStat extends Component {
+class DlgStatYear extends Component {
   state = {
-    showModal: false,
     error: '',
     lbls: [],
     values: [],
     baoxiang: '',
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(this.props)
+    console.log(nextProps)
+    if (!this.props.open && nextProps.open) {
+      this.onShow(nextProps);
+    } else if (this.props.open && !nextProps.open) {
+      this.onHide();
     }
   }
+  onShow = () => {
+    this.open();
+  };
+  onHide = () => {};
   close = () => {
-    this.setState({ showModal: false });
+    this.props.handleClose();
   };
   open = () => {
-    this.setState({ showModal: true });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
     var self = this;
-    var data = { limit: 10, search: 'xls', baoxiang: baoxiang };
-    Client.get('/rest/month12', data, function(result) {
-      console.log(result);
+    var data = { baoxiang: baoxiang };
+    Client.get('/rest/year12', data, function(result) {
       self.setState({ lbls: result.lbls, values: result.values, baoxiang: '' });
     });
   };
@@ -89,7 +82,7 @@ class DlgStat extends Component {
       },
     };
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.open} onClose={this.props.handleClose}>
         <DialogTitle>统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
@@ -110,4 +103,4 @@ class DlgStat extends Component {
     );
   };
 }
-export default DlgStat;
+export default DlgStatYear;

@@ -16,7 +16,7 @@ class UsePackEditNew extends Component {
     this.setState({ showModal: false });
   };
   handleChange = () => {};
-  // componentWillReceiveProps(nextProps) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
   //   this.setState({ showModal: nextProps.showModal });
   //   if (nextProps.index==null){
   //     this.old={};

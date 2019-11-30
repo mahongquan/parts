@@ -14,7 +14,7 @@ class PackItemEditNew extends Component {
     bg: {},
     date_open: false,
   };
-  // componentWillReceiveProps(nextProps) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
   //   this.setState({ showModal: nextProps.showModal });
   //   if (nextProps.index==null){
   //     this.old={};
