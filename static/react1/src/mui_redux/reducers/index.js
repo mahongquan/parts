@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import Client from '../Client';
 import update from 'immutability-helper';
 export const ADD_TODO = 'ADD_TODO';
-export const LOAD_TODO = 'LOAD_TODO';
-export const LOAD_TODO_RES = 'LOAD_TODO_RES';
-export const LOAD_TODO_FAIL = 'LOAD_TODO_FAIL';
+export const LOAD_CONTACT = 'LOAD_CONTACT';
+export const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
+export const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
 export const DELETE_TODO = 'DELETE_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
 export const COMPLETE_TODO = 'COMPLETE_TODO';
@@ -25,7 +25,7 @@ const hiddenPacks = 'hiddenPacks';
 export const types = {
   HIDE_LOGIN,
   SHOW_LOGIN,
-  LOAD_TODO,
+  LOAD_CONTACT,
   SEARCH_CHANGE,
   PAGE_CHANGE,
   LOG_OUT,
@@ -47,7 +47,7 @@ const onLoginSubmit = data => {
     });
   };
 };
-const loadTodo = data => {
+const loadContacts = data => {
   return async dispatch => {
     Client.contacts(
       data,
@@ -63,7 +63,7 @@ const loadTodo = data => {
           start: data.start,
           baoxiang: data.baoxiang,
         };
-        dispatch({ type: LOAD_TODO_RES, res });
+        dispatch({ type: LOAD_CONTACT_RES, res });
       },
       error => {
         // console.log(typeof(error));
@@ -71,7 +71,7 @@ const loadTodo = data => {
         if (error instanceof SyntaxError) {
           dispatch({ type: SHOW_LOGIN });
         } else {
-          dispatch({ type: LOAD_TODO_FAIL, error });
+          dispatch({ type: LOAD_CONTACT_FAIL, error });
         }
       }
     );
@@ -101,8 +101,8 @@ const saveContact = (dataSave, index, callback) => {
     });
   };
 };
-export const TodoActions = {
-  loadTodo,
+export const ContactActions = {
+  loadContacts,
   onLoginSubmit,
   handleLogout,
   saveContact,
@@ -192,7 +192,7 @@ export function todos(state = initialState, action) {
         search: { $set: action.value },
       });
       return new_state;
-    case LOAD_TODO_RES:
+    case LOAD_CONTACT_RES:
       new_state = update(state, {
         connect_error: { $set: false },
         contacts: { $set: action.res.contacts },
@@ -212,7 +212,7 @@ export function todos(state = initialState, action) {
         show_login: { $set: true },
       });
       return new_state;
-    case LOAD_TODO_FAIL:
+    case LOAD_CONTACT_FAIL:
       new_state = update(state, {
         connect_error: { $set: true },
       });
@@ -233,9 +233,9 @@ export default rootReducer;
 // import Client from '../Client';
 // import update from 'immutability-helper';
 // export const ADD_TODO = 'ADD_TODO';
-// export const LOAD_TODO = 'LOAD_TODO';
-// export const LOAD_TODO_RES = 'LOAD_TODO_RES';
-// export const LOAD_TODO_FAIL = 'LOAD_TODO_FAIL';
+// export const LOAD_CONTACT = 'LOAD_CONTACT';
+// export const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
+// export const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
 // export const DELETE_TODO = 'DELETE_TODO';
 // export const EDIT_TODO = 'EDIT_TODO';
 // export const COMPLETE_TODO = 'COMPLETE_TODO';
@@ -253,7 +253,7 @@ export default rootReducer;
 // const SHOW_DLGEDIT="SHOW_DLGEDIT"
 // const SAVE_CONTACT_RES="SAVE_CONTACT_RES"
 // const hiddenPacks="hiddenPacks";
-// export const types = { HIDE_LOGIN, SHOW_LOGIN,LOAD_TODO,SEARCH_CHANGE
+// export const types = { HIDE_LOGIN, SHOW_LOGIN,LOAD_CONTACT,SEARCH_CHANGE
 //   ,PAGE_CHANGE,LOG_OUT,SHOW_DLGEDIT,hiddenPacks,
 // };
 
@@ -271,7 +271,7 @@ export default rootReducer;
 //     });
 //   };
 // };
-// const loadTodo = data => {
+// const loadContacts = data => {
 //   return async dispatch => {
 //     Client.contacts(
 //       data,
@@ -287,7 +287,7 @@ export default rootReducer;
 //           start:data.start,
 //           baoxiang:data.baoxiang,
 //         };
-//         dispatch({ type: LOAD_TODO_RES, res });
+//         dispatch({ type: LOAD_CONTACT_RES, res });
 //       },
 //       error => {
 //         // console.log(typeof(error));
@@ -295,7 +295,7 @@ export default rootReducer;
 //         if (error instanceof SyntaxError) {
 //           dispatch({ type: SHOW_LOGIN });
 //         } else {
-//           dispatch({ type: LOAD_TODO_FAIL, error });
+//           dispatch({ type: LOAD_CONTACT_FAIL, error });
 //         }
 //       }
 //     );
@@ -325,8 +325,8 @@ export default rootReducer;
 //     });
 //   };
 // }
-// export const TodoActions = {
-//   loadTodo,
+// export const ContactActions = {
+//   loadContacts,
 //   onLoginSubmit,handleLogout,saveContact
 // };
 
@@ -412,7 +412,7 @@ export default rootReducer;
 //         search: { $set: action.value },
 //       });
 //       return new_state;
-//     case LOAD_TODO_RES:
+//     case LOAD_CONTACT_RES:
 //       new_state = update(state, {
 //         connect_error: { $set: false},
 //         contacts: { $set: action.res.contacts },
@@ -432,7 +432,7 @@ export default rootReducer;
 //         show_login: { $set: true },
 //       });
 //       return new_state;
-//     case LOAD_TODO_FAIL:
+//     case LOAD_CONTACT_FAIL:
 //       new_state = update(state, {
 //         connect_error: { $set: true },
 //       });

@@ -263,7 +263,7 @@ class ContactEdit2New extends Component {
         <AppBar className={this.props.classes.appBar}>
           <Toolbar>
             <IconButton
-              color="inherit"
+              
               onClick={this.props.handleClose}
               aria-label="Close"
             >
@@ -271,7 +271,7 @@ class ContactEdit2New extends Component {
             </IconButton>
             <Typography
               variant="h6"
-              color="inherit"
+              
               className={this.props.classes.flex}
             >
               编辑仪器信息
@@ -840,7 +840,7 @@ export default withStyles(styles)(ContactEdit2New);
 //         <AppBar className={this.props.classes.appBar}>
 //           <Toolbar>
 //             <IconButton
-//               color="inherit"
+//               
 //               onClick={this.props.handleClose}
 //               aria-label="Close"
 //             >
@@ -848,7 +848,7 @@ export default withStyles(styles)(ContactEdit2New);
 //             </IconButton>
 //             <Typography
 //               variant="h6"
-//               color="inherit"
+//               
 //               className={this.props.classes.flex}
 //             >
 //               编辑仪器信息

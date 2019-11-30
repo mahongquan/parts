@@ -183,7 +183,7 @@ class DlgItems extends Component {
         <AppBar className={this.props.classes.appBar}>
           <Toolbar>
             <IconButton
-              color="inherit"
+              
               onClick={this.props.handleClose}
               aria-label="Close"
             >
@@ -191,7 +191,7 @@ class DlgItems extends Component {
             </IconButton>
             <Typography
               variant="h6"
-              color="inherit"
+              
               className={this.props.classes.flex}
             >
               工作量

@@ -54,12 +54,12 @@ export default class SimpleMenu extends React.Component {
       <span>
         <span
           style={{ display: 'inline' }}
-          color="inherit"
+          
           aria-owns={anchorEl ? 'simple-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <Typography color="inherit">{this.props.title}</Typography>
+          <Typography >{this.props.title}</Typography>
           <ArrowDropDownIcon />
         </span>
         <Menu

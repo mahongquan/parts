@@ -33,7 +33,7 @@ import InputBase from '@material-ui/core/InputBase';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TodoActions, types } from './reducers';
+import { ContactActions, types } from './reducers';
 
 const styles = theme => ({
   root: {
@@ -57,10 +57,10 @@ const styles = theme => ({
     width: '132px',
   },
   inputInput: {
-    paddingTop: theme.spacing.unit,
+    paddingTop: theme.spacing(1),
     paddingRight: 0,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit,
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -94,9 +94,9 @@ class App extends Component {
     this.dlgimport = React.createRef();
     this.dlgimportHT = React.createRef();
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.logined && nextProps.logined) {
-      this.props.actions.loadTodo({
+  componentDidUpdate(prevProps) {
+    if (!prevProps.logined && this.props.logined ) {
+      this.props.actions.loadContacts({
         start: this.props.start,
         limit: this.props.limit,
         search: this.props.search,
@@ -104,6 +104,16 @@ class App extends Component {
       });
     }
   }
+  // componentWillReceiveProps(nextProps) {
+  //   if (!this.props.logined && nextProps.logined) {
+  //     this.props.actions.loadContacts({
+  //       start: this.props.start,
+  //       limit: this.props.limit,
+  //       search: this.props.search,
+  //       baoxiang: this.props.baoxiang,
+  //     });
+  //   }
+  // }
 
   handleContactChange = (idx, contact) => {
     this.props.store.handleContactChange(idx, contact);
@@ -115,8 +125,8 @@ class App extends Component {
     this.setState({ target: event.target, showcontext: true });
   };
   componentDidMount = () => {
-    // this.props.dispatch({type:types.LOAD_TODO});
-    this.props.actions.loadTodo({
+    // this.props.dispatch({type:types.LOAD_CONTACT});
+    this.props.actions.loadContacts({
       start: this.props.start,
       limit: this.props.limit,
       search: this.props.search,
@@ -148,7 +158,7 @@ class App extends Component {
       start = 0;
     }
     this.setState({ start: start });
-    this.props.actions.loadTodo({
+    this.props.actions.loadContacts({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -156,7 +166,7 @@ class App extends Component {
     });
   };
   search = e => {
-    this.props.actions.loadTodo({
+    this.props.actions.loadContacts({
       start: 0,
       limit: this.props.limit,
       search: this.props.search,
@@ -170,7 +180,7 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({
+    this.props.actions.loadContacts({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -193,7 +203,7 @@ class App extends Component {
     if (start < 0) {
       start = 0;
     }
-    this.props.actions.loadTodo({
+    this.props.actions.loadContacts({
       start: start,
       limit: this.props.limit,
       search: this.props.search,
@@ -201,7 +211,7 @@ class App extends Component {
     });
   };
   onSelectBaoxiang = e => {
-    this.props.actions.loadTodo({
+    this.props.actions.loadContacts({
       start: 0,
       limit: this.props.limit,
       search: this.props.search,
@@ -421,18 +431,17 @@ class App extends Component {
           <Toolbar>
             <Typography
               variant="h6"
-              color="inherit"
               className={this.props.classes.grow}
             >
               装箱单
             </Typography>
-            <Button color="inherit" onClick={this.openDlgPacks}>
+            <Button  onClick={this.openDlgPacks}>
               包
             </Button>
-            <Button color="inherit" onClick={this.openDlgItems}>
+            <Button  onClick={this.openDlgItems}>
               备件
             </Button>
-            <Button color="inherit" onClick={this.openDlgCopyPack}>
+            <Button  onClick={this.openDlgCopyPack}>
               复制包
             </Button>
             <DropdownButton title="统计">
@@ -462,7 +471,6 @@ class App extends Component {
             </DropdownButton>
 
             <InputBase
-              color="inherit"
               onKeyPress={this.keypress}
               value={this.props.search}
               placeholder="合同/仪器编号/客户"
@@ -472,11 +480,11 @@ class App extends Component {
               }}
               onChange={this.handleSearchChange}
             />
-            <Button color="inherit" onClick={this.search}>
+            <Button  onClick={this.search}>
               <SearchIcon />
             </Button>
             <Button
-              color="inherit"
+              
               style={{ margin: '0px 10px 0px 10px' }}
               variant="contained"
               onClick={() => this.handleEdit(null)}
@@ -484,21 +492,21 @@ class App extends Component {
               新仪器
             </Button>
             <Button
-              color="inherit"
+              
               variant="contained"
               onClick={this.openDlgImport}
             >
               导入标样
             </Button>
             <Button
-              color="inherit"
+              
               style={{ margin: '0px 10px 0px 10px', display: 'none' }}
               onClick={this.openDlgImportHT}
             >
               导入合同
             </Button>
             <Button
-              color="inherit"
+              
               variant="contained"
               style={{ margin: '0px 10px 0px 10px' }}
               onClick={() => {
@@ -580,7 +588,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch),
+  actions: bindActionCreators(ContactActions, dispatch),
   dispatch: dispatch,
 });
 export default connect(
@@ -623,7 +631,7 @@ export default connect(
 
 // import { bindActionCreators } from 'redux';
 // import { connect } from 'react-redux';
-// import { TodoActions, types } from './reducers';
+// import { ContactActions, types } from './reducers';
 
 // const styles = theme => ({
 //   root: {
@@ -647,10 +655,10 @@ export default connect(
 //     width: '132px',
 //   },
 //   inputInput: {
-//     paddingTop: theme.spacing.unit,
+//     paddingTop: theme.spacing(1),
 //     paddingRight: 0,
-//     paddingBottom: theme.spacing.unit,
-//     paddingLeft: theme.spacing.unit,
+//     paddingBottom: theme.spacing(1),
+//     paddingLeft: theme.spacing(1),
 //     transition: theme.transitions.create('width'),
 //     width: '100%',
 //     [theme.breakpoints.up('sm')]: {
@@ -686,7 +694,7 @@ export default connect(
 //   }
 //   componentWillReceiveProps(nextProps) {
 //     if (!this.props.logined && nextProps.logined) {
-//       this.props.actions.loadTodo({
+//       this.props.actions.loadContacts({
 //         start: this.props.start,
 //         limit: this.props.limit,
 //         search:this.props.search,
@@ -705,8 +713,8 @@ export default connect(
 //     this.setState({ target: event.target, showcontext: true });
 //   };
 //   componentDidMount = () => {
-//     // this.props.dispatch({type:types.LOAD_TODO});
-//     this.props.actions.loadTodo({
+//     // this.props.dispatch({type:types.LOAD_CONTACT});
+//     this.props.actions.loadContacts({
 //         start: this.props.start,
 //         limit: this.props.limit,
 //         search:this.props.search,
@@ -738,13 +746,13 @@ export default connect(
 //       start = 0;
 //     }
 //     this.setState({ start: start });
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadContacts({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
 //   };
 //   search = e => {
-//     this.props.actions.loadTodo({start: 0,
+//     this.props.actions.loadContacts({start: 0,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
@@ -756,7 +764,7 @@ export default connect(
 //     if (start < 0) {
 //       start = 0;
 //     }
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadContacts({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
@@ -777,13 +785,13 @@ export default connect(
 //     if (start < 0) {
 //       start = 0;
 //     }
-//     this.props.actions.loadTodo({start: start,
+//     this.props.actions.loadContacts({start: start,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: this.props.baoxiang,});
 //   };
 //   onSelectBaoxiang = e => {
-//     this.props.actions.loadTodo({start: 0,
+//     this.props.actions.loadContacts({start: 0,
 //         limit: this.props.limit,
 //         search:this.props.search,
 //         baoxiang: e,});
@@ -997,18 +1005,18 @@ export default connect(
 //           <Toolbar>
 //             <Typography
 //               variant="h6"
-//               color="inherit"
+//               
 //               className={this.props.classes.grow}
 //             >
 //               装箱单
 //             </Typography>
-//             <Button color="inherit" onClick={this.openDlgPacks}>
+//             <Button  onClick={this.openDlgPacks}>
 //               包
 //             </Button>
-//             <Button color="inherit" onClick={this.openDlgItems}>
+//             <Button  onClick={this.openDlgItems}>
 //               备件
 //             </Button>
-//             <Button color="inherit" onClick={this.openDlgCopyPack}>
+//             <Button  onClick={this.openDlgCopyPack}>
 //               复制包
 //             </Button>
 //             <DropdownButton title="统计">
@@ -1038,7 +1046,7 @@ export default connect(
 //             </DropdownButton>
 
 //             <InputBase
-//               color="inherit"
+//               
 //               onKeyPress={this.keypress}
 //               value={this.props.search}
 //               placeholder="合同/仪器编号/客户"
@@ -1048,11 +1056,11 @@ export default connect(
 //               }}
 //               onChange={this.handleSearchChange}
 //             />
-//             <Button color="inherit" onClick={this.search}>
+//             <Button  onClick={this.search}>
 //               <SearchIcon />
 //             </Button>
 //             <Button
-//               color="inherit"
+//               
 //               style={{ margin: '0px 10px 0px 10px' }}
 //               variant="contained"
 //               onClick={() => this.handleEdit(null)}
@@ -1060,21 +1068,21 @@ export default connect(
 //               新仪器
 //             </Button>
 //             <Button
-//               color="inherit"
+//               
 //               variant="contained"
 //               onClick={this.openDlgImport}
 //             >
 //               导入标样
 //             </Button>
 //             <Button
-//               color="inherit"
+//               
 //               style={{ margin: '0px 10px 0px 10px', display: 'none' }}
 //               onClick={this.openDlgImportHT}
 //             >
 //               导入合同
 //             </Button>
 //             <Button
-//               color="inherit"
+//               
 //               variant="contained"
 //               style={{ margin: '0px 10px 0px 10px' }}
 //               onClick={() => {
@@ -1152,7 +1160,7 @@ export default connect(
 // };
 
 // const mapDispatchToProps = dispatch => ({
-//   actions: bindActionCreators(TodoActions, dispatch),
+//   actions: bindActionCreators(ContactActions, dispatch),
 //   dispatch:dispatch,
 // });
 // export default connect(
