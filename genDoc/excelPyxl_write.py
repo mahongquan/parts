@@ -304,6 +304,7 @@ def genJiaozhunCS(c,fn):
     sjmd_str=",".join(rs)
     setCell(table,22,3,"   测量值(S/%):" + sjmd_str)# setCell(table,22,3).Value="   测量值(S/%):" + sjmd_str
     setCell(table,23,3,"   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%"))# setCell(table,23,3).Value="   平均值:%s,   相对标准偏差:%s" % (ave_str+"%",rsd_str+"%")
+    print(xlBook,dir(xlBook))
     return save_virtual_workbook(xlBook)
 def genShujubiao(c,fn):
     xlBook = load_workbook(filename = fn)
