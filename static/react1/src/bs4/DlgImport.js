@@ -8,7 +8,7 @@ class DlgImport extends React.Component {
     error: '',
     packs: [],
     info: '',
-    showA:true,
+    showalert:false,
   };
   upload = () => {
     const file = this.fileUpload.files[0];
@@ -21,11 +21,14 @@ class DlgImport extends React.Component {
       if (res.result.length > 0) {
         const newFoods = update(self.state.packs, { $unshift: res.result });
         self.setState({ packs: newFoods });
+        self.setState({
+          showalert: true,
+          info: '导入了' + res.result.length + '个合同的标钢。',
+        });
       }
-      self.setState({
-        showalert: true,
-        info: '导入了' + res.result.length + '个合同的标钢。',
-      });
+      else{
+        self.setState({ showalert: false});
+      }
     });
   };
   componentDidUpdate(prevProps) {
