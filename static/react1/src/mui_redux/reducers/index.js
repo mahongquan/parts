@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import Client from '../Client';
 import update from 'immutability-helper';
-const ADD_CONTACT = 'ADD_CONTACT';
+// const ADD_CONTACT = 'ADD_CONTACT';
 const LOAD_CONTACT = 'LOAD_CONTACT';
-const EDIT_CONTACT = 'EDIT_CONTACT';
+// const EDIT_CONTACT = 'EDIT_CONTACT';
 const SHOW_DLG_WORKMONTH="SHOW_DLG_WORKMONTH"
 const SHOW_LOGIN = 'SHOW_LOGIN';
 const SHOW_DLGSTAT_MONTH = 'SHOW_DLGSTAT_MONTH';
