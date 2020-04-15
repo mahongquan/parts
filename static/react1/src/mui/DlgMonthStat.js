@@ -10,16 +10,20 @@ import {
 } from 'recharts';
 class DlgStat extends Component {
   state = {
-    showModal: false,
     error: '',
     baoxiang: '',
     data : []
   };
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!this.props.showModal && nextProps.showModal) {
+      this.open();
+    } else if (this.props.showModal && !nextProps.showModal) {
+    }
+  }
   close = () => {
-    this.setState({ showModal: false });
+    // this.setState({ showModal: false });
   };
   open = () => {
-    this.setState({ showModal: true });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
@@ -50,7 +54,7 @@ class DlgStat extends Component {
   };
   render = () => {
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>月统计</DialogTitle>
         <DialogContent>
           <DropdownButton title={this.state.baoxiang} >

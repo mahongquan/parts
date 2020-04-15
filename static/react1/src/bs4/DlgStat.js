@@ -6,7 +6,6 @@ import { Bar } from 'react-chartjs-2';
 //import 'react-select/dist/react-select.css';
 class DlgStat extends Component {
   state = {
-    showModal: false,
     error: '',
     lbls: [],
     values: [],
@@ -16,7 +15,7 @@ class DlgStat extends Component {
     if (!prevProps.showModal && this.props.showModal ) {
       this.open();
     } else if (prevProps.showModal && !this.props.showModal) {
-      this.onHide();
+      // this.onHide();
     }
   }
 // UNSAFE_componentWillReceiveProps(nextProps) {
@@ -27,10 +26,10 @@ class DlgStat extends Component {
 //     }
 //   }
   close = () => {
-    this.setState({ showModal: false });
+    this.props.handleClose();
   };
   open = () => {
-    this.setState({ showModal: true,baoxiang:"" });
+    this.setState({baoxiang:"" });
     this.loaddata('%');
   };
   loaddata = baoxiang => {
@@ -84,7 +83,7 @@ class DlgStat extends Component {
     };
     return (
       <Modal
-        show={this.state.showModal}
+        show={this.props.showModal}
         onHide={this.close}
         dialogClassName="custom-modal"
       >

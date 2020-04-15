@@ -106,6 +106,7 @@ class App extends Component {
     showDlgFolder2: false,
     showDlgFolder:false,
     showDlgUrl:false,
+    showDlgStat:false,
     showWebview:false,
     url:"about:blank",
   };
@@ -340,7 +341,7 @@ class App extends Component {
     this.dlgcopypack.current.open();
   };
   openDlgStat = () => {
-    this.dlgstat.current.open();
+    this.setState({ showDlgStat: true });
   };
   openDlgLogin = () => {
     // console.log("openDlgLogin");
@@ -474,7 +475,7 @@ class App extends Component {
         />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
-        <DlgStat ref={this.dlgstat} />
+        
         <DlgImport
           showModal={this.state.showDlgImport}
           handleClose={() => {
@@ -513,6 +514,12 @@ class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
+        <DlgStat showModal={this.state.showDlgStat}
+          handleClose={() => {
+            this.setState({ showDlgStat: false });
+          }}
+        />
+
         <DlgStat2
           showModal={this.state.showDlgStat2}
           handleClose={() => {
