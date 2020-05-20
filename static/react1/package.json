@@ -16,13 +16,13 @@
     "@material-ui/pickers": "^3.2.10",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
     "history": "^4.10.1",
     "immutability-helper": "^2.8.1",
     "lodash": "^4.17.15",
-    "moment": "^2.25.3",
-    "moment-timezone": "^0.5.28",
+    "moment": "^2.26.0",
+    "moment-timezone": "^0.5.31",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "querystring": "^0.2.0",
@@ -40,7 +40,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "trim-right": "^1.0.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "devDependencies": {
     "react-scripts": "^3.4.1"
