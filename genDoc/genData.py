@@ -35,7 +35,7 @@ def geteleRsd(ele,stdconc):
         if stdconc>1:
             return 0.005
         else:
-            return 0.01
+            return 0.008
     elif ele=="S":
         return 0.02
     elif ele=="O":
@@ -59,7 +59,7 @@ def genOneR(ele,stdconc):
     ok=False
     num=0
     while not ok:
-        test=round(stdconc-2*sd+random.random()*4*sd,roundws)
+        test=round(stdconc-1.5*sd+random.random()*3*sd,roundws)
         err=(test-stdconc)/stdconc
         print(test,sd,rsd,err)
         if abs(err)<0.00001:
@@ -83,7 +83,7 @@ def genOne(ele,stdconc):
     ok=False
     loop=0
     while not ok:
-        test=round(stdconc-2*sd+random.random()*4*sd,roundws)
+        test=round(stdconc-1.5*sd+random.random()*3*sd,roundws)
         err=test-stdconc
         print(test,stdconc,sd)
         if abs(err)<0.0000001:
@@ -106,7 +106,7 @@ def genjmd(stdconc,rsd):
     rv=[]
     fmt="%0."+str(roundws)+"f"
     for i in range(7):
-        test=round(stdconc-2*sd+random.random()*4*sd,roundws)
+        test=round(stdconc-1.5*sd+random.random()*3*sd,roundws)
         test_str=fmt % test
         rs.append(test_str)
         rv.append(float(test_str))
