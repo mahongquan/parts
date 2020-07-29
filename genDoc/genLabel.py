@@ -94,19 +94,19 @@ def genXishuCS(yiqibh,chanels,factors):
     logging.info(factors)
     logging.info(chanels)
     if "LC" in chanels:
-        changeCell(tbl,1,"%0.1f" % (factors["LC"][0]))#低碳线性化系数
+        changeCell(tbl,1,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
     else:
         changeCell(tbl,1,"-")#低碳线性化系数
     if "HC" in chanels:
-        changeCell(tbl,3,"%0.1f" % (factors["HC"][0]))#高碳线性化系数
+        changeCell(tbl,3,"%0.1f" % (factors["高碳"][0]))#高碳线性化系数
     else:
         changeCell(tbl,3,"-")#高碳线性化系数
     if "LS" in chanels:
-        changeCell(tbl,5,"%3.1f" % (factors["LS"][0]))
+        changeCell(tbl,5,"%3.1f" % (factors["低硫"][0]))
     else:
         changeCell(tbl,5,"-")
     if "HS" in chanels:
-        changeCell(tbl,7,"%3.1f" % (factors["HS"][0]))
+        changeCell(tbl,7,"%3.1f" % (factors["高硫"][0]))
     else:
         changeCell(tbl,7,"-")
     newfileL=io.BytesIO()
@@ -195,19 +195,19 @@ def genLabel2(yiqixinghao,yiqibh,chanels,factors):
     logging.info(chanels)
     if yiqixinghao[0]=="C":
         if "LC" in chanels:
-            changeCell(tbl,1,"%0.1f" % (factors["LC"][0]))#低碳线性化系数
+            changeCell(tbl,1,"%0.1f" % (factors["低碳"][0]))#低碳线性化系数
         else:
             changeCell(tbl,1,"-")#低碳线性化系数
         if "HC" in chanels:
-            changeCell(tbl,3,"%0.1f" % (factors["HC"][0]))#高碳线性化系数
+            changeCell(tbl,3,"%0.1f" % (factors["高碳"][0]))#高碳线性化系数
         else:
             changeCell(tbl,3,"-")#高碳线性化系数
         if "LS" in chanels:
-            changeCell(tbl,5,"%3.1f" % (factors["LS"][0]))
+            changeCell(tbl,5,"%3.1f" % (factors["低硫"][0]))
         else:
             changeCell(tbl,5,"-")
         if "HS" in chanels:
-            changeCell(tbl,7,"%3.1f" % (factors["HS"][0]))
+            changeCell(tbl,7,"%3.1f" % (factors["高硫"][0]))
         else:
             changeCell(tbl,7,"-")
     else:
