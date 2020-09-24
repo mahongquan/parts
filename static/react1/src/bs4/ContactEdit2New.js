@@ -6,6 +6,7 @@ import Client from './Client';
 import Autosuggest from 'react-autosuggest';
 import RichTextEditor from 'react-rte';
 import myglobal from '../myglobal';
+import DlgOkCancel from './DlgOkCancel';
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
@@ -14,6 +15,7 @@ var DateTime = require('react-datetime');
 
 class ContactEdit2New extends Component {
   state = {
+    show_ok:false,
     openCollapse: false,
     showModal: false,
     contact: {
@@ -47,6 +49,16 @@ class ContactEdit2New extends Component {
       this.onHide();
     }
   }
+  close_ok = sure => {
+    this.setState({ show_ok: false });
+    // if (sure) {
+    //   const filteredFoods = data.config.boards.filter(
+    //     (item, idx) => this.idx !== idx
+    //   );
+    //   data.config.boards = filteredFoods;
+    //   this.setState({ boards: data.config.boards });
+    // }
+  };  
   onShow = idx => {
     this.open2(idx);
   };
@@ -96,6 +108,10 @@ class ContactEdit2New extends Component {
     this.setState({ hiddenPacks: true });
   };
   handleSave = data => {
+    if(this.state.contact.yiqibh===""){
+      this.setState({show_ok:true});
+      return;
+    }
     var url = '/rest/Contact';
     var dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
@@ -569,6 +585,11 @@ class ContactEdit2New extends Component {
           </div>
 
           <div style={{ minHeight: '200px' }} />
+          <DlgOkCancel
+            description="仪器编号不能为空"
+            showModal={this.state.show_ok}
+            closeModal={this.close_ok}
+          />
         </Modal.Body>
       </Modal>
     );
