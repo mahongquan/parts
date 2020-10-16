@@ -5,6 +5,7 @@ import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
 import Autosuggest from 'react-autosuggest';
 import myglobal from '../myglobal';
+import DlgOkCancel from './DlgOkCancel';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -15,6 +16,16 @@ class PackItems extends React.Component {
     auto_loading: false,
     release: true,
   };
+  close_ok = sure => {
+    this.setState({ show_ok: false });
+    // if (sure) {
+    //   const filteredFoods = data.config.boards.filter(
+    //     (item, idx) => this.idx !== idx
+    //   );
+    //   data.config.boards = filteredFoods;
+    //   this.setState({ boards: data.config.boards });
+    // }
+  };  
   componentDidMount = () => {
     // this.auto_ref.current.input.focus();
     Client.PackItems(this.props.pack_id, items => {
@@ -61,6 +72,10 @@ class PackItems extends React.Component {
     };
   };*/
   new_packitem = id => {
+    if(this.state.newPackName===""){
+      this.setState({show_ok:true});
+      return;
+    }
     var url = '/rest/BothPackItem';
     var data = { name: this.state.newPackName, pack: this.props.pack_id };
     console.log(data);
@@ -193,6 +208,11 @@ class PackItems extends React.Component {
         </div>
         <div style={{ minHeight: '200px' }} />
         <PackItemEditNew ref="dlg" parent={this} />
+        <DlgOkCancel
+            description="备件名称编号不能为空"
+            showModal={this.state.show_ok}
+            closeModal={this.close_ok}
+          />
       </div>
     );
   }
