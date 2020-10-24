@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 
 import CreatableSelect from 'react-select/creatable';
 const options = [
@@ -33,7 +33,7 @@ const components={
     );    
   }
 };
-export default class CreatableAdvanced extends Component{
+export default class CreatableAdvanced extends React.Component{
   constructor(props){
     super();
     this.state={

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import Client from './Client';
 import AsyncSelect from 'react-select/async';
 import Grid from '@material-ui/core/Grid';
@@ -48,7 +48,7 @@ const loadOptions = (inputValue, callback) => {
     });
 };
 
-export default class SelectItem extends Component{
+export default class SelectItem extends React.Component{
   constructor(props){
     super();
     this.state={

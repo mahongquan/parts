@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Client from './Client';
 import AsyncSelect from 'react-select/async';
 const styles={
@@ -45,7 +45,7 @@ const loadOptions = (inputValue, callback) => {
     });
 };
 
-export default class WithCallbacks extends Component{
+export default class WithCallbacks extends React.Component{
   render() {
     return (
         <AsyncSelect  

@@ -1,1 +1,1 @@
-django>=3.0rc1 python-docx numpy openpyxl==3.0.0 xlrd pillow waitress
+django python-docx numpy openpyxl xlrd

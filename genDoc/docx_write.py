@@ -3,7 +3,7 @@ import os
 import sys
 import codecs
 import django
-from genDoc.recordXml import genRecord
+# from genDoc.recordXml import genRecord
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from mysite.parts.models import *
