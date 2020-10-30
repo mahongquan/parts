@@ -338,7 +338,6 @@ export default class App extends Component {
           </span>
           <DropdownButton
             variant="light"
-            style={{ display: 'inline' }}
             title=""
             id="id_dropdown3"
           >
@@ -606,7 +605,6 @@ export default class App extends Component {
                 包箱
                 <DropdownButton
                   variant="light"
-                  style={{ display: 'inline' }}
                   title=""
                   id="id_dropdown2"
                 >

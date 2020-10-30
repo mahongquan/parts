@@ -7,10 +7,11 @@ import Autosuggest from 'react-autosuggest';
 import RichTextEditor from 'react-rte';
 import myglobal from '../myglobal';
 import DlgOkCancel from './DlgOkCancel';
+import Datetime from 'react-datetime';
 var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
-var DateTime = require('react-datetime');
+
 
 
 class ContactEdit2New extends Component {
@@ -438,7 +439,7 @@ class ContactEdit2New extends Component {
                   <label>入库时间:</label>
                 </td>
                 <td>
-                  <DateTime
+                  <Datetime
                     ref="datetime1"
                     timeFormat={false}
                     inputProps={{
@@ -452,7 +453,7 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>调试时间:</td>
                 <td>
-                  <DateTime
+                  <Datetime
                     ref="datetime2"
                     timeFormat={false}
                     inputProps={{
