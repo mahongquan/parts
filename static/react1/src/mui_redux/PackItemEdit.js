@@ -84,7 +84,7 @@ const PackItemEdit = createReactClass({
   },
   render() {
     return (
-      <a onClick={this.open}>
+      <button onClick={this.open}>
         {this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
@@ -190,7 +190,7 @@ const PackItemEdit = createReactClass({
             </div>
           </Modal.Body>
         </Modal>
-      </a>
+      </button>
     );
   },
 });

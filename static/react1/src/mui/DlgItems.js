@@ -50,9 +50,6 @@ class DlgItems extends React.Component {
     auto_items: [],
     auto_loading: false,
   };
-  constructor(props) {
-    super(props);
-  }
   componentDidUpdate(prevProps) {
     if (!prevProps.showModal && this.props.showModal ) {
       this.open();

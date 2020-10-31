@@ -102,11 +102,13 @@ class App extends Component {
     showDlgDetail: false,
     showDlgTodos: false,
     showDlgItem: false,
+    showDlgWorkMonth:false,
     showDlgLogin: false,
     showDlgFolder2: false,
     showDlgFolder:false,
     showDlgUrl:false,
     showDlgStat:false,
+    showDlgStat2:false,
     showWebview:false,
     url:"about:blank",
   };

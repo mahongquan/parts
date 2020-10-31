@@ -94,7 +94,7 @@ class Items extends Component {
           <td>{contact.id}</td>
           <td>{contact.bh}</td>
           <td>
-            <a onClick={() => this.handleEdit(idx)}>{contact.name}</a>
+            <button onClick={() => this.handleEdit(idx)}>{contact.name}</button>
           </td>
           <td>{contact.guige}</td>
           <td>{contact.danwei}</td>
@@ -142,11 +142,11 @@ class Items extends Component {
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
         </Table>
-        <a onClick={this.handlePrev}>前一页</a>
+        <button onClick={this.handlePrev}>前一页</button>
         <label id="page">
           {this.state.start + 1}/{this.state.total}
         </label>
-        <a onClick={this.handleNext}>后一页</a>
+        <button onClick={this.handleNext}>后一页</button>
         <input
           maxLength="6"
           size="6"

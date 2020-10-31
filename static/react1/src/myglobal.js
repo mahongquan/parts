@@ -1,2 +1,3 @@
 import Client from './Client_fetch'
-export default {Client:Client };
+var e={Client:Client }
+export default e;

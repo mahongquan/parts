@@ -20,8 +20,8 @@ class ContactEdit2New extends Component {
     openCollapse: false,
     showModal: false,
     contact: {
-      yujifahuo_date: moment(),
-      tiaoshi_date: moment(),
+      yujifahuo_date: moment().format("YYYY-MM-DD"),
+      tiaoshi_date: moment().format("YYYY-MM-DD"),
         addr: '',
         baoxiang: '',channels:"",        dianqi:"",
         hetongbh: '',hongwai:"",redao:"",
@@ -71,8 +71,8 @@ class ContactEdit2New extends Component {
     this.index = idx;
     if (this.index == null) {
       this.old = {
-        yujifahuo_date: moment().format('YYYY-MM-DD'),
-        tiaoshi_date: moment().format('YYYY-MM-DD'),
+        yujifahuo_date: moment(),
+        tiaoshi_date: moment(),
         addr: '',
         baoxiang: '',channels:"",        dianqi:"",
         hetongbh: '',hongwai:"",redao:"",
@@ -86,6 +86,8 @@ class ContactEdit2New extends Component {
       this.setState({ hiddenPacks: true });
     } else {
       this.old = this.parent.state.contacts[this.index];
+      // this.old.yujifahuo_date=moment(this.old.yujifahuo_date, "YYYY-MM-DD");
+      // this.old.tiaoshi_date=moment(this.old.tiaoshi_date, "YYYY-MM-DD");
       this.setState({ hiddenPacks: false });
     }
     this.old.dianqi = this.old.dianqi || '';
@@ -147,7 +149,9 @@ class ContactEdit2New extends Component {
     var t = null;
     if (typeof value === 'string') {
       t = value;
+      // t=moment(t,"YYYY-MM-DD")
     } else {
+      t=value;
       t = value.format('YYYY-MM-DD');
     }
     console.log(t);
@@ -182,8 +186,10 @@ class ContactEdit2New extends Component {
     var t = null;
     if (typeof value === 'string') {
       t = value;
+      // t=moment(t,"YYYY-MM-DD")
     } else {
       t = value.format('YYYY-MM-DD');
+      // t=moment(t,"YYYY-MM-DD")
     }
     console.log(t);
     if (this.old[e_target_name] === t) {
@@ -447,7 +453,7 @@ class ContactEdit2New extends Component {
                     }}
                     id="yujifahuo_date"
                     name="yujifahuo_date"
-                    value={this.state.contact.yujifahuo_date}
+                    value={moment(this.state.contact.yujifahuo_date,"YYYY-MM-DD")}
                     onChange={this.yujifahuo_date_change}
                   />
                 </td>
@@ -460,7 +466,7 @@ class ContactEdit2New extends Component {
                       style: { backgroundColor: this.state.bg.tiaoshi_date },
                     }}
                     name="tiaoshi_date"
-                    value={this.state.contact.tiaoshi_date}
+                    value={moment(this.state.contact.tiaoshi_date,"YYYY-MM-DD")}
                     onChange={this.tiaoshi_date_change}
                   />
                 </td>

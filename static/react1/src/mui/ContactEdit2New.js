@@ -429,10 +429,7 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <DatePicker
-                    autoOk
-                    clearable
-                    disableFuture
-                    format="yyyy-MM-dd"
+                    format="YYYY-MM-DD"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
                     style={{ backgroundColor: this.state.bg.yujifahuo_date }}
@@ -441,7 +438,7 @@ class ContactEdit2New extends Component {
                 <td>调试时间:</td>
                 <td>
                   <DatePicker
-                    format="yyyy-MM-dd"
+                    format="YYYY-MM-DD"
                     style={{ backgroundColor: this.state.bg.tiaoshi_date }}
 
                     value={this.state.contact.tiaoshi_date}

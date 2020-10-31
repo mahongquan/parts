@@ -339,7 +339,6 @@ export default class App extends Component {
           <DropdownButton
             variant="light"
             title=""
-            id="id_dropdown3"
           >
             <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
@@ -530,7 +529,6 @@ export default class App extends Component {
           <DropdownButton
             variant="light"
             title={this.state.user}
-            id="id_dropdown1"
           >
             <Dropdown.Item
               style={{
@@ -606,7 +604,6 @@ export default class App extends Component {
                 <DropdownButton
                   variant="light"
                   title=""
-                  id="id_dropdown2"
                 >
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *

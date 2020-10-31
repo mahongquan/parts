@@ -79,13 +79,13 @@ class File extends React.Component {
       <tr id={this.props.id} ref={this.props.path}>
         <td>
           <ContextMenuTrigger id={'' + this.props.id}>
-            <a onClick={this.props.onClick}>
+            <button onClick={this.props.onClick}>
               <span
                 style={{ fontSize: '1.5em', paddingRight: '10px' }}
                 className={glyphClass}
               />
               {this.props.name}
-            </a>
+            </button>
           </ContextMenuTrigger>
           <ContextMenu id={'' + this.props.id}>
             <MenuItem data={{ a: 1 }} onClick={this.onRemove}>
@@ -106,9 +106,9 @@ class File extends React.Component {
     return (
       <div ref={this.props.path}>
         <ContextMenuTrigger id={'' + this.props.id}>
-          <a id={this.props.id} onClick={this.props.onClick}>
+          <button id={this.props.id} onClick={this.props.onClick}>
             <span style={{ fontSize: '3.5em' }} className={glyphClass} />
-          </a>
+          </button>
         </ContextMenuTrigger>
         <ContextMenu id={'' + this.props.id}>
           <MenuItem data={{ a: 1 }} onClick={this.onRemove}>
