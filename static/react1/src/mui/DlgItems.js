@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
@@ -26,7 +26,7 @@ const styles = {
   },
 };
 
-class DlgItems extends Component {
+class DlgItems extends React.Component {
   mystate = {
     start: 0,
     limit: 10,
@@ -50,6 +50,9 @@ class DlgItems extends Component {
     auto_items: [],
     auto_loading: false,
   };
+  constructor(props) {
+    super(props);
+  }
   componentDidUpdate(prevProps) {
     if (!prevProps.showModal && this.props.showModal ) {
       this.open();
@@ -172,7 +175,8 @@ class DlgItems extends Component {
     let prev;
     let next;
     //console.log(this.mystate);
-    //console.log(this.state);
+    console.log("DlgItems render")
+    console.log(this.props);
     if (this.state.start === 0) {
       hasprev = false;
     }

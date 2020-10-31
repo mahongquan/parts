@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import update from 'immutability-helper';
 import Client from './Client';
-// import Autosuggest from 'react-autosuggest';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -430,7 +429,10 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <DatePicker
-                    format="YYYY-MM-DD"
+                    autoOk
+                    clearable
+                    disableFuture
+                    format="yyyy-MM-dd"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
                     style={{ backgroundColor: this.state.bg.yujifahuo_date }}
@@ -439,7 +441,7 @@ class ContactEdit2New extends Component {
                 <td>调试时间:</td>
                 <td>
                   <DatePicker
-                    format="YYYY-MM-DD"
+                    format="yyyy-MM-dd"
                     style={{ backgroundColor: this.state.bg.tiaoshi_date }}
 
                     value={this.state.contact.tiaoshi_date}

@@ -362,7 +362,8 @@ class App extends Component {
     this.setState({ showcontext: false });
   };
   render() {
-    //console.log("render=========================");
+    console.log("render=========================");
+    console.log(this.state);
 
     const contactRows = this.state.contacts.map((contact, idx) => (
       <TableRow key={idx} className={this.props.classes.row}>

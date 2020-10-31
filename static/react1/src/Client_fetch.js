@@ -29,7 +29,7 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
   }
   return fetch(host + url, data)
     .then((response)=>{
-      console.log(response);
+      // console.log(response);
     	if (response.status >= 200 && response.status < 300) {
     	  	var r = response.json();
 		    r.then(cb).catch(err_callback);

@@ -1,23 +1,23 @@
-import React from 'react';
 import { Modal } from 'react-bootstrap';
 import Browser from './Browser2';
-var createReactClass = require('create-react-class');
-const DlgFolder2 = createReactClass({
-  getInitialState() {
-    return {
+import React, { Component } from 'react';
+// var createReactClass = require('create-react-class');
+export default class DlgFolder2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
       showModal: false,
       hiddenPacks: true,
       error: '',
     };
-  },
-
-  close() {
+  }
+  close=()=>{
     this.setState({ showModal: false });
-  },
+  }
 
-  open() {
+  open=()=> {
     this.setState({ showModal: true });
-  },
+  }
   render() {
     return (
       <Modal
@@ -33,6 +33,5 @@ const DlgFolder2 = createReactClass({
         </Modal.Body>
       </Modal>
     );
-  },
-});
-export default DlgFolder2;
+  }
+}
