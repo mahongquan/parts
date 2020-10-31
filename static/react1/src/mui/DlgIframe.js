@@ -43,7 +43,7 @@ class HtmlEditor extends Component {
     // this.w.loadURL(this.state.filename);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.url  && this.props.url!=prevProps.url ) {
+    if (this.props.url  && this.props.url!==prevProps.url ) {
       this.setState({filename:prevProps.url})
     }
   }
@@ -166,6 +166,7 @@ class HtmlEditor extends Component {
             </IconButton>
             <img
             src={this.state.favicon}
+            alt="close"
             style={{
               lineHeight: '16px',
               width: '16px',
@@ -205,7 +206,7 @@ class HtmlEditor extends Component {
         <button onClick={()=>{
           this.w.openDevTools();
         }}>dev</button>
-        <iframe
+        <iframe title="iframe1"
           style={{width:"100%",height:"100%"}}
           ref={this.webviewRef}
           src={this.state.filename}

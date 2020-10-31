@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import MyTextField from './MyTextField';
 import Client from './Client';
 import UsePacks from './UsePacks';
-import update from 'immutability-helper';
+// import update from 'immutability-helper';
 export default class DialogEdit extends React.Component {
   state = {
     open: false,

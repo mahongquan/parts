@@ -355,35 +355,35 @@ class Browser extends React.Component {
           >
             <ul className="nav navbar-nav">
               <li id="backButton">
-                <a onClick={this.onBack}>
+                <button onClick={this.onBack}>
                   <span className="glyphicon glyphicon-arrow-left" />
-                </a>
+                </button>
               </li>
               <li id="parentButton">
-                <a onClick={this.onParent}>
+                <button onClick={this.onParent}>
                   <span className="glyphicon glyphicon-arrow-up" />
-                </a>
+                </button>
               </li>
               <li id="uploadButton">
-                <a onClick={this.onUpload}>
+                <button onClick={this.onUpload}>
                   <span className="glyphicon glyphicon-upload" />
-                </a>
+                </button>
               </li>
               <li id="mkdirButton">
-                <a onClick={this.mkdir}>
+                <button onClick={this.mkdir}>
                   <span className="glyphicon glyphicon-folder-open" />
-                </a>
+                </button>
               </li>
               <li id="alternateViewButton">
-                <a onClick={this.alternateView}>
+                <button onClick={this.alternateView}>
                   <span ref="altViewSpan" className={className} />
-                </a>
+                </button>
               </li>
               <li>
-                <a id="pathSpan">
+                <button id="pathSpan">
                   <span className="glyphicon glyphicon-chevron-right" />
                   {this.state.current_path}
-                </a>
+                </button>
               </li>
             </ul>
           </div>
