@@ -339,6 +339,9 @@ export default class App extends Component {
           <DropdownButton
             variant="light"
             title=""
+            onClick={
+              (e)=>{e.stopPropagation();}
+            }
           >
             <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
@@ -529,6 +532,9 @@ export default class App extends Component {
           <DropdownButton
             variant="light"
             title={this.state.user}
+            onClick={
+              (e)=>{e.stopPropagation();}
+            }
           >
             <Dropdown.Item
               style={{
@@ -604,6 +610,9 @@ export default class App extends Component {
                 <DropdownButton
                   variant="light"
                   title=""
+                  onClick={
+                    (e)=>{e.stopPropagation();}
+                  }
                 >
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *
