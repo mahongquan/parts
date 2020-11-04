@@ -71,8 +71,8 @@ class ContactEdit2New extends Component {
     this.index = idx;
     if (this.index == null) {
       this.old = {
-        yujifahuo_date: moment(),
-        tiaoshi_date: moment(),
+        yujifahuo_date: moment().format("YYYY-MM-DD"),
+        tiaoshi_date: moment().format("YYYY-MM-DD"),
         addr: '',
         baoxiang: '',channels:"",        dianqi:"",
         hetongbh: '',hongwai:"",redao:"",
