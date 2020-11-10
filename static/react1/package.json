@@ -14,9 +14,6 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",
     "history": "^4.10.1",
@@ -31,10 +28,9 @@
     "react": "^17.0.1",
     "react-autosuggest": "^10.0.3",
     "react-bootstrap": "^1.4.0",
-    "react-chartjs-2": "^2.10.0",
+    "react-chartjs-2": "^2.11.1",
     "react-datetime": "^3.0.4",
     "react-dom": "^17.0.1",
-    "react-overlays": "^4.1.1",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-rte": "^0.16.3",
@@ -44,8 +40,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "trim-right": "^1.0.1",
-    "typescript": "^4.0.5",
-    "web-vitals": "^0.2.4"
+    "typescript": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
