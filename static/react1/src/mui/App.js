@@ -110,13 +110,13 @@ class App extends Component {
     showDlgStat:false,
     showDlgStat2:false,
     showWebview:false,
+    showDlgCopyPack:false,
     url:"about:blank",
   };
   constructor(props) {
     super(props);
     myglobal.app=this;
     this.dlgwait = React.createRef();
-    this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
     this.dlgstat = React.createRef();
     this.dlgpacks = React.createRef();
@@ -340,7 +340,7 @@ class App extends Component {
     this.dlgpacks.current.open();
   };
   openDlgCopyPack = () => {
-    this.dlgcopypack.current.open();
+    this.setState({ showDlgCopyPack: true });
   };
   openDlgStat = () => {
     this.setState({ showDlgStat: true });
@@ -477,7 +477,10 @@ class App extends Component {
           }}
         />
         <DlgPacks ref={this.dlgpacks} />
-        <DlgCopyPack ref={this.dlgcopypack} />
+        <DlgCopyPack showModal={this.state.showDlgCopyPack}
+          handleClose={() => {
+            this.setState({ showDlgCopyPack: false });
+          }} />
         
         <DlgImport
           showModal={this.state.showDlgImport}

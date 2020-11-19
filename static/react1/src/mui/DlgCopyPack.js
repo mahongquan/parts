@@ -1,4 +1,5 @@
 import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,21 +7,29 @@ import Button from '@material-ui/core/Button';
 import Client from './Client';
 import TextField from '@material-ui/core/TextField';
 import SelectPack from './SelectPack'
-import Spinner from './react-spin';
 import myglobal from '../myglobal';
 class DlgCopyPack extends React.Component {
-  state = {
-    showModal: false,
-    error: '',
-    lbls: [],
-    values: [],
-    newPackName: '',
-    newname: '',
-    auto_value: '',
-    auto_items: [],
-    auto_loading: false,
-    stopped: true,
+  constructor(props) {
+    super(props);
+    this.state = {
+      stopped: true,
+      error: '',
+      auto_value: '',
+      newname: '',
+    };
+    this.src_id=null;
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow();
+    } else if (prevProps.showModal && !this.props.showModal) {
+      this.onHide();
+    }
+  }
+  onShow = () => {
+    this.open();
   };
+  onHide = () => {};
   newnameChange = event => {
     this.setState({ newname: event.target.value });
   };
@@ -44,12 +53,8 @@ class DlgCopyPack extends React.Component {
     this.src_id = data.id;
     //this.setState({ auto_items: [ item ] })
   };
-  close = () => {
-    this.setState({ showModal: false });
-  };
   open = () => {
     this.setState({
-      showModal: true,
       stopped: true,
       error: '',
       auto_value: '',
@@ -62,25 +67,15 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    const spinCfg = {
-      lines: 8, // The number of lines to draw
-      length: 5, // The length of each line
-      width: 30, // The line thickness
-      radius: 35, // The radius of the inner circle
-      scale: 0.25, // Scales overall size of the spinner
-      top: '85px', // Top position relative to parent
-      left: '100px', // Left position relative to parent
-      //position: 'realative' // Element positioning
-    };
     let showbutton;
     if (this.state.stopped) {
       showbutton = 'block';
     } else {
       showbutton = 'none';
     }
-    // console.log(this.state);
+    console.log(this.state);
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>复制包</DialogTitle>
         <DialogContent>
           <table>
@@ -112,16 +107,25 @@ class DlgCopyPack extends React.Component {
               </tr>
               <tr>
                 <td>
-                  <div>
-                    <Button color="inherit" variant="outlined" style={{display:showbutton}} onClick={this.copy_pack}>复制</Button>
-                    <Spinner config={spinCfg} stopped={this.state.stopped} />
+                  <Button color="inherit"
+              variant="outlined" 
+              style={{
+                display: this.state.stopped ? '' : 'none',
+              }}
+                      onClick={this.copy_pack}
+                    >复制</Button>
+                  <div align="center"
+          style={{
+            display: this.state.stopped ? 'none' : '',
+          }}>
+                  <CircularProgress  color="secondary" />
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
           <p>{this.state.error}</p>
-           <div style={{minHeight:"200px"}}></div>
+          <div style={{ minHeight: '200px' }} />
         </DialogContent>
       </Dialog>
     );
