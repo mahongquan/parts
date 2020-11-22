@@ -16,8 +16,8 @@ function getWhere() {
   return window.require('electron').ipcRenderer.sendSync('getpath');
 }
 // let where = getWhere();
-link('./', 'autosuggest.css');
-link('./', 'react-datetime.css');
+// link('./', 'autosuggest.css');
+// link('./', 'react-datetime.css');
 // myglobal.api = 'models';
 // if (myglobal.api === 'models') {
 //   myglobal.Client = require('./Client_models').default;
