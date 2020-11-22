@@ -1,9 +1,7 @@
+import os
 def getpath():
-    ps=__file__.split("\\")
-    r=""
-    for i in ps[:-1]:
-        r=r+i+"\\"
-    return(r)
+    print(__file__)
+    return os.path.split(__file__)[0]
 if __name__=="__main__":    
     print(getpath())
    

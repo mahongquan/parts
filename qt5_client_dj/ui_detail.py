@@ -16,7 +16,7 @@ class Ui_Dialog(object):
         Dialog.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.webView =QtWebEngineWidgets.QWebView(Dialog)
+        self.webView =QtWebEngineWidgets.QWebEngineView(Dialog)
         self.webView.setUrl(QtCore.QUrl("about:blank"))
         self.webView.setObjectName("webView")
         self.verticalLayout.addWidget(self.webView)

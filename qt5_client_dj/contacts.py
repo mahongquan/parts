@@ -296,7 +296,7 @@ class CalculatorForm(QtWidgets.QMainWindow):
     def change(self):
         it=self.ui.tableWidget.item(self.ui.tableWidget.currentRow(),0)
         c=detail.ContactDlg(self)
-        c.showMaximized()
+        c.show()
         if it!=None:
             c.showdata(int(it.text()))
         else:

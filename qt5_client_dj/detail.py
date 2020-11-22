@@ -7,6 +7,7 @@ from PySide2.QtCore import *
 from .ui_detail import Ui_Dialog
 from .  import backend
 import logging
+import getpath
 class ContactDlg(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(ContactDlg, self).__init__(parent)
@@ -15,7 +16,9 @@ class ContactDlg(QtWidgets.QDialog):
         self.ui.setupUi(self)
     def showdata(self,contactid):
         backend.genDetail(contactid)
-        self.ui.webView.setUrl(QtCore.QUrl("file:///d:/parts/out.html"))
+        filepath="file://"+getpath.getpath()+"/out.html"
+        print(filepath)
+        self.ui.webView.setUrl(QtCore.QUrl(filepath))
     #@QtCore.pyqtSlot()
     def accept(self):
         self.done(1)
