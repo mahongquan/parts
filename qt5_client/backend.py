@@ -57,6 +57,6 @@ if USEREST:
     from .backend_rest import *
 else:
     #from .backend_django import *
-    from backend_alchemy import *
+    from .backend_alchemy import *
 if __name__=="__main__":
     login()
