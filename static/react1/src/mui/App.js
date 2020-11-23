@@ -21,7 +21,7 @@ import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth';
-import DlgWebview from './DlgWebview2';
+import DlgWebview from './DlgWebview';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
