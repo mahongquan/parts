@@ -27,7 +27,7 @@
     "querystring": "^0.2.0",
     "react": "latest",
     "react-autosuggest": "latest",
-    "react-bootstrap": "latest",
+    "react-bootstrap": "1.4.0",
     "react-chartjs-2": "latest",
     "react-datetime": "latest",
     "react-dom": "latest",
