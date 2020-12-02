@@ -473,7 +473,7 @@ class ContactEdit2New extends Component {
                     id="method"
                     name="method"
                     disabled={true}
-                    defaultValue={this.state.contact.method}
+                    value={this.state.contact.method}
                   />
                   {
                     //<Button className="btn" id="bt_file"><Glyphicon glyph="pencil" />

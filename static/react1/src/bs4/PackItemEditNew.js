@@ -103,7 +103,7 @@ class PackItemEditNew extends Component {
                     name="id"
                     readOnly={true}
                     disabled="disabled"
-                    defaultValue={this.state.packitem.id}
+                    value={this.state.packitem.id}
                   />
                 </td>
               </tr>

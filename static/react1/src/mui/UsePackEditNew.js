@@ -69,7 +69,7 @@ class UsePackEditNew extends Component {
                     name="id"
                     readOnly={true}
                     disabled="disabled"
-                    defaultValue={this.state.usepack.pack}
+                    value={this.state.usepack.pack}
                   />
                 </td>
                 <td>
