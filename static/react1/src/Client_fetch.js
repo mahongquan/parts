@@ -105,6 +105,10 @@ function PackItems(query, cb) {
   var data = { pack: query };
   return get('/rest/PackItem/', data, cb);
 }
+function users( cb) {
+  var data = {};
+  return get('/rest/view_user/',data,  cb);
+}
 function items(query, cb) {
   var data = { search: query };
   return get('/rest/Item/', data, cb);
@@ -159,6 +163,7 @@ const Client = {
   getRaw,
   contacts,
   items,
+  users,
   login_index,
   login,
   logout,

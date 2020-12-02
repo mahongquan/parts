@@ -128,6 +128,21 @@ def bjitems(items,items_chuku):
     # print("right")
     # print(printList(items_chuku))
     return(left,notequal,items_chuku)
+@login_required    
+def view_user(request):
+    search=request.GET.get("query",'')
+    if search!='':
+        total=User.objects.filter(Q(name__icontains=search)).count()
+        objs = User.objects.filter(Q(name__icontains=search)).order_by('username','-id')
+    else:
+        total=User.objects.count()
+        objs = User.objects.all().order_by('username','-id')
+    data=[]
+    for rec in objs:
+        data.append({"id":rec.id,"name":rec.username})
+    logging.info(data)
+    out={"total":total,"data":data,"success":True}
+    return HttpResponse(json.dumps(out, ensure_ascii=False,cls=MyEncoder))    
 @login_required
 def item(request):
     logging.info("===================")

@@ -1,7 +1,7 @@
 import React from 'react';
 class LoginFormComponent extends React.Component {
   state = {
-    name: 'mahongquan',
+    name: '马红权',
     pwd: '333333',
   };
   handleNameChange = e => {

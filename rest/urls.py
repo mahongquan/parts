@@ -30,6 +30,7 @@ urlpatterns = [
         url(r'^Contact', views.contact),
         url(r'^PackItem', views.packItem),
         url(r'^Pack', views.pack),
+        url(r'^view_user', views.view_user),
 
         url(r'^login_index', views.login_index),
         url(r'^login', views.mylogin),

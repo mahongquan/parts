@@ -73,6 +73,7 @@ export default class App extends Component {
       showDlgStat2: false,
       showDlgFolder2: false,
       showDlgWork:false,
+      users:[],
     };
   }
   show_webview=(error)=>{
@@ -113,6 +114,17 @@ export default class App extends Component {
           total: contacts.total,
           connect_error: false,
         });
+        Client.users((res)=>{
+          console.log(res);
+          if(res.success){
+            console.log("set users");
+            console.log(this.state);
+            this.setState({users:res.data});
+          }
+          else{
+            console.log("not success")
+          }
+        })
       },
       error => {
         // console.log(typeof(error));
@@ -320,8 +332,15 @@ export default class App extends Component {
     this.setState({ showcontext: false });
   };
   render() {
-    //console.log("render=========================");
-
+    console.log("render=========================");
+    console.log(this.state);
+    const userMenu = this.state.users.map((user, idx) => (
+      <Dropdown.Item  key={idx}
+        onSelect={() => this.onSelectBaoxiang(user.name)}
+      >
+        {user.name}
+      </Dropdown.Item>
+    ));
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx}>
         <td>{contact.id}</td>
@@ -617,19 +636,22 @@ export default class App extends Component {
                   <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
                     *
                   </Dropdown.Item>
-                  <Dropdown.Item
-                    onSelect={() => this.onSelectBaoxiang('马红权')}
-                  >
-                    马红权
-                  </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
-                    陈旺
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onSelect={() => this.onSelectBaoxiang('吴振宁')}
-                  >
-                    吴振宁
-                  </Dropdown.Item>
+                  {
+                    userMenu
+                  // <Dropdown.Item
+                  //   onSelect={() => this.onSelectBaoxiang('马红权')}
+                  // >
+                  //   马红权
+                  // </Dropdown.Item>
+                  // <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
+                  //   陈旺
+                  // </Dropdown.Item>
+                  // <Dropdown.Item
+                  //   onSelect={() => this.onSelectBaoxiang('吴振宁')}
+                  // >
+                  //   吴振宁
+                  // </Dropdown.Item>
+                  }
                 </DropdownButton>
               </th>
               <th>入库时间</th>
