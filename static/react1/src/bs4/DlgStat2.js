@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Modal, DropdownButton,Dropdown } from 'react-bootstrap';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
-//import Select from 'react-select';
-//import 'react-select/dist/react-select.css';
-// var _ = require('lodash');
+import UserDropDown from "./UserDropDown";
 class DlgStat extends Component {
   state = {
     showModal: false,
@@ -104,19 +102,8 @@ class DlgStat extends Component {
           <Modal.Title>统计</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DropdownButton title={this.state.baoxiang} id="id_dropdown2">
-            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('马红权')}>
-              马红权
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
-              陈旺
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
-              吴振宁
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onSelectBaoxiang('%')}>*</Dropdown.Item>
-          </DropdownButton>
-          <Bar data={data} options={options} width={600} height={300} />
+         <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />  
+        <Bar data={data} options={options} width={600} height={300} />
         </Modal.Body>
       </Modal>
     );

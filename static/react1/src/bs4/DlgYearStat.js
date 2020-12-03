@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import Client from './Client';
+import UserDropDown from "./UserDropDown";
 import {
   ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip 
 } from 'recharts';
@@ -73,18 +74,7 @@ class DlgStat extends Component {
        dialogClassName="modal-700px">
         <Modal.Header>年统计</Modal.Header>
         <Modal.Body>
-          <DropdownButton title={this.state.baoxiang} >
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('马红权')}>
-              马红权
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('陈旺')}>
-              陈旺
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('吴振宁')}>
-              吴振宁
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('%')}>*</Dropdown.Item>
-          </DropdownButton>
+          <UserDropDown titile="" onSelect={this.onClickBaoxiang} />
       <div style={{ width: '660px', height: 300 }}>
         <ResponsiveContainer>
           <ComposedChart

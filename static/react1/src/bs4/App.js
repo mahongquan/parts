@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
+import UserDropDown from "./UserDropDown";
 import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
@@ -73,7 +74,6 @@ export default class App extends Component {
       showDlgStat2: false,
       showDlgFolder2: false,
       showDlgWork:false,
-      users:[],
     };
   }
   show_webview=(error)=>{
@@ -114,17 +114,6 @@ export default class App extends Component {
           total: contacts.total,
           connect_error: false,
         });
-        Client.users((res)=>{
-          console.log(res);
-          if(res.success){
-            console.log("set users");
-            console.log(this.state);
-            this.setState({users:res.data});
-          }
-          else{
-            console.log("not success")
-          }
-        })
       },
       error => {
         // console.log(typeof(error));
@@ -334,13 +323,6 @@ export default class App extends Component {
   render() {
     console.log("render=========================");
     console.log(this.state);
-    const userMenu = this.state.users.map((user, idx) => (
-      <Dropdown.Item  key={idx}
-        onSelect={() => this.onSelectBaoxiang(user.name)}
-      >
-        {user.name}
-      </Dropdown.Item>
-    ));
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx}>
         <td>{contact.id}</td>
@@ -625,34 +607,7 @@ export default class App extends Component {
               <th>仪器型号</th>
               <th>通道配置</th>
               <th>
-                包箱
-                <DropdownButton
-                  variant="light"
-                  title=""
-                  onClick={
-                    (e)=>{e.stopPropagation();}
-                  }
-                >
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
-                    *
-                  </Dropdown.Item>
-                  {
-                    userMenu
-                  // <Dropdown.Item
-                  //   onSelect={() => this.onSelectBaoxiang('马红权')}
-                  // >
-                  //   马红权
-                  // </Dropdown.Item>
-                  // <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
-                  //   陈旺
-                  // </Dropdown.Item>
-                  // <Dropdown.Item
-                  //   onSelect={() => this.onSelectBaoxiang('吴振宁')}
-                  // >
-                  //   吴振宁
-                  // </Dropdown.Item>
-                  }
-                </DropdownButton>
+                <UserDropDown title="包箱" onSelect={this.onSelectBaoxiang} />
               </th>
               <th>入库时间</th>
               <th>方法</th>

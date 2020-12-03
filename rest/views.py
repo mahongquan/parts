@@ -1339,6 +1339,8 @@ def ht(request):
 def year12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
+    if baoxiang=="":
+        baoxiang="%"
     end_date=datetime.datetime.now()
     start_date=datetime.datetime(end_date.year-12,1,1,0,0,0)
     cursor = connection.cursor()            #获得一个游标(cursor)对象
