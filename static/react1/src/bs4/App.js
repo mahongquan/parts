@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
+import UserDropDown from "./UserDropDown";
 import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
@@ -320,8 +321,8 @@ export default class App extends Component {
     this.setState({ showcontext: false });
   };
   render() {
-    //console.log("render=========================");
-
+    console.log("render=========================");
+    console.log(this.state);
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx}>
         <td>{contact.id}</td>
@@ -606,31 +607,7 @@ export default class App extends Component {
               <th>仪器型号</th>
               <th>通道配置</th>
               <th>
-                包箱
-                <DropdownButton
-                  variant="light"
-                  title=""
-                  onClick={
-                    (e)=>{e.stopPropagation();}
-                  }
-                >
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>
-                    *
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onSelect={() => this.onSelectBaoxiang('马红权')}
-                  >
-                    马红权
-                  </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
-                    陈旺
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onSelect={() => this.onSelectBaoxiang('吴振宁')}
-                  >
-                    吴振宁
-                  </Dropdown.Item>
-                </DropdownButton>
+                <UserDropDown title="包箱" onSelect={this.onSelectBaoxiang} />
               </th>
               <th>入库时间</th>
               <th>方法</th>

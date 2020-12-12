@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import os
 import logging
+from django.utils.translation import gettext_lazy as _
+LANGUAGES = [
+    ('zh-Hans', _('Chinese')),
+]
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -117,16 +122,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-USE_I18N = True
-
-USE_L10N = True
-LOCALE_PATHS = [
-  os.path.split(__file__)[0]+"/../locale/"
+LANGUAGES = [
+   ('zh-Hans', _('Chinese')),
 ]
-USE_TZ = True
-TIME_ZONE ='Asia/Shanghai'
-
-# LANGUAGE_CODE = 'zh-Hans'
+ 
+ 
+LANGUAGE_CODE = 'zh-Hans'
+ 
+TIME_ZONE = 'Asia/Shanghai'
+ 
+USE_I18N = True
+ 
+USE_L10N = True
+ 
+USE_TZ = False
 
 SITE_ID = 1
 

@@ -105,7 +105,7 @@ export default class DialogEdit extends React.Component {
                     name="id"
                     readOnly={true}
                     disabled={true}
-                    defaultValue={contact.id}
+                    value={contact.id}
                   />
                 </td>
                 <td>
@@ -243,7 +243,7 @@ export default class DialogEdit extends React.Component {
                     name="method"
                     readOnly={true}
                     disabled={true}
-                    defaultValue={contact.method}
+                    value={contact.method}
                   />
                   <RaisedButton>选择文件</RaisedButton>
                   <RaisedButton>清除</RaisedButton>
