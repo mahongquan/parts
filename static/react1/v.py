@@ -2,7 +2,7 @@
 import os
 import shutil
 import json 
-dir1=r".\node_modules"
+dir1=r"./node_modules"
 res=[]
 def getPsAt(dir0,f0):
 	global res
@@ -49,11 +49,9 @@ def getPV(f0):
 def readP():
 	# print(dir(json))
 	p=json.load(open("package.json"))
-	f=open("version.current.txt","w")
+	f=open("dependencies.json","w")
 	for k in p["dependencies"]:
 		f.write('"%s":"%s"\n' %(k,getPV(k)))
 	f.close()
 readP()
-# getPs(dir1)
-# print(res)
-# print(dir(json))
+
