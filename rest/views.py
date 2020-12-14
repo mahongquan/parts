@@ -1391,6 +1391,8 @@ def myZhengli(raw):
 def month12(request):
     logging.info("chart")
     baoxiang=request.GET.get("baoxiang")
+    if baoxiang=="":
+        baoxiang="%"
     end_date=datetime.datetime.now()
     start_date=datetime.datetime(end_date.year-2,1,1,0,0,0)
     cursor = connection.cursor()            #获得一个游标(cursor)对象
