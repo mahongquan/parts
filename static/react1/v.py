@@ -49,7 +49,7 @@ def getPV(f0):
 def readP():
 	# print(dir(json))
 	p=json.load(open("package.json"))
-	f=open("dependencies.json","w")
+	f=open("package.dependencies.json","w")
 	for k in p["dependencies"]:
 		f.write('"%s":"%s"\n' %(k,getPV(k)))
 	f.close()
