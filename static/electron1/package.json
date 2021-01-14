@@ -1,5 +1,8 @@
 {
     "main": "main.js",
+    "scripts": {
+        "start": "electron . --dev"
+    },
     "dependencies": {
         "@babel/core": "latest",
         "@babel/plugin-proposal-class-properties": "latest",
