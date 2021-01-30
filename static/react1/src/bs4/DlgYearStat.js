@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import Client from './Client';
 import UserDropDown from "./UserDropDown";
 import {
