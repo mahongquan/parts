@@ -1,2 +1,2 @@
-python3 s1.py
+python3 manage.py runserver
 

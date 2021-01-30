@@ -389,6 +389,9 @@ def login_index(request):
     return(r)
 def mylogin(request):
     logging.info("login/////////////////////////////////////////////////")
+    logging.info(request)
+    logging.info(dir(request))
+    logging.info(request.headers)
     logging.info(request.POST)
     request2=request#Request(request,(JSONParser(),))
     data = request2.POST
