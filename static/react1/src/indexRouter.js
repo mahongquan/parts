@@ -4,7 +4,7 @@ import App_mui from './mui/App';
 import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
 import App_redux from './mui_redux/index';
-import {Router, Route,Switch,Link} from 'react-router-dom'
+import {BrowserRouter as Router, Route,Switch,Link} from 'react-router-dom'
 // import createHashHistory from "history/createHashHistory";
 let createHashHistory= require("history").createHashHistory;
 // import createBrowserHistory from "history"
@@ -27,6 +27,7 @@ class Index extends Component{
 }
 class Routers extends Component{
   render=()=>{
+    console.log(this.props);
     return(<Switch>
                 <Route exact path="/contacts" component={App} />
                 <Route exact path="/todos" component={Todos} />
@@ -34,7 +35,7 @@ class Routers extends Component{
                 <Route exact path="/mui_app" component={App_mui} />
                 <Route exact path="/mui_redux" component={App_redux} />
                 <Route exact path="/index" component={Index} />
-                <Route component={App}/>
+                <Route component={Index}/>
               </Switch>);
   }
 }

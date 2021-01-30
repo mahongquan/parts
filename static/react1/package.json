@@ -25,7 +25,7 @@
     "prop-types": "latest",
     "querystring": "latest",
     "react": "latest",
-    "react-autosuggest": "latest",
+    "react-autosuggest": "^10.1.0",
     "react-bootstrap": "latest",
     "react-chartjs-2": "latest",
     "react-datetime": "latest",
