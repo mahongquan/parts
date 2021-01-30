@@ -4,6 +4,7 @@ import App_mui from './mui/App';
 import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
 import App_redux from './mui_redux/index';
+// import Picker from './Mpicker.js'
 import {BrowserRouter as Router, Route,Switch,Link} from 'react-router-dom'
 // import createHashHistory from "history/createHashHistory";
 let createHashHistory= require("history").createHashHistory;
@@ -22,6 +23,7 @@ class Index extends Component{
                 <Link to="/mui_todos" >mui Todos</Link>
                 <Link to="/mui_app" >mui App</Link>
                 <Link to="/mui_redux" >mui reudx App</Link>
+                <Link to="/picker" >no test</Link>
               </div>);
   }
 }
