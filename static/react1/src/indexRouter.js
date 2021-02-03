@@ -5,7 +5,7 @@ import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
 import App_redux from './mui_redux/index';
 // import Picker from './Mpicker.js'
-import {BrowserRouter as Router, Route,Switch,Link} from 'react-router-dom'
+import {HashRouter as Router, Route,Switch,Link} from 'react-router-dom'
 // import createHashHistory from "history/createHashHistory";
 let createHashHistory= require("history").createHashHistory;
 // import createBrowserHistory from "history"
@@ -37,7 +37,7 @@ class Routers extends Component{
                 <Route exact path="/mui_app" component={App_mui} />
                 <Route exact path="/mui_redux" component={App_redux} />
                 <Route exact path="/index" component={Index} />
-                <Route component={Index}/>
+                <Route component={App}/>
               </Switch>);
   }
 }
