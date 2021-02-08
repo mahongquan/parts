@@ -31,6 +31,7 @@
     "react-chartjs-2": "latest",
     "react-datetime": "latest",
     "react-dom": "latest",
+    "react-query": "^3.8.2",
     "react-redux": "latest",
     "react-router-dom": "latest",
     "react-rte": "latest",

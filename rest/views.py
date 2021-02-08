@@ -1583,7 +1583,7 @@ def folder(request):
         os.system('start '+p)
     out={"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False))    
-@login_required
+# @login_required
 def todo(request):
     logging.info("===================")
     logging.info(request)
