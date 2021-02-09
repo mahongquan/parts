@@ -74,7 +74,7 @@ class DlgStat extends Component {
        dialogClassName="modal-700px">
         <Modal.Header>年统计</Modal.Header>
         <Modal.Body>
-          <UserDropDown titile="" onSelect={this.onClickBaoxiang} />
+          <UserDropDown title="" onSelect={this.onClickBaoxiang} /><span>this.state.baoxiang</span>
       <div style={{ width: '660px', height: 300 }}>
         <ResponsiveContainer>
           <ComposedChart

@@ -1,18 +1,48 @@
 import React, { Component } from 'react';
-import { Table,Modal, DropdownButton, Dropdown,Button } from 'react-bootstrap';
+import { Table,Modal, Button } from 'react-bootstrap';
 import Client from './Client';
+import Datetime from 'react-datetime';
+import UserDropDown from "./UserDropDown";
 var moment = require('moment');
+function lastDay(m){
+  var m1=moment([m.year(),m.month(),1]);
+  m1.add(1,"months");
+  // console.log(m.format('YYYY-MM-DD'))
+  m1.subtract(1,"days");
+  // console.log(m.format('YYYY-MM-DD'))
+  return m1;
+}
 class DlgItems extends Component {
-  state = {
-    items: [],
-    items2: [],
-    start: 0,
-    total: 0,
-    limit: 10,
-    search: '',
-    start_input: 1,
-    baoxiang: '',
-  };
+  constructor(){
+    super();
+    this.state={
+      month:moment(),
+      items: [],
+      items2: [],
+      start: 0,
+      total: 0,
+      limit: 10,
+      search: '',
+      start_input: 1,
+      baoxiang: '',
+    }
+  }
+  prev=()=>{
+    //m.subtract(2, 'months')
+    var m=this.state.month.clone();
+    m.subtract(1, 'months');
+    this.setState({month:m},()=>{
+       this.loaddata();
+    })
+    console.log(this.state);
+  }
+  next=()=>{
+    var m=this.state.month.clone();
+    m.add(1, 'months');
+    this.setState({month:m},()=>{
+       this.loaddata();
+    })
+  }
   componentDidUpdate(prevProps) {
     if (!prevProps.showModal && this.props.showModal ) {
       this.open();
@@ -20,17 +50,17 @@ class DlgItems extends Component {
       // this.onHide();
     }
   }
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (nextProps.showModal && !this.props.showModal) {
-  //     this.open();
-  //   }
-  //   if (nextProps.contact_id) {
-  //     this.load_data(nextProps.contact_id);
-  //   }
-  //   if (nextProps.baoxiang != null) {
-  //     this.setState({ baoxiang: nextProps.baoxiang });
-  //   }
-  // }
+  yujifahuo_date_change = value => {
+    var t = null;
+    if (typeof value === 'string') {
+      t = value;
+    } else {
+      t = value.format('YYYY-MM');
+    }
+    this.setState({ month:moment(t)},()=>{
+      this.loaddata();
+    });
+  };
   close = () => {
     console.log('close');
   };
@@ -38,20 +68,23 @@ class DlgItems extends Component {
     this.loaddata();
   };
   loaddata = () => {
+    // window.m=this.state.month;
+    // window.moment=moment;
     var baoxiang = this.state.baoxiang;
-    let end_date = moment();
-    var start_date = moment().subtract(2, 'months');
-    var start_date_s = start_date.format('YYYY-MM-DD');
-    let end_date_s = end_date.format('YYYY-MM-DD');
-    this.end_date = end_date;
-    this.end_date_s = end_date_s;
+    let end_date = lastDay(this.state.month);
+    var start_date = end_date.clone();
+    start_date.subtract(2, 'months');
+    // var start_date_s = start_date.format('YYYY-MM-DD');
+    // let end_date_s = end_date.format('YYYY-MM-DD');
+    // this.end_date = end_date;
+    // this.end_date_s = end_date_s;
     let cmd =
       "select * from parts_contact  where work_month IS NULL and baoxiang like '" +
       baoxiang +
       "'  and tiaoshi_date between '" +
-      start_date_s +
+      start_date.format('YYYY-MM-DD') +
       "' and '" +
-      end_date_s +
+       end_date.format('YYYY-MM-DD') +
       "'";
     Client.sql(cmd, contacts2 => {
       // console.log(contacts2);
@@ -61,18 +94,18 @@ class DlgItems extends Component {
       });
     });
 
-    let current_str = end_date.format('YYYY-MM');
-    this.current_str = current_str;
+    // let current_str = end_date.format('YYYY-MM');
+    // this.current_str = current_str;
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 =
       "select * from parts_contact  where strftime('%Y-%m',work_month)='" +
-      current_str +
+      end_date.format('YYYY-MM') +
       "' and baoxiang like '" +
       baoxiang +
       "'  and tiaoshi_date between '" +
-      start_date_s +
+      start_date.format('YYYY-MM-DD') +
       "' and '" +
-      end_date_s +
+      end_date.format('YYYY-MM-DD')  +
       "'";
     Client.sql(cmd2, contacts2 => {
       // console.log(contacts2);
@@ -92,7 +125,7 @@ class DlgItems extends Component {
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 =
       "update parts_contact set work_month='" +
-      this.end_date_s +
+      this.state.month.format("YYYY-MM-DD") +
       "' where id=" +
       contact.id;
     Client.sql(cmd2, contacts2 => {
@@ -168,21 +201,22 @@ class DlgItems extends Component {
               工作量
           </Modal.Header>
           <Modal.Body>
-            <DropdownButton
-              title={'包箱:' + this.state.baoxiang}
-              id="id_dropdown2"
-            >
-              <Dropdown.Item onSelect={() => this.onSelectBaoxiang('')}>*</Dropdown.Item>
-              <Dropdown.Item onSelect={() => this.onSelectBaoxiang('马红权')}>
-                马红权
-              </Dropdown.Item>
-              <Dropdown.Item onSelect={() => this.onSelectBaoxiang('陈旺')}>
-                陈旺
-              </Dropdown.Item>
-              <Dropdown.Item onSelect={() => this.onSelectBaoxiang('吴振宁')}>
-                吴振宁
-              </Dropdown.Item>
-            </DropdownButton>
+          <div>
+            
+        <div style={{ display: 'flex', alignItems: 'center'}}>
+ <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
+        <Datetime
+                    inputProps={{
+                      style: { width:"120px" },
+                    }}
+                    dateFormat="YYYY-MM"
+                    viewMode="months"
+                    timeFormat={false}
+                    value={this.state.month}
+                    onChange={this.yujifahuo_date_change}
+                  />
+        </div>
+        </div>
           <div style={{ display: 'flex',width:"100%" }}>
             <div style={{ border: 'solid 1px'}}>
               未报工作量仪器
@@ -204,7 +238,6 @@ class DlgItems extends Component {
               </Button>
             </div>
             <div style={{ border: 'solid 1px'}}>
-              本月({this.current_str})工作量
               {right}
             </div>
           </div>

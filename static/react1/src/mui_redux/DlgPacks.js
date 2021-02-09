@@ -132,6 +132,7 @@ class DlgPacks extends Component {
   };
   handleEdit = pack_id => {
     //this.setState({currentIndex:idx,showModal:true});
+    this.props.store.actions.loadPackItem(pack_id);
     this.refs.edit1.open(pack_id);
   };
   mapfunc = (contact, idx) => {
@@ -225,7 +226,7 @@ class DlgPacks extends Component {
           Toolbar>
         </AppBar>
         <DialogContent>
-          <PackEdit ref="edit1" title="编辑" />
+          <PackEdit  store={this.props.store} ref="edit1" title="编辑" />
           <Table>
             <TableHead>
               <TableRow>

@@ -9,7 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 class DlgLogin extends React.Component {
   state = {
     showModal: false,
-    name: 'mahongquan',
+    name: '马红权',
     pwd: '333333',
   };
   handleNameChange = e => {

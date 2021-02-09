@@ -1,5 +1,4 @@
 import React from 'react';
-import Client from './Client';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
@@ -11,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import DropdownButton from './DropdownButton';
 import Autosuggest from 'react-autosuggest';
 import MenuItem from '@material-ui/core/MenuItem';
+import Client from './Client.js';
+
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -22,11 +23,7 @@ class PackItems extends React.Component {
     release: true,
   };
   componentDidMount = () => {
-    Client.PackItems(this.props.pack_id, items => {
-      this.setState({
-        items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
-      });
-    });
+    // this.props.store.actions.loadPackItem(this.props.pack_id);
   };
   auto_select = (event, data) => {
     console.log('selected');
@@ -109,7 +106,7 @@ class PackItems extends React.Component {
   };
   onSuggestionsClearRequested = () => {};
   render() {
-    const { items } = this.state;
+    const  items  = this.props.store.packitems;
     const itemRows = items.map((item, idx) => {
       let ng = item.name + '/' + (item.guige === null ? '' : item.guige);
       return (
@@ -181,7 +178,7 @@ class PackItems extends React.Component {
             新备件
           </Button>
         </div>
-        <PackItemEditNew ref="dlg" parent={this} />
+        <PackItemEditNew ref="dlg" parent={this} store={this.props.store} />
       </div>
     );
   }

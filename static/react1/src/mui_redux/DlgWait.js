@@ -1,56 +1,21 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
-import Client from './Client';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 class DlgWait extends React.Component {
-  state = {
-    showModal: false,
-    hiddenPacks: true,
-    error: '',
-  };
-
-  close = () => {
-    this.setState({ showModal: false });
-  };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.open(nextProps);
-    } else if (this.props.showModal && !nextProps.showModal) {
-      this.close();
-    }
-  }
-  // close = () => {
-  //   this.setState({ showModal: false });
-  // };
-  // open = () => {
-  //   this.setState({ showModal: true });
-  //   this.loaddata('%');
-  // };
-  open(contact_id) {
-    var self = this;
-    this.setState({ showModal: true });
-    Client.get('/rest/allfile', { id: contact_id }, function(result) {
-      console.info(result);
-      if (!result.success) {
-        self.setState({ error: result.message });
-      } else {
-        self.close();
-      }
-    });
-  }
   render() {
     return (
-      <Modal
-        show={this.state.showModal}
-        onHide={this.close}
-        dialogClassName="custom-modal"
+      <Dialog
+        open={this.props.showModal}
+        onClose={this.props.handleClose}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>请等待。。。</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>{this.state.error}</div>
-        </Modal.Body>
-      </Modal>
+        <DialogTitle>
+          请等待。。。
+        </DialogTitle>
+        <DialogContent>
+          <div>{this.props.store.allfile_err}</div>
+        </DialogContent>
+      </Dialog>
     );
   }
 }

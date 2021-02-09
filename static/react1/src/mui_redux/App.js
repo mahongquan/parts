@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownButton from './DropdownButton';
 import update from 'immutability-helper';
@@ -30,7 +30,6 @@ import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CONTACTActions, types } from './reducers';
@@ -81,50 +80,26 @@ const CustomTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.dlgwait = React.createRef();
     this.dlgurl = React.createRef();
     this.dlgfolder = React.createRef();
-    this.dlgcopypack = React.createRef();
     this.dlgcheck = React.createRef();
     this.dlgpacks = React.createRef();
-    this.dlgimport = React.createRef();
     this.dlgimportHT = React.createRef();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.logined && nextProps.logined) {
-      this.props.actions.loadCONTACT({
-        start: this.props.start,
-        limit: this.props.limit,
-        search: this.props.search,
-        baoxiang: this.props.baoxiang,
-      });
-    }
-  }
-  // componentWillReceiveProps(nextProps) {
-  //   if (!this.props.logined && nextProps.logined) {
-  //     this.props.actions.loadContacts({
-  //       start: this.props.start,
-  //       limit: this.props.limit,
-  //       search: this.props.search,
-  //       baoxiang: this.props.baoxiang,
-  //     });
-  //   }
-  // }
 
   handleContactChange = (idx, contact) => {
     this.props.store.handleContactChange(idx, contact);
   };
   handleClickFilter = event => {
-    //console.log(event);
     event.preventDefault();
     event.stopPropagation();
     this.setState({ target: event.target, showcontext: true });
   };
   componentDidMount = () => {
-    // this.props.dispatch({type:types.LOAD_CONTACT});
     this.props.actions.loadCONTACT({
       start: this.props.start,
       limit: this.props.limit,
@@ -193,7 +168,8 @@ class App extends Component {
   onDetailClick = contactid => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
-    this.setState({ showDlgDetail: true, contactid: contactid });
+    // this.setState({ showDlgDetail: true, contactid: contactid });
+    this.props.actions.details(contactid);
   };
   handleNext = e => {
     let start = this.props.start + this.props.limit;
@@ -219,14 +195,17 @@ class App extends Component {
   };
   handleEdit = idx => {
     // this.setState({ showDlgEdit: true, currentIndex: idx });
+    if(idx) this.props.actions.loadUsePack(this.props.contacts[idx].id);
     this.props.dispatch({
       type: types.SHOW_DLG_EDIT,
       visible: true,
       index: idx,
     });
   };
-  opendlgwait = contactid => {
-    this.dlgwait.current.open(contactid);
+  allfile = contactid => {
+    // this.dlgwait.current.open(contactid);
+     // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+     this.props.actions.allfile(contactid)
   };
   handleContactChange2 = contact => {
     var idx = this.currentIndex;
@@ -262,14 +241,13 @@ class App extends Component {
     this.dlgpacks.current.open();
   };
   openDlgCopyPack = () => {
-    this.dlgcopypack.current.open();
+    this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: true});
   };
   // openDlgStat = () => {
   //   this.dlgstat.current.open();
   // };
   openDlgImport = () => {
-    //this.refs.dlgimport.open();
-    this.setState({ showDlgImport: true });
+    this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
   };
   openDlgImportHT = () => {
     this.dlgimportHT.current.open();
@@ -308,7 +286,7 @@ class App extends Component {
             >
               更新方法
             </MenuItem>
-            <MenuItem onClick={() => this.opendlgwait(contact.id)}>
+            <MenuItem onClick={() => this.allfile(contact.id)}>
               全部文件
             </MenuItem>
             <MenuItem
@@ -361,6 +339,18 @@ class App extends Component {
     } else {
       next = null;
     }
+    const store={
+          detail:this.props.detail,
+          contacts:this.props.contacts,
+          packitems:this.props.packitems,
+          usepacks:this.props.usepacks,
+          dispatch:this.props.dispatch,
+          hiddenPacks:this.props.hiddenPacks,
+          currentIndex:this.props.currentIndex,
+          allfile_err:this.props.allfile_err,
+          actions:this.props.actions};
+    console.log("store==")
+    console.log(store);
     return (
       <div className={this.props.classes.root}>
         <DlgWorkMonth
@@ -376,8 +366,12 @@ class App extends Component {
             this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: false });
           }}
         />
-        <DlgPacks ref={this.dlgpacks} />
-        <DlgCopyPack ref={this.dlgcopypack} />
+        <DlgPacks store={store} ref={this.dlgpacks} />
+         <DlgCopyPack showModal={this.props.showDlgCopyPack}
+          handleClose={() => {
+            this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: false});
+          }} />
+        
         <DlgStatMonth open={this.props.showDlgStatMonth}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLGSTAT_MONTH, visible: false });
@@ -386,13 +380,14 @@ class App extends Component {
         <DlgImport
           showModal={this.props.showDlgImport}
           handleClose={() => {
-            this.setState({ showDlgImport: false });
+             this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: false });
           }}
         />
         <DlgImportHT ref={this.dlgimportHT} parent={this} />
         <DlgCheck ref={this.dlgcheck} />
         <DlgFolder ref={this.dlgfolder} />
-        <DlgWait showModal={this.props.show_dlgwait}
+        <DlgWait showModal={this.props.showdlgWait}
+          store={store}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_WAIT, visible: false });
           }}
@@ -409,8 +404,9 @@ class App extends Component {
         <DlgDetail
           contactid={this.props.contactid}
           showModal={this.props.showDlgDetail}
+          store={store}
           handleClose={() => {
-            this.setState({ showDlgDetail: false });
+            this.props.dispatch({ type: types.SHOW_DLG_DETAIL,visible:false});
           }}
         />
         <DlgStatYear open={this.props.showDlgStatYear}
@@ -419,15 +415,12 @@ class App extends Component {
           }}
         />
         <ContactEdit2New
+          store={store}
           showModal={this.props.showDlgEdit}
+          index={this.props.currentIndex}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_EDIT, visible: false });
           }}
-          contacts={this.props.contacts}
-          dispatch={this.props.dispatch}
-          hiddenPacks={this.props.hiddenPacks}
-          index={this.props.currentIndex}
-          actions={this.props.actions}
           title="编辑"
         />
         <AppBar position="static">
@@ -589,14 +582,19 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => {
+  // console.log("map==============")
   // console.log(state);
   return state.CONTACTs;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch =>{ 
+  // console.log("map========================");
+  // console.log(dispatch);
+  return {
   actions: bindActionCreators(CONTACTActions, dispatch),
   dispatch: dispatch,
-});
+  }
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps

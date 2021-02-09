@@ -31,7 +31,7 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
     .then((response)=>{
       // console.log(response);
     	if (response.status >= 200 && response.status < 300) {
-        console.log(response);
+        // console.log(response);
     	  	var r = response.json();
 		    r.then(cb).catch(err_callback);
 		  }

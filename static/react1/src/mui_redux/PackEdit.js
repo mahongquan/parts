@@ -25,7 +25,7 @@ class PackEdit extends React.Component {
         <DialogContent>
           <label>id:{this.state.pack_id}</label>
           <div id="id_useusepacks">
-            <PackItems pack_id={this.state.pack_id} />
+            <PackItems store={this.props.store} pack_id={this.state.pack_id} />
           </div>
         </DialogContent>
       </Dialog>

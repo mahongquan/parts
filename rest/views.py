@@ -89,7 +89,7 @@ def inItems(item,items):
     for i in range(len(items)):
         if items[i][0]==item[0]:
             inIt=True
-            if items[i][2]==item[2]:
+            if float(items[i][2])==float(item[2]):
                 equal=True
             v=items[i]
             items.remove(items[i])
@@ -1063,10 +1063,11 @@ def readBeiliaofile(fn):
     ncols = table.ncols
     begin=False
     dan=[]
-    for i in range(nrows-7):
+    for i in range(nrows-13):
         #print(i,table.row_values(i)[0])
-        cells=table.row_values(7+i)
-        dan.append((cells[0],cells[1],cells[7]))#bh,name,ct
+        cells=table.row_values(11+i)
+        logging.info(len(cells))
+        dan.append((cells[1],cells[2],cells[12]))#bh,name,ct
     return dan
 def check(request):
     contactid=int(request.POST.get("id"))
@@ -1483,7 +1484,7 @@ def showcontact(request):
     dic["totalid"]=len(items)
     return HttpResponse(json.dumps(dic, ensure_ascii=False,cls=MyEncoder))     
 def allfile(request):
-    #try:
+    try:
         contact_id=request.GET["id"]
         c=Contact.objects.get(id=contact_id)
         thename=c.yonghu.replace(" ","")
@@ -1556,14 +1557,14 @@ def allfile(request):
             os.system('start '+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
-    # except:
-    #     message=""
-    #     info = sys.exc_info()
-    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
-    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
-    #     message+= "** %s: %s" % info[:2]
-    #     out={"success":False,"message":message}
-    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
+    except:
+        message=""
+        info = sys.exc_info()
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        out={"success":False,"message":message}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
 def folder(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)

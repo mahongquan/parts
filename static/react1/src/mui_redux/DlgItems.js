@@ -233,7 +233,6 @@ class DlgItems extends Component {
           />
           <Button
             id="id_bt_search"
-            color="secondary"
             variant="contained"
             onClick={this.search}
           >

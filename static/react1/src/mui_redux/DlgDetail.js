@@ -1,74 +1,8 @@
 import React from 'react';
-// import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import Button from '@material-ui/core/Button';
-import Client from './Client';
-// import update from 'immutability-helper';
-var _ = require('lodash');
 class DlgDetail extends React.Component {
-  state = {
-    error: '',
-    packs: [],
-    info: '',
-    contact: {},
-    items: [],
-    items2: [],
-    totalct: 0,
-    totalid: 0,
-  };
-
-  loaddata = contactid => {
-    if (!contactid) return;
-    var data1 = { id: contactid };
-    console.log(data1);
-    Client.get('/rest/showcontact', data1, res => {
-      console.log(res);
-      if (!res.items2) res.items2 = [];
-      this.setState({
-        contact: res.contact,
-        items: res.items,
-        items2: res.items2,
-        totalid: res.totalid,
-        totalct: res.totalct,
-      });
-    });
-  };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      console.log(this.props);
-      console.log(nextProps);
-      console.log('props not eq');
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      console.log('state not eq');
-      return true;
-    }
-    return false;
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps.contactid);
-    } else if (this.props.showModal && !nextProps.showModal) {
-      this.onHide();
-    }
-  }
-  onShow = contactid => {
-    this.open(contactid);
-  };
-  onHide = () => {};
-  open = contactid => {
-    this.loaddata(contactid);
-  };
-  handleDismiss = () => {
-    this.setState({ showalert: false });
-  };
-  inputChange = () => {
-    this.setState({ showalert: false });
-  };
   mapfunc = (contact, idx) => {
     if (contact.leijia) {
       return (
@@ -112,20 +46,13 @@ class DlgDetail extends React.Component {
   };
 
   render = () => {
-    // console.log("render ImportStandard")
-    // let alert;
-    // if (this.state.showalert) {
-    //     alert=(<Alert bsStyle="info" onDismiss={this.handleDismiss}>
-    //       <p>
-    //         {this.state.info}
-    //       </p>
-    //     </Alert>
-    //   );
-    // }
-    const contactRows = this.state.items.map(this.mapfunc);
+    if (this.props.store.detail===null){
+      return <div></div>;
+    }
+    const contactRows = this.props.store.detail.items.map(this.mapfunc);
     let contactRows2, quehuo;
-    if (this.state.items2.length > 0) {
-      contactRows2 = this.state.items2.map(this.mapfunc);
+    if (this.props.store.detail.items2.length > 0) {
+      contactRows2 = this.props.store.detail.items2.map(this.mapfunc);
 
       quehuo = (
         <div>
@@ -149,60 +76,60 @@ class DlgDetail extends React.Component {
       <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>详细</DialogTitle>
         <DialogContent>
-          <table id="table_input" className="table-condensed">
+          <table border={1} id="table_input" className="table-condensed">
             <tbody>
               <tr>
                 <td>ID:</td>
-                <td>{this.state.contact.id}</td>
+                <td>{this.props.store.detail.contact.id}</td>
                 <td>
                   <label>用户单位:</label>
                 </td>
-                <td>{this.state.contact.yonghu}</td>
+                <td>{this.props.store.detail.contact.yonghu}</td>
               </tr>
               <tr>
                 <td>客户地址:</td>
-                <td>{this.state.contact.addr}</td>
+                <td>{this.props.store.detail.contact.addr}</td>
                 <td>通道配置:</td>
-                <td>{this.state.contact.channels} </td>
+                <td>{this.props.store.detail.contact.channels} </td>
               </tr>
               <tr>
                 <td>
                   <label>仪器型号:</label>
                 </td>
-                <td>{this.state.contact.yiqixinghao}</td>
+                <td>{this.props.store.detail.contact.yiqixinghao}</td>
                 <td>
                   <label>仪器编号:</label>
                 </td>
-                <td>{this.state.contact.yiqibh}</td>
+                <td>{this.props.store.detail.contact.yiqibh}</td>
               </tr>
               <tr>
                 <td>
                   <label>包箱:</label>
                 </td>
-                <td>{this.state.contact.baoxiang}</td>
+                <td>{this.props.store.detail.contact.baoxiang}</td>
                 <td>审核:</td>
-                <td>{this.state.contact.shenhe}</td>
+                <td>{this.props.store.detail.contact.shenhe}</td>
               </tr>
               <tr>
                 <td>
                   <label>入库时间:</label>
                 </td>
-                <td>{this.state.contact.yujifahuo_date}</td>
+                <td>{this.props.store.detail.contact.yujifahuo_date}</td>
                 <td>调试时间:</td>
-                <td>{this.state.contact.tiaoshi_date}</td>
+                <td>{this.props.store.detail.contact.tiaoshi_date}</td>
               </tr>
               <tr>
                 <td>
                   <label>合同编号:</label>
                 </td>
-                <td>{this.state.contact.hetongbh}</td>
+                <td>{this.props.store.detail.contact.hetongbh}</td>
                 <td>方法:</td>
-                <td>{this.state.contact.method}</td>
+                <td>{this.props.store.detail.contact.method}</td>
               </tr>
             </tbody>
           </table>
           <h2>备件清单</h2>
-          <table responsive="true" bordered="true" condensed="true">
+          <table border={1} responsive="true" bordered="true" condensed="true">
             <thead>
               <tr>
                 <td>ID</td>
@@ -215,7 +142,7 @@ class DlgDetail extends React.Component {
             <tbody id="contact-list">{contactRows}</tbody>
           </table>
           <p>
-            共{this.state.totalid}项{this.state.totalct}个。
+            共{this.props.store.detail.totalid}项{this.props.store.detail.totalct}个。
           </p>
           {quehuo}
         </DialogContent>

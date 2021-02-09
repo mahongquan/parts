@@ -13,7 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
 import { types } from './reducers';
-import Datetime from 'react-datetime';
+// import Datetime from 'react-datetime';
+import MomentUtils from '@date-io/moment';
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -80,7 +85,7 @@ class ContactEdit2New extends Component {
       };
       this.setState({ hiddenPacks: true });
     } else {
-      this.old = _.clone(this.props.contacts[this.index]);
+      this.old = _.clone(this.props.store.contacts[this.index]);
       this.setState({ hiddenPacks: false });
     }
     this.old.dianqi = this.old.dianqi || '';
@@ -100,13 +105,13 @@ class ContactEdit2New extends Component {
     var contact2 = update(this.state.contact, { id: { $set: '' } });
     console.log(contact2);
     this.setState({ contact: contact2 });
-    this.props.dispatch({ type: types.hiddenPacks });
+    this.props.store.dispatch({ type: types.hiddenPacks });
     // this.setState({ hiddenPacks: true });
   };
   handleSave = () => {
     let dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    this.props.actions.saveContact(dataSave, this.props.index, () => {
+    this.props.store.actions.saveContact(dataSave, this.props.index, () => {
       this.setState({ bg: {} });
       this.old = dataSave;
     });
@@ -280,6 +285,7 @@ class ContactEdit2New extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
           <table id="table_input" className="table-condensed">
             <tbody>
               <tr>
@@ -425,27 +431,19 @@ class ContactEdit2New extends Component {
                   <label>入库时间:</label>
                 </td>
                 <td>
-                  <Datetime
-                    ref="datetime1"
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.yujifahuo_date },
-                    }}
-                    id="yujifahuo_date"
-                    name="yujifahuo_date"
+                  <DatePicker
+                    format="YYYY-MM-DD"
                     value={this.state.contact.yujifahuo_date}
                     onChange={this.yujifahuo_date_change}
+                    style={{ backgroundColor: this.state.bg.yujifahuo_date }}
                   />
                 </td>
                 <td>调试时间:</td>
                 <td>
-                  <Datetime
-                    ref="datetime2"
-                    timeFormat={false}
-                    inputProps={{
-                      style: { backgroundColor: this.state.bg.tiaoshi_date },
-                    }}
-                    name="tiaoshi_date"
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    style={{ backgroundColor: this.state.bg.tiaoshi_date }}
+
                     value={this.state.contact.tiaoshi_date}
                     onChange={this.tiaoshi_date_change}
                   />
@@ -563,12 +561,14 @@ class ContactEdit2New extends Component {
               复制
             </Button>
           </div>
-          <div id="id_usepacks" hidden={this.props.hiddenPacks}>
+          <div id="id_usepacks" hidden={this.props.store.hiddenPacks}>
             <UsePacks2
+              store={this.props.store}
               contact_hetongbh={this.state.contact.hetongbh}
               contact_id={this.state.contact.id}
             />
           </div>
+        </MuiPickersUtilsProvider>
         </DialogContent>
       </Dialog>
     );

@@ -4,7 +4,6 @@ import Autosuggest from 'react-autosuggest';
 
 class CopyPack extends React.Component {
   state = {
-    showModal: false,
     error: '',
     lbls: [],
     values: [],
@@ -85,7 +84,7 @@ class CopyPack extends React.Component {
                   id="nameto"
                   type="text"
                   onChange={this.newnameChange}
-                  size="15"
+                  size="medium"
                   value={this.state.newname}
                   maxLength="30"
                 />

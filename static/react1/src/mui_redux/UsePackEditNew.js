@@ -37,7 +37,7 @@ class UsePackEditNew extends Component {
       this.old = {};
     } else {
       this.parent = this.props.parent;
-      this.old = this.parent.state.usepacks[this.index];
+      this.old = this.props.store.usepacks[this.index];
     }
     this.setState({ usepack: this.old });
   };
@@ -82,7 +82,7 @@ class UsePackEditNew extends Component {
             </tbody>
           </table>
           <div id="id_useusepacks">
-            <PackItems pack_id={this.state.usepack.pack} />
+            <PackItems store={this.props.store} pack_id={this.state.usepack.pack} />
           </div>
         </DialogContent>
       </Dialog>
