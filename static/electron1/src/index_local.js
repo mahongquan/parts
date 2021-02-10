@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import myglobal from './myglobal';
-import App from './mui/App';
+import App from './indexRouter';
 console.log(myglobal);
 const path = require('path');
 function link(where, module_name) {

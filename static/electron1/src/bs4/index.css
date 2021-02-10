@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.modal-90w {
+    width: 600px;
+    max-width: none !important;
+}
+.custom-modal{
+    width: 900px;
+    max-width: none !important;
+}
+.modal-900px{
+    width: 900px;
+    max-width: none !important;
+}
+.modal-700px{
+    width: 700px;
+    max-width: none !important;
+}
+.mylink{
+  color:#00f;
+}
+.mylink:hover {
+    text-decoration: underline;
+}
