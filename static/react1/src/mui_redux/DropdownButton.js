@@ -5,11 +5,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 let _ = require('lodash');
-export default class SimpleMenu extends React.Component {
+export default class DropdownButton extends React.Component {
   state = {
     anchorEl: null,
   };
-
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -21,11 +20,12 @@ export default class SimpleMenu extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    // console.log(this.props.children);
+    console.log("DropdownButton render========");
+    console.log(this.props);
     let cs;
     if (_.isArray(this.props.children)) {
       cs = this.props.children.map((c, idx) => {
-        // console.log(c);
+        console.log(c);
         return (
           <MenuItem
             key={idx}

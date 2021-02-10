@@ -15,7 +15,12 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import UserDropDown from "./UserDropDown"
-import Datetime from 'react-datetime';
+import MomentUtils from '@date-io/moment';
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+// import Datetime from 'react-datetime';
 // import sprintf from 'sprintf';
 var moment = require('moment');
 const styles = {
@@ -243,17 +248,13 @@ class DlgItems extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
         <div style={{ display: 'flex', alignItems: 'center'}}>
- <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
+ <UserDropDown store={this.props.store} titile="" onSelect={this.onSelectBaoxiang} />
  <span>{this.state.baoxiang}</span>
-        <Datetime
-                    inputProps={{
-                      style: { width:"120px" },
-                    }}
-                    dateFormat="YYYY-MM"
-                    viewMode="months"
-                    timeFormat={false}
-                    value={this.state.month}
+                 <DatePicker
+                    format="YYYY-MM-DD"
+                    value={this.month}
                     onChange={this.yujifahuo_date_change}
                   />
         </div>
@@ -282,6 +283,7 @@ class DlgItems extends Component {
               {right}
             </div>
           </div>
+        </MuiPickersUtilsProvider>
         </DialogContent>
       </Dialog>
     );

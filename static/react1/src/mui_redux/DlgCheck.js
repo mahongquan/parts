@@ -92,7 +92,7 @@ class DlgCheck extends React.Component {
       </tr>
     ));
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>核对备料计划</DialogTitle>
         <DialogContent>
           <p>

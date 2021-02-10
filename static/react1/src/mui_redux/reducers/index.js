@@ -10,21 +10,26 @@ const SEARCH_CHANGE = 'SEARCH_CHANGE';
 const LOG_OUT = 'LOG_OUT';
 const PAGE_CHANGE = 'PAGE_CHANGE';
 const SHOW_DLG_EDIT = 'SHOW_DLG_EDIT';
+const SHOW_DLG_PACK = 'SHOW_DLG_PACK';
 const SHOW_DLG_DETAIL = 'SHOW_DLG_DETAIL';
 const SHOW_DLG_WAIT="SHOW_DLG_WAIT"
 const SHOW_DLG_ITEMS="SHOW_DLG_ITEMS"
 const SHOW_DLG_COPYPACK="SHOW_DLG_COPYPACK"
 const SHOW_DLG_IMPORT="SHOW_DLG_IMPORT"
+const SHOW_DLG_CHECK="SHOW_DLG_CHECK"
 const hiddenPacks = 'hiddenPacks';
 const LOAD_PACKITEM_RES = 'LOAD_PACKITEM_RES';
 const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
 const LOAD_USEPACK_RES = 'LOAD_USEPACK_RES';
+const LOAD_USER_RES = 'LOAD_USER_RES';
 const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
 const LOGIN_RES = 'LOGIN_RES';
 const SAVE_CONTACT_RES = 'SAVE_CONTACT_RES';
 const ALLFILE_ERR="ALLFILE_ERR";
 //dispatch
 export const types = {
+  SHOW_DLG_PACK,
+  SHOW_DLG_CHECK,
   SHOW_DLG_DETAIL,
   SHOW_LOGIN,
   SHOW_DLG_ITEMS,
@@ -89,6 +94,20 @@ const loadCONTACT = data => {
     load_contact(dispatch,data);
   };
 };
+const load_user= data => {
+  console.log("load users============");
+  return async dispatch => {
+    Client.users((res)=>{
+          if(res.success){
+            dispatch({type:LOAD_USER_RES,res})
+          }
+          else{
+            console.log("not success")
+          }
+    });
+  }
+};
+
 const loadUsePack = contact_id => {
   return async dispatch => {
     Client.UsePacks(contact_id, res => {
@@ -136,7 +155,37 @@ const allfile = (contact_id) => {
     });
   };
 };
+const forlder = (contact_id) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/folder/', { id: contact_id }, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        dispatch({ type: ALLFILE_ERR, allfile_err: result.message});
+      } else {
+        dispatch({ type: SHOW_DLG_WAIT, visible:false});
+      }
+    },(error)=>{
+      dispatch({ type: ALLFILE_ERR, allfile_err: error});
+    });
+  };
+};
+const updateMethod = (contact_id, idx) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/updateMethod', { id: contact_id }, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        dispatch({ type: ALLFILE_ERR, allfile_err: result.message});
+      } else {
 
+        dispatch({ type: SHOW_DLG_WAIT, visible:false});
+      }
+    },(error)=>{
+      dispatch({ type: ALLFILE_ERR, allfile_err: error});
+    });
+  };
+};
 const saveContact = (dataSave, index, callback) => {
   return async dispatch => {
     var url = '/rest/Contact';
@@ -163,9 +212,11 @@ export const CONTACTActions = {
   saveContact,
   allfile,
   details,
+  forlder,
 };
 
 const initialState = {
+  users:[],
   logined: false,
   connect_error: false,
   search2: '',
@@ -192,7 +243,10 @@ const initialState = {
   showDlgItem: false,
   showDlgWorkMonth: false,
   showDlgCopyPack:false,
+  showDlgForder:false,
   showdlgWait:false,
+  showDlgPack:false,
+  showDlgCheck:false,
   show_login: false,
   //edit
   hiddenPacks: true,
@@ -243,6 +297,12 @@ export function CONTACTs(state = initialState, action) {
         currentIndex: { $set: action.index },
       });
       return new_state;
+    case SHOW_DLG_CHECK:
+      new_state = update(state, {
+        showDlgCheck: { $set: action.visible },
+        currentIndex: { $set: action.index },
+      });
+      return new_state;
     case SHOW_DLG_COPYPACK:
       new_state = update(state, {
         showDlgCopyPack: { $set: action.visible },
@@ -251,6 +311,11 @@ export function CONTACTs(state = initialState, action) {
     case SHOW_DLG_DETAIL:
       new_state = update(state, {
         showDlgDetail: { $set: action.visible },
+      });
+      return new_state;
+    case SHOW_DLG_PACK:
+      new_state = update(state, {
+        showDlgPack: { $set: action.visible },
       });
       return new_state;
     case SHOW_DLG_IMPORT:
@@ -311,6 +376,11 @@ export function CONTACTs(state = initialState, action) {
     case LOAD_USEPACK_RES:
       new_state = update(state, {
         usepacks: { $set: action.res.data },
+      });
+      return new_state;  
+    case LOAD_USER_RES:
+      new_state = update(state, {
+        users: { $set: action.res.data },
       });
       return new_state;      
     case LOAD_PACKITEM_RES:

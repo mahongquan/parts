@@ -5,14 +5,12 @@ import update from 'immutability-helper';
 import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
-import DlgFolder from './DlgFolder';
 import { withStyles } from '@material-ui/core/styles';
 import DlgStatMonth from './DlgStatMonth';
 import DlgStatYear from './DlgStatYear';
 import DlgImport from './DlgImport';
-import DlgImportHT from './DlgImportHT';
+// import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck';
-import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
@@ -83,12 +81,6 @@ const CustomTableCell = withStyles(theme => ({
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.dlgwait = React.createRef();
-    this.dlgurl = React.createRef();
-    this.dlgfolder = React.createRef();
-    this.dlgcheck = React.createRef();
-    this.dlgpacks = React.createRef();
-    this.dlgimportHT = React.createRef();
   }
 
   handleContactChange = (idx, contact) => {
@@ -207,6 +199,11 @@ class App extends React.Component {
      // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
      this.props.actions.allfile(contactid)
   };
+  updateMethod = (contactid,idx) => {
+    // this.dlgwait.current.open(contactid);
+     // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+     this.props.actions.updateMethod(contactid, idx)
+  };
   handleContactChange2 = contact => {
     var idx = this.currentIndex;
     console.log(idx);
@@ -223,22 +220,20 @@ class App extends React.Component {
     }
     this.setState({ contacts: contacts2 });
   };
-  opendlgurl = (url, parent, idx, data) => {
-    this.currentIndex = idx;
-    this.dlgurl.current.open(url, data, this.handleContactChange2);
-  };
   openDlgItems = () => {
     // this.dlgitems.current.open();
     this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: true});
   };
   opendlgfolder = contactid => {
-    this.dlgfolder.current.open(contactid);
+    // this.dlgfolder.current.open(contactid);
+    this.props.actions.forlder(contactid)
   };
-  opendlgcheck = (contactid, yiqibh) => {
-    this.dlgcheck.current.open(contactid, yiqibh);
+  opendlgcheck = (idx) => {
+    this.props.dispatch({ type: types.SHOW_DLG_CHECK, visible: true,index: idx});
   };
   openDlgPacks = () => {
-    this.dlgpacks.current.open();
+    // this.dlgpacks.current.open();
+    this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: true});
   };
   openDlgCopyPack = () => {
     this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: true});
@@ -249,9 +244,9 @@ class App extends React.Component {
   openDlgImport = () => {
     this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
   };
-  openDlgImportHT = () => {
-    this.dlgimportHT.current.open();
-  };
+  // openDlgImportHT = () => {
+  //   this.dlgimportHT.current.open();
+  // };
   onFilterDW = () => {
     console.log('filter dw');
   };
@@ -278,19 +273,14 @@ class App extends React.Component {
               详细
             </MenuItem>
             <MenuItem
-              onClick={() =>
-                this.opendlgurl('/rest/updateMethod', this, idx, {
-                  id: contact.id,
-                })
-              }
-            >
+              onClick={() =>this.updateMethod(contact.id,idx)}>
               更新方法
             </MenuItem>
             <MenuItem onClick={() => this.allfile(contact.id)}>
               全部文件
             </MenuItem>
             <MenuItem
-              onClick={() => this.opendlgcheck(contact.id, contact.yiqibh)}
+              onClick={() => this.opendlgcheck(idx)}
             >
               核对备料计划
             </MenuItem>
@@ -348,12 +338,14 @@ class App extends React.Component {
           hiddenPacks:this.props.hiddenPacks,
           currentIndex:this.props.currentIndex,
           allfile_err:this.props.allfile_err,
+          users:this.props.users,
           actions:this.props.actions};
     console.log("store==")
     console.log(store);
     return (
       <div className={this.props.classes.root}>
         <DlgWorkMonth
+          store={store}
           showModal={this.props.showDlgWorkMonth}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_WORKMONTH, visible: false });
@@ -366,7 +358,10 @@ class App extends React.Component {
             this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: false });
           }}
         />
-        <DlgPacks store={store} ref={this.dlgpacks} />
+        <DlgPacks showModal={this.props.showDlgPack}
+          handleClose={() => {
+            this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: false});
+          }} />
          <DlgCopyPack showModal={this.props.showDlgCopyPack}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: false});
@@ -383,16 +378,16 @@ class App extends React.Component {
              this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: false });
           }}
         />
-        <DlgImportHT ref={this.dlgimportHT} parent={this} />
-        <DlgCheck ref={this.dlgcheck} />
-        <DlgFolder ref={this.dlgfolder} />
+        <DlgCheck showModal={this.props.showDlgCheck}
+          handleClose={() => {
+            this.props.dispatch({ type: types.SHOW_DLG_CHECK, visible: false});
+          }} />
         <DlgWait showModal={this.props.showdlgWait}
           store={store}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_WAIT, visible: false });
           }}
         />
-        <DlgUrl ref={this.dlgurl} />
 
         <DlgLogin
           showModal={this.props.show_login}
