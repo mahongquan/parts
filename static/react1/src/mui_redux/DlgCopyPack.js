@@ -67,7 +67,7 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>复制包</DialogTitle>

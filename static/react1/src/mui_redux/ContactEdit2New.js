@@ -111,9 +111,8 @@ class ContactEdit2New extends Component {
   handleSave = () => {
     let dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    this.props.store.actions.saveContact(dataSave, this.props.index, () => {
-      this.setState({ bg: {} });
-      this.old = dataSave;
+    this.props.store.actions.saveContact(dataSave, this.props.index, (res) => {
+      this.open2(0)
     });
   };
   tiaoshi_date_change = value => {
@@ -223,14 +222,14 @@ class ContactEdit2New extends Component {
     const contact2 = update(this.state.contact, {
       yiqixinghao: { $set: item },
     });
-    console.log(contact2);
+    // console.log(contact2);
     this.setState({ contact: contact2 });
   };
   handleChange = e => {
-    console.log('change');
-    console.log(e);
-    console.log(e.target.value);
-    console.log(e.target.name);
+    // console.log('change');
+    // console.log(e);
+    // console.log(e.target.value);
+    // console.log(e.target.name);
     if (this.old[e.target.name] === e.target.value) {
       const bg2 = update(this.state.bg, {
         [e.target.name]: { $set: '#ffffff' },
@@ -249,7 +248,7 @@ class ContactEdit2New extends Component {
     const contact2 = update(this.state.contact, {
       [e.target.name]: { $set: e.target.value },
     });
-    console.log(contact2);
+    // console.log(contact2);
     this.setState({ contact: contact2 });
   };
   matchStateToTerm = (state, value) => {
@@ -473,11 +472,6 @@ class ContactEdit2New extends Component {
                     disabled={true}
                     value={this.state.contact.method}
                   />
-                  {
-                    //<Button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
-                    //</Button>
-                    //<Button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></Button>
-                  }
                 </td>
               </tr>
 

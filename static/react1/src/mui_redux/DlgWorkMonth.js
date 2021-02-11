@@ -254,7 +254,7 @@ class DlgItems extends Component {
  <span>{this.state.baoxiang}</span>
                  <DatePicker
                     format="YYYY-MM-DD"
-                    value={this.month}
+                    value={this.state.month}
                     onChange={this.yujifahuo_date_change}
                   />
         </div>

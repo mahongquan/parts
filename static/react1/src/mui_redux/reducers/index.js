@@ -16,6 +16,7 @@ const SHOW_DLG_WAIT="SHOW_DLG_WAIT"
 const SHOW_DLG_ITEMS="SHOW_DLG_ITEMS"
 const SHOW_DLG_COPYPACK="SHOW_DLG_COPYPACK"
 const SHOW_DLG_IMPORT="SHOW_DLG_IMPORT"
+const SEARCH_PACK_RES="SEARCH_PACK_RES"
 const SHOW_DLG_CHECK="SHOW_DLG_CHECK"
 const hiddenPacks = 'hiddenPacks';
 const LOAD_PACKITEM_RES = 'LOAD_PACKITEM_RES';
@@ -45,6 +46,16 @@ export const types = {
   SHOW_DLG_WAIT,
   hiddenPacks,
 };
+function load_user (dispatch)  {
+    Client.users((res)=>{
+          if(res.success){
+            dispatch({type:LOAD_USER_RES,res})
+          }
+          else{
+            console.log("not success")
+          }
+    });
+}
 function load_contact(dispatch,data){
    Client.contacts(
       data,
@@ -61,6 +72,7 @@ function load_contact(dispatch,data){
           baoxiang: data.baoxiang,
         };
         dispatch({ type: LOAD_CONTACT_RES, res });
+        load_user(dispatch);
       },
       error => {
         // console.log(typeof(error));
@@ -94,20 +106,6 @@ const loadCONTACT = data => {
     load_contact(dispatch,data);
   };
 };
-const load_user= data => {
-  console.log("load users============");
-  return async dispatch => {
-    Client.users((res)=>{
-          if(res.success){
-            dispatch({type:LOAD_USER_RES,res})
-          }
-          else{
-            console.log("not success")
-          }
-    });
-  }
-};
-
 const loadUsePack = contact_id => {
   return async dispatch => {
     Client.UsePacks(contact_id, res => {
@@ -193,13 +191,21 @@ const saveContact = (dataSave, index, callback) => {
       if (res.success) {
         let result = { contact: res.data, currentIndex: index };
         dispatch({ type: SAVE_CONTACT_RES, result: result });
-        callback();
+        callback(result);
         // this.old = res.data;
         // this.setState({ bg: {} });
         // this.setState({ hiddenPacks: false });
       } else {
         alert(res.message);
       }
+    });
+  };
+};
+const importXls = (data, callback) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_IMPORT, visible: true });
+    Client.get('/rest/Pack', data, (res) =>{
+      dispatch({ type: SEARCH_PACK_RES, res});
     });
   };
 };
@@ -213,6 +219,8 @@ export const CONTACTActions = {
   allfile,
   details,
   forlder,
+  updateMethod,
+  importXls,
 };
 
 const initialState = {
@@ -226,6 +234,7 @@ const initialState = {
   contacts: [],
   usepacks:[],
   packitems:[],
+  packs:[],
   limit: 10,
   user: 'AnonymousUser',
   search: '',
@@ -255,7 +264,7 @@ const initialState = {
 };
 
 export function CONTACTs(state = initialState, action) {
-  console.log("action============================")
+  // console.log("action============================")
   console.log(action)
   let new_state;
   switch (action.type) {
@@ -377,7 +386,15 @@ export function CONTACTs(state = initialState, action) {
       new_state = update(state, {
         usepacks: { $set: action.res.data },
       });
-      return new_state;  
+      return new_state;
+    case SEARCH_PACK_RES:
+      if(action.res.success){
+        new_state = update(state, {
+          packs: { $set: action.res.data},
+        });
+        return new_state;   
+      }
+      break;
     case LOAD_USER_RES:
       new_state = update(state, {
         users: { $set: action.res.data },

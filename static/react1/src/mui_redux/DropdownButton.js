@@ -20,12 +20,12 @@ export default class DropdownButton extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    console.log("DropdownButton render========");
-    console.log(this.props);
+    // console.log("DropdownButton render========");
+    // console.log(this.props);
     let cs;
     if (_.isArray(this.props.children)) {
       cs = this.props.children.map((c, idx) => {
-        console.log(c);
+        // console.log(c);
         return (
           <MenuItem
             key={idx}

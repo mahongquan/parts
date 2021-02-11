@@ -79,9 +79,9 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   handleContactChange = (idx, contact) => {
     this.props.store.handleContactChange(idx, contact);
@@ -242,7 +242,9 @@ class App extends React.Component {
   //   this.dlgstat.current.open();
   // };
   openDlgImport = () => {
-    this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
+    // this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
+    var data = { limit: 10, search: 'xls' };
+    this.props.actions.importXls(data);
   };
   // openDlgImportHT = () => {
   //   this.dlgimportHT.current.open();
@@ -254,8 +256,8 @@ class App extends React.Component {
     this.setState({ showcontext: false });
   };
   render() {
-    console.log('render====================================================');
-    console.log(this.props);
+    // console.log('render====================================================');
+    // console.log(this.props);
     const contactRows = this.props.contacts.map((contact, idx) => (
       <TableRow key={idx} className={this.props.classes.row}>
         <CustomTableCell>{contact.yonghu}</CustomTableCell>
@@ -302,7 +304,7 @@ class App extends React.Component {
     var hasnext = true;
     let prev;
     let next;
-    console.log(this.props);
+    // console.log(this.props);
     //console.log(this.props);
     if (this.props.start === 0) {
       hasprev = false;
@@ -339,6 +341,7 @@ class App extends React.Component {
           currentIndex:this.props.currentIndex,
           allfile_err:this.props.allfile_err,
           users:this.props.users,
+          packs:this.props.packs,
           actions:this.props.actions};
     console.log("store==")
     console.log(store);
@@ -374,6 +377,7 @@ class App extends React.Component {
         />
         <DlgImport
           showModal={this.props.showDlgImport}
+          store={store}
           handleClose={() => {
              this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: false });
           }}

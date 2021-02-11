@@ -6,17 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import update from 'immutability-helper';
-var _ = require('lodash');
+// var _ = require('lodash');
 class DlgImport extends React.Component {
   state = {
     error: '',
-    packs: [],
     info: '',
   };
-
-  // close=()=>{
-  //   this.setState({ showModal: false });
-  // }
   upload = () => {
     const file = this.fileUpload.files[0];
     console.log(file);
@@ -35,44 +30,40 @@ class DlgImport extends React.Component {
       });
     });
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
-      console.log(this.props);
-      console.log(nextProps);
-      console.log('props not eq');
-      return true;
-    }
-    if (!_.isEqual(this.state, nextState)) {
-      console.log('state not eq');
-      return true;
-    }
-    return false;
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow();
-    } else if (this.props.showModal && !nextProps.showModal) {
-      this.onHide();
-    }
-  }
-  onShow = () => {
-    this.open();
-  };
-  onHide = () => {};
-  open = () => {
-    var self = this;
-    //this.setState({ showModal: true,showalert:false });
-    var data = { limit: 10, search: 'xls' };
-    Client.get('/rest/Pack', data, function(result) {
-      console.info(result);
-      // if (!result.success){
-      //    self.setState({error:result.message});
-      // }
-      // else
-      self.setState({ packs: result.data });
-      console.log(result.data);
-    });
-  };
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
+  //     console.log(this.props);
+  //     console.log(nextProps);
+  //     console.log('props not eq');
+  //     return true;
+  //   }
+  //   if (!_.isEqual(this.state, nextState)) {
+  //     console.log('state not eq');
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (!this.props.showModal && nextProps.showModal) {
+  //     this.onShow();
+  //   } else if (this.props.showModal && !nextProps.showModal) {
+  //     this.onHide();
+  //   }
+  // }
+  // onShow = () => {
+  //   this.open();
+  // };
+  // onHide = () => {};
+  // open = () => {
+  //   var self = this;
+  //   //this.setState({ showModal: true,showalert:false });
+  //   var data = { limit: 10, search: 'xls' };
+  //   Client.get('/rest/Pack', data, function(result) {
+  //     console.info(result);
+  //     self.setState({ packs: result.data });
+  //     console.log(result.data);
+  //   });
+  // };
   handleDismiss = () => {
     this.setState({ showalert: false });
   };
@@ -81,7 +72,7 @@ class DlgImport extends React.Component {
   };
   render = () => {
     // console.log("render ImportStandard")
-    const contactRows = this.state.packs.map((pack, idx) => (
+    const contactRows = this.props.store.packs.map((pack, idx) => (
       <tr key={idx}>
         <td>{pack.id}</td>
         <td>{pack.name}</td>
@@ -111,15 +102,14 @@ class DlgImport extends React.Component {
             />
             <Button
               style={{ margin: '10px 10px 10px 10px' }}
-              className="btn btn-primary"
+              variant="outlined"
               onClick={this.upload}
-              type="button"
             >
               上传
             </Button>
           </form>
           <div style={{ minHeight: '200px' }}>
-            <table className="table-bordered">
+            <table border={1}>
               <thead>
                 <tr>
                   <td>ID</td>
