@@ -3,6 +3,6 @@ import partsReducer from './partsSlice';
 
 export default configureStore({
   reducer: {
-    counter: partsReducer,
+    parts: partsReducer,
   },
 });

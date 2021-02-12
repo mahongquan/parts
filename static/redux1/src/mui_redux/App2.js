@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  selectCount,
-  select_show_login,
-  login,
-  loadCONTACT,LOG_OUT,
-  onLoginSubmit,
-} from './reducers/partsSlice';
+import * as store from './reducers/partsSlice';
 import DlgLogin from './DlgLogin';
+// console.log(store);
+// window.store=store;
 export default function Counter() {
-  const count = useSelector(selectCount);
-  const show_login = useSelector(select_show_login);
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
   return (
@@ -22,15 +12,15 @@ export default function Counter() {
       <div >
         <button
           aria-label="Increment value"
-          onClick={() => dispatch(increment())}
+          onClick={() => dispatch(store.actions.INCREMENT())}
         >
           +
         </button>
-        <span>{count}</span>
+        <span>{useSelector((state) => state.parts.value)}</span>
         <button
           
           aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
+          onClick={() => dispatch(store.actions.DECREMENT())}
         >
           -
         </button>
@@ -43,39 +33,39 @@ export default function Counter() {
         />
         <button
           onClick={() =>
-            dispatch(incrementByAmount(Number(incrementAmount) || 0))
+            dispatch(store.actions.INCREMENTBYAMOUNT(Number(incrementAmount) || 0))
           }
         >
           Add Amount
         </button>
         <button
-          onClick={() => dispatch(incrementAsync(Number(incrementAmount) || 0))}
+          onClick={() => dispatch(store.incrementAsync(Number(incrementAmount) || 0))}
         >
           Add Async
         </button>
         <button
-          onClick={() => dispatch(login(true))}
+          onClick={() => dispatch(store.actions.SHOW_LOGIN(true))}
         >
           login
         </button>
         <button
-          onClick={() => dispatch(LOG_OUT(true))}
+          onClick={() => dispatch(store.logout(true))}
         >
           log out
         </button>
         <button
-          onClick={() => dispatch(loadCONTACT({limit:3}))}
+          onClick={() => dispatch(store.loadCONTACT({limit:3}))}
         >
           loadCONTACT
         </button>
         <DlgLogin
-          showModal={show_login}
+          showModal={useSelector((state) => state.parts.show_login)}
           handleClose={() => {
             console.log("close");
-            dispatch(login(false));
+            dispatch(store.actions.SHOW_LOGIN(false));
           }}
           onLoginSubmit={(data)=>{
-            dispatch(onLoginSubmit(data));
+            dispatch(store.onLoginSubmit(data));
           }}
         />
       </div>
