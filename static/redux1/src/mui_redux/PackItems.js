@@ -11,9 +11,50 @@ import DropdownButton from './DropdownButton';
 import Autosuggest from 'react-autosuggest';
 import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client.js';
-
-class PackItems extends React.Component {
-  state = {
+import { useSelector, useDispatch } from 'react-redux';
+export default function PackItems(props){
+  const dispatch = useDispatch();
+  const auto_select = (event, data) => {
+    console.log('selected');
+    console.log(data);
+    addrow(data.suggestion.id);
+};
+const auto_change = data => {
+    var value = data.value;
+    // console.log("auto_change");
+    if (value.length > 1) {
+      Client.get('/rest/Item', { query: value, limit: 15 }, items => {
+        set_state({ auto_items: items.data, auto_loading: false });
+      });
+    }
+  };
+const new_packitem = id => {
+    var url = '/rest/BothPackItem';
+    var data = { name: state.newPackName, pack: props.pack_id };
+    console.log(data);
+    Client.postOrPut(url, data, res => {
+      var p = res.data;
+      const newFoods = state.items.concat(p);
+      set_state({ items: newFoods });
+    });
+  };
+const handlePackItemChange = (idx, contact) => {
+    console.log(idx);
+    const contacts2 = update(state.items, { [idx]: { $set: contact } });
+    console.log(contacts2);
+    set_state({ items: contacts2 });
+  };
+  const addrow = item_id => {
+    var url = '/rest/PackItem';
+    var data = { pack: props.pack_id, itemid: item_id };
+    Client.post(url, data, res => {
+      var p = res.data;
+      const newFoods = state.items.concat(p);
+      set_state({ items: newFoods });
+    });
+  };
+  const [state, set_state] = React.useState(
+    {
     items: [],
     showRemoveIcon: false,
     newPackName: '',
@@ -21,92 +62,8 @@ class PackItems extends React.Component {
     auto_items: [],
     auto_loading: false,
     release: true,
-  };
-  componentDidMount = () => {
-    // this.props.store.actions.loadPackItem(this.props.pack_id);
-  };
-  auto_select = (event, data) => {
-    console.log('selected');
-    console.log(data);
-    this.addrow(data.suggestion.id);
-    //this.setState({auto_value:value, auto_items: [ item ] })
-  };
-  auto_change = data => {
-    var value = data.value;
-    // console.log("auto_change");
-    if (value.length > 1) {
-      Client.get('/rest/Item', { query: value, limit: 15 }, items => {
-        this.setState({ auto_items: items.data, auto_loading: false });
-      });
-    }
-  };
-  /*auto_select=(value, item) => {
-      console.log("selected");
-      console.log(item);
-      this.addrow(item.id);
-      //this.setState({auto_value:value, auto_items: [ item ] })
-  }
-  auto_change=(event, value)=>{
-    console.log("auto_change");
-    if (value.length>1)
-    {
-      this.setState({ auto_value:value, auto_loading: true });
-      Client.get("/rest/Item",{query:value} ,(items) => {
-          this.setState({ auto_items: items.data, auto_loading: false })
-      });
-    }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
-  };*/
-  new_packitem = id => {
-    var url = '/rest/BothPackItem';
-    var data = { name: this.state.newPackName, pack: this.props.pack_id };
-    console.log(data);
-    Client.postOrPut(url, data, res => {
-      var p = res.data;
-      const newFoods = this.state.items.concat(p);
-      this.setState({ items: newFoods });
-    });
-  };
-  handlePackItemChange = (idx, contact) => {
-    console.log(idx);
-    const contacts2 = update(this.state.items, { [idx]: { $set: contact } });
-    console.log(contacts2);
-    this.setState({ items: contacts2 });
-  };
-  addrow = item_id => {
-    var url = '/rest/PackItem';
-    var data = { pack: this.props.pack_id, itemid: item_id };
-    Client.post(url, data, res => {
-      var p = res.data;
-      const newFoods = this.state.items.concat(p);
-      this.setState({ items: newFoods });
-    });
-  };
-  newpackChange = e => {
-    this.setState({ newPackName: e.target.value });
-  };
-  onEditClick = id => {};
-  onDeleteClick = itemIndex => {
-    var url = '/rest/PackItem';
-    Client.delete1(url, { id: this.state.items[itemIndex].id }, res => {
-      const filteredFoods = this.state.items.filter(
-        (item, idx) => itemIndex !== idx
-      );
-      this.setState({ items: filteredFoods });
-    });
-  };
-  onChange = (event, { newValue }) => {
-    // console.log(newValue);
-    this.setState({ auto_value: newValue });
-  };
-  handleEdit = idx => {
-    this.refs.dlg.open2(idx);
-  };
-  onSuggestionsClearRequested = () => {};
-  render() {
-    const  items  = this.props.store.packitems;
+  });
+    const  items  = useSelector((state) => state.parts.packitems);//props.store.packitems;
     const itemRows = items.map((item, idx) => {
       let ng = item.name + '/' + (item.guige === null ? '' : item.guige);
       return (
@@ -114,8 +71,19 @@ class PackItems extends React.Component {
           <TableCell>
             {item.quehuo ? <del>{ng}</del> : ng}
             <DropdownButton title="" id="id_dropdown3">
-              <MenuItem onClick={() => this.handleEdit(idx)}>编辑</MenuItem>
-              <MenuItem onClick={() => this.onDeleteClick(idx)}>删除</MenuItem>
+              <MenuItem onClick={(idx) =>{
+                console.log(idx);
+                dispatch(props.store.editPackItem(idx));
+              }}>编辑</MenuItem>
+              <MenuItem onClick={(idx)=>{
+                var url = '/rest/PackItem';
+                Client.delete1(url, { id: state.items[idx].id }, res => {
+                  const filteredFoods = state.items.filter(
+                    (item, idx1) => idx !== idx1
+                  );
+                  set_state({ items: filteredFoods });
+                });
+              }}>删除</MenuItem>
             </DropdownButton>
           </TableCell>
           <TableCell>{item.bh}</TableCell>
@@ -143,15 +111,16 @@ class PackItems extends React.Component {
           <Autosuggest
             inputProps={{
               id: 'states-autocomplete',
-              value: this.state.auto_value,
-              onChange: this.onChange,
+              value: state.auto_value,
+              onChange: (event, { newValue })=>{
+                set_state({ auto_value: newValue });
+              },
             }}
-            onSuggestionSelected={this.auto_select}
-            onSuggestionsFetchRequested={this.auto_change}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            onSuggestionSelected={auto_select}
+            onSuggestionsFetchRequested={auto_change}
+            onSuggestionsClearRequested={()=>{}}
             getSuggestionValue={item => item.name}
-            ref="autocomplete"
-            suggestions={this.state.auto_items}
+            suggestions={state.auto_items}
             renderSuggestion={item => (
               <span>
                 {item.id + ': ' + item.bh + ' '}
@@ -166,21 +135,28 @@ class PackItems extends React.Component {
           <input
             id="new_pack1"
             placeholder="新备件"
-            value={this.state.newPackName}
-            onChange={this.newpackChange}
+            value={state.newPackName}
+            onChange={(e)=>{
+              set_state({ newPackName: e.target.value });
+            }}
           />
           <Button
             variant="outlined"
             className="btn btn-info"
             id="id_new_item"
-            onClick={this.new_packitem}
+            onClick={new_packitem}
           >
             新备件
           </Button>
         </div>
-        <PackItemEditNew ref="dlg" parent={this} store={this.props.store} />
+        <PackItemEditNew open={useSelector((state) => {
+          console.log(state);
+          return state.parts.show_packitem_edit
+        })} 
+        onClose={()=>{
+          dispatch(props.store.actions.SHOW_DLG_EDIT_PACKITEM(false))
+        }} store={props.store} />
       </div>
     );
-  }
 }
-export default PackItems;
+

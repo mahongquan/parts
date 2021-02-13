@@ -29,8 +29,8 @@ export default class DropdownButton extends React.Component {
         return (
           <MenuItem
             key={idx}
-            onClick={() => {
-              c.props.onClick();
+            onClick={(e) => {
+              c.props.onClick(e);
               this.setState({ anchorEl: null });
             }}
           >
@@ -41,8 +41,8 @@ export default class DropdownButton extends React.Component {
     } else {
       cs = (
         <MenuItem
-          onClick={() => {
-            this.props.children.props.onClick();
+          onClick={(e) => {
+            this.props.children.props.onClick(e);
             this.setState({ anchorEl: null });
           }}
         >

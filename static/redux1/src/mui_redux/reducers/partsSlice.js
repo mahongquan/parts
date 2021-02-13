@@ -35,6 +35,7 @@ var initialState={
     showDlgPack:false,
     showDlgCheck:false,
     show_login: false,
+    show_packitem_edit:false,
     //edit
     hiddenPacks: true,
     allfile_err:null,
@@ -61,11 +62,20 @@ export const partsSlice = createSlice({
       // console.log(action);
       state.show_login=action.payload;
     },
+    SHOW_DLG_EDIT_PACKITEM:(state,action)=>{
+      state.show_packitem_edit=action.payload;
+    },
     SEARCH_PACK_RES:(state,action)=>{
       state.packs=action.payload.data;
     },
     SHOW_DLG_IMPORT:(state,action)=>{
       state.showDlgImport=action.payload;
+    },
+    SHOW_DLG_EDIT:(state,action)=>{
+      state.showDlgEdit=action.payload;
+    },
+    SHOW_DLGSTAT_MONTH:(state,action)=>{
+      state.showDlgStatMonth=action.payload;
     },
     SHOW_DLG_WORKMONTH:(state,action)=>{
       state.showDlgWorkMonth=action.payload;
@@ -76,6 +86,9 @@ export const partsSlice = createSlice({
     LOAD_USER_RES:(state,action)=>{
       state.users=action.payload.data;
     },
+    LOAD_PACKITEM_RES:(state,action)=>{
+      state.packitems=action.payload.data;
+    },
     LOAD_CONTACT_RES:(state,action)=>{
       console.log(action);
       state.connect_error=false;
@@ -84,6 +97,9 @@ export const partsSlice = createSlice({
       state.user=action.payload.user;
       state.start=action.payload.start;
       state.baoxiang=action.payload.baoxiang;
+    },
+    LOAD_USEPACK_RES:(state,action)=>{
+      state.usepacks=action.payload.data;
     },
     LOG_OUT_RES:(state,action)=>{
       console.log(action);
@@ -142,6 +158,30 @@ export const logout = data =>dispatch=> {
     Client.logout(() => {
       dispatch(actions.LOG_OUT_RES());
     });
+};
+export const edit = contact_id =>dispatch=> {
+    if(contact_id) dispatch(loadUsePack(contact_id));
+    dispatch(actions.SHOW_DLG_EDIT(true));
+};
+
+export const editPackItem = contact_id =>dispatch=> {
+    // if(contact_id) dispatch(loadUsePack(contact_id));
+    dispatch(actions.SHOW_DLG_EDIT_PACKITEM(true));
+};
+
+export const loadUsePack = contact_id =>dispatch=> {
+  Client.UsePacks(contact_id, res => {
+    dispatch(actions.LOAD_USEPACK_RES(res));
+  });
+};
+export const loadPackItems = contact_id =>dispatch=> {
+  Client.PackItems(contact_id, res => {
+    dispatch(actions.LOAD_PACKITEM_RES(res));
+  });
+// function PackItems(query, cb) {
+//   var data = { pack: query };
+//   return get('/rest/PackItem/', data, cb);
+// }
 };
 export const importXls = (data, callback) =>dispatch=> {
     dispatch(actions.SHOW_DLG_IMPORT(true));

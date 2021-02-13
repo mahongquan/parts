@@ -5,12 +5,78 @@ import DlgLogin from './DlgLogin';
 import DlgWorkMonth from './DlgWorkMonth';
 import DlgStatYear from './DlgStatYear';
 import DlgImport from './DlgImport';
+import DlgStatMonth from './DlgStatMonth';
+import ContactEdit2New from './ContactEdit2New';
+import PackItems from './PackItems';
 // window.store=store;
-export default function Counter() {
+// var initialState={
+//     value:0,
+//     users:[],
+//     logined: false,
+//     connect_error: false,
+//     search2: '',
+//     search2tip: '',
+//     target: null,
+//     showcontext: false,
+//     contacts: [],
+//     usepacks:[],
+//     packitems:[],
+//     packs:[],
+//     limit: 10,
+//     user: 'AnonymousUser',
+//     search: '',
+//     start: 0,
+//     total: 0,
+//     start_input: 1,
+//     currentIndex: null,
+//     baoxiang: '',
+//     showDlgImport: false,
+//     showDlgEdit: false,
+//     showDlgDetail: false,
+//     showDlgCONTACTs: false,
+//     showDlgStatYear: false,
+//     showDlgStatMonth: false,
+//     showDlgItem: false,
+//     showDlgWorkMonth: false,
+//     showDlgCopyPack:false,
+//     showDlgForder:false,
+//     showdlgWait:false,
+//     showDlgPack:false,
+//     showDlgCheck:false,
+//     show_login: false,
+//     //edit
+//     hiddenPacks: true,
+//     allfile_err:null,
+//     detail:null,
+//   }
+export default function App() {
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
   return (
     <div>
+      <PackItems store={store} />
+      <button onClick={()=>{
+        dispatch(store.loadPackItems(1798));
+      }}>load packitems</button>
+      <DlgStatMonth open={useSelector((state) => state.parts.showDlgStatMonth)}
+          handleClose={() => {
+            dispatch(store.actions.SHOW_DLGSTAT_MONTH(false));
+          }}
+        />
+
+      {/*<ContactEdit2New
+          store={store}
+          showModal={useSelector((state) => state.parts.showDlgEdit)}
+          index={useSelector((state) => state.parts.currentIndex)}
+          handleClose={() => {
+            dispatch(store.actions.SHOW_DLG_EDIT(false));
+          }}
+          title="编辑"
+        />*/}
+      <button onClick={()=>{
+        // if(idx) this.props.actions.loadUsePack(this.props.contacts[idx].id);
+        dispatch(store.edit(null));
+      }}>edit</button>
       <div >
         <button
           aria-label="Increment value"
@@ -57,6 +123,9 @@ export default function Counter() {
         </button>
         <button onClick={() => dispatch(store.actions.SHOW_DLGSTAT_YEAR(true))}>
           show year
+        </button>
+        <button onClick={() => dispatch(store.actions.SHOW_DLGSTAT_MONTH(true))}>
+          show month
         </button>
         <button onClick={() => {
           var data = { limit: 10, search: 'xls' };

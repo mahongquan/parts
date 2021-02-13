@@ -2,103 +2,96 @@ import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import update from 'immutability-helper';
 import Client from './Client';
-class PackItemEditNew extends Component {
-  state = {
+import { useSelector, useDispatch } from 'react-redux';
+var old={};
+var parent=null;
+var index=null;
+export default function PackItemEditNew(props){
+  console.log("PackItemEditNew==================");
+  console.log(props);
+  const [state, set_state] = React.useState({
     showModal: false,
     packitem: {},
     hiddenPacks: true,
     bg: {},
     date_open: false,
+  });
+  const close = () => {
+    set_state({ showModal: false });
   };
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   this.setState({ showModal: nextProps.showModal });
-  //   if (nextProps.index==null){
-  //     this.old={};
+  // var old={};
+  // var index=null;
+  // const open2 = idx => {
+  //   set_state({ showModal: true, bg: {} });
+  //   index = idx;
+  //   if (index == null) {
+  //     old = {};
+  //   } else {
+  //     old = useSelector((state) => state.parts.packitems)[index];
   //   }
-  //   else{
-  //     this.parent=nextProps.parent;
-  //     this.old=this.parent.state.items[nextProps.index];
-  //   }
-  //   this.setState({packitem:this.old});
-  // }
-  close = () => {
-    this.setState({ showModal: false });
-  };
-
-  open2 = idx => {
-    this.setState({ showModal: true, bg: {} });
-    this.index = idx;
-    if (this.index == null) {
-      this.old = {};
-    } else {
-      this.parent = this.props.parent;
-      this.old = this.parent.state.items[this.index];
-    }
-    this.setState({ packitem: this.old });
-  };
-  handleSave = data => {
+  //   set_state({ packitem: old });
+  // };
+  const handleSave = data => {
     var url = '/rest/BothPackItem';
-    console.log(this.state.packitem);
-    Client.postOrPut(url, this.state.packitem, res => {
+    console.log(state.packitem);
+    Client.postOrPut(url, state.packitem, res => {
       console.log(res);
-      this.setState({ contact: res.data });
-      this.parent.handlePackItemChange(this.index, res.data);
-      this.old = res.data;
-      this.close();
+      set_state({ contact: res.data });
+      parent.handlePackItemChange(index, res.data);
+      old = res.data;
+      close();
     });
   };
-  quehuoChange = e => {
-    var quehuo = this.state.packitem.quehuo;
+  const quehuoChange = e => {
+    var quehuo = state.packitem.quehuo;
     quehuo = !quehuo;
-    if (this.old.quehuo === quehuo) {
-      const bg2 = update(this.state.bg, {
+    if (old.quehuo === quehuo) {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#ffffff' },
       });
-      this.setState({ bg: bg2 });
+      set_state({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#8888ff' },
       });
-      this.setState({ bg: bg2 });
+      set_state({ bg: bg2 });
     }
-    const contact2 = update(this.state.packitem, { quehuo: { $set: quehuo } });
+    const contact2 = update(state.packitem, { quehuo: { $set: quehuo } });
     console.log(contact2);
-    this.setState({ packitem: contact2 });
+    set_state({ packitem: contact2 });
   };
-  handleChange = e => {
+  const handleChange = e => {
     console.log('change');
     console.log(e);
     console.log(e.target);
     console.log(e.target.value);
     console.log(e.target.name);
-    if (this.old[e.target.name] === e.target.value) {
-      const bg2 = update(this.state.bg, {
+    if (old[e.target.name] === e.target.value) {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#ffffff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      set_state({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#8888ff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      set_state({ bg: bg2 });
     }
-    const contact2 = update(this.state.packitem, {
+    const contact2 = update(state.packitem, {
       [e.target.name]: { $set: e.target.value },
     });
     console.log(contact2);
-    this.setState({ packitem: contact2 });
+    set_state({ packitem: contact2 });
   };
-  render = () => {
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={props.open} onClose={props.onClose}>
         <DialogTitle>编辑备件信息</DialogTitle>
         <DialogContent>
           <table id="table_input" className="table-condensed">
@@ -112,7 +105,7 @@ class PackItemEditNew extends Component {
                     name="id"
                     readOnly={true}
                     disabled="disabled"
-                    defaultValue={this.state.packitem.id}
+                    defaultValue={state.packitem.id}
                   />
                 </td>
               </tr>
@@ -120,12 +113,12 @@ class PackItemEditNew extends Component {
                 <td>名称:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.name }}
+                    style={{ backgroundColor: state.bg.name }}
                     type="text"
                     id="name"
                     name="name"
-                    value={this.state.packitem.name}
-                    onChange={this.handleChange}
+                    value={state.packitem.name}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -135,11 +128,11 @@ class PackItemEditNew extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.guige }}
+                    style={{ backgroundColor: state.bg.guige }}
                     type="text"
                     name="guige"
-                    value={this.state.packitem.guige}
-                    onChange={this.handleChange}
+                    value={state.packitem.guige}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -149,12 +142,12 @@ class PackItemEditNew extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.bh }}
+                    style={{ backgroundColor: state.bg.bh }}
                     type="text"
                     id="bh"
                     name="bh"
-                    value={this.state.packitem.bh}
-                    onChange={this.handleChange}
+                    value={state.packitem.bh}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -165,11 +158,11 @@ class PackItemEditNew extends Component {
                 <td>
                   <input
                     type="text"
-                    style={{ backgroundColor: this.state.bg.ct }}
+                    style={{ backgroundColor: state.bg.ct }}
                     id="ct"
                     name="ct"
-                    value={this.state.packitem.ct}
-                    onChange={this.handleChange}
+                    value={state.packitem.ct}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -180,11 +173,11 @@ class PackItemEditNew extends Component {
                 <td>
                   <input
                     type="text"
-                    style={{ backgroundColor: this.state.bg.danwei }}
+                    style={{ backgroundColor: state.bg.danwei }}
                     id="danwei"
                     name="danwei"
-                    value={this.state.packitem.danwei}
-                    onChange={this.handleChange}
+                    value={state.packitem.danwei}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -197,8 +190,8 @@ class PackItemEditNew extends Component {
                     type="checkbox"
                     id="quehuo"
                     name="quehuo"
-                    checked={this.state.packitem.quehuo}
-                    onChange={this.quehuoChange}
+                    checked={state.packitem.quehuo}
+                    onChange={quehuoChange}
                   />
                 </td>
               </tr>
@@ -209,7 +202,7 @@ class PackItemEditNew extends Component {
               variant="outlined"
               color="primary"
               id="bt_save"
-              onClick={this.handleSave}
+              onClick={handleSave}
             >
               保存
             </Button>
@@ -217,6 +210,4 @@ class PackItemEditNew extends Component {
         </DialogContent>
       </Dialog>
     );
-  };
 }
-export default PackItemEditNew;
