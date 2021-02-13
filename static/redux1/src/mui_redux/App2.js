@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
 import DlgLogin from './DlgLogin';
-// console.log(store);
+import DlgWorkMonth from './DlgWorkMonth';
+import DlgStatYear from './DlgStatYear';
+import DlgImport from './DlgImport';
 // window.store=store;
 export default function Counter() {
   const dispatch = useDispatch();
@@ -46,7 +48,21 @@ export default function Counter() {
         <button
           onClick={() => dispatch(store.actions.SHOW_LOGIN(true))}
         >
-          login
+          show login
+        </button>
+        <button
+          onClick={() => dispatch(store.actions.SHOW_DLG_WORKMONTH(true))}
+        >
+          show work
+        </button>
+        <button onClick={() => dispatch(store.actions.SHOW_DLGSTAT_YEAR(true))}>
+          show year
+        </button>
+        <button onClick={() => {
+          var data = { limit: 10, search: 'xls' };
+          dispatch(store.importXls(data));
+        }}>
+          show import 
         </button>
         <button
           onClick={() => dispatch(store.logout(true))}
@@ -66,6 +82,23 @@ export default function Counter() {
           }}
           onLoginSubmit={(data)=>{
             dispatch(store.onLoginSubmit(data));
+          }}
+        />
+        <DlgStatYear open={useSelector((state) => state.parts.showDlgStatYear)}
+          handleClose={() => {
+            dispatch(store.actions.SHOW_DLGSTAT_YEAR(false));
+          }}
+        />
+        <DlgWorkMonth
+          showModal={useSelector((state) => state.parts.showDlgWorkMonth)}
+          handleClose={() => {
+            dispatch(store.actions.SHOW_DLG_WORKMONTH(false));
+          }}
+        />
+        <DlgImport
+          showModal={useSelector((state) => state.parts.showDlgImport)}
+          handleClose={() => {
+             dispatch(store.actions.SHOW_DLG_IMPORT(false));
           }}
         />
       </div>

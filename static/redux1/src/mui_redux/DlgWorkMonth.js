@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import * as store from './reducers/partsSlice';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
@@ -40,7 +42,7 @@ function lastDay(m){
   // console.log(m.format('YYYY-MM-DD'))
   return m1;
 }
-class DlgItems extends Component {
+class DlgWorkMonth extends React.Component {
   constructor(){
     super();
     this.state={
@@ -289,4 +291,4 @@ class DlgItems extends Component {
     );
   };
 }
-export default withStyles(styles)(DlgItems);
+export default withStyles(styles)(DlgWorkMonth);

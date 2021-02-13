@@ -232,6 +232,7 @@ const initialState = {
   target: null,
   showcontext: false,
   contacts: [],
+  contact:{},
   usepacks:[],
   packitems:[],
   packs:[],
@@ -301,6 +302,7 @@ export function CONTACTs(state = initialState, action) {
     case SHOW_DLG_EDIT:
 
       new_state = update(state, {
+        contact: { $set: action.index === null||action.index===undefined ? {} : state.contacts[action.index] },
         showDlgEdit: { $set: action.visible },
         hiddenPacks: { $set: action.index === null ? true : false },
         currentIndex: { $set: action.index },

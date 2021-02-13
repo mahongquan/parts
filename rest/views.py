@@ -1109,6 +1109,7 @@ def readStandardFile(fn,filename):
     ncols = table.ncols
     begin=False
     dan=[]
+    onedan=None
     for i in range(nrows ):
         cells=table.row_values(i)
         if cells[0]=="其他入库单":
@@ -1174,16 +1175,25 @@ def treatOne(rows,fn,at):
             r={"id":d.id,"name":d.name}
     return r
 def standard(request):
-    # right, so 'file' is the name of the file upload field
-    #print request.FILES
-    logging.info(request.FILES)
-    f= request.FILES[ 'file' ]
-    logging.info(dir(f))
-    filename = f.name
-    filetype = f.content_type
-    packs=readStandardFile(f.read(),filename)
-    res={"success":True, "result":packs}
-    return HttpResponse(json.dumps(res, ensure_ascii=False))   
+    try:
+        # right, so 'file' is the name of the file upload field
+        #print request.FILES
+        logging.info(request.FILES)
+        f= request.FILES[ 'file' ]
+        logging.info(dir(f))
+        filename = f.name
+        filetype = f.content_type
+        packs=readStandardFile(f.read(),filename)
+        res={"success":True, "result":packs}
+        return HttpResponse(json.dumps(res, ensure_ascii=False))   
+    except:
+        message=""
+        info = sys.exc_info()
+        for file, lineno, function, text in traceback.extract_tb(info[2]):
+            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+        message+= "** %s: %s" % info[:2]
+        out={"success":False,"message":message}
+        return HttpResponse(json.dumps(out, ensure_ascii=False))
 def readHtFile(fn,filename):
     try:
         document = Document(fn)

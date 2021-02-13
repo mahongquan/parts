@@ -33,7 +33,6 @@ import myglobal from '../myglobal';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../react-datetime.css';
 import './index.css';
-import '../autosuggest.css';
 export default class App extends Component {
   constructor(props) {
     super(props);

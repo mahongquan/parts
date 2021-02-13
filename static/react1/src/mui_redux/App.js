@@ -342,6 +342,7 @@ class App extends React.Component {
           allfile_err:this.props.allfile_err,
           users:this.props.users,
           packs:this.props.packs,
+          contact:this.props.contact,
           actions:this.props.actions};
     console.log("store==")
     console.log(store);
@@ -416,7 +417,6 @@ class App extends React.Component {
         <ContactEdit2New
           store={store}
           showModal={this.props.showDlgEdit}
-          index={this.props.currentIndex}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_EDIT, visible: false });
           }}

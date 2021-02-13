@@ -61,6 +61,21 @@ export const partsSlice = createSlice({
       // console.log(action);
       state.show_login=action.payload;
     },
+    SEARCH_PACK_RES:(state,action)=>{
+      state.packs=action.payload.data;
+    },
+    SHOW_DLG_IMPORT:(state,action)=>{
+      state.showDlgImport=action.payload;
+    },
+    SHOW_DLG_WORKMONTH:(state,action)=>{
+      state.showDlgWorkMonth=action.payload;
+    },
+    SHOW_DLGSTAT_YEAR:(state,action)=>{
+      state.showDlgStatYear=action.payload;
+    },
+    LOAD_USER_RES:(state,action)=>{
+      state.users=action.payload.data;
+    },
     LOAD_CONTACT_RES:(state,action)=>{
       console.log(action);
       state.connect_error=false;
@@ -98,7 +113,7 @@ function load_contact(dispatch,data){
         };
         // dispatch({ type: LOAD_CONTACT_RES, res });
         dispatch(actions.LOAD_CONTACT_RES(res));
-        // load_user(dispatch);
+        load_user(dispatch);
       },
       error => {
         // console.log(typeof(error));
@@ -128,6 +143,15 @@ export const logout = data =>dispatch=> {
       dispatch(actions.LOG_OUT_RES());
     });
 };
+export const importXls = (data, callback) =>dispatch=> {
+    dispatch(actions.SHOW_DLG_IMPORT(true));
+    Client.get('/rest/Pack', data, (res) =>{
+      console.log(res);
+      dispatch(actions.SEARCH_PACK_RES(res));
+    },(err)=>{
+      console.log(err);
+    });
+};
 export const onLoginSubmit = data =>dispatch=> {
     Client.login(data.username, data.password, result => {
       if (result.success) {
@@ -137,10 +161,20 @@ export const onLoginSubmit = data =>dispatch=> {
           contacts: [],
         };
         dispatch(actions.LOG_IN_RES(res));
-        load_contact(dispatch, initialState);   
+        load_contact(dispatch, {limit:initialState.limit,start:initialState.start});   
       }
     });
 };
+function load_user (dispatch)  {
+    Client.users((res)=>{
+          if(res.success){
+            dispatch(actions.LOAD_USER_RES(res))
+          }
+          else{
+            console.log("not success")
+          }
+    });
+}
 export const loadCONTACT = data =>dispatch=> {
     load_contact(dispatch,data);
 };
