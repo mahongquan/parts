@@ -74,7 +74,7 @@ class DlgItems extends Component {
         limit: this.mystate.limit,
         query: this.mystate.search,
       },
-      contacts2 => {
+      (contacts2) => {
         console.log(contacts2);
         this.setState({
           items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -85,7 +85,7 @@ class DlgItems extends Component {
       }
     );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
     if (this.mystate.start < 0) {
       this.mystate.start = 0;
@@ -99,7 +99,7 @@ class DlgItems extends Component {
     console.log(contacts2);
     this.setState({ items: contacts2 });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     this.mystate.start = this.mystate.start + this.mystate.limit;
     if (this.mystate.start > this.mystate.total - this.mystate.limit)
       this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
@@ -117,18 +117,18 @@ class DlgItems extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.mystate.search = e.target.value;
     this.setState({ search: this.mystate.search });
   };
-  search = e => {
+  search = (e) => {
     this.mystate.start = 0;
     this.loaddata();
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   mapfunc = (contact, idx) => {
@@ -211,33 +211,21 @@ class DlgItems extends Component {
       >
         <AppBar className={this.props.classes.appBar}>
           <Toolbar>
-            <IconButton
-              
-              onClick={this.props.handleClose}
-              aria-label="Close"
-            >
+            <IconButton onClick={this.props.handleClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              
-              className={this.props.classes.flex}
-            >
+            <Typography variant="h6" className={this.props.classes.flex}>
               备件
             </Typography>
-             <input
-            type="text"
-            value={this.state.search}
-            placeholder=""
-            onChange={this.handleSearchChange}
-          />
-          <Button
-            id="id_bt_search"
-            variant="contained"
-            onClick={this.search}
-          >
-            搜索
-          </Button>
+            <input
+              type="text"
+              value={this.state.search}
+              placeholder=""
+              onChange={this.handleSearchChange}
+            />
+            <Button id="id_bt_search" variant="contained" onClick={this.search}>
+              搜索
+            </Button>
           </Toolbar>
         </AppBar>
         <DialogContent>

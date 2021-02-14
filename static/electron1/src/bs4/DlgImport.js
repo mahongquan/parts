@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Table,Modal,Button} from 'react-bootstrap';
+import { Alert, Table, Modal, Button } from 'react-bootstrap';
 import Client from './Client';
 import update from 'immutability-helper';
 import PackEdit from './PackEdit';
@@ -8,7 +8,7 @@ class DlgImport extends React.Component {
     error: '',
     packs: [],
     info: '',
-    showalert:false,
+    showalert: false,
   };
   upload = () => {
     const file = this.fileUpload.files[0];
@@ -17,7 +17,7 @@ class DlgImport extends React.Component {
     data1.append('file', file);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/standard', data1, function(res) {
+    Client.postForm('/rest/standard', data1, function (res) {
       if (res.result.length > 0) {
         const newFoods = update(self.state.packs, { $unshift: res.result });
         self.setState({ packs: newFoods });
@@ -25,14 +25,13 @@ class DlgImport extends React.Component {
           showalert: true,
           info: '导入了' + res.result.length + '个合同的标钢。',
         });
-      }
-      else{
-        self.setState({ showalert: false});
+      } else {
+        self.setState({ showalert: false });
       }
     });
   };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.onShow();
     } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
@@ -53,7 +52,7 @@ class DlgImport extends React.Component {
     var self = this;
     //this.setState({ showModal: true,showalert:false });
     var data = { limit: 10, search: 'xls' };
-    Client.get('/rest/Pack', data, function(result) {
+    Client.get('/rest/Pack', data, function (result) {
       console.info(result);
       // if (!result.success){
       //    self.setState({error:result.message});
@@ -64,27 +63,24 @@ class DlgImport extends React.Component {
     });
   };
   handleDismiss = () => {
-    console.log("onClose");
+    console.log('onClose');
     this.setState({ showalert: false });
   };
   inputChange = () => {
     this.setState({ showalert: false });
   };
-  handleEdit = pack_id => {
+  handleEdit = (pack_id) => {
     this.refs.edit1.open(pack_id);
   };
   render = () => {
     // console.log("render ImportStandard")
     const contactRows = this.state.packs.map((pack, idx) => (
       <tr key={idx}>
-        <td>{pack.id}
-        </td>
-        <td><Button
-              variant="light"
-              onClick={() => this.handleEdit(pack.id)}
-            >
-              {pack.name}
-            </Button>
+        <td>{pack.id}</td>
+        <td>
+          <Button variant="light" onClick={() => this.handleEdit(pack.id)}>
+            {pack.name}
+          </Button>
         </td>
       </tr>
     ));
@@ -107,9 +103,7 @@ class DlgImport extends React.Component {
           <Modal.Title>导入标样</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {
-            alert
-          }
+          {alert}
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}
@@ -117,7 +111,7 @@ class DlgImport extends React.Component {
               accept="application/vnd.ms-excel"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
             <button

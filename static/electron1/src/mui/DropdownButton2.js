@@ -19,11 +19,11 @@ export default class SimpleMenu extends React.Component {
     anchorEl: null,
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = value => {
+  handleClose = (value) => {
     this.setState({ anchorEl: null });
     // this.props.click_menu(value);
   };
@@ -63,10 +63,8 @@ export default class SimpleMenu extends React.Component {
     return (
       <div>
         <div>
-        <Link onClick={this.props.click_title}  >
-          {this.props.title}
-        </Link>
-        <ArrowDropDownIcon   onClick={this.handleClick} />
+          <Link onClick={this.props.click_title}>{this.props.title}</Link>
+          <ArrowDropDownIcon onClick={this.handleClick} />
         </div>
         <Menu
           id="simple-menu"

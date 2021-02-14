@@ -8,8 +8,8 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ViewArrayIcon from '@material-ui/icons/ViewArray';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import Client from './Client';
-import DlgInput from './DlgInput'
-import DlgOkCancel from './DlgOkCancel'
+import DlgInput from './DlgInput';
+import DlgOkCancel from './DlgOkCancel';
 // window.icons=require("@material-ui/icons");
 class File extends React.Component {
   renderList = () => {
@@ -111,7 +111,7 @@ class Browser extends React.Component {
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null, value);
   };
-  channels_input = event => {
+  channels_input = (event) => {
     console.log(event);
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null, event);
@@ -136,12 +136,12 @@ class Browser extends React.Component {
     // target: null,
     pathIdx: null,
     anchorEl: null,
-    show_input:false,
-    prompt:"enter new filename",
-    input_value:"",
-    show_ok_cancel:false,
+    show_input: false,
+    prompt: 'enter new filename',
+    input_value: '',
+    show_ok_cancel: false,
   };
-  handleContextMenu = event => {
+  handleContextMenu = (event) => {
     //console.log(event);
     event.preventDefault();
     event.stopPropagation();
@@ -151,7 +151,7 @@ class Browser extends React.Component {
     //   this.setState({ showcontext: false });
     // }, 5000);
   };
-  loadFilesFromServer = path => {
+  loadFilesFromServer = (path) => {
     if (path === '.' || path === './') {
       this.setState({ isroot: true });
     } else {
@@ -160,7 +160,7 @@ class Browser extends React.Component {
     Client.get(
       '/fs/children',
       { path: path },
-      data => {
+      (data) => {
         var files = data.children.sort(this.state.sort);
         var paths = this.state.paths;
         if (paths[paths.length - 1] !== path) paths = paths.concat([path]);
@@ -180,7 +180,7 @@ class Browser extends React.Component {
       null
     );
   };
-  updateNavbarPath = path => {
+  updateNavbarPath = (path) => {
     // console.log("updateNavbarPath");
     // console.log(path);
     this.setState({ current_path: path });
@@ -220,7 +220,7 @@ class Browser extends React.Component {
       Client.get(
         '/fs/parent',
         data,
-        res => {
+        (res) => {
           if (res.isroot) {
             alert('已经是根目录!');
           } else {
@@ -241,7 +241,7 @@ class Browser extends React.Component {
       showcontext: false,
     });
   };
-  uploadFile = evt => {
+  uploadFile = (evt) => {
     console.log(evt);
     var path = this.currentPath();
     const file = evt.target.files[0];
@@ -251,7 +251,7 @@ class Browser extends React.Component {
     data1.append('file', file);
     data1.append('name', file.name);
     //console.log(data1)
-    Client.postForm('/fs/upload', data1, res => {
+    Client.postForm('/fs/upload', data1, (res) => {
       console.log(res);
       this.setState({ displayUpload: false });
       this.reloadFilesFromServer();
@@ -285,7 +285,7 @@ class Browser extends React.Component {
     this.loadFilesFromServer(path);
   };
 
-  updateSort = sort => {
+  updateSort = (sort) => {
     var files = this.state.files;
     var lastSort = this.state.sort;
     if (lastSort === sort) files = files.reverse();
@@ -308,10 +308,10 @@ class Browser extends React.Component {
   sizeSort = () => {
     this.updateSort(File.sizeSort);
   };
-  updatePath = path => {
+  updatePath = (path) => {
     this.loadFilesFromServer(path);
   };
-  getContent = path => {
+  getContent = (path) => {
     // console.log("content");
     // console.log(path);
     window.open('/static/' + path);
@@ -327,7 +327,7 @@ class Browser extends React.Component {
       null
     );
   };
-  onClick = f => {
+  onClick = (f) => {
     // console.log("onClick");
     // console.log(f);
     if (f.isdir) {
@@ -354,14 +354,14 @@ class Browser extends React.Component {
       />
     );
   };
-  onChange = newValue => {
+  onChange = (newValue) => {
     //console.log('change',newValue);
     this.setState({
       filecontent: newValue,
       filechange: true,
     });
   };
-  genpath = path => {
+  genpath = (path) => {
     // console.log("genpath=============")
     // console.log(path);
     var paths = path.split('/');
@@ -411,13 +411,13 @@ class Browser extends React.Component {
     });
     return hs;
   };
-  onMouseLeave = idx => {
+  onMouseLeave = (idx) => {
     this.setState({ pathIdx: null });
   };
-  onMouseEnter = idx => {
+  onMouseEnter = (idx) => {
     this.setState({ pathIdx: idx });
   };
-  linkclick = e => {
+  linkclick = (e) => {
     console.log(e);
     this.updatePath(e);
   };
@@ -426,7 +426,10 @@ class Browser extends React.Component {
   };
   onRename = () => {
     //var type = this.props.isdir ? "folder" : "file";
-    this.setState({show_input:true,input_value:this.state.anchorEl.innerText});
+    this.setState({
+      show_input: true,
+      input_value: this.state.anchorEl.innerText,
+    });
     // var path = this.state.current_path + '/' + this.state.anchorEl.innerText;
     // var updatedName = prompt('Enter new name for ' + this.state.anchorEl.innerText);
     // if (updatedName != null) {
@@ -445,8 +448,7 @@ class Browser extends React.Component {
     console.log('onRemove');
     //var type = this.props.isdir ? "folder" : "file";
     var path = this.state.current_path + '/' + this.state.anchorEl.innerText;
-    this.setState({show_ok_cancel:true,prompt:"Remove  '" + path + "' ?"})
-    
+    this.setState({ show_ok_cancel: true, prompt: "Remove  '" + path + "' ?" });
 
     // var remove = window.confirm("Remove  '" + path + "' ?");
     // if (remove) {
@@ -475,14 +477,14 @@ class Browser extends React.Component {
   //   );
   // };
 
-  linkclick = e => {
+  linkclick = (e) => {
     console.log(e);
     this.updatePath(e);
   };
   rootclick = () => {
     this.updatePath('.');
   };
-  handleClose = value => {
+  handleClose = (value) => {
     this.setState({ anchorEl: null });
     // this.props.click_menu(value);
   };
@@ -587,34 +589,38 @@ class Browser extends React.Component {
           overflow: 'auto',
         }}
       >
-      <DlgOkCancel prompt={this.state.prompt}
-        open={this.state.show_ok_cancel}
-        onClose={()=>{
-          this.setState({show_ok_cancel:false});
-        }}
-        ok={()=>{
-          var path = this.state.current_path + '/' + this.state.anchorEl.innerText;
-          Client.get(
-            '/fs/remove',
-            { path: path },
-            () => {
-              this.reloadFilesFromServer();
-              this.setState({ anchorEl:null });
-            },
-            null
-          );
-        }}
-      />
-      <DlgInput value={this.state.input_value}
-        prompt={this.state.prompt}
-        open={this.state.show_input} 
-        onClose={()=>{
-          this.setState({show_input:false});
-        }} 
-        ok={(updatedName)=>{
-           console.log(updatedName);
-           var path = this.state.current_path + '/' + this.state.anchorEl.innerText;
-           if (updatedName != null) {
+        <DlgOkCancel
+          prompt={this.state.prompt}
+          open={this.state.show_ok_cancel}
+          onClose={() => {
+            this.setState({ show_ok_cancel: false });
+          }}
+          ok={() => {
+            var path =
+              this.state.current_path + '/' + this.state.anchorEl.innerText;
+            Client.get(
+              '/fs/remove',
+              { path: path },
+              () => {
+                this.reloadFilesFromServer();
+                this.setState({ anchorEl: null });
+              },
+              null
+            );
+          }}
+        />
+        <DlgInput
+          value={this.state.input_value}
+          prompt={this.state.prompt}
+          open={this.state.show_input}
+          onClose={() => {
+            this.setState({ show_input: false });
+          }}
+          ok={(updatedName) => {
+            console.log(updatedName);
+            var path =
+              this.state.current_path + '/' + this.state.anchorEl.innerText;
+            if (updatedName != null) {
               Client.get(
                 '/fs/rename2',
                 { path: path, name: updatedName },
@@ -625,7 +631,8 @@ class Browser extends React.Component {
                 null
               );
             }
-        }}/>
+          }}
+        />
         {toolbar}
         <div style={{ marginTop: '35px' }}>{dircontent}</div>
         <Menu

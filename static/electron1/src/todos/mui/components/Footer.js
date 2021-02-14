@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import Typography from '@material-ui/core/Typography';
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
     margin: theme.spacing(1.5),
   },

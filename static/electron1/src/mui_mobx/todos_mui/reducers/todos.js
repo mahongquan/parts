@@ -37,27 +37,27 @@ export default function todos(state = initialState, action) {
       ];
       break;
     case DELETE_TODO:
-      new_state = state.filter(todo => todo.id !== action.id);
+      new_state = state.filter((todo) => todo.id !== action.id);
       break;
     case EDIT_TODO:
-      new_state = state.map(todo =>
+      new_state = state.map((todo) =>
         todo.id === action.id ? { ...todo, text: action.text } : todo
       );
       break;
     case COMPLETE_TODO:
-      new_state = state.map(todo =>
+      new_state = state.map((todo) =>
         todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
       );
       break;
     case COMPLETE_ALL:
-      const areAllMarked = state.every(todo => todo.completed);
-      new_state = state.map(todo => ({
+      const areAllMarked = state.every((todo) => todo.completed);
+      new_state = state.map((todo) => ({
         ...todo,
         completed: !areAllMarked,
       }));
       break;
     case CLEAR_COMPLETED:
-      new_state = state.filter(todo => todo.completed === false);
+      new_state = state.filter((todo) => todo.completed === false);
       break;
     default:
       return state;

@@ -30,7 +30,7 @@ const PackItemEdit = createReactClass({
   },
   handleSave(data) {
     var url = '/rest/BothPackItem';
-    Client.postOrPut(url, this.state.packitem, res => {
+    Client.postOrPut(url, this.state.packitem, (res) => {
       this.setState({ contact: res.data });
       this.parent.handlePackItemChange(this.props.index, res.data);
       this.old = res.data;

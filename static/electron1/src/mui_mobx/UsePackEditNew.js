@@ -17,7 +17,7 @@ class UsePackEditNew extends Component {
   close = () => {
     this.setState({ showModal: false });
   };
-  open2 = idx => {
+  open2 = (idx) => {
     this.index = idx;
     this.setState({ showModal: true });
     if (this.index == null) {

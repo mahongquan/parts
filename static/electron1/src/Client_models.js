@@ -88,9 +88,7 @@ function login(username, password, cb) {
   return post('/rest/login', payload, cb);
 }
 function users(cb) {
-  var data = [
-    {name:"马红权"},{name:"陈旺"}
-  ];
+  var data = [{ name: '马红权' }, { name: '陈旺' }];
   cb(data);
 }
 const Client = {

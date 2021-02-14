@@ -22,23 +22,28 @@ class DlgDetail extends React.Component {
     totalid: 0,
   };
 
-  loaddata = contactid => {
+  loaddata = (contactid) => {
     if (!contactid) return;
     var data1 = { id: contactid };
     // console.log(data1);
-    Client.get('/rest/showcontact', data1, res => {
-      console.log(res);
-      if (!res.items2) res.items2 = [];
-      this.setState({
-        contact: res.contact,
-        items: res.items,
-        items2: res.items2,
-        totalid: res.totalid,
-        totalct: res.totalct,
-      });
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    Client.get(
+      '/rest/showcontact',
+      data1,
+      (res) => {
+        console.log(res);
+        if (!res.items2) res.items2 = [];
+        this.setState({
+          contact: res.contact,
+          items: res.items,
+          items2: res.items2,
+          totalid: res.totalid,
+          totalct: res.totalct,
+        });
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
+      }
+    );
   };
   shouldComponentUpdate(nextProps, nextState) {
     if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
@@ -60,18 +65,18 @@ class DlgDetail extends React.Component {
   //     this.onHide();
   //   }
   // }
-    componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.onShow(this.props.contactid);
     } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }
-  onShow = contactid => {
+  onShow = (contactid) => {
     this.open(contactid);
   };
   onHide = () => {};
-  open = contactid => {
+  open = (contactid) => {
     this.loaddata(contactid);
   };
   handleDismiss = () => {
@@ -145,79 +150,79 @@ class DlgDetail extends React.Component {
         <DialogContent>
           <Grid container spacing={1}>
             <Grid item xs={3}>
-                  ID:
+              ID:
             </Grid>
             <Grid item xs={3}>
-                  {this.state.contact.id}
+              {this.state.contact.id}
             </Grid>
             <Grid item xs={3}>
-                  用户单位:
+              用户单位:
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.yonghu}
+              {this.state.contact.yonghu}
             </Grid>
             <Grid item xs={3}>
-                  客户地址:
+              客户地址:
             </Grid>
             <Grid item xs={3}>
-                  {this.state.contact.addr}
+              {this.state.contact.addr}
             </Grid>
             <Grid item xs={3}>
-                  通道配置:
+              通道配置:
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.channels}
+              {this.state.contact.channels}
             </Grid>
             <Grid item xs={3}>
-                  仪器型号:
+              仪器型号:
             </Grid>
             <Grid item xs={3}>
-                  {this.state.contact.yiqixinghao}
+              {this.state.contact.yiqixinghao}
             </Grid>
             <Grid item xs={3}>
-                  仪器编号:
+              仪器编号:
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.yiqibh}
+              {this.state.contact.yiqibh}
             </Grid>
             <Grid item xs={3}>
-                  包箱:
+              包箱:
             </Grid>
             <Grid item xs={3}>
-                  {this.state.contact.baoxiang}
+              {this.state.contact.baoxiang}
             </Grid>
             <Grid item xs={3}>
-                  审核:
+              审核:
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.shenhe}
-            </Grid>
-             <Grid item xs={3}>
-                  入库时间:
+              {this.state.contact.shenhe}
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.yujifahuo_date}
+              入库时间:
             </Grid>
             <Grid item xs={3}>
-                  调试时间:
+              {this.state.contact.yujifahuo_date}
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.tiaoshi_date}
+              调试时间:
             </Grid>
             <Grid item xs={3}>
-                  合同编号:
+              {this.state.contact.tiaoshi_date}
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.hetongbh}
+              合同编号:
             </Grid>
             <Grid item xs={3}>
-                 方法:
+              {this.state.contact.hetongbh}
             </Grid>
             <Grid item xs={3}>
-                 {this.state.contact.method}
+              方法:
             </Grid>
-        </Grid>
-        <h2>备件清单</h2>
+            <Grid item xs={3}>
+              {this.state.contact.method}
+            </Grid>
+          </Grid>
+          <h2>备件清单</h2>
           <table border="1">
             <thead>
               <tr>
@@ -227,9 +232,7 @@ class DlgDetail extends React.Component {
                 <td>数量</td>
               </tr>
             </thead>
-            <tbody>
-            {contactRows}
-            </tbody>
+            <tbody>{contactRows}</tbody>
           </table>
           <p>
             共{this.state.totalid}项{this.state.totalct}个。

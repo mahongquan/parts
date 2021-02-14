@@ -1,4 +1,4 @@
-export default function(sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   var PackItem = sequelize.define(
     'PackItem',
     {
@@ -12,7 +12,7 @@ export default function(sequelize, DataTypes) {
       tableName: 'parts_packitem',
     }
   );
-  PackItem.associate = function(models) {
+  PackItem.associate = function (models) {
     PackItem.belongsTo(models.Item, {
       foreignKey: 'item_id',
     });

@@ -1,4 +1,4 @@
-export default function(sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   var UsePack = sequelize.define(
     'UsePack',
     {
@@ -11,7 +11,7 @@ export default function(sequelize, DataTypes) {
       tableName: 'parts_usepack',
     }
   );
-  UsePack.associate = function(models) {
+  UsePack.associate = function (models) {
     UsePack.belongsTo(models.Pack, {
       foreignKey: 'pack_id',
     });

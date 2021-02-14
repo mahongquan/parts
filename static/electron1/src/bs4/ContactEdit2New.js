@@ -12,25 +12,27 @@ var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 
-
-
 class ContactEdit2New extends Component {
   state = {
-    show_ok:false,
+    show_ok: false,
     openCollapse: false,
     showModal: false,
     contact: {
-      yujifahuo_date: moment().format("YYYY-MM-DD"),
-      tiaoshi_date: moment().format("YYYY-MM-DD"),
-        addr: '',
-        baoxiang: '',channels:"",        dianqi:"",
-        hetongbh: '',hongwai:"",redao:"",
-        id:"",
-        jixie:"",
-        shenhe: '',
-        yiqibh: '',
-        yiqixinghao: '',
-        yonghu: '',
+      yujifahuo_date: moment().format('YYYY-MM-DD'),
+      tiaoshi_date: moment().format('YYYY-MM-DD'),
+      addr: '',
+      baoxiang: '',
+      channels: '',
+      dianqi: '',
+      hetongbh: '',
+      hongwai: '',
+      redao: '',
+      id: '',
+      jixie: '',
+      shenhe: '',
+      yiqibh: '',
+      yiqixinghao: '',
+      yonghu: '',
     },
     hiddenPacks: true,
     bg: {},
@@ -44,13 +46,13 @@ class ContactEdit2New extends Component {
     this.setState({ showModal: false });
   };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.onShow(this.props.index);
     } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
     }
   }
-  close_ok = sure => {
+  close_ok = (sure) => {
     this.setState({ show_ok: false });
     // if (sure) {
     //   const filteredFoods = data.config.boards.filter(
@@ -59,25 +61,29 @@ class ContactEdit2New extends Component {
     //   data.config.boards = filteredFoods;
     //   this.setState({ boards: data.config.boards });
     // }
-  };  
-  onShow = idx => {
+  };
+  onShow = (idx) => {
     this.open2(idx);
   };
   onHide = () => {};
-  open2 = idx => {
+  open2 = (idx) => {
     this.setState({ showModal: true });
     this.setState({ bg: {} });
     this.parent = this.props.parent;
     this.index = idx;
     if (this.index == null) {
       this.old = {
-        yujifahuo_date: moment().format("YYYY-MM-DD"),
-        tiaoshi_date: moment().format("YYYY-MM-DD"),
+        yujifahuo_date: moment().format('YYYY-MM-DD'),
+        tiaoshi_date: moment().format('YYYY-MM-DD'),
         addr: '',
-        baoxiang: '',channels:"",        dianqi:"",
-        hetongbh: '',hongwai:"",redao:"",
-        id:"",
-        jixie:"",
+        baoxiang: '',
+        channels: '',
+        dianqi: '',
+        hetongbh: '',
+        hongwai: '',
+        redao: '',
+        id: '',
+        jixie: '',
         shenhe: '',
         yiqibh: '',
         yiqixinghao: '',
@@ -95,7 +101,7 @@ class ContactEdit2New extends Component {
     this.setState({ contact: this.old });
   };
 
-  handleCopy = data => {
+  handleCopy = (data) => {
     console.log('copy');
     this.index = null;
     var contact2 = update(this.state.contact, { id: { $set: '' } });
@@ -103,39 +109,44 @@ class ContactEdit2New extends Component {
     this.setState({ contact: contact2 });
     this.setState({ hiddenPacks: true });
   };
-  handleSave = data => {
-    if(this.state.contact.yiqibh===""){
-      this.setState({show_ok:true});
+  handleSave = (data) => {
+    if (this.state.contact.yiqibh === '') {
+      this.setState({ show_ok: true });
       return;
     }
     var url = '/rest/Contact';
     var dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    Client.postOrPut(url, dataSave, res => {
-      if (res.success) {
-        this.setState({ contact: res.data });
-        //console.log("after save======================")
-        //console.log(this.index);
-        this.parent.handleContactChange(this.index, res.data);
-        if (this.index) {
-          //console.log("true");
+    Client.postOrPut(
+      url,
+      dataSave,
+      (res) => {
+        if (res.success) {
+          this.setState({ contact: res.data });
+          //console.log("after save======================")
+          //console.log(this.index);
+          this.parent.handleContactChange(this.index, res.data);
+          if (this.index) {
+            //console.log("true");
+          } else {
+            //console.log("false");
+            this.index = 0;
+          }
+          console.log(this.index);
+          this.old = res.data;
+          this.setState({ bg: {} });
+          this.setState({ hiddenPacks: false });
         } else {
-          //console.log("false");
-          this.index = 0;
+          alert(res.message);
         }
-        console.log(this.index);
-        this.old = res.data;
-        this.setState({ bg: {} });
-        this.setState({ hiddenPacks: false });
-      } else {
-        alert(res.message);
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error);
       }
-    },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error);
-    });
+    );
   };
-  tiaoshi_date_change = value => {
+  tiaoshi_date_change = (value) => {
     //this.state.yujifahuo_date=value;
     var e_target_name = 'tiaoshi_date';
     console.log(this.old[e_target_name]);
@@ -144,7 +155,7 @@ class ContactEdit2New extends Component {
       t = value;
       // t=moment(t,"YYYY-MM-DD")
     } else {
-      t=value;
+      t = value;
       t = value.format('YYYY-MM-DD');
     }
     console.log(t);
@@ -172,7 +183,7 @@ class ContactEdit2New extends Component {
     this.setState({ contact: contact2 });
   };
 
-  yujifahuo_date_change = value => {
+  yujifahuo_date_change = (value) => {
     //this.state.yujifahuo_date=value;
     var e_target_name = 'yujifahuo_date';
     console.log(this.old[e_target_name]);
@@ -213,7 +224,7 @@ class ContactEdit2New extends Component {
   channels_select = (event, data) => {
     this.change1(data.suggestion);
   };
-  change1 = item => {
+  change1 = (item) => {
     console.log('selected');
     console.log(item);
     if (this.old.channels === item) {
@@ -233,7 +244,7 @@ class ContactEdit2New extends Component {
   yiqixinghao_select = (event, data) => {
     this.change2(data.suggestion);
   };
-  change2 = item => {
+  change2 = (item) => {
     console.log('selected');
     console.log(item);
     if (this.old.yiqixinghao === item) {
@@ -249,7 +260,7 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  handleChange = e => {
+  handleChange = (e) => {
     console.log('change');
     console.log(e);
     console.log(e.target.value);
@@ -278,7 +289,7 @@ class ContactEdit2New extends Component {
   matchStateToTerm = (state, value) => {
     return state.toLowerCase().indexOf(value.toLowerCase()) !== -1;
   };
-  detailchange = value => {
+  detailchange = (value) => {
     console.log(value);
     this.setState({ rich: value });
   };
@@ -303,7 +314,7 @@ class ContactEdit2New extends Component {
                     id="id"
                     name="id"
                     disabled="disabled"
-                    value={this.state.contact.id||""}
+                    value={this.state.contact.id || ''}
                   />
                 </td>
                 <td>
@@ -315,7 +326,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="yonghu"
                     name="yonghu"
-                    value={this.state.contact.yonghu||""}
+                    value={this.state.contact.yonghu || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -328,7 +339,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="addr"
                     name="addr"
-                    value={this.state.contact.addr||""}
+                    value={this.state.contact.addr || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -338,7 +349,7 @@ class ContactEdit2New extends Component {
                     inputProps={{
                       id: 'channels-autocomplete',
                       style: { backgroundColor: this.state.bg.channels },
-                      value: this.state.contact.channels||"",
+                      value: this.state.contact.channels || '',
                       onChange: this.channels_change,
                     }}
                     suggestions={[
@@ -353,11 +364,11 @@ class ContactEdit2New extends Component {
                       '2O+2N',
                       '2O',
                     ]}
-                    getSuggestionValue={item => item}
+                    getSuggestionValue={(item) => item}
                     onSuggestionSelected={this.channels_select}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={item => <span>{item}</span>}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
               </tr>
@@ -370,7 +381,7 @@ class ContactEdit2New extends Component {
                     inputProps={{
                       id: 'yiqixinghao-autocomplete',
                       style: { backgroundColor: this.state.bg.yiqixinghao },
-                      value: this.state.contact.yiqixinghao||"",
+                      value: this.state.contact.yiqixinghao || '',
                       onChange: this.yiqixinghao_change,
                     }}
                     suggestions={[
@@ -386,11 +397,11 @@ class ContactEdit2New extends Component {
                       'ON-4000',
                       'ONH-3000',
                     ]}
-                    getSuggestionValue={item => item}
+                    getSuggestionValue={(item) => item}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
                     onSuggestionSelected={this.yiqixinghao_select}
-                    renderSuggestion={item => <span>{item}</span>}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
                 <td>
@@ -402,7 +413,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="yiqibh"
                     name="yiqibh"
-                    value={this.state.contact.yiqibh||""}
+                    value={this.state.contact.yiqibh || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -417,7 +428,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="baoxiang"
                     name="baoxiang"
-                    value={this.state.contact.baoxiang||""}
+                    value={this.state.contact.baoxiang || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -428,7 +439,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="shenhe"
                     name="shenhe"
-                    value={this.state.contact.shenhe||""}
+                    value={this.state.contact.shenhe || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -446,7 +457,10 @@ class ContactEdit2New extends Component {
                     }}
                     id="yujifahuo_date"
                     name="yujifahuo_date"
-                    value={moment(this.state.contact.yujifahuo_date,"YYYY-MM-DD")}
+                    value={moment(
+                      this.state.contact.yujifahuo_date,
+                      'YYYY-MM-DD'
+                    )}
                     onChange={this.yujifahuo_date_change}
                   />
                 </td>
@@ -459,7 +473,10 @@ class ContactEdit2New extends Component {
                       style: { backgroundColor: this.state.bg.tiaoshi_date },
                     }}
                     name="tiaoshi_date"
-                    value={moment(this.state.contact.tiaoshi_date,"YYYY-MM-DD")}
+                    value={moment(
+                      this.state.contact.tiaoshi_date,
+                      'YYYY-MM-DD'
+                    )}
                     onChange={this.tiaoshi_date_change}
                   />
                 </td>
@@ -474,7 +491,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="hetongbh"
                     name="hetongbh"
-                    value={this.state.contact.hetongbh||""}
+                    value={this.state.contact.hetongbh || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -486,7 +503,7 @@ class ContactEdit2New extends Component {
                     id="method"
                     name="method"
                     disabled={true}
-                    value={this.state.contact.method||""}
+                    value={this.state.contact.method || ''}
                   />
                   {
                     //<button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
@@ -503,7 +520,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.dianqi }}
                     type="text"
                     name="dianqi"
-                    value={this.state.contact.dianqi||""}
+                    value={this.state.contact.dianqi || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -513,7 +530,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.jixie }}
                     type="text"
                     name="jixie"
-                    value={this.state.contact.jixie||""}
+                    value={this.state.contact.jixie || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -525,7 +542,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.hongwai }}
                     type="text"
                     name="hongwai"
-                    value={this.state.contact.hongwai||""}
+                    value={this.state.contact.hongwai || ''}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -535,7 +552,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.redao }}
                     type="text"
                     name="redao"
-                    value={this.state.contact.redao||""}
+                    value={this.state.contact.redao || ''}
                     onChange={this.handleChange}
                   />
                 </td>

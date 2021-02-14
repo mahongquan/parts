@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 // import DlgTodos from './DlgTodos';
 import {
-  Badge,InputGroup,FormControl,
+  Badge,
+  InputGroup,
+  FormControl,
   Navbar,
   Nav,
   DropdownButton,
@@ -12,7 +14,7 @@ import {
 } from 'react-bootstrap';
 import update from 'immutability-helper';
 import Client from './Client';
-import UserDropDown from "./UserDropDown";
+import UserDropDown from './UserDropDown';
 import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
@@ -28,7 +30,7 @@ import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
-import DlgWorkMonth from './DlgWorkMonth'
+import DlgWorkMonth from './DlgWorkMonth';
 import myglobal from '../myglobal';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../react-datetime.css';
@@ -37,7 +39,7 @@ import '../autosuggest.css';
 export default class App extends Component {
   constructor(props) {
     super(props);
-    myglobal.app=this;
+    myglobal.app = this;
     this.dlgwait = React.createRef();
     this.dlgitems = React.createRef();
     this.dlgurl = React.createRef();
@@ -49,7 +51,7 @@ export default class App extends Component {
     this.dlglogin = React.createRef();
     this.dlgimportHT = React.createRef();
     this.state = {
-      logined:false,
+      logined: false,
       connect_error: false,
       search2: '',
       search2tip: '',
@@ -68,20 +70,20 @@ export default class App extends Component {
       showDlgEdit: false,
       showDlgDetail: false,
       showDlgTodos: false,
-      showDlgStatMonth:false,
+      showDlgStatMonth: false,
       showDlgStatYear: false,
       showDlgFolder2: false,
-      showDlgWork:false,
+      showDlgWork: false,
     };
   }
-  show_webview=(error)=>{
+  show_webview = (error) => {
     if (error instanceof SyntaxError) {
       this.openDlgLogin();
     } else {
       this.setState({ connect_error: true });
     }
-  }
-  handleClickFilter = event => {
+  };
+  handleClickFilter = (event) => {
     //console.log(event);
     event.preventDefault();
     event.stopPropagation();
@@ -101,7 +103,7 @@ export default class App extends Component {
         search: this.state.search,
         baoxiang: this.state.baoxiang,
       },
-      contacts => {
+      (contacts) => {
         var user = contacts.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -113,7 +115,7 @@ export default class App extends Component {
           connect_error: false,
         });
       },
-      error => {
+      (error) => {
         // console.log(typeof(error));
         console.log(error);
         if (error instanceof SyntaxError) {
@@ -135,7 +137,7 @@ export default class App extends Component {
     }
     this.setState({ contacts: contacts2 });
   };
-  handleUserChange = user => {
+  handleUserChange = (user) => {
     if (user === 'AnonymousUser') {
       this.setState({
         logined: false,
@@ -152,7 +154,7 @@ export default class App extends Component {
     this.load_data();
   };
   handleLogout = () => {
-    Client.logout(data => {
+    Client.logout((data) => {
       this.setState({
         logined: false,
         user: 'AnonymousUser',
@@ -162,19 +164,19 @@ export default class App extends Component {
       this.handleUserChange(this.state.user);
     });
   };
-  keypress = e => {
+  keypress = (e) => {
     if (e.which !== 13) return;
     // console.log('你按了回车键...');
 
     this.search();
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.setState({ search: e.target.value });
   };
-  handleSearch2Change = e => {
+  handleSearch2Change = (e) => {
     this.setState({ search2: e.target.value });
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start - this.state.limit;
     if (this.state.start < 0) {
@@ -183,7 +185,7 @@ export default class App extends Component {
     }
     this.load_data();
   };
-  search = e => {
+  search = (e) => {
     // eslint-disable-next-line
     this.state.start = 0;
     this.load_data();
@@ -200,16 +202,16 @@ export default class App extends Component {
     }
     this.load_data();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
 
-  onDetailClick = contactid => {
+  onDetailClick = (contactid) => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     this.setState({ showDlgDetail: true, contactid: contactid });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start + this.state.limit;
     if (this.state.start > this.state.total - this.state.limit)
@@ -221,7 +223,7 @@ export default class App extends Component {
     }
     this.load_data();
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     // eslint-disable-next-line
     this.state.start = 0;
     // eslint-disable-next-line
@@ -232,16 +234,16 @@ export default class App extends Component {
     console.log('auto_change');
     if (value.length > 1) {
       this.setState({ auto_value: value, auto_loading: true });
-      Client.get('/rest/Pack', { search: value }, items => {
+      Client.get('/rest/Pack', { search: value }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     } else {
       this.setState({ auto_value: value, auto_loading: false });
     }
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     // console.log(data);
-    Client.login(data.username, data.password, res => {
+    Client.login(data.username, data.password, (res) => {
       if (res.success) {
         this.setState({
           logined: true,
@@ -253,17 +255,17 @@ export default class App extends Component {
       }
     });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.setState({ showDlgEdit: true, currentIndex: idx });
     //this.setState({});
     //this.refs.contactedit.open2(idx);
   };
   //<Button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</Button>
   //<Button onClick={()=>this.opendlgwait(contact.id)}>全部文件</Button>
-  opendlgwait = contactid => {
+  opendlgwait = (contactid) => {
     this.dlgwait.current.open(contactid);
   };
-  handleContactChange2 = contact => {
+  handleContactChange2 = (contact) => {
     var idx = this.currentIndex;
     console.log(idx);
     let contacts2;
@@ -282,10 +284,10 @@ export default class App extends Component {
   openDlgItems = () => {
     this.dlgitems.current.open();
   };
-  opendlgfolder = contactid => {
+  opendlgfolder = (contactid) => {
     this.dlgfolder.current.open(contactid);
   };
-  opendlgfolder2 = contactid => {
+  opendlgfolder2 = (contactid) => {
     this.setState({ showDlgFolder2: true });
   };
   opendlgcheck = (contactid, yiqibh) => {
@@ -299,7 +301,7 @@ export default class App extends Component {
   };
   openDlgStat = () => {
     // this.dlgstat.current.open();
-    this.setState({showDlgStatMonth:true});
+    this.setState({ showDlgStatMonth: true });
   };
   openDlgLogin = () => {
     // console.log("openDlgLogin");
@@ -329,18 +331,15 @@ export default class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.hetongbh}</td>
         <td>
-          <span
-            className="mylink"
-            onClick={() => this.handleEdit(idx)}
-          >
+          <span className="mylink" onClick={() => this.handleEdit(idx)}>
             {contact.yiqibh}
           </span>
           <DropdownButton
             variant="light"
             title=""
-            onClick={
-              (e)=>{e.stopPropagation();}
-            }
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             <Dropdown.Item onSelect={() => this.onDetailClick(contact.id)}>
               详细
@@ -365,7 +364,10 @@ export default class App extends Component {
             <Dropdown.Item onSelect={() => this.opendlgfolder(contact.id)}>
               资料文件夹
             </Dropdown.Item>
-            <Dropdown.Item style={{display:"none"}} onSelect={() => this.opendlgfolder2(contact.id)}>
+            <Dropdown.Item
+              style={{ display: 'none' }}
+              onSelect={() => this.opendlgfolder2(contact.id)}
+            >
               资料文件夹2
             </Dropdown.Item>
           </DropdownButton>
@@ -389,18 +391,22 @@ export default class App extends Component {
     }
     if (hasprev) {
       prev = (
-        <InputGroup.Prepend><Button variant="light" onClick={this.handlePrev}>
-          前一页
-        </Button></InputGroup.Prepend>
+        <InputGroup.Prepend>
+          <Button variant="light" onClick={this.handlePrev}>
+            前一页
+          </Button>
+        </InputGroup.Prepend>
       );
     } else {
       prev = null;
     }
     if (hasnext) {
       next = (
-      <InputGroup.Append><Button variant="light" onClick={this.handleNext}>
-          后一页
-        </Button></InputGroup.Append>
+        <InputGroup.Append>
+          <Button variant="light" onClick={this.handleNext}>
+            后一页
+          </Button>
+        </InputGroup.Append>
       );
     } else {
       next = null;
@@ -436,7 +442,7 @@ export default class App extends Component {
         <DlgItems ref={this.dlgitems} />
         <DlgPacks ref={this.dlgpacks} />
         <DlgCopyPack ref={this.dlgcopypack} />
-        
+
         <DlgImport
           showModal={this.state.showDlgImport}
           handleClose={() => {
@@ -457,10 +463,12 @@ export default class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
-        <DlgStatMonth showModal={this.state.showDlgStatMonth}
+        <DlgStatMonth
+          showModal={this.state.showDlgStatMonth}
           handleClose={() => {
             this.setState({ showDlgStatMonth: false });
-          }} />
+          }}
+        />
         <DlgStatYear
           showModal={this.state.showDlgStatYear}
           handleClose={() => {
@@ -531,9 +539,9 @@ export default class App extends Component {
           <DropdownButton
             variant="light"
             title={this.state.user}
-            onClick={
-              (e)=>{e.stopPropagation();}
-            }
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             <Dropdown.Item
               style={{
@@ -552,25 +560,25 @@ export default class App extends Component {
               注销
             </Dropdown.Item>
           </DropdownButton>
-          <div style={{marginLeft:"10px",width:"300px"}}>
-          <InputGroup>
-            <FormControl
-              onKeyPress={this.keypress}
-              type="text"
-              value={this.state.search}
-              placeholder="合同 or 仪器编号 or 客户"
-              onChange={this.handleSearchChange}
-            />
-            <InputGroup.Append>
-              <Button variant="info" onClick={this.search}>
-                搜索
-                <span
-                  className="glyphicon glyphicon-search"
-                  aria-hidden="true"
-                />
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
+          <div style={{ marginLeft: '10px', width: '300px' }}>
+            <InputGroup>
+              <FormControl
+                onKeyPress={this.keypress}
+                type="text"
+                value={this.state.search}
+                placeholder="合同 or 仪器编号 or 客户"
+                onChange={this.handleSearchChange}
+              />
+              <InputGroup.Append>
+                <Button variant="info" onClick={this.search}>
+                  搜索
+                  <span
+                    className="glyphicon glyphicon-search"
+                    aria-hidden="true"
+                  />
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </div>
           <Button
             variant="primary"
@@ -613,35 +621,38 @@ export default class App extends Component {
           </thead>
           <tbody id="contact-list">{contactRows}</tbody>
         </table>
-        <div style={{ display: 'flex', alignItems: 'center'}}>
-        {prev}
-        <Badge>
-          {this.state.start + 1}../{this.state.total}
-        </Badge>
-        {next}
-{/*        <div style={{marginLeft:"10px",width:"250px"}}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {prev}
+          <Badge>
+            {this.state.start + 1}../{this.state.total}
+          </Badge>
+          {next}
+          {/*        <div style={{marginLeft:"10px",width:"250px"}}>
           <InputGroup>
           {prev}
           <InputGroup.Text>{this.state.start + 1}../{this.state.total}</InputGroup.Text>
           {next}
           </InputGroup>     
         </div>*/}
-        <div style={{marginLeft:"10px",width:"100px"}}>
-          <InputGroup>
-            <FormControl
-               maxLength="6"
-          size="6"
-          onChange={this.handlePageChange}
-          value={this.state.start_input}
-            />
-            <InputGroup.Append>
-              <Button id="page_go" className="btn btn-info" onClick={this.jump}>
-          跳转
-        </Button>
-            </InputGroup.Append>
-          </InputGroup>
+          <div style={{ marginLeft: '10px', width: '100px' }}>
+            <InputGroup>
+              <FormControl
+                maxLength="6"
+                size="6"
+                onChange={this.handlePageChange}
+                value={this.state.start_input}
+              />
+              <InputGroup.Append>
+                <Button
+                  id="page_go"
+                  className="btn btn-info"
+                  onClick={this.jump}
+                >
+                  跳转
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </div>
-      
         </div>
         <div style={{ minHeight: '200px' }} />
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PackItems from './PackItems';
-import { Form,Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 class UsePackEditNew extends Component {
   state = {
     showModal: false,
@@ -26,7 +26,7 @@ class UsePackEditNew extends Component {
   close = () => {
     this.setState({ showModal: false });
   };
-  open2 = idx => {
+  open2 = (idx) => {
     this.index = idx;
     this.setState({ showModal: true });
     if (this.index == null) {
@@ -59,23 +59,24 @@ class UsePackEditNew extends Component {
           <Modal.Title>编辑包</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form>
-  <Form.Group controlId="formBasicEmail">
-    <Form.Label>名称:</Form.Label>
-    <Form.Label>{this.state.usepack.name}</Form.Label>
-    <Form.Label>(ID:</Form.Label>
-    <Form.Label>{this.state.usepack.pack})</Form.Label>
-  </Form.Group>
-  </Form>{
-          // <div style={{display:"flex"}}>
-          //       <Badge>ID:</Badge>
-          //         <Badge>
-          //           {this.state.usepack.pack}
-          //         </Badge>
-          //         <Badge>名称:</Badge>
-          //         <Badge>{this.state.usepack.name}</Badge>
-          // </div>
-        }
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>名称:</Form.Label>
+              <Form.Label>{this.state.usepack.name}</Form.Label>
+              <Form.Label>(ID:</Form.Label>
+              <Form.Label>{this.state.usepack.pack})</Form.Label>
+            </Form.Group>
+          </Form>
+          {
+            // <div style={{display:"flex"}}>
+            //       <Badge>ID:</Badge>
+            //         <Badge>
+            //           {this.state.usepack.pack}
+            //         </Badge>
+            //         <Badge>名称:</Badge>
+            //         <Badge>{this.state.usepack.name}</Badge>
+            // </div>
+          }
           <div id="id_useusepacks">
             <PackItems pack_id={this.state.usepack.pack} />
           </div>

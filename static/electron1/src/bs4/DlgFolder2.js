@@ -5,19 +5,19 @@ import React, { Component } from 'react';
 export default class DlgFolder2 extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       showModal: false,
       hiddenPacks: true,
       error: '',
     };
   }
-  close=()=>{
+  close = () => {
     this.setState({ showModal: false });
-  }
+  };
 
-  open=()=> {
+  open = () => {
     this.setState({ showModal: true });
-  }
+  };
   render() {
     return (
       <Modal

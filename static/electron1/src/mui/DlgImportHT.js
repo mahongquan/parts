@@ -20,27 +20,37 @@ class DlgImportHT extends React.Component {
     console.log(file);
     var data1 = new FormData();
     data1.append('file', file);
-    Client.postForm('/rest/ht', data1, (res)=> {
-      if (res.success) {
-        this.props.parent.handleContactChange(null, res.data);
-        this.setState({ showModal: false });
-      } else {
-        this.setState({ showalert: true, info: res.message });
+    Client.postForm(
+      '/rest/ht',
+      data1,
+      (res) => {
+        if (res.success) {
+          this.props.parent.handleContactChange(null, res.data);
+          this.setState({ showModal: false });
+        } else {
+          this.setState({ showalert: true, info: res.message });
+        }
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
   open = () => {
     this.setState({ showModal: true, showalert: false });
     var data = { limit: 10, search: 'docx' };
-    Client.get('/rest/Contact', data, function(result) {
-      console.info(result);
-      this.setState({ packs: result.data });
-      console.log(result.data);
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    Client.get(
+      '/rest/Contact',
+      data,
+      function (result) {
+        console.info(result);
+        this.setState({ packs: result.data });
+        console.log(result.data);
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
+      }
+    );
   };
   handleDismiss = () => {
     // this.setState({ showalert: false });
@@ -56,13 +66,8 @@ class DlgImportHT extends React.Component {
       </tr>
     ));
     return (
-      <Dialog
-        open={this.state.showModal}
-        onClose={this.close}
-      >
-        <DialogTitle>
-          导入合同
-        </DialogTitle>
+      <Dialog open={this.state.showModal} onClose={this.close}>
+        <DialogTitle>导入合同</DialogTitle>
         <DialogContent>
           {this.state.info}
           <form ref="form1" encType="multipart/form-data">
@@ -72,7 +77,7 @@ class DlgImportHT extends React.Component {
               accept="application/vnd.ms-word"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
             <button

@@ -35,7 +35,7 @@ const FILTER_TITLES = {
   [SHOW_ACTIVE]: '未办',
   [SHOW_COMPLETED]: '已办',
 };
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
   },
@@ -107,7 +107,7 @@ class App extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-  handleShow = filter => {
+  handleShow = (filter) => {
     this.setState({ filter });
   };
   render() {
@@ -193,11 +193,11 @@ App.propTypes = {
   actions: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   todos: state.todos,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(TodoActions, dispatch),
 });
 

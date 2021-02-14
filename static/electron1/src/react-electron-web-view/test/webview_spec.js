@@ -39,7 +39,7 @@ describe('WebView element', () => {
 
   describe('when ready', () => {
     let view;
-    beforeEach(done => {
+    beforeEach((done) => {
       view = mount(
         <WebView src="https://www.google.com" onDidAttach={() => done()} />,
         options
@@ -65,7 +65,7 @@ describe('WebView element', () => {
     });
 
     describe('when loaded', () => {
-      beforeEach(done => {
+      beforeEach((done) => {
         let once = true;
         view.setProps({
           onDidFinishLoad: () => {
@@ -76,7 +76,7 @@ describe('WebView element', () => {
         });
       });
 
-      it('should navigate when the src prop is changed', done => {
+      it('should navigate when the src prop is changed', (done) => {
         const firstURL = view.instance().getURL();
         view.setProps({
           src: 'https://www.facebook.com',

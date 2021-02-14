@@ -48,7 +48,7 @@ class File extends React.Component {
     });
   };
 
-  rename = updatedName => {
+  rename = (updatedName) => {
     Client.getRaw(buildRenameUrl(this.props.path, updatedName), () => {
       this.props.browser.reloadFilesFromServer();
     });
@@ -150,7 +150,7 @@ class File extends React.Component {
     { count: 1073741824, unit: 'GB' },
   ];
 
-  static sizeString = sizeBytes => {
+  static sizeString = (sizeBytes) => {
     var iUnit = 0;
     var count = 0;
     for (iUnit = 0; iUnit < File.sizes.length; iUnit++) {
@@ -170,9 +170,9 @@ class Browser extends React.Component {
     displayUpload: 'none',
   };
 
-  loadFilesFromServer = path => {
+  loadFilesFromServer = (path) => {
     var self = this;
-    Client.getRaw(buildGetChildrenUrl(path), data => {
+    Client.getRaw(buildGetChildrenUrl(path), (data) => {
       var files = data.children.sort(self.state.sort);
       var paths = self.state.paths;
       if (paths[paths.length - 1] !== path) paths = paths.concat([path]);
@@ -185,7 +185,7 @@ class Browser extends React.Component {
       self.updateNavbarPath(self.currentPath());
     });
   };
-  updateNavbarPath = path => {
+  updateNavbarPath = (path) => {
     // var elem  = document.getElementById("pathSpan");
     // elem.innerHTML = '<span class="glyphicon glyphicon-chevron-right"/>' +path;
     this.setState({ current_path: path });
@@ -213,7 +213,7 @@ class Browser extends React.Component {
   };
 
   onParent = () => {
-    var onSuccess = function(data) {
+    var onSuccess = function (data) {
       var parentPath = data.path;
       this.updatePath(parentPath);
     }.bind(this);
@@ -229,7 +229,7 @@ class Browser extends React.Component {
   };
 
   uploadFile = () => {
-    return function(evt) {
+    return function (evt) {
       var path = this.currentPath();
       var readFile = evt.target.files[0];
       var name = readFile.name;
@@ -240,7 +240,7 @@ class Browser extends React.Component {
 
       var xhr = new XMLHttpRequest();
       xhr.open('POST', buildUploadUrl(path, name), true);
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (xhr.readyState !== 4) return;
 
         if (xhr.status === 200) {
@@ -260,7 +260,7 @@ class Browser extends React.Component {
     this.loadFilesFromServer(path);
   };
 
-  updateSort = sort => {
+  updateSort = (sort) => {
     var files = this.state.files;
     var lastSort = this.state.sort;
     if (lastSort === sort) files = files.reverse();
@@ -283,10 +283,10 @@ class Browser extends React.Component {
   sizeSort = () => {
     this.updateSort(File.sizeSort);
   };
-  updatePath = path => {
+  updatePath = (path) => {
     this.loadFilesFromServer(path);
   };
-  getContent = path => {
+  getContent = (path) => {
     console.log('getContent');
     var url = buildGetContentUrl(path);
     console.log(url);
@@ -301,7 +301,7 @@ class Browser extends React.Component {
       this.reloadFilesFromServer
     );
   };
-  onClick = f => {
+  onClick = (f) => {
     console.log('onClick');
     console.log(f);
     if (f.isdir) {

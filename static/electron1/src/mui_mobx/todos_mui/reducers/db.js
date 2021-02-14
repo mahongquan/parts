@@ -11,17 +11,17 @@ function myDateStr(date) {
   return year + '-' + s_month + '-' + s_day;
 }
 var socket = {
-  init: function(argument) {
+  init: function (argument) {
     var sqlite3 = require('sqlite3').verbose();
     const path = require('path');
     var app_root = path.resolve('.');
     db = new sqlite3.Database(app_root + '/cs/data.db');
     // body...
   },
-  importstandard: function(res) {
+  importstandard: function (res) {
     console.log(res);
   },
-  emit: function(url, data, callback) {
+  emit: function (url, data, callback) {
     console.log(url);
     console.log(data);
     if (!data) {
@@ -57,14 +57,14 @@ var socket = {
         " and  SampleId between '" + data.begin + "' and '" + data.end + "'";
       console.log(where);
 
-      db.serialize(function() {
+      db.serialize(function () {
         var res = {};
-        db.all('SELECT count(*) as total FROM result' + where, function(
-          err,
-          row
-        ) {
-          res.total = row[0].total;
-        });
+        db.all(
+          'SELECT count(*) as total FROM result' + where,
+          function (err, row) {
+            res.total = row[0].total;
+          }
+        );
         db.all(
           'SELECT * FROM result' +
             where +
@@ -72,7 +72,7 @@ var socket = {
             data.limit +
             ' offset ' +
             data.start,
-          function(err, row) {
+          function (err, row) {
             res.error = err;
             res.data = row;
             callback(res);
@@ -80,13 +80,13 @@ var socket = {
         );
       });
     } else if (url == '/get/Pack') {
-      db.serialize(function() {
+      db.serialize(function () {
         var res = {};
         db.all(
           "SELECT count(*) as total FROM parts_pack where name like '%" +
             data.search +
             "%'",
-          function(err, row) {
+          function (err, row) {
             res.total = row[0].total;
           }
         );
@@ -97,7 +97,7 @@ var socket = {
             data.limit +
             ' offset ' +
             data.start,
-          function(err, row) {
+          function (err, row) {
             res.error = err;
             res.data = row;
             callback(res);
@@ -105,13 +105,13 @@ var socket = {
         );
       });
     } else if (url == '/get/Item') {
-      db.serialize(function() {
+      db.serialize(function () {
         var res = {};
         db.all(
           "SELECT count(*) as total FROM parts_item where name like '%" +
             data.search +
             "%'",
-          function(err, row) {
+          function (err, row) {
             res.total = row[0].total;
           }
         );
@@ -122,7 +122,7 @@ var socket = {
             data.limit +
             ' offset ' +
             data.start,
-          function(err, row) {
+          function (err, row) {
             res.error = err;
             res.data = row;
             callback(res);
@@ -138,7 +138,7 @@ var socket = {
         ' offset ' +
         data.start;
       console.log(cmd);
-      db.all(cmd, function(err, row) {
+      db.all(cmd, function (err, row) {
         var res = {};
         res.error = err;
         res.data = row;
@@ -153,7 +153,7 @@ var socket = {
         ' offset ' +
         data.start;
       console.log(cmd);
-      db.all(cmd, function(err, row) {
+      db.all(cmd, function (err, row) {
         var res = {};
         res.error = err;
         res.data = row;
@@ -169,14 +169,14 @@ var socket = {
         data.pack_id +
         ')';
       console.log(cmd);
-      db.serialize(function() {
+      db.serialize(function () {
         db.run(cmd);
         db.all(
           'SELECT a.id,b.name,b.id as pack_id FROM parts_usepack as a,parts_pack as b where a.pack_id=b.id and a.contact_id=' +
             data.contact_id +
             ' and a.pack_id=' +
             data.pack_id,
-          function(err, row) {
+          function (err, row) {
             var res = {};
             res.error = err;
             res.data = row[0];
@@ -194,14 +194,14 @@ var socket = {
         data.item_id +
         ',1,0)';
       console.log(cmd);
-      db.serialize(function() {
+      db.serialize(function () {
         db.run(cmd);
         db.all(
           'SELECT a.id,a.quehuo,a.ct,b.name,b.guige,b.bh,b.id as item_id FROM parts_packitem as a,parts_item as b where a.item_id=b.id and a.pack_id=' +
             data.pack_id +
             ' and a.item_id=' +
             data.item_id,
-          function(err, row) {
+          function (err, row) {
             var res = {};
             res.error = err;
             res.data = row[0];
@@ -214,7 +214,7 @@ var socket = {
     ///delete/UsePack
     else if (url == '/delete/UsePack') {
       console.log(data);
-      db.serialize(function() {
+      db.serialize(function () {
         var cmd = 'delete from  parts_usepack where id=' + data.id;
         db.run(cmd);
         var res = {};
@@ -225,7 +225,7 @@ var socket = {
       });
     } else if (url == '/delete/PackItem') {
       console.log(data);
-      db.serialize(function() {
+      db.serialize(function () {
         var cmd = 'delete from  parts_packitem where id=' + data.id;
         db.run(cmd);
         var res = {};
@@ -238,7 +238,7 @@ var socket = {
     else if (url == '/put/PackItem') {
       //todo
       console.log(data);
-      db.serialize(function() {
+      db.serialize(function () {
         var cmd = 'delete from  parts_packitem where id=' + data.id;
         db.run(cmd);
         var res = {};
@@ -274,7 +274,7 @@ var socket = {
           end_date_s +
           "' group by month";
       console.info(cmd);
-      db.all(cmd, function(err, row) {
+      db.all(cmd, function (err, row) {
         console.log(row);
         var lbls = [];
         var values = [];

@@ -16,7 +16,7 @@ export default class UserComponent extends React.Component {
     };
   }
 
-  handleTouchTap = event => {
+  handleTouchTap = (event) => {
     // This prevents ghost click.
     event.preventDefault();
 
@@ -27,7 +27,7 @@ export default class UserComponent extends React.Component {
   };
   showlogin = () => {
     console.log('showlogin');
-    Client.login('mahongquan', '333333', this.state.csrf_token, data => {
+    Client.login('mahongquan', '333333', this.state.csrf_token, (data) => {
       this.setState({
         logined: true,
       });
@@ -36,7 +36,7 @@ export default class UserComponent extends React.Component {
   };
   handleLogin = () => {
     console.log('login');
-    Client.login_index(data => {
+    Client.login_index((data) => {
       console.log(data.csrf_token);
       this.setState({
         csrf_token: data.csrf_token, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -49,7 +49,7 @@ export default class UserComponent extends React.Component {
   };
   handleLogout = () => {
     console.log('logout');
-    Client.logout(data => {});
+    Client.logout((data) => {});
     this.setState({
       logined: false,
     });

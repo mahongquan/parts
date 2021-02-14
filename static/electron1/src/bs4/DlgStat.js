@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Client from './Client';
 import { Bar } from 'react-chartjs-2';
-import UserDropDown from "./UserDropDown";
+import UserDropDown from './UserDropDown';
 class DlgStat extends Component {
   state = {
     error: '',
@@ -11,38 +11,38 @@ class DlgStat extends Component {
     baoxiang: '',
   };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.open();
     } else if (prevProps.showModal && !this.props.showModal) {
       // this.onHide();
     }
   }
-// UNSAFE_componentWillReceiveProps(nextProps) {
-//     //console.log(nextProps)
-//     if (!this.props.showModal && nextProps.showModal) {
-//       this.open();
-//     } else if (this.props.showModal && !nextProps.showModal) {
-//     }
-//   }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //     //console.log(nextProps)
+  //     if (!this.props.showModal && nextProps.showModal) {
+  //       this.open();
+  //     } else if (this.props.showModal && !nextProps.showModal) {
+  //     }
+  //   }
   close = () => {
     this.props.handleClose();
   };
   open = () => {
-    this.setState({baoxiang:"" });
+    this.setState({ baoxiang: '' });
     this.loaddata('%');
   };
-  loaddata = baoxiang => {
+  loaddata = (baoxiang) => {
     var self = this;
     var data = { limit: 10, search: 'xls', baoxiang: baoxiang };
-    Client.get('/rest/month12', data, function(result) {
+    Client.get('/rest/month12', data, function (result) {
       self.setState({ lbls: result.lbls, values: result.values, baoxiang: '' });
     });
   };
-  onSelectBaoxiang = baoxiang => {
+  onSelectBaoxiang = (baoxiang) => {
     this.setState({ baoxiang: baoxiang });
     this.loaddata(baoxiang);
   };
-  logChange = val => {
+  logChange = (val) => {
     console.log('Selected: ' + JSON.stringify(val));
     if (val != null) {
       this.setState({ baoxiang: val.value });
@@ -90,7 +90,7 @@ class DlgStat extends Component {
           <Modal.Title>统计</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-           <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
+          <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
           <Bar data={data} options={options} width={600} height={300} />
         </Modal.Body>
       </Modal>

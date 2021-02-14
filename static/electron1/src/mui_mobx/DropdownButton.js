@@ -10,11 +10,11 @@ export default class SimpleMenu extends React.Component {
     anchorEl: null,
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = value => {
+  handleClose = (value) => {
     this.setState({ anchorEl: null });
     // this.props.click_menu(value);
   };

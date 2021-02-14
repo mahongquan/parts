@@ -1,3 +1,5 @@
+import { useSelector, useDispatch } from 'react-redux';
+import * as store from './reducers/partsSlice';
 import React, { Component } from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,10 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { types } from './reducers';
 // import Datetime from 'react-datetime';
 import MomentUtils from '@date-io/moment';
-import {
-  DatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -31,94 +30,94 @@ const styles = {
     flex: 1,
   },
 };
-
-class ContactEdit2New extends Component {
-  state = {
-    openCollapse: false,
-    showModal: false,
-    contact: {
-      yujifahuo_date: moment(),
-      tiaoshi_date: moment(),
-    },
-    hiddenPacks: true,
-    bg: {},
-    date_open: false,
+// class ContactEdit2New extends Component {
+function ContactEdit2New(props) {
+  const dispatch = useDispatch();
+  var hiddenPacks = useSelector((state) => state.parts.hiddenPacks);
+  var contact = useSelector((state) => state.parts.contact);
+  var bg = useSelector((state) => state.parts.bg);
+  const [state, setState] = React.useState({
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
-  };
+  });
+  // state = {
+  //   openCollapse: false,
+  //   showModal: false,
+  //   contact: {
+  //     yujifahuo_date: moment(),
+  //     tiaoshi_date: moment(),
+  //   },
+  //   hiddenPacks: true,
+  //   bg: {},
+  //   date_open: false,
+  //   editRich: false,
+  //   rich: RichTextEditor.createEmptyValue(),
+  // };
 
-  componentDidMount = () => {
-    // console.log("ContactEdit2New mounted");
-  };
-
-  close = () => {
-    console.log('close');
-    this.setState({ showModal: false });
-  };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    //console.log(nextProps)
-    if (!this.props.showModal && nextProps.showModal) {
-      this.onShow(nextProps.index);
-    } else if (this.props.showModal && !nextProps.showModal) {
-      this.onHide();
-    }
-  }
-  onShow = idx => {
-    this.open2(idx);
-  };
-  onHide = () => {};
-  open2 = idx => {
-    this.setState({ bg: {} });
-    this.index = idx;
-    if (this.index == null) {
-      this.old = {
-        yujifahuo_date: moment().format('YYYY-MM-DD'),
-        tiaoshi_date: moment().format('YYYY-MM-DD'),
-        addr: '',
-        channels: '',
-        baoxiang: '',
-        hetongbh: '',
-        shenhe: '',
-        yonghu: '',
-        yiqibh: '',
-        yiqixinghao: '',
-      };
-      this.setState({ hiddenPacks: true });
-    } else {
-      this.old = _.clone(this.props.store.contacts[this.index]);
-      this.setState({ hiddenPacks: false });
-    }
-    this.old.dianqi = this.old.dianqi || '';
-    this.old.jixie = this.old.jixie || '';
-    this.old.redao = this.old.redao || '';
-    this.old.hongwai = this.old.hongwai || '';
-    this.old.channels = this.old.channels || '';
-    this.old.detail = this.old.detail || '';
-    this.old.addr = this.old.addr || '';
-    var val1 = RichTextEditor.createValueFromString(this.old.detail, 'html');
-    this.setState({ rich: val1 });
-    this.setState({ contact: this.old });
-  };
-  handleCopy = data => {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   //console.log(nextProps)
+  //   if (!props.showModal && nextProps.showModal) {
+  //     onShow(nextProps.index);
+  //   } else if (props.showModal && !nextProps.showModal) {
+  //     onHide();
+  //   }
+  // }
+  // onShow = idx => {
+  //   open2(idx);
+  // };
+  // onHide = () => {};
+  // open2 = idx => {
+  //   setState({ bg: {} });
+  //   index = idx;
+  //   if (index == null) {
+  //     old = {
+  //       yujifahuo_date: moment().format('YYYY-MM-DD'),
+  //       tiaoshi_date: moment().format('YYYY-MM-DD'),
+  //       addr: '',
+  //       channels: '',
+  //       baoxiang: '',
+  //       hetongbh: '',
+  //       shenhe: '',
+  //       yonghu: '',
+  //       yiqibh: '',
+  //       yiqixinghao: '',
+  //     };
+  //     setState({ hiddenPacks: true });
+  //   } else {
+  //     old = _.clone(props.store.contacts[index]);
+  //     setState({ hiddenPacks: false });
+  //   }
+  //   old.dianqi = old.dianqi || '';
+  //   old.jixie = old.jixie || '';
+  //   old.redao = old.redao || '';
+  //   old.hongwai = old.hongwai || '';
+  //   old.channels = old.channels || '';
+  //   old.detail = old.detail || '';
+  //   old.addr = old.addr || '';
+  //   var val1 = RichTextEditor.createValueFromString(old.detail, 'html');
+  //   setState({ rich: val1 });
+  //   setState({ contact: old });
+  // };
+  const handleCopy = (data) => {
     console.log('copy');
-    this.index = null;
-    var contact2 = update(this.state.contact, { id: { $set: '' } });
+    index = null;
+    var contact2 = update(state.contact, { id: { $set: '' } });
     console.log(contact2);
-    this.setState({ contact: contact2 });
-    this.props.store.dispatch({ type: types.hiddenPacks });
-    // this.setState({ hiddenPacks: true });
+    setState({ contact: contact2 });
+    props.store.dispatch({ type: types.hiddenPacks });
+    // setState({ hiddenPacks: true });
   };
-  handleSave = () => {
-    let dataSave = this.state.contact;
-    dataSave.detail = this.state.rich.toString('html');
-    this.props.store.actions.saveContact(dataSave, this.props.index, (res) => {
-      this.open2(0)
+  const handleSave = () => {
+    let dataSave = state.contact;
+    dataSave.detail = state.rich.toString('html');
+    props.store.actions.saveContact(dataSave, props.index, (res) => {
+      open2(0);
     });
   };
-  tiaoshi_date_change = value => {
-    //this.state.yujifahuo_date=value;
+  const tiaoshi_date_change = (value) => {
+    //state.yujifahuo_date=value;
     var e_target_name = 'tiaoshi_date';
-    console.log(this.old[e_target_name]);
+    console.log(old[e_target_name]);
     var t = null;
     if (typeof value === 'string') {
       t = value;
@@ -126,34 +125,34 @@ class ContactEdit2New extends Component {
       t = value.format('YYYY-MM-DD');
     }
     console.log(t);
-    if (this.old[e_target_name] === t) {
-      const bg2 = update(this.state.bg, {
+    if (old[e_target_name] === t) {
+      const bg2 = update(state.bg, {
         [e_target_name]: { $set: '#ffffff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     } else {
       //console.log("not equal")
-      //this.state.bg[e_target_name]="#8888ff";
-      const bg2 = update(this.state.bg, {
+      //state.bg[e_target_name]="#8888ff";
+      const bg2 = update(state.bg, {
         [e_target_name]: { $set: '#8888ff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     }
-    const contact2 = update(this.state.contact, {
+    const contact2 = update(state.contact, {
       [e_target_name]: { $set: t },
     });
     console.log(contact2);
-    this.setState({ contact: contact2 });
+    setState({ contact: contact2 });
   };
 
-  yujifahuo_date_change = value => {
-    //this.state.yujifahuo_date=value;
+  const yujifahuo_date_change = (value) => {
+    //state.yujifahuo_date=value;
     var e_target_name = 'yujifahuo_date';
-    console.log(this.old[e_target_name]);
+    console.log(old[e_target_name]);
     var t = null;
     if (typeof value === 'string') {
       t = value;
@@ -161,129 +160,116 @@ class ContactEdit2New extends Component {
       t = value.format('YYYY-MM-DD');
     }
     console.log(t);
-    if (this.old[e_target_name] === t) {
-      const bg2 = update(this.state.bg, {
+    if (old[e_target_name] === t) {
+      const bg2 = update(state.bg, {
         [e_target_name]: { $set: '#ffffff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, {
+      const bg2 = update(state.bg, {
         [e_target_name]: { $set: '#8888ff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     }
-    const contact2 = update(this.state.contact, {
+    const contact2 = update(state.contact, {
       [e_target_name]: { $set: t },
     });
     console.log(contact2);
-    this.setState({ contact: contact2 });
+    setState({ contact: contact2 });
   };
-  channels_change = (event, { newValue }) => {
-    this.change1(newValue);
+  const channels_change = (event, { newValue }) => {
+    change1(newValue);
   };
-  channels_change_fetch = () => {};
-  channels_select = (event, data) => {
-    this.change1(data.suggestion);
+  const channels_change_fetch = () => {};
+  const channels_select = (event, data) => {
+    change1(data.suggestion);
   };
-  change1 = item => {
+  const change1 = (item) => {
     console.log('selected');
     console.log(item);
-    if (this.old.channels === item) {
-      const bg2 = update(this.state.bg, { channels: { $set: '#ffffff' } });
-      this.setState({ bg: bg2 });
+    if (old.channels === item) {
+      const bg2 = update(state.bg, { channels: { $set: '#ffffff' } });
+      setState({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, { channels: { $set: '#8888ff' } });
-      this.setState({ bg: bg2 });
+      const bg2 = update(state.bg, { channels: { $set: '#8888ff' } });
+      setState({ bg: bg2 });
     }
-    const contact2 = update(this.state.contact, { channels: { $set: item } });
+    const contact2 = update(state.contact, { channels: { $set: item } });
     console.log(contact2);
-    this.setState({ contact: contact2 });
+    setState({ contact: contact2 });
   };
-  yiqixinghao_change = (event, { newValue }) => {
-    this.change2(newValue);
+  const yiqixinghao_change = (event, { newValue }) => {
+    change2(newValue);
   };
-  yiqixinghao_select = (event, data) => {
-    this.change2(data.suggestion);
+  const yiqixinghao_select = (event, data) => {
+    change2(data.suggestion);
   };
-  change2 = item => {
+  const change2 = (item) => {
     console.log('selected');
     console.log(item);
-    if (this.old.yiqixinghao === item) {
-      const bg2 = update(this.state.bg, { yiqixinghao: { $set: '#ffffff' } });
-      this.setState({ bg: bg2 });
+    if (old.yiqixinghao === item) {
+      const bg2 = update(state.bg, { yiqixinghao: { $set: '#ffffff' } });
+      setState({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, { yiqixinghao: { $set: '#8888ff' } });
-      this.setState({ bg: bg2 });
+      const bg2 = update(state.bg, { yiqixinghao: { $set: '#8888ff' } });
+      setState({ bg: bg2 });
     }
-    const contact2 = update(this.state.contact, {
+    const contact2 = update(state.contact, {
       yiqixinghao: { $set: item },
     });
     // console.log(contact2);
-    this.setState({ contact: contact2 });
+    setState({ contact: contact2 });
   };
-  handleChange = e => {
+  const handleChange = (e) => {
     // console.log('change');
     // console.log(e);
     // console.log(e.target.value);
     // console.log(e.target.name);
-    if (this.old[e.target.name] === e.target.value) {
-      const bg2 = update(this.state.bg, {
+    if (old[e.target.name] === e.target.value) {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#ffffff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     } else {
-      const bg2 = update(this.state.bg, {
+      const bg2 = update(state.bg, {
         [e.target.name]: { $set: '#8888ff' },
       });
-      //this.state.bg[e_target_name]="#ffffff";
+      //state.bg[e_target_name]="#ffffff";
       //console.log("equal");
-      this.setState({ bg: bg2 });
+      setState({ bg: bg2 });
     }
-    const contact2 = update(this.state.contact, {
+    const contact2 = update(state.contact, {
       [e.target.name]: { $set: e.target.value },
     });
     // console.log(contact2);
-    this.setState({ contact: contact2 });
+    setState({ contact: contact2 });
   };
-  matchStateToTerm = (state, value) => {
+  const matchStateToTerm = (state, value) => {
     return state.toLowerCase().indexOf(value.toLowerCase()) !== -1;
   };
-  detailchange = value => {
+  const detailchange = (value) => {
     console.log(value);
-    this.setState({ rich: value });
+    setState({ rich: value });
   };
-  render = () => {
-    return (
-      <Dialog
-        open={this.props.showModal}
-        onClose={this.props.handleClose}
-        fullScreen
-      >
-        <AppBar className={this.props.classes.appBar}>
-          <Toolbar>
-            <IconButton
-              
-              onClick={this.props.handleClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              
-              className={this.props.classes.flex}
-            >
-              编辑仪器信息
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <DialogContent>
+  return (
+    <Dialog open={props.showModal} onClose={props.handleClose} fullScreen>
+      <AppBar className={props.classes.appBar}>
+        <Toolbar>
+          <IconButton onClick={props.handleClose} aria-label="Close">
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className={props.classes.flex}>
+            编辑仪器信息
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <DialogContent>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <table id="table_input" className="table-condensed">
             <tbody>
@@ -295,7 +281,7 @@ class ContactEdit2New extends Component {
                     id="id"
                     name="id"
                     disabled="disabled"
-                    value={this.state.contact.id}
+                    value={contact.id}
                   />
                 </td>
                 <td>
@@ -303,12 +289,12 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.yonghu }}
+                    style={{ backgroundColor: bg.yonghu }}
                     type="text"
                     id="yonghu"
                     name="yonghu"
-                    value={this.state.contact.yonghu}
-                    onChange={this.handleChange}
+                    value={contact.yonghu}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -316,12 +302,12 @@ class ContactEdit2New extends Component {
                 <td>客户地址:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.addr }}
+                    style={{ backgroundColor: bg.addr }}
                     type="text"
                     id="addr"
                     name="addr"
-                    value={this.state.contact.addr}
-                    onChange={this.handleChange}
+                    value={contact.addr}
+                    onChange={handleChange}
                   />
                 </td>
                 <td>通道配置:</td>
@@ -329,9 +315,9 @@ class ContactEdit2New extends Component {
                   <Autosuggest
                     inputProps={{
                       id: 'channels-autocomplete',
-                      style: { backgroundColor: this.state.bg.channels },
-                      value: this.state.contact.channels,
-                      onChange: this.channels_change,
+                      style: { backgroundColor: bg.channels },
+                      value: contact.channels,
+                      onChange: channels_change,
                     }}
                     suggestions={[
                       '1O(低氧)',
@@ -345,11 +331,11 @@ class ContactEdit2New extends Component {
                       '2O+2N',
                       '2O',
                     ]}
-                    getSuggestionValue={item => item}
-                    onSuggestionSelected={this.channels_select}
+                    getSuggestionValue={(item) => item}
+                    onSuggestionSelected={channels_select}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={item => <span>{item}</span>}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
               </tr>
@@ -361,9 +347,9 @@ class ContactEdit2New extends Component {
                   <Autosuggest
                     inputProps={{
                       id: 'yiqixinghao-autocomplete',
-                      style: { backgroundColor: this.state.bg.yiqixinghao },
-                      value: this.state.contact.yiqixinghao,
-                      onChange: this.yiqixinghao_change,
+                      style: { backgroundColor: bg.yiqixinghao },
+                      value: contact.yiqixinghao,
+                      onChange: yiqixinghao_change,
                     }}
                     suggestions={[
                       'CS-1011C',
@@ -378,11 +364,11 @@ class ContactEdit2New extends Component {
                       'ON-4000',
                       'ONH-3000',
                     ]}
-                    getSuggestionValue={item => item}
+                    getSuggestionValue={(item) => item}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
-                    onSuggestionSelected={this.yiqixinghao_select}
-                    renderSuggestion={item => <span>{item}</span>}
+                    onSuggestionSelected={yiqixinghao_select}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
                 <td>
@@ -390,12 +376,12 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.yiqibh }}
+                    style={{ backgroundColor: bg.yiqibh }}
                     type="text"
                     id="yiqibh"
                     name="yiqibh"
-                    value={this.state.contact.yiqibh}
-                    onChange={this.handleChange}
+                    value={contact.yiqibh}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -405,23 +391,23 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.baoxiang }}
+                    style={{ backgroundColor: bg.baoxiang }}
                     type="text"
                     id="baoxiang"
                     name="baoxiang"
-                    value={this.state.contact.baoxiang}
-                    onChange={this.handleChange}
+                    value={contact.baoxiang}
+                    onChange={handleChange}
                   />
                 </td>
                 <td>审核:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.shenhe }}
+                    style={{ backgroundColor: bg.shenhe }}
                     type="text"
                     id="shenhe"
                     name="shenhe"
-                    value={this.state.contact.shenhe}
-                    onChange={this.handleChange}
+                    value={contact.shenhe}
+                    onChange={handleChange}
                   />
                 </td>
               </tr>
@@ -432,19 +418,18 @@ class ContactEdit2New extends Component {
                 <td>
                   <DatePicker
                     format="YYYY-MM-DD"
-                    value={this.state.contact.yujifahuo_date}
-                    onChange={this.yujifahuo_date_change}
-                    style={{ backgroundColor: this.state.bg.yujifahuo_date }}
+                    value={contact.yujifahuo_date}
+                    onChange={yujifahuo_date_change}
+                    style={{ backgroundColor: bg.yujifahuo_date }}
                   />
                 </td>
                 <td>调试时间:</td>
                 <td>
                   <DatePicker
                     format="YYYY-MM-DD"
-                    style={{ backgroundColor: this.state.bg.tiaoshi_date }}
-
-                    value={this.state.contact.tiaoshi_date}
-                    onChange={this.tiaoshi_date_change}
+                    style={{ backgroundColor: bg.tiaoshi_date }}
+                    value={contact.tiaoshi_date}
+                    onChange={tiaoshi_date_change}
                   />
                 </td>
               </tr>
@@ -454,23 +439,23 @@ class ContactEdit2New extends Component {
                 </td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.hetongbh }}
+                    style={{ backgroundColor: bg.hetongbh }}
                     type="text"
                     id="hetongbh"
                     name="hetongbh"
-                    value={this.state.contact.hetongbh}
-                    onChange={this.handleChange}
+                    value={contact.hetongbh}
+                    onChange={handleChange}
                   />
                 </td>
                 <td>方法:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.method }}
+                    style={{ backgroundColor: bg.method }}
                     type="text"
                     id="method"
                     name="method"
                     disabled={true}
-                    value={this.state.contact.method}
+                    value={contact.method}
                   />
                 </td>
               </tr>
@@ -479,21 +464,21 @@ class ContactEdit2New extends Component {
                 <td>电气:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.dianqi }}
+                    style={{ backgroundColor: bg.dianqi }}
                     type="text"
                     name="dianqi"
-                    value={this.state.contact.dianqi}
-                    onChange={this.handleChange}
+                    value={contact.dianqi}
+                    onChange={handleChange}
                   />
                 </td>
                 <td>机械:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.jixie }}
+                    style={{ backgroundColor: bg.jixie }}
                     type="text"
                     name="jixie"
-                    onChange={this.handleChange}
-                    value={this.state.contact.jixie}
+                    onChange={handleChange}
+                    value={contact.jixie}
                   />
                 </td>
               </tr>
@@ -501,21 +486,21 @@ class ContactEdit2New extends Component {
                 <td>红外:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.hongwai }}
+                    style={{ backgroundColor: bg.hongwai }}
                     type="text"
                     name="hongwai"
-                    value={this.state.contact.hongwai}
-                    onChange={this.handleChange}
+                    value={contact.hongwai}
+                    onChange={handleChange}
                   />
                 </td>
                 <td>热导:</td>
                 <td>
                   <input
-                    style={{ backgroundColor: this.state.bg.redao }}
+                    style={{ backgroundColor: bg.redao }}
                     type="text"
                     name="redao"
-                    onChange={this.handleChange}
-                    value={this.state.contact.redao}
+                    onChange={handleChange}
+                    value={contact.redao}
                   />
                 </td>
               </tr>
@@ -524,7 +509,7 @@ class ContactEdit2New extends Component {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      this.setState({ editRich: !this.state.editRich });
+                      setState({ editRich: !state.editRich });
                     }}
                   >
                     备注:
@@ -532,11 +517,11 @@ class ContactEdit2New extends Component {
                 </td>
                 <td colSpan="3">
                   <RichTextEditor
-                    disabled={!this.state.editRich}
+                    disabled={!state.editRich}
                     value={
-                      this.state.rich // this.state.contact.detail
+                      state.rich // state.contact.detail
                     }
-                    onChange={this.detailchange}
+                    onChange={detailchange}
                   />
                 </td>
               </tr>
@@ -547,25 +532,23 @@ class ContactEdit2New extends Component {
               variant="outlined"
               color="primary"
               id="bt_save"
-              onClick={this.handleSave}
+              onClick={handleSave}
             >
               保存
             </Button>
-            <Button variant="outlined" onClick={this.handleCopy}>
+            <Button variant="outlined" onClick={handleCopy}>
               复制
             </Button>
           </div>
-          <div id="id_usepacks" hidden={this.props.store.hiddenPacks}>
+          <div id="id_usepacks" hidden={hiddenPacks}>
             <UsePacks2
-              store={this.props.store}
-              contact_hetongbh={this.state.contact.hetongbh}
-              contact_id={this.state.contact.id}
+              contact_hetongbh={contact.hetongbh}
+              contact_id={contact.id}
             />
           </div>
         </MuiPickersUtilsProvider>
-        </DialogContent>
-      </Dialog>
-    );
-  };
+      </DialogContent>
+    </Dialog>
+  );
 }
 export default withStyles(styles)(ContactEdit2New);

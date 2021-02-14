@@ -20,11 +20,11 @@ class DlgDetail extends React.Component {
     totalid: 0,
   };
 
-  loaddata = contactid => {
+  loaddata = (contactid) => {
     if (!contactid) return;
     var data1 = { id: contactid };
     console.log(data1);
-    Client.get('/rest/showcontact', data1, res => {
+    Client.get('/rest/showcontact', data1, (res) => {
       console.log(res);
       if (!res.items2) res.items2 = [];
       this.setState({
@@ -56,11 +56,11 @@ class DlgDetail extends React.Component {
       this.onHide();
     }
   }
-  onShow = contactid => {
+  onShow = (contactid) => {
     this.open(contactid);
   };
   onHide = () => {};
-  open = contactid => {
+  open = (contactid) => {
     this.loaddata(contactid);
   };
   handleDismiss = () => {

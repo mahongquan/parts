@@ -5,9 +5,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Client from './Client';
 import myglobal from '../myglobal';
 class DlgFolder extends React.Component {
-  constructor(){
+  constructor() {
     super();
-    this.state={error:""}
+    this.state = { error: '' };
   }
   // UNSAFE_componentWillReceiveProps(nextProps) {
   //   if (!this.props.open && nextProps.open) {
@@ -16,40 +16,39 @@ class DlgFolder extends React.Component {
   //     this.onHide();
   //   }
   // }
-    componentDidUpdate(prevProps) {
-    if (!prevProps.open && this.props.open ) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.open && this.props.open) {
       this.onShow(this.props.contactid);
     } else if (prevProps.open && !this.props.open) {
       this.onHide();
     }
   }
-  onShow = idx => {
+  onShow = (idx) => {
     this.open(idx);
   };
   onHide = () => {};
 
   open(contact_id) {
-
-    Client.get('/rest/folder/', { id: contact_id }, (result)=>{
-      console.info(result);
-      if (!result.success) {
-        this.setState({ error: result.message });
-      } else {
-        this.props.onClose();
+    Client.get(
+      '/rest/folder/',
+      { id: contact_id },
+      (result) => {
+        console.info(result);
+        if (!result.success) {
+          this.setState({ error: result.message });
+        } else {
+          this.props.onClose();
+        }
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   }
   render() {
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-      >
-        <DialogTitle>
-          请等待。。。
-        </DialogTitle>
+      <Dialog open={this.props.open} onClose={this.props.onClose}>
+        <DialogTitle>请等待。。。</DialogTitle>
         <DialogContent>
           <div>{this.state.error}</div>
         </DialogContent>

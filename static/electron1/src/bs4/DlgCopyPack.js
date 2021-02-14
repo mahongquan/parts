@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button,Spinner } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 import Client from './Client';
 import Autosuggest from 'react-autosuggest';
 class DlgCopyPack extends React.Component {
@@ -15,7 +15,7 @@ class DlgCopyPack extends React.Component {
     auto_loading: false,
     stopped: true,
   };
-  newnameChange = event => {
+  newnameChange = (event) => {
     this.setState({ newname: event.target.value });
   };
   copy_pack = () => {
@@ -25,17 +25,17 @@ class DlgCopyPack extends React.Component {
     this.setState({ stopped: false });
     data1.append('oldid', this.src_id);
     data1.append('newname', this.state.newname);
-    Client.postForm('/rest/copypack/', data1, result => {
+    Client.postForm('/rest/copypack/', data1, (result) => {
       self.setState({ error: result.message });
       this.setState({ stopped: true });
     });
   };
   onSuggestionsClearRequested = () => {};
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     console.log('auto_change');
     if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value }, items => {
+      Client.get('/rest/Pack', { search: value }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     }
@@ -64,12 +64,12 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    let showbutton,spin;
+    let showbutton, spin;
     if (this.state.stopped) {
       showbutton = 'block';
-      spin=null;
+      spin = null;
     } else {
-      spin=<Spinner animation="border" variant="primary"/>;
+      spin = <Spinner animation="border" variant="primary" />;
       showbutton = 'none';
     }
     return (
@@ -100,10 +100,10 @@ class DlgCopyPack extends React.Component {
                     onSuggestionsClearRequested={
                       this.onSuggestionsClearRequested
                     }
-                    getSuggestionValue={item => item.name}
+                    getSuggestionValue={(item) => item.name}
                     ref="autocomplete"
                     suggestions={this.state.auto_items}
-                    renderSuggestion={item => <span>{item.name}</span>}
+                    renderSuggestion={(item) => <span>{item.name}</span>}
                   />
                 </td>
               </tr>

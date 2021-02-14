@@ -16,7 +16,7 @@ class DlgUrl extends Component {
     //this.index=idx;
     var self = this;
     this.setState({ showModal: true });
-    Client.get(url, data, function(result) {
+    Client.get(url, data, function (result) {
       console.info(result);
       if (!result.success) {
         self.setState({ error: result.message });

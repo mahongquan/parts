@@ -36,4 +36,10 @@ link('./', 'autosuggest.css');
 //   link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
 //   link('./bs4', 'index.css');
 // }
-ReactDOM.render(<div><a href="http://www.baidu.com">baidu</a><App /></div>, document.getElementById('root'));
+ReactDOM.render(
+  <div>
+    <a href="http://www.baidu.com">baidu</a>
+    <App />
+  </div>,
+  document.getElementById('root')
+);

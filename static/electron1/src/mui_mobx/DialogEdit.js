@@ -28,7 +28,7 @@ export default class DialogEdit extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleChange = e => {
+  handleChange = (e) => {
     console.log('change');
     // e.target.inputStyle={
     //   width: '50%',
@@ -74,12 +74,12 @@ export default class DialogEdit extends React.Component {
         break;
     }
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     this.props.onLoginSubmit(data);
   };
-  handleSave = data => {
+  handleSave = (data) => {
     var url = '/rest/Contact';
-    Client.postOrPut(url, this.state.contact, res => {
+    Client.postOrPut(url, this.state.contact, (res) => {
       console.log(res);
     });
   };

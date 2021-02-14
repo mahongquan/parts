@@ -30,7 +30,7 @@ function myFetch(method, url, body, cb, headers2, err_callback) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       if (err_callback) err_callback(error);
       else alert(error + '\n请检查服务器/刷新网页/登录');
     });
@@ -68,7 +68,7 @@ function postForm(url, data, cb) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       //console.log(error)
       alert(error + '\n请刷新网页/登录');
     });

@@ -10,11 +10,11 @@ export default class SimpleMenu extends React.Component {
     anchorEl: null,
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = value => {
+  handleClose = (value) => {
     this.setState({ anchorEl: null });
     // this.props.click_menu(value);
   };
@@ -54,12 +54,11 @@ export default class SimpleMenu extends React.Component {
       <span>
         <span
           style={{ display: 'inline' }}
-          
           aria-owns={anchorEl ? 'simple-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <Typography >{this.props.title}</Typography>
+          <Typography>{this.props.title}</Typography>
           <ArrowDropDownIcon />
         </span>
         <Menu

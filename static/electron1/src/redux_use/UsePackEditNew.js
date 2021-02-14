@@ -30,7 +30,7 @@ class UsePackEditNew extends Component {
   close = () => {
     this.setState({ showModal: false });
   };
-  open2 = idx => {
+  open2 = (idx) => {
     this.index = idx;
     this.setState({ showModal: true });
     if (this.index == null) {
@@ -82,7 +82,10 @@ class UsePackEditNew extends Component {
             </tbody>
           </table>
           <div id="id_useusepacks">
-            <PackItems store={this.props.store} pack_id={this.state.usepack.pack} />
+            <PackItems
+              store={this.props.store}
+              pack_id={this.state.usepack.pack}
+            />
           </div>
         </DialogContent>
       </Dialog>

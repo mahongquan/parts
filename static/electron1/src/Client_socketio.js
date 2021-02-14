@@ -55,7 +55,7 @@ function items(query, cb) {
   return get('/rest/Item', data, cb);
 }
 function login_index(cb) {
-  return get('/rest/login_index', undefined, cb, error => {
+  return get('/rest/login_index', undefined, cb, (error) => {
     alert(error + '\n请检查服务器/刷新网页/登录');
   });
 }

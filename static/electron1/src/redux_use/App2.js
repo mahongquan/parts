@@ -29,7 +29,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
-const CustomTableCell = withStyles(theme => ({
+const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
     color: theme.palette.common.white,
@@ -38,7 +38,7 @@ const CustomTableCell = withStyles(theme => ({
     fontSize: 14,
   },
 }))(TableCell);
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -76,18 +76,19 @@ const styles = theme => ({
 });
 function App(props) {
   const dispatch = useDispatch();
-  var contacts=useSelector((state) => state.parts.contacts);
-  var start=useSelector((state) => state.parts.start);
-  var limit=useSelector((state) => state.parts.limit);
-  var search=useSelector((state) => state.parts.search);
-  var baoxiang=useSelector((state) => state.parts.baoxiang);
-  var total=useSelector((state) => state.parts.total);
-  var connect_error=useSelector((state) => state.parts.connect_error);
-  var start_input=useSelector((state) => state.parts.start_input);
-  var user=useSelector((state) =>{
-    console.log("=====App===================================================")
-    console.log(state)
-    return state.parts.user});
+  var contacts = useSelector((state) => state.parts.contacts);
+  var start = useSelector((state) => state.parts.start);
+  var limit = useSelector((state) => state.parts.limit);
+  var search = useSelector((state) => state.parts.search);
+  var baoxiang = useSelector((state) => state.parts.baoxiang);
+  var total = useSelector((state) => state.parts.total);
+  var connect_error = useSelector((state) => state.parts.connect_error);
+  var start_input = useSelector((state) => state.parts.start_input);
+  var user = useSelector((state) => {
+    console.log('=====App===================================================');
+    console.log(state);
+    return state.parts.user;
+  });
   // componentDidMount = () => {
   //   props.actions.loadCONTACT({
   //     start: props.start,
@@ -96,274 +97,259 @@ function App(props) {
   //     baoxiang: props.baoxiang,
   //   });
   // };
-  const onLoginSubmit = data => {
+  const onLoginSubmit = (data) => {
     dispatch(store.onLoginSubmit(data));
   };
-  const handleUserChange = user => {
+  const handleUserChange = (user) => {
     props.store.handleUserChange(user);
   };
   const handleLogout = () => {
     props.actions.handleLogout();
   };
-  const keypress = e => {
+  const keypress = (e) => {
     if (e.which !== 13) return;
     search_go();
   };
-  const handleSearchChange = e => {
+  const handleSearchChange = (e) => {
     dispatch(store.actions.SEARCH_CHANGE(e.target.value));
   };
 
-  const handlePrev = e => {
+  const handlePrev = (e) => {
     let start2 = start - limit;
     if (start2 < 0) {
       start2 = 0;
     }
-    dispatch(store.loadCONTACT({
-      start: start2,
-      limit: limit,
-      search: search,
-      baoxiang: baoxiang,
-    }));
+    dispatch(
+      store.loadCONTACT({
+        start: start2,
+        limit: limit,
+        search: search,
+        baoxiang: baoxiang,
+      })
+    );
   };
-  const search_go = e => {
-    dispatch(store.loadCONTACT({
-      start: 0,
-      limit: limit,
-      search: search,
-      baoxiang: baoxiang,
-    }));
+  const search_go = (e) => {
+    dispatch(
+      store.loadCONTACT({
+        start: 0,
+        limit: limit,
+        search: search,
+        baoxiang: baoxiang,
+      })
+    );
   };
   const jump = () => {
     let start2 = parseInt(start_input, 10) - 1;
-    if (start2 > total - limit)
-      start2 = total - limit; //total >limit
+    if (start2 > total - limit) start2 = total - limit; //total >limit
     if (start2 < 0) {
       start2 = 0;
     }
-    dispatch(store.loadCONTACT({
-      start: start2,
-      limit: limit,
-      search: search,
-      baoxiang: baoxiang,
-    }));
+    dispatch(
+      store.loadCONTACT({
+        start: start2,
+        limit: limit,
+        search: search,
+        baoxiang: baoxiang,
+      })
+    );
   };
-  const handlePageChange = e => {
+  const handlePageChange = (e) => {
     dispatch(store.actions.PAGE_CHANGE(e.target.value));
   };
 
-  const onDetailClick = contactid => {
+  const onDetailClick = (contactid) => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     // setState({ showDlgDetail: true, contactid: contactid });
     props.actions.details(contactid);
   };
-  const handleNext = e => {
-
+  const handleNext = (e) => {
     let start2 = start + limit;
-    if (start2 > total - limit)
-      start2 = total - limit; //total >limit
+    if (start2 > total - limit) start2 = total - limit; //total >limit
     if (start2 < 0) {
       start2 = 0;
     }
-    dispatch(store.loadCONTACT({
-      start: start2,
-      limit: limit,
-      search: search,
-      baoxiang: baoxiang,
-    }));
+    dispatch(
+      store.loadCONTACT({
+        start: start2,
+        limit: limit,
+        search: search,
+        baoxiang: baoxiang,
+      })
+    );
   };
-  const onSelectBaoxiang = e => {
+  const onSelectBaoxiang = (e) => {
     dispatch(store.actions.BAOXIANG(e));
-    dispatch(store.loadCONTACT({
-      start: start,
-      limit: limit,
-      search: search,
-      baoxiang: e,
-    }));
+    dispatch(
+      store.loadCONTACT({
+        start: start,
+        limit: limit,
+        search: search,
+        baoxiang: e,
+      })
+    );
   };
-  const handleEdit = idx => {
+  const handleEdit = (idx) => {
     // setState({ showDlgEdit: true, currentIndex: idx });
-    if(idx) props.actions.loadUsePack(props.contacts[idx].id);
-    props.dispatch({
-      type: types.SHOW_DLG_EDIT,
-      visible: true,
-      index: idx,
-    });
+    dispatch(store.edit(idx));
   };
-  const allfile = contactid => {
+  const allfile = (contactid) => {
     // dlgwait.current.open(contactid);
-     // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-     props.actions.allfile(contactid)
+    // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+    dispatch(store.allfile(contactid));
   };
-  const updateMethod = (contactid,idx) => {
+  const updateMethod = (contactid, idx) => {
     // dlgwait.current.open(contactid);
-     // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-     props.actions.updateMethod(contactid, idx)
-  };
-  const handleContactChange2 = contact => {
-    var idx = currentIndex;
-    console.log(idx);
-    let contacts2;
-    if (idx != null) {
-      contacts2 = update(props.contacts, {
-        [idx]: { $set: contact },
-      });
-      console.log(contacts2);
-    } else {
-      contacts2 = update(props.contacts, {
-        $unshift: [contact],
-      });
-    }
-    setState({ contacts: contacts2 });
+    // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+    dispatch(store.updateMethod(contactid, idx));
   };
   const openDlgItems = () => {
     // dlgitems.current.open();
-    props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: true});
+    dispatch(store.actions.SHOW_DLG_ITEMS(true));
   };
-  const opendlgfolder = contactid => {
+  const opendlgfolder = (contactid) => {
     // dlgfolder.current.open(contactid);
-    props.actions.forlder(contactid)
+    props.actions.forlder(contactid);
   };
   const opendlgcheck = (idx) => {
-    props.dispatch({ type: types.SHOW_DLG_CHECK, visible: true,index: idx});
+    dispatch(store.actions.SHOW_DLG_CHECK({ visible: true, index: idx }));
   };
   const openDlgPacks = () => {
     // dlgpacks.current.open();
-    props.dispatch({ type: types.SHOW_DLG_PACK, visible: true});
+    dispatch(store.actions.SHOW_DLG_PACK(true));
   };
   const openDlgCopyPack = () => {
-    props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: true});
+    dispatch(store.actions.SHOW_DLG_COPYPACK(true));
   };
   const openDlgImport = () => {
     // props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
     var data = { limit: 10, search: 'xls' };
-    props.actions.importXls(data);
+    dispatch(store.importXls(data));
   };
   const contactRows = contacts.map((contact, idx) => (
-      <TableRow key={idx} className={props.classes.row}>
-        <CustomTableCell>{contact.yonghu}</CustomTableCell>
-        <CustomTableCell>{contact.hetongbh}</CustomTableCell>
-        <CustomTableCell>
-          <Button
-            variant="outlined"
-            style={{ display: 'inline' }}
-            onClick={() => handleEdit(idx)}
-          >
-            {contact.yiqibh}
-          </Button>
-          <DropdownButton title="" id="id_dropdown3">
-            <MenuItem onClick={() => onDetailClick(contact.id)}>
-              详细
-            </MenuItem>
-            <MenuItem
-              onClick={() =>updateMethod(contact.id,idx)}>
-              更新方法
-            </MenuItem>
-            <MenuItem onClick={() => allfile(contact.id)}>
-              全部文件
-            </MenuItem>
-            <MenuItem
-              onClick={() => opendlgcheck(idx)}
-            >
-              核对备料计划
-            </MenuItem>
-            <MenuItem onClick={() => opendlgfolder(contact.id)}>
-              资料文件夹
-            </MenuItem>
-          </DropdownButton>
-        </CustomTableCell>
-        <CustomTableCell>{contact.yiqixinghao}</CustomTableCell>
-        <CustomTableCell>{contact.channels}</CustomTableCell>
-        <CustomTableCell>{contact.yujifahuo_date}</CustomTableCell>
-        <CustomTableCell>{contact.method}</CustomTableCell>
-      </TableRow>
-    ));
-    var hasprev = true;
-    var hasnext = true;
-    let prev;
-    let next;
+    <TableRow key={idx} className={props.classes.row}>
+      <CustomTableCell>{contact.yonghu}</CustomTableCell>
+      <CustomTableCell>{contact.hetongbh}</CustomTableCell>
+      <CustomTableCell>
+        <Button
+          variant="outlined"
+          style={{ display: 'inline' }}
+          onClick={() => handleEdit(idx)}
+        >
+          {contact.yiqibh}
+        </Button>
+        <DropdownButton title="" id="id_dropdown3">
+          <MenuItem onClick={() => onDetailClick(contact.id)}>详细</MenuItem>
+          <MenuItem onClick={() => updateMethod(contact.id, idx)}>
+            更新方法
+          </MenuItem>
+          <MenuItem onClick={() => allfile(contact.id)}>全部文件</MenuItem>
+          <MenuItem onClick={() => opendlgcheck(idx)}>核对备料计划</MenuItem>
+          <MenuItem onClick={() => opendlgfolder(contact.id)}>
+            资料文件夹
+          </MenuItem>
+        </DropdownButton>
+      </CustomTableCell>
+      <CustomTableCell>{contact.yiqixinghao}</CustomTableCell>
+      <CustomTableCell>{contact.channels}</CustomTableCell>
+      <CustomTableCell>{contact.yujifahuo_date}</CustomTableCell>
+      <CustomTableCell>{contact.method}</CustomTableCell>
+    </TableRow>
+  ));
+  var hasprev = true;
+  var hasnext = true;
+  let prev;
+  let next;
 
-    if (start === 0) {
-      hasprev = false;
-    }
-    //console.log(start+limit>=total);
-    if (start + limit >= total) {
-      hasnext = false;
-    }
-    if (hasprev) {
-      prev = (
-        <Button variant="outlined" onClick={handlePrev}>
-          前一页
-        </Button>
-      );
-    } else {
-      prev = null;
-    }
-    if (hasnext) {
-      next = (
-        <Button variant="outlined" onClick={handleNext}>
-          后一页
-        </Button>
-      );
-    } else {
-      next = null;
-    }
+  if (start === 0) {
+    hasprev = false;
+  }
+  //console.log(start+limit>=total);
+  if (start + limit >= total) {
+    hasnext = false;
+  }
+  if (hasprev) {
+    prev = (
+      <Button variant="outlined" onClick={handlePrev}>
+        前一页
+      </Button>
+    );
+  } else {
+    prev = null;
+  }
+  if (hasnext) {
+    next = (
+      <Button variant="outlined" onClick={handleNext}>
+        后一页
+      </Button>
+    );
+  } else {
+    next = null;
+  }
 
   return (
-      <div className={props.classes.root}>
-        <DlgWorkMonth
-          showModal={useSelector((state) => state.parts.showDlgWorkMonth)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_WORKMONTH(false ));
-          }}
-          baoxiang={baoxiang}
-        />
-        <DlgItems
-          showModal={useSelector((state) => state.parts.showDlgItem)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_ITEMS(false));
-          }}
-        />
-        <DlgPacks showModal={useSelector((state) => state.parts.showDlgPack)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_PACK(false));
-          }} />
-         <DlgCopyPack showModal={useSelector((state) => state.parts.showDlgCopyPack)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_COPYPACK(false));
-          }} />
-        
-        <DlgStatMonth open={useSelector((state) => state.parts.showDlgStatMonth)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLGSTAT_MONTH(false));
-          }}
-        />
-        <DlgImport
-          showModal={useSelector((state) => state.parts.showDlgImport)}
-          store={store}
-          handleClose={() => {
-             dispatch(store.actions.SHOW_DLG_IMPORT(false));
-          }}
-        />
-        <DlgCheck showModal={useSelector((state) => state.parts.showDlgCheck)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_CHECK(false));
-          }} />
-        <DlgWait showModal={useSelector((state) => state.parts.showdlgWait)}
-          store={store}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_WAIT(false));
-          }}
-        />
+    <div className={props.classes.root}>
+      <DlgWorkMonth
+        showModal={useSelector((state) => state.parts.showDlgWorkMonth)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_WORKMONTH(false));
+        }}
+        baoxiang={baoxiang}
+      />
+      <DlgItems
+        showModal={useSelector((state) => state.parts.showDlgItem)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_ITEMS(false));
+        }}
+      />
+      <DlgPacks
+        showModal={useSelector((state) => state.parts.showDlgPack)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_PACK(false));
+        }}
+      />
+      <DlgCopyPack
+        showModal={useSelector((state) => state.parts.showDlgCopyPack)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_COPYPACK(false));
+        }}
+      />
 
-        <DlgLogin
-          showModal={useSelector((state) => state.parts.show_login)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_LOGIN(false));
-          }}
-          onLoginSubmit={onLoginSubmit}
-        />
-{/*        <DlgDetail
+      <DlgStatMonth
+        open={useSelector((state) => state.parts.showDlgStatMonth)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLGSTAT_MONTH(false));
+        }}
+      />
+      <DlgImport
+        showModal={useSelector((state) => state.parts.showDlgImport)}
+        store={store}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_IMPORT(false));
+        }}
+      />
+      <DlgCheck
+        showModal={useSelector((state) => state.parts.showDlgCheck)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_CHECK(false));
+        }}
+      />
+      <DlgWait
+        showModal={useSelector((state) => state.parts.showdlgWait)}
+        store={store}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_WAIT(false));
+        }}
+      />
+
+      <DlgLogin
+        showModal={useSelector((state) => state.parts.show_login)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_LOGIN(false));
+        }}
+        onLoginSubmit={onLoginSubmit}
+      />
+      {/*        <DlgDetail
           contactid={props.contactid}
           showModal={useSelector((state) => state.parts.showDlgDetail)}
           store={store}
@@ -371,160 +357,147 @@ function App(props) {
             dispatch(store.actions.SHOW_DLG_DETAIL(false));
           }}
         />*/}
-        <DlgStatYear open={useSelector((state) => state.parts.showDlgStatYear)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLGSTAT_YEAR(false));
-          }}
-        />
-{/*        <ContactEdit2New
-          showModal={useSelector((state) => state.parts.showDlgEdit)}
-          handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_EDIT({visible:false}));
-          }}
-          title="编辑"
-        />*/}
-        <AppBar position="static">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              className={props.classes.grow}
+      <DlgStatYear
+        open={useSelector((state) => state.parts.showDlgStatYear)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLGSTAT_YEAR(false));
+        }}
+      />
+      <ContactEdit2New
+        showModal={useSelector((state) => state.parts.showDlgEdit)}
+        handleClose={() => {
+          dispatch(store.actions.SHOW_DLG_EDIT({ visible: false }));
+        }}
+        title="编辑"
+      />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={props.classes.grow}>
+            装箱单
+          </Typography>
+          <Button onClick={openDlgPacks}>包</Button>
+          <Button onClick={openDlgItems}>备件</Button>
+          <Button onClick={openDlgCopyPack}>复制包</Button>
+          <DropdownButton title="统计">
+            <MenuItem
+              onClick={() => {
+                dispatch(store.actions.SHOW_DLGSTAT_MONTH(true));
+              }}
             >
-              装箱单
-            </Typography>
-            <Button  onClick={openDlgPacks}>
-              包
-            </Button>
-            <Button  onClick={openDlgItems}>
-              备件
-            </Button>
-            <Button  onClick={openDlgCopyPack}>
-              复制包
-            </Button>
-            <DropdownButton title="统计">
-              <MenuItem onClick={
-                ()=>{dispatch(store.actions.SHOW_DLGSTAT_MONTH(true));
-              }}>月</MenuItem>
+              月
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                dispatch(store.actions.SHOW_DLGSTAT_YEAR(true));
+              }}
+            >
+              年
+            </MenuItem>
+          </DropdownButton>
+          <DropdownButton title={'包箱:' + baoxiang} id="id_dropdown2">
+            <MenuItem onClick={() => onSelectBaoxiang('')}>*</MenuItem>
+            <MenuItem onClick={() => onSelectBaoxiang('马红权')}>
+              马红权
+            </MenuItem>
+            <MenuItem onClick={() => onSelectBaoxiang('陈旺')}>陈旺</MenuItem>
+            <MenuItem onClick={() => onSelectBaoxiang('吴振宁')}>
+              吴振宁
+            </MenuItem>
+          </DropdownButton>
+
+          <InputBase
+            onKeyPress={keypress}
+            value={search}
+            placeholder="合同/仪器编号/客户"
+            classes={{
+              root: props.classes.inputRoot,
+              input: props.classes.inputInput,
+            }}
+            onChange={handleSearchChange}
+          />
+          <Button onClick={search_go}>
+            <SearchIcon />
+          </Button>
+          <Button
+            style={{ margin: '0px 10px 0px 10px' }}
+            variant="contained"
+            onClick={() => handleEdit(null)}
+          >
+            新仪器
+          </Button>
+          <Button variant="contained" onClick={openDlgImport}>
+            导入标样
+          </Button>
+          <Button
+            variant="contained"
+            style={{ margin: '0px 10px 0px 10px' }}
+            onClick={() => {
+              dispatch(store.actions.SHOW_DLG_WORKMONTH(true));
+            }}
+          >
+            工作量
+          </Button>
+          <DropdownButton title={user} id="id_dropdown1">
+            {user !== 'AnonymousUser' ? (
+              <MenuItem onClick={handleLogout}>注销</MenuItem>
+            ) : (
               <MenuItem
                 onClick={() => {
-                  dispatch(store.actions.SHOW_DLGSTAT_YEAR(true));
+                  dispatch(store.actions.SHOW_LOGIN(true));
                 }}
               >
-                年
+                登录
               </MenuItem>
-            </DropdownButton>
-            <DropdownButton
-              title={'包箱:' + baoxiang}
-              id="id_dropdown2"
-            >
-              <MenuItem onClick={() => onSelectBaoxiang('')}>*</MenuItem>
-              <MenuItem onClick={() => onSelectBaoxiang('马红权')}>
-                马红权
-              </MenuItem>
-              <MenuItem onClick={() => onSelectBaoxiang('陈旺')}>
-                陈旺
-              </MenuItem>
-              <MenuItem onClick={() => onSelectBaoxiang('吴振宁')}>
-                吴振宁
-              </MenuItem>
-            </DropdownButton>
-
-            <InputBase
-              onKeyPress={keypress}
-              value={search}
-              placeholder="合同/仪器编号/客户"
-              classes={{
-                root: props.classes.inputRoot,
-                input: props.classes.inputInput,
-              }}
-              onChange={handleSearchChange}
-            />
-            <Button  onClick={search_go}>
-              <SearchIcon />
-            </Button>
-            <Button
-              
-              style={{ margin: '0px 10px 0px 10px' }}
-              variant="contained"
-              onClick={() => handleEdit(null)}
-            >
-              新仪器
-            </Button>
-            <Button
-              variant="contained"
-              onClick={openDlgImport}
-            >
-              导入标样
-            </Button>
-            <Button
-              variant="contained"
-              style={{ margin: '0px 10px 0px 10px' }}
-              onClick={() => {
-                dispatch(store.actions.SHOW_DLG_WORKMONTH(true));
-              }}
-            >
-              工作量
-            </Button>
-            <DropdownButton title={user} id="id_dropdown1">
-              {user !== 'AnonymousUser' ? (
-                <MenuItem onClick={handleLogout}>注销</MenuItem>
-              ) : (
-                <MenuItem
-                  onClick={() => {
-                    dispatch(store.actions.SHOW_LOGIN(true));
-                  }}
-                >
-                  登录
-                </MenuItem>
-              )}
-            </DropdownButton>
-          </Toolbar>
-        </AppBar>
-        <div
-          align="center"
-          style={{
-            display: connect_error ? '' : 'none',
-            textAlign: 'center',
-            color: 'red',
-          }}
-        >
-          !!!!!!!!!!连接错误,服务器未运行!!!!!!!
-        </div>
-        <div className={props.classes.tableWrapper}>
-          <Table className={props.classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell>
-                  <span >客户单位</span>
-                </CustomTableCell>
-                <CustomTableCell>合同编号</CustomTableCell>
-                <CustomTableCell>
-                  <span >仪器编号</span>
-                </CustomTableCell>
-                <CustomTableCell>仪器型号</CustomTableCell>
-                <CustomTableCell>通道配置</CustomTableCell>
-                <CustomTableCell>入库时间</CustomTableCell>
-                <CustomTableCell>方法</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{contactRows}</TableBody>
-          </Table>
-        </div>
-        {prev}
-        <label id="page">
-          {start + 1}../{total}
-        </label>
-        {next}
-        <input
-          maxLength="6"
-          size="6"
-          onChange={handlePageChange}
-          value={start_input}
-        />
-        <Button id="page_go" variant="contained" onClick={jump}>
-          跳转
-        </Button>
-        <div style={{ minHeight: '200px' }} />
+            )}
+          </DropdownButton>
+        </Toolbar>
+      </AppBar>
+      <div
+        align="center"
+        style={{
+          display: connect_error ? '' : 'none',
+          textAlign: 'center',
+          color: 'red',
+        }}
+      >
+        !!!!!!!!!!连接错误,服务器未运行!!!!!!!
       </div>
+      <div className={props.classes.tableWrapper}>
+        <Table className={props.classes.table}>
+          <TableHead>
+            <TableRow>
+              <CustomTableCell>
+                <span>客户单位</span>
+              </CustomTableCell>
+              <CustomTableCell>合同编号</CustomTableCell>
+              <CustomTableCell>
+                <span>仪器编号</span>
+              </CustomTableCell>
+              <CustomTableCell>仪器型号</CustomTableCell>
+              <CustomTableCell>通道配置</CustomTableCell>
+              <CustomTableCell>入库时间</CustomTableCell>
+              <CustomTableCell>方法</CustomTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{contactRows}</TableBody>
+        </Table>
+      </div>
+      {prev}
+      <label id="page">
+        {start + 1}../{total}
+      </label>
+      {next}
+      <input
+        maxLength="6"
+        size="6"
+        onChange={handlePageChange}
+        value={start_input}
+      />
+      <Button id="page_go" variant="contained" onClick={jump}>
+        跳转
+      </Button>
+      <div style={{ minHeight: '200px' }} />
+    </div>
   );
 }
-export default (withStyles(styles)(App));
+export default withStyles(styles)(App);

@@ -4,32 +4,32 @@ import Client from './Client';
 import RichTextEditor from 'react-rte';
 var _ = require('underscore');
 var moment = require('moment');
-let StateModel={
-      @observable connect_error:false,
-      @observable target: null,  //context filter not ok
-      @observable showcontext: false,//context filter
-      @observable contacts: [],
-      currentIndex:null,
+let StateModel = {
+  @observable connect_error: false,
+  @observable target: null, //context filter not ok
+  @observable showcontext: false, //context filter
+  @observable contacts: [],
+  currentIndex: null,
 
-      limit: 10,
-      @observable user: 'AnonymousUser',
-      start: 0,
-      total: 0,
-      @observable search: '',
-      @observable start_input: 1,
-      
-      @observable baoxiang: '',
-      @observable showDlgImport: false,
-      @observable showDlgEdit: false,
-      @observable showDlgDetail: false,
-      @observable showDlgTodos: false,
-      @observable showDlgStat2: false,
-      @observable showDlgItem: false,
-      @observable showDlgWorkMonth: false,
-      @observable showDlgLogin: false,
-}
+  limit: 10,
+  @observable user: 'AnonymousUser',
+  start: 0,
+  total: 0,
+  @observable search: '',
+  @observable start_input: 1,
+
+  @observable baoxiang: '',
+  @observable showDlgImport: false,
+  @observable showDlgEdit: false,
+  @observable showDlgDetail: false,
+  @observable showDlgTodos: false,
+  @observable showDlgStat2: false,
+  @observable showDlgItem: false,
+  @observable showDlgWorkMonth: false,
+  @observable showDlgLogin: false,
+};
 export default class Store {
-  @action setState = newState => {
+  @action setState = (newState) => {
     _.extend(this.state, newState);
   };
   constructor() {
@@ -54,7 +54,7 @@ export default class Store {
   };
   handleLogout = () => {
     console.log('logout');
-    Client.logout(data => {
+    Client.logout((data) => {
       console.log('logout' + data);
       this.setState({
         logined: false,
@@ -65,7 +65,7 @@ export default class Store {
       this.handleUserChange(this.state.user);
     });
   };
-  handleUserChange = user => {
+  handleUserChange = (user) => {
     if (user === 'AnonymousUser') {
       this.setState({
         logined: false,
@@ -81,9 +81,9 @@ export default class Store {
     });
     this.load_data();
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     // console.log(data);
-    Client.login(data.username, data.password, res => {
+    Client.login(data.username, data.password, (res) => {
       if (res.success) {
         this.setState({
           logined: true,
@@ -103,7 +103,7 @@ export default class Store {
         search: this.state.search,
         baoxiang: this.state.baoxiang,
       },
-      contacts => {
+      (contacts) => {
         var user = contacts.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -114,7 +114,7 @@ export default class Store {
           total: contacts.total,
         });
       },
-      error => {
+      (error) => {
         console.log(error);
         if (error instanceof SyntaxError) {
           this.openDlgLogin();
@@ -125,7 +125,7 @@ export default class Store {
     );
   };
   ///////////////////////////
-  open2=(idx)=>{
+  open2 = (idx) => {
     this.setState({ showModal: true });
     this.setState({ bg: {} });
     this.index = idx;
@@ -146,5 +146,5 @@ export default class Store {
     var val1 = RichTextEditor.createValueFromString(this.old.detail, 'html');
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
-  }
+  };
 }

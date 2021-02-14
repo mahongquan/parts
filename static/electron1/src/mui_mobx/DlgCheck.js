@@ -24,7 +24,7 @@ class DlgCheck extends React.Component {
     data1.append('id', this.contact_id);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/check', data1, function(data) {
+    Client.postForm('/rest/check', data1, function (data) {
       var showdata = [];
       var left = data.result[0];
       var notequal = data.result[1];
@@ -106,7 +106,7 @@ class DlgCheck extends React.Component {
               accept="application/vnd.ms-excel"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
             />
             <Button
               style={{ margin: '10px 10px 10px 10px' }}

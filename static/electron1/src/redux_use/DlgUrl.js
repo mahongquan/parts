@@ -8,21 +8,21 @@ class DlgUrl extends Component {
     error: '',
   };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
-      this.open(this.props.url,this.props.contactid);
-    } 
+    if (!prevProps.showModal && this.props.showModal) {
+      this.open(this.props.url, this.props.contactid);
+    }
   }
   // UNSAFE_componentWillReceiveProps(nextProps) {
   //   if (!this.props.open && nextProps.open) {
   //     this.open(nextProps.url,nextProps.contactid);
-  //   } 
+  //   }
   //   else if (this.props.open && !nextProps.open) {
   //   }
   // }
 
   open = (url, contactid) => {
-    let data={id:contactid}
-    Client.get(url, data, (result)=> {
+    let data = { id: contactid };
+    Client.get(url, data, (result) => {
       console.info(result);
       if (!result.success) {
         this.setState({ error: result.message });
@@ -34,13 +34,8 @@ class DlgUrl extends Component {
   };
   render = () => {
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-      >
-        <DialogTitle>
-          请等待。。。
-        </DialogTitle>
+      <Dialog open={this.props.open} onClose={this.props.onClose}>
+        <DialogTitle>请等待。。。</DialogTitle>
         <DialogContent>
           <div>{this.state.error}</div>
         </DialogContent>

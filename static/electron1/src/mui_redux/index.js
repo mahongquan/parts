@@ -10,7 +10,7 @@ export default class Index extends React.Component {
     super();
     this.store = createStore(reducer, applyMiddleware(thunk));
     // console.log(this.store);
-    window.store=this.store;
+    window.store = this.store;
   }
   render() {
     return (

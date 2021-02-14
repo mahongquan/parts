@@ -6,7 +6,7 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-import {withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import DlgStat from './DlgStat';
 import DlgStat2 from './DlgStat2';
 import DlgImport from './DlgImport';
@@ -32,7 +32,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { observer } from 'mobx-react';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -68,7 +68,7 @@ const styles = theme => ({
     },
   },
 });
-const CustomTableCell = withStyles(theme => ({
+const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
     color: theme.palette.common.white,
@@ -92,10 +92,10 @@ class App extends Component {
     this.dlglogin = React.createRef();
     this.dlgimportHT = React.createRef();
   }
-  handleContactChange = (idx, contact)=>{
-    this.props.store.handleContactChange(idx,contact);
-  }
-  handleClickFilter = event => {
+  handleContactChange = (idx, contact) => {
+    this.props.store.handleContactChange(idx, contact);
+  };
+  handleClickFilter = (event) => {
     //console.log(event);
     event.preventDefault();
     event.stopPropagation();
@@ -104,36 +104,35 @@ class App extends Component {
     //         this.props.store.setState({showcontext:false});
     //     },5000);
   };
-  componentDidMount = () => {
-  };
-  onLoginSubmit = data => {
+  componentDidMount = () => {};
+  onLoginSubmit = (data) => {
     this.props.store.onLoginSubmit(data);
   };
-  handleUserChange = user => {
+  handleUserChange = (user) => {
     this.props.store.handleUserChange(user);
   };
   handleLogout = () => {
     this.props.store.handleLogout();
   };
-  keypress = e => {
+  keypress = (e) => {
     if (e.which !== 13) return;
     // console.log('你按了回车键...');
 
     this.search();
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.props.store.setState({ search: e.target.value });
   };
 
-  handlePrev = e => {
+  handlePrev = (e) => {
     let start = this.props.store.state.start - this.props.store.state.limit;
     if (start < 0) {
       start = 0;
     }
-    this.props.store.setState({ start: start })
+    this.props.store.setState({ start: start });
     this.props.store.load_data();
   };
-  search = e => {
+  search = (e) => {
     this.props.store.setState({ start: 0 });
     this.props.store.load_data();
   };
@@ -147,16 +146,16 @@ class App extends Component {
     this.props.store.setState({ start: start });
     this.props.store.load_data();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.props.store.setState({ start_input: e.target.value });
   };
 
-  onDetailClick = contactid => {
+  onDetailClick = (contactid) => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     this.props.store.setState({ showDlgDetail: true, contactid: contactid });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     let start = this.props.store.state.start + this.props.store.state.limit;
     if (start > this.props.store.state.total - this.props.store.state.limit)
       start = this.props.store.state.total - this.props.store.state.limit; //total >limit
@@ -166,17 +165,17 @@ class App extends Component {
     this.props.store.setState({ start: start });
     this.props.store.load_data();
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     this.props.store.setState({ baoxiang: e, start: 0 });
-      this.props.store.load_data();
+    this.props.store.load_data();
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.props.store.setState({ showDlgEdit: true, currentIndex: idx });
   };
-  opendlgwait = contactid => {
+  opendlgwait = (contactid) => {
     this.dlgwait.current.open(contactid);
   };
-  handleContactChange2 = contact => {
+  handleContactChange2 = (contact) => {
     var idx = this.currentIndex;
     console.log(idx);
     let contacts2;
@@ -201,7 +200,7 @@ class App extends Component {
     console.log('openDlgItems');
     this.props.store.setState({ showDlgItem: true });
   };
-  opendlgfolder = contactid => {
+  opendlgfolder = (contactid) => {
     this.dlgfolder.current.open(contactid);
   };
   opendlgcheck = (contactid, yiqibh) => {
@@ -234,7 +233,7 @@ class App extends Component {
     this.props.store.setState({ showcontext: false });
   };
   render() {
-    console.log("render====================================================");
+    console.log('render====================================================');
 
     const contactRows = this.props.store.state.contacts.map((contact, idx) => (
       <TableRow key={idx} className={this.props.classes.row}>

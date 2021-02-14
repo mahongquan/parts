@@ -35,7 +35,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import myglobal from '../myglobal';
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -71,7 +71,7 @@ const styles = theme => ({
     },
   },
 });
-const CustomTableCell = withStyles(theme => ({
+const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
     color: theme.palette.common.white,
@@ -95,37 +95,37 @@ class App extends Component {
     search: '',
     start_input: 1,
     currentIndex: null,
-    contactid:null,
+    contactid: null,
     baoxiang: '',
     showDlgImport: false,
     showDlgEdit: false,
     showDlgDetail: false,
     showDlgTodos: false,
     showDlgItem: false,
-    showDlgWorkMonth:false,
+    showDlgWorkMonth: false,
     showDlgLogin: false,
     showDlgFolder2: false,
-    showDlgFolder:false,
-    showDlgUrl:false,
-    showDlgStat:false,
-    showDlgStat2:false,
-    showWebview:false,
-    showDlgCopyPack:false,
-    url:"about:blank",
+    showDlgFolder: false,
+    showDlgUrl: false,
+    showDlgStat: false,
+    showDlgStat2: false,
+    showWebview: false,
+    showDlgCopyPack: false,
+    url: 'about:blank',
   };
   constructor(props) {
     super(props);
-    myglobal.app=this;
+    myglobal.app = this;
     this.dlgwait = React.createRef();
     this.dlgcheck = React.createRef();
     this.dlgstat = React.createRef();
     this.dlgpacks = React.createRef();
     this.dlgimportHT = React.createRef();
   }
-  show_webview=(url)=>{
-    this.setState({showWebview:true,url:url});
-  }
-  handleClickFilter = event => {
+  show_webview = (url) => {
+    this.setState({ showWebview: true, url: url });
+  };
+  handleClickFilter = (event) => {
     //console.log(event);
     event.preventDefault();
     event.stopPropagation();
@@ -136,7 +136,7 @@ class App extends Component {
   };
   componentDidMount = () => {
     // Client.init(this.props.models, () => {
-      this.load_data();
+    this.load_data();
     // });
   };
   load_data = () => {
@@ -147,7 +147,7 @@ class App extends Component {
         search: this.state.search,
         baoxiang: this.state.baoxiang,
       },
-      contacts => {
+      (contacts) => {
         // myglobal.app.show_webview(contacts);
         var user = contacts.user;
         if (user === undefined) {
@@ -157,12 +157,12 @@ class App extends Component {
           contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
           user: user,
           total: contacts.total,
-          connect_error:false,
+          connect_error: false,
         });
       },
-      (error)=>{
-        console.log(error)
-        if (error.type==="invalid-json") {
+      (error) => {
+        console.log(error);
+        if (error.type === 'invalid-json') {
           this.openDlgLogin();
         } else {
           this.setState({ connect_error: true });
@@ -181,7 +181,7 @@ class App extends Component {
     }
     this.setState({ contacts: contacts2 });
   };
-  handleUserChange = user => {
+  handleUserChange = (user) => {
     if (user === 'AnonymousUser') {
       this.setState({
         logined: false,
@@ -199,7 +199,7 @@ class App extends Component {
   };
   handleLogout = () => {
     console.log('logout');
-    Client.logout(data => {
+    Client.logout((data) => {
       console.log('logout' + data);
       this.setState({
         logined: false,
@@ -210,19 +210,19 @@ class App extends Component {
       this.handleUserChange(this.state.user);
     });
   };
-  keypress = e => {
+  keypress = (e) => {
     if (e.which !== 13) return;
     // console.log('你按了回车键...');
 
     this.search();
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.setState({ search: e.target.value });
   };
-  handleSearch2Change = e => {
+  handleSearch2Change = (e) => {
     this.setState({ search2: e.target.value });
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     let start = this.state.start - this.state.limit;
     if (start < 0) {
       start = 0;
@@ -231,7 +231,7 @@ class App extends Component {
       this.load_data();
     });
   };
-  search = e => {
+  search = (e) => {
     this.setState({ start: 0 }, () => {
       this.load_data();
     });
@@ -247,16 +247,16 @@ class App extends Component {
       this.load_data();
     });
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
 
-  onDetailClick = contactid => {
+  onDetailClick = (contactid) => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     this.setState({ showDlgDetail: true, contactid: contactid });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     let start = this.state.start + this.state.limit;
     if (start > this.state.total - this.state.limit)
       start = this.state.total - this.state.limit; //total >limit
@@ -267,7 +267,7 @@ class App extends Component {
       this.load_data();
     });
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     this.setState({ baoxiang: e, start: 0 }, () => {
       this.load_data();
     });
@@ -276,43 +276,53 @@ class App extends Component {
     console.log('auto_change');
     if (value.length > 1) {
       this.setState({ auto_value: value, auto_loading: true });
-      Client.get('/rest/Pack', { search: value }, items => {
-        this.setState({ auto_items: items.data, auto_loading: false });
-      },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+      Client.get(
+        '/rest/Pack',
+        { search: value },
+        (items) => {
+          this.setState({ auto_items: items.data, auto_loading: false });
+        },
+        (error) => {
+          myglobal.app.show_webview(error.response.url);
+        }
+      );
     } else {
       this.setState({ auto_value: value, auto_loading: false });
     }
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     // console.log(data);
-    Client.login(data.username, data.password, res => {
-      if (res.success) {
-        this.setState({
-          logined: true,
-        });
-        this.setState({
-          user: data.username,
-        });
-        this.handleUserChange(this.state.user);
+    Client.login(
+      data.username,
+      data.password,
+      (res) => {
+        if (res.success) {
+          this.setState({
+            logined: true,
+          });
+          this.setState({
+            user: data.username,
+          });
+          this.handleUserChange(this.state.user);
+        }
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error.response.url);
       }
-    },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.setState({ showDlgEdit: true, currentIndex: idx });
     //this.setState({});
     //this.refs.contactedit.open2(idx);
   };
   //<Button onClick={()=>this.opendlgurl("/rest/updateMethod",this,idx,contact.id)}>更新方法</Button>
   //<Button onClick={()=>this.opendlgwait(contact.id)}>全部文件</Button>
-  opendlgwait = contactid => {
+  opendlgwait = (contactid) => {
     this.dlgwait.current.open(contactid);
   };
-  handleContactChange2 = contact => {
+  handleContactChange2 = (contact) => {
     var idx = this.currentIndex;
     console.log(idx);
     let contacts2;
@@ -348,7 +358,7 @@ class App extends Component {
   openDlgLogin = () => {
     // console.log("openDlgLogin");
     // this.dlglogin.current.open();
-    this.setState({showDlgLogin:true});
+    this.setState({ showDlgLogin: true });
   };
   openDlgImport = () => {
     //this.refs.dlgimport.open();
@@ -364,7 +374,7 @@ class App extends Component {
     this.setState({ showcontext: false });
   };
   render() {
-    console.log("render=========================");
+    console.log('render=========================');
     console.log(this.state);
 
     const contactRows = this.state.contacts.map((contact, idx) => (
@@ -372,22 +382,24 @@ class App extends Component {
         <CustomTableCell>{contact.yonghu}</CustomTableCell>
         <CustomTableCell>{contact.hetongbh}</CustomTableCell>
         <CustomTableCell>
-          <DropdownButton2 click_title={() => this.handleEdit(idx)} 
-            title={contact.yiqibh} 
-            >
+          <DropdownButton2
+            click_title={() => this.handleEdit(idx)}
+            title={contact.yiqibh}
+          >
             <MenuItem onClick={() => this.onDetailClick(contact.id)}>
               详细
             </MenuItem>
             <MenuItem
-              onClick={() =>{
+              onClick={() => {
                 // this.opendlgurl('/rest/updateMethod', this, idx, {
                 //   id: contact.id,
                 // })
                 this.setState({
-                  url:"/rest/updateMethod",
-                  contactid:contact.id,
-                  currentIndex:idx,
-                  showDlgUrl:true});
+                  url: '/rest/updateMethod',
+                  contactid: contact.id,
+                  currentIndex: idx,
+                  showDlgUrl: true,
+                });
               }}
             >
               更新方法
@@ -400,14 +412,16 @@ class App extends Component {
             >
               核对备料计划
             </MenuItem>
-            <MenuItem onClick={() =>{
-              this.setState({contactid:contact.id,showDlgFolder:true});
-            }}>
+            <MenuItem
+              onClick={() => {
+                this.setState({ contactid: contact.id, showDlgFolder: true });
+              }}
+            >
               资料文件夹
             </MenuItem>
             <MenuItem
               onClick={() => {
-                this.setState({contactid:contact.id, showDlgFolder2: true });
+                this.setState({ contactid: contact.id, showDlgFolder2: true });
               }}
             >
               资料文件夹2
@@ -470,18 +484,20 @@ class App extends Component {
             this.setState({ showDlgWorkMonth: false });
           }}
         />
-        <DlgItems 
+        <DlgItems
           showModal={this.state.showDlgItem}
           handleClose={() => {
             this.setState({ showDlgItem: false });
           }}
         />
         <DlgPacks ref={this.dlgpacks} />
-        <DlgCopyPack showModal={this.state.showDlgCopyPack}
+        <DlgCopyPack
+          showModal={this.state.showDlgCopyPack}
           handleClose={() => {
             this.setState({ showDlgCopyPack: false });
-          }} />
-        
+          }}
+        />
+
         <DlgImport
           showModal={this.state.showDlgImport}
           handleClose={() => {
@@ -490,21 +506,24 @@ class App extends Component {
         />
         <DlgImportHT ref={this.dlgimportHT} parent={this} />
         <DlgCheck ref={this.dlgcheck} />
-        <DlgFolder contactid={this.state.contactid}
+        <DlgFolder
+          contactid={this.state.contactid}
           open={this.state.showDlgFolder}
           onClose={() => {
             this.setState({ showDlgFolder: false });
           }}
         />
         <DlgWait ref={this.dlgwait} />
-        <DlgUrl  contactid={this.state.contactid}
+        <DlgUrl
+          contactid={this.state.contactid}
           url={this.state.url}
           idx={this.state.currentIndex}
           handleContactChange2={this.handleContactChange2}
           open={this.state.showDlgUrl}
           onClose={() => {
             this.setState({ showDlgUrl: false });
-          }} />
+          }}
+        />
 
         <DlgLogin
           open={this.state.showDlgLogin}
@@ -520,7 +539,8 @@ class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
-        <DlgStat showModal={this.state.showDlgStat}
+        <DlgStat
+          showModal={this.state.showDlgStat}
           handleClose={() => {
             this.setState({ showDlgStat: false });
           }}
@@ -549,15 +569,13 @@ class App extends Component {
         />
         <AppBar position="static">
           <Toolbar>
-            <Typography
-              variant="h6"
-              className={this.props.classes.grow}
-            >
+            <Typography variant="h6" className={this.props.classes.grow}>
               装箱单
             </Typography>
             <DropdownButton
               title={'包箱:' + this.state.baoxiang}
-              id="id_dropdown2">
+              id="id_dropdown2"
+            >
               <MenuItem onClick={() => this.onSelectBaoxiang('')}>*</MenuItem>
               <MenuItem onClick={() => this.onSelectBaoxiang('马红权')}>
                 马红权
@@ -569,8 +587,9 @@ class App extends Component {
                 吴振宁
               </MenuItem>
             </DropdownButton>
-            <Button variant="outlined"  onClick={this.search}>
-              <InputBase variant="outlined"
+            <Button variant="outlined" onClick={this.search}>
+              <InputBase
+                variant="outlined"
                 onKeyPress={this.keypress}
                 value={this.state.search}
                 placeholder="合同/仪器编号/客户"
@@ -585,36 +604,35 @@ class App extends Component {
             <Button
               color="inherit"
               style={{ margin: '0px 10px 0px 10px' }}
-              variant="outlined" 
+              variant="outlined"
               onClick={() => this.handleEdit(null)}
             >
               新仪器
             </Button>
-            <Button
-              variant="outlined" 
-              onClick={this.openDlgImport}
-            >
+            <Button variant="outlined" onClick={this.openDlgImport}>
               导入标样
             </Button>
             <Button variant="outlined" onClick={this.openDlgCopyPack}>
               复制包
             </Button>
-            
+
             <DropdownButton title="杂项">
-              <MenuItem onClick={()=>{this.setState({showWebview:true})}}>
+              <MenuItem
+                onClick={() => {
+                  this.setState({ showWebview: true });
+                }}
+              >
                 webview
               </MenuItem>
-              <MenuItem onClick={()=>{
-                this.load_data();
-              }}>
-                reload 
+              <MenuItem
+                onClick={() => {
+                  this.load_data();
+                }}
+              >
+                reload
               </MenuItem>
-             <MenuItem onClick={this.openDlgPacks}>
-              包
-             </MenuItem>
-             <MenuItem onClick={this.openDlgItems}>
-              备件
-             </MenuItem>
+              <MenuItem onClick={this.openDlgPacks}>包</MenuItem>
+              <MenuItem onClick={this.openDlgItems}>备件</MenuItem>
               <MenuItem onClick={this.openDlgStat}>月统计</MenuItem>
               <MenuItem
                 onClick={() => {
@@ -623,11 +641,19 @@ class App extends Component {
               >
                 年统计
               </MenuItem>
-              <MenuItem onClick={() => {
-                this.setState({ showDlgWorkMonth: true });
-              }}>工作量</MenuItem>
-              <MenuItem style={{display: 'none' }} onClick={this.openDlgImportHT}>导入合同</MenuItem>
-
+              <MenuItem
+                onClick={() => {
+                  this.setState({ showDlgWorkMonth: true });
+                }}
+              >
+                工作量
+              </MenuItem>
+              <MenuItem
+                style={{ display: 'none' }}
+                onClick={this.openDlgImportHT}
+              >
+                导入合同
+              </MenuItem>
             </DropdownButton>
             <DropdownButton title={this.state.user} id="id_dropdown1">
               {this.state.user !== 'AnonymousUser' ? (

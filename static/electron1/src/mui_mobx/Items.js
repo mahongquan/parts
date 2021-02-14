@@ -43,7 +43,7 @@ class Items extends Component {
         search: this.mystate.search,
         baoxiang: this.mystate.baoxiang,
       },
-      items2 => {
+      (items2) => {
         var user = items2.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -58,7 +58,7 @@ class Items extends Component {
       }
     );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
     if (this.mystate.start < 0) {
       this.mystate.start = 0;
@@ -66,7 +66,7 @@ class Items extends Component {
     //this.setState({start:start});
     this.loaddata();
   };
-  handleNext = e => {
+  handleNext = (e) => {
     this.mystate.start = this.mystate.start + this.mystate.limit;
     if (this.mystate.start > this.mystate.total - this.mystate.limit)
       this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
@@ -84,7 +84,7 @@ class Items extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
   mapfunc = (contact, idx) => {
@@ -120,7 +120,7 @@ class Items extends Component {
         </tr>
       );
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   render = () => {

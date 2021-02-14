@@ -46,7 +46,7 @@ class DlgDetail extends React.Component {
   };
 
   render = () => {
-    if (this.props.store.detail===null){
+    if (this.props.store.detail === null) {
       return <div></div>;
     }
     const contactRows = this.props.store.detail.items.map(this.mapfunc);
@@ -142,7 +142,8 @@ class DlgDetail extends React.Component {
             <tbody id="contact-list">{contactRows}</tbody>
           </table>
           <p>
-            共{this.props.store.detail.totalid}项{this.props.store.detail.totalct}个。
+            共{this.props.store.detail.totalid}项
+            {this.props.store.detail.totalct}个。
           </p>
           {quehuo}
         </DialogContent>

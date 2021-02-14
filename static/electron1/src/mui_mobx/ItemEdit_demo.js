@@ -14,7 +14,7 @@ class ItemEdit extends Component {
     this.setState({ showModal: false });
   };
 
-  open2 = idx => {
+  open2 = (idx) => {
     this.setState({ showModal: true, bg: {} });
     this.index = idx;
     if (this.index == null) {
@@ -26,7 +26,7 @@ class ItemEdit extends Component {
     this.setState({ packitem: this.old });
     if (this.old) this.old = _.clone(this.old.dataValues);
   };
-  handleSave = data => {
+  handleSave = (data) => {
     console.log(this.old);
     console.log(this.state.packitem);
     this.state.packitem.save();
@@ -34,7 +34,7 @@ class ItemEdit extends Component {
     this.setState({ bg: {} });
     this.parent.handlePackItemChange(this.index, this.state.packitem);
   };
-  quehuoChange = e => {
+  quehuoChange = (e) => {
     var quehuo = this.state.packitem.quehuo;
     quehuo = !quehuo;
     if (this.old.quehuo === quehuo) {
@@ -52,7 +52,7 @@ class ItemEdit extends Component {
     console.log(contact2);
     this.setState({ packitem: contact2 });
   };
-  handleChange = e => {
+  handleChange = (e) => {
     console.log('change');
     console.log(e);
     console.log(e.target);

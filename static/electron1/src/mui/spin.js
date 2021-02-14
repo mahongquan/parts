@@ -32,7 +32,7 @@ export class Spinner {
    * spinning, it is automatically removed from its previous target by calling
    * stop() internally.
    */
-  spin = target => {
+  spin = (target) => {
     var _this = this;
     this.stop();
     this.el = document.createElement('div');
@@ -53,21 +53,21 @@ export class Spinner {
     var getNow;
     if (typeof requestAnimationFrame !== 'undefined') {
       animator = requestAnimationFrame;
-      getNow = function() {
+      getNow = function () {
         return performance.now();
       };
     } else {
       // fallback for IE 9
-      animator = function(callback) {
+      animator = function (callback) {
         return setTimeout(callback, 1000 / _this.opts.fps);
       };
-      getNow = function() {
+      getNow = function () {
         return Date.now();
       };
     }
     var lastFrameTime;
     var state = 0; // state is rotation percentage (between 0 and 1)
-    var animate = function() {
+    var animate = function () {
       var time = getNow();
       if (lastFrameTime === undefined) {
         lastFrameTime = time - 1;

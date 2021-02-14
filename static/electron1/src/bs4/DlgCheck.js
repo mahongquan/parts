@@ -20,7 +20,7 @@ class DlgCheck extends React.Component {
     data1.append('id', this.contact_id);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/check', data1, function(data) {
+    Client.postForm('/rest/check', data1, function (data) {
       var showdata = [];
       var left = data.result[0];
       var notequal = data.result[1];
@@ -97,16 +97,14 @@ class DlgCheck extends React.Component {
           <Modal.Title>核对备料计划</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            仪器编号:{this.state.yiqibh},请上传备料计划导出的Excel文件
-          </p>
+          <p>仪器编号:{this.state.yiqibh},请上传备料计划导出的Excel文件</p>
           <form ref="form1" encType="multipart/form-data">
             <input
               style={{ margin: '10px 10px 10px 10px' }}
               id="file"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
             />
             <Button
               style={{ margin: '10px 10px 10px 10px' }}

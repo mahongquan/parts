@@ -16,7 +16,7 @@ class Stat extends Component {
     var self = this;
     this.setState({ showModal: true });
     var data = { limit: 10, search: 'xls' };
-    Client.get('/rest/month12', data, function(result) {
+    Client.get('/rest/month12', data, function (result) {
       self.setState({ lbls: result.lbls, values: result.values });
     });
   };

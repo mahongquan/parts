@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import TextField from '@material-ui/core/TextField';
-import SelectPack from './SelectPack'
+import SelectPack from './SelectPack';
 // import myglobal from '../myglobal';
 class DlgCopyPack extends React.Component {
   constructor(props) {
@@ -17,10 +17,10 @@ class DlgCopyPack extends React.Component {
       auto_value: '',
       newname: '',
     };
-    this.src_id=null;
+    this.src_id = null;
   }
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.onShow();
     } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
@@ -30,7 +30,7 @@ class DlgCopyPack extends React.Component {
     this.open();
   };
   onHide = () => {};
-  newnameChange = event => {
+  newnameChange = (event) => {
     this.setState({ newname: event.target.value });
   };
   copy_pack = () => {
@@ -40,14 +40,19 @@ class DlgCopyPack extends React.Component {
     this.setState({ stopped: false });
     data1.append('oldid', this.src_id);
     data1.append('newname', this.state.newname);
-    Client.postForm('/rest/copypack/', data1, result => {
-      self.setState({ error: result.message });
-      this.setState({ stopped: true });
-    },(error)=>{
-      // myglobal.app.show_webview(error.response.url);
-    });
+    Client.postForm(
+      '/rest/copypack/',
+      data1,
+      (result) => {
+        self.setState({ error: result.message });
+        this.setState({ stopped: true });
+      },
+      (error) => {
+        // myglobal.app.show_webview(error.response.url);
+      }
+    );
   };
-  auto_select = ( data) => {
+  auto_select = (data) => {
     console.log('selected');
     console.log(data);
     this.src_id = data.id;
@@ -79,9 +84,10 @@ class DlgCopyPack extends React.Component {
                   <label>包名称:</label>
                 </td>
                 <td>
-                  <SelectPack 
-                  value={this.state.auto_value}
-                  onChange={this.auto_select}/>
+                  <SelectPack
+                    value={this.state.auto_value}
+                    onChange={this.auto_select}
+                  />
                 </td>
               </tr>
               <tr>
@@ -101,18 +107,23 @@ class DlgCopyPack extends React.Component {
               </tr>
               <tr>
                 <td>
-                  <Button color="inherit"
-              variant="outlined" 
-              style={{
-                display: this.state.stopped ? '' : 'none',
-              }}
-                      onClick={this.copy_pack}
-                    >复制</Button>
-                  <div align="center"
-          style={{
-            display: this.state.stopped ? 'none' : '',
-          }}>
-                  <CircularProgress  color="secondary" />
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    style={{
+                      display: this.state.stopped ? '' : 'none',
+                    }}
+                    onClick={this.copy_pack}
+                  >
+                    复制
+                  </Button>
+                  <div
+                    align="center"
+                    style={{
+                      display: this.state.stopped ? 'none' : '',
+                    }}
+                  >
+                    <CircularProgress color="secondary" />
                   </div>
                 </td>
               </tr>

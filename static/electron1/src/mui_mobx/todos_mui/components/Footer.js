@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
 import Typography from '@material-ui/core/Typography';
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
     margin: theme.spacing.unit * 1.5,
   },

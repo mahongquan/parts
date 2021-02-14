@@ -4,17 +4,17 @@ class LoginFormComponent extends React.Component {
     name: 'mahongquan',
     pwd: '333333',
   };
-  handleNameChange = e => {
+  handleNameChange = (e) => {
     this.setState({
       name: e.target.value,
     });
   };
-  handlePwdChange = e => {
+  handlePwdChange = (e) => {
     this.setState({
       pwd: e.target.value,
     });
   };
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     var data = {};
     data['username'] = this.state.name;
@@ -22,7 +22,7 @@ class LoginFormComponent extends React.Component {
     this.props.onLoginSubmit(data);
     this.props.dlgclose();
   };
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.dlgclose();
   };
   render = () => {

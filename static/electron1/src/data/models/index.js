@@ -31,8 +31,8 @@ class models {
   static on(url, cb) {
     funcs[url] = cb;
   }
-  static init = callback => {
-    models.on('/sql', async function(cmd, callback) {
+  static init = (callback) => {
+    models.on('/sql', async function (cmd, callback) {
       console.log(cmd);
       var cursor = await models.sequelize.query(cmd);
       console.log(cursor[0]);
@@ -41,7 +41,7 @@ class models {
         data: cursor[0],
       });
     });
-    models.on('/post/standard', function(data, callback) {
+    models.on('/post/standard', function (data, callback) {
       console.log('/post/standard');
       console.log(data);
       callback({
@@ -50,7 +50,7 @@ class models {
         message: 'delete Contact ok',
       });
     });
-    models.on('/get/showcontact', async function(data, callback) {
+    models.on('/get/showcontact', async function (data, callback) {
       console.log(data);
       var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
       callback({
@@ -63,7 +63,7 @@ class models {
         message: 'showcontact ok',
       });
     });
-    models.on('/get/year12', async function(data, callback) {
+    models.on('/get/year12', async function (data, callback) {
       var baoxiang = data.baoxiang;
       var end_date = new Date();
       var start_date = new Date(); //datetime.datetime(end_date.year-1,1,1,0,0,0)
@@ -110,7 +110,7 @@ class models {
         values: values,
       });
     });
-    models.on('/get/month12', async function(data, callback) {
+    models.on('/get/month12', async function (data, callback) {
       var baoxiang = data.baoxiang;
       var end_date = new Date();
       var start_date = new Date(); //datetime.datetime(end_date.year-1,1,1,0,0,0)
@@ -157,7 +157,7 @@ class models {
         values: values,
       });
     });
-    models.on('/parts/showcontact', async function(data, callback) {
+    models.on('/parts/showcontact', async function (data, callback) {
       var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
       callback({
         data: contact,
@@ -165,7 +165,7 @@ class models {
       });
     }); //delete
     //route.delete('/rest/Contact/:contact_id', async function(ctx,next) {
-    models.on('/delete/Contact', async function(data, callback) {
+    models.on('/delete/Contact', async function (data, callback) {
       var contact = await models.Contact.findById(data.contact_id); //.then(function(packitem) {
       contact.destroy();
       callback({
@@ -174,7 +174,7 @@ class models {
       });
     }); //delete
     //route.post('/rest/Contact', async function(ctx,next) {
-    models.on('/post/Contact', async function(data, callback) {
+    models.on('/post/Contact', async function (data, callback) {
       let contact;
       try {
         contact = await models.Contact.create(data);
@@ -196,7 +196,7 @@ class models {
       }
     });
     //route.put('/rest/Contact', async function(ctx,next) {
-    models.on('/put/Contact', async function(data, callback) {
+    models.on('/put/Contact', async function (data, callback) {
       var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
       contact.update(data);
       contact.save();
@@ -207,7 +207,7 @@ class models {
       });
     });
     //route.get('/rest/Contact', async function(ctx,next) {
-    models.on('/get/Contact', async function(data, callback) {
+    models.on('/get/Contact', async function (data, callback) {
       var start = data.start;
       var limit = data.limit;
       let search = '',
@@ -267,7 +267,7 @@ class models {
     });
     //UsePack//////////////////////////////////////////////////////////////////////
     //route.delete('/rest/UsePack/:contact_id', async function(ctx) {
-    models.on('/delete/UsePack', async function(data, callback) {
+    models.on('/delete/UsePack', async function (data, callback) {
       var contact = await models.UsePack.findById(data.id); //.then(function(packitem) {
       contact.destroy();
       callback({
@@ -276,7 +276,7 @@ class models {
       });
     }); //delete
     //route.post('/rest/UsePack', async function(ctx,next) {
-    models.on('/post/UsePack', async function(data, callback) {
+    models.on('/post/UsePack', async function (data, callback) {
       var data1 = {};
       data1.contact_id = data.contact;
       data1.pack_id = data.pack;
@@ -291,7 +291,7 @@ class models {
       });
     });
     //route.put('/rest/UsePack', async function(ctx,next) {
-    models.on('/put/UsePack', async function(data, callback) {
+    models.on('/put/UsePack', async function (data, callback) {
       console.log(data);
       var contact = await models.UsePack.findById(data.id); //.then(function(packitem) {
       contact.update(data);
@@ -301,7 +301,7 @@ class models {
         message: 'update  UsePack ok',
       });
     });
-    models.on('/post/UsePackEx', async function(data, callback) {
+    models.on('/post/UsePackEx', async function (data, callback) {
       console.log(data);
       var rec1 = await models.Pack.create(data);
       var rec = await models.UsePack.create({
@@ -317,7 +317,7 @@ class models {
       });
     });
 
-    models.on('/put/BothPackItem', async function(data, callback) {
+    models.on('/put/BothPackItem', async function (data, callback) {
       console.log('BothPackItem');
       console.log(data);
       var item = await models.Item.findByPk(data.itemid); //.then(function(packitem) {
@@ -326,7 +326,7 @@ class models {
       var packitem = await models.PackItem.findByPk(data.id); //.then(function(packitem) {
       packitem.update(data);
       packitem.save();
-      var packitem_r=packitem.dataValues;
+      var packitem_r = packitem.dataValues;
       packitem_r.name = item.name;
       packitem_r.guige = item.guige;
       packitem_r.bh = item.bh;
@@ -338,7 +338,7 @@ class models {
       });
     });
 
-    models.on('/post/BothPackItem', async function(data, callback) {
+    models.on('/post/BothPackItem', async function (data, callback) {
       console.log(data);
       if (!data.ct) data.ct = 0;
       if (!data.danwei) data.danwei = '';
@@ -360,7 +360,7 @@ class models {
         message: 'create PackItem ok',
       });
     });
-    models.on('/get/UsePack', async function(data, callback) {
+    models.on('/get/UsePack', async function (data, callback) {
       console.log(data);
       var start = data.start;
       var limit = data.limit;
@@ -399,7 +399,7 @@ class models {
     });
     //PackItem//////////////////////////////////////////////////////////////////////
     //route.delete('/rest/PackItem/:contact_id',  async function(ctx,contact_id) {
-    models.on('/delete/PackItem', async function(data, callback) {
+    models.on('/delete/PackItem', async function (data, callback) {
       var contact = await models.PackItem.findByPk(data.id); //.then(function(packitem) {
       contact.destroy();
       callback({
@@ -408,12 +408,12 @@ class models {
       });
     }); //delete
     //route.post('/rest/PackItem', async function(ctx,next) {
-    models.on('/post/login', async function(data, callback) {
-      var output={"success":true,"message":"User" }
-      output["data"]={name:"马红权"}
+    models.on('/post/login', async function (data, callback) {
+      var output = { success: true, message: 'User' };
+      output['data'] = { name: '马红权' };
       callback(output);
     });
-    models.on('/post/PackItem', async function(data, callback) {
+    models.on('/post/PackItem', async function (data, callback) {
       console.log(data); //pack itemid
       let data1 = {
         pack_id: data.pack,
@@ -435,7 +435,7 @@ class models {
       });
     });
     //route.put('/rest/PackItem/:id',async  function(ctx,next) {
-    models.on('/put/PackItem', async function(data, callback) {
+    models.on('/put/PackItem', async function (data, callback) {
       console.log(data.id);
       var packitem = await models.PackItem.findById(data.id, {
         include: [
@@ -465,7 +465,7 @@ class models {
     //  };
     // }));
     //route.get('/rest/PackItem', async function(ctx,next) {
-    models.on('/get/PackItem', async function(data, callback) {
+    models.on('/get/PackItem', async function (data, callback) {
       console.log('/get/PackItem');
       console.log(data);
       var start = data.start;
@@ -501,7 +501,7 @@ class models {
         res[i].bh = contacts[i].Item.bh;
         res[i].danwei = contacts[i].Item.danwei;
         res[i].itemid = contacts[i].Item.id;
-        delete res[i].Item
+        delete res[i].Item;
       }
       callback({
         data: res,
@@ -510,7 +510,7 @@ class models {
     });
     //Pack
     //route.post('/rest/Pack', async function(ctx,next) {
-    models.on('/post/Pack', async function(data, callback) {
+    models.on('/post/Pack', async function (data, callback) {
       var data = await models.Pack.create(data);
       callback({
         data: data,
@@ -518,7 +518,7 @@ class models {
       });
     });
     //route.get('/rest/Pack', async function(ctx,next) {
-    models.on('/get/Pack', async function(data, callback) {
+    models.on('/get/Pack', async function (data, callback) {
       console.log(data);
       var start = data.start;
       var limit = data.limit;
@@ -562,14 +562,14 @@ class models {
     });
     //Item
     //route.post('/rest/Item', async function(ctx,next) {
-    models.on('/post/Item', async function(data, callback) {
+    models.on('/post/Item', async function (data, callback) {
       var data = await models.Item.create(data);
       callback({
         data: data,
         message: 'create item ok',
       });
     });
-    models.on('/put/Item', async function(data, callback) {
+    models.on('/put/Item', async function (data, callback) {
       console.log(data);
       var item = await models.Item.findById(data.id);
       item.update(data);
@@ -581,7 +581,7 @@ class models {
       });
     });
     //route.get('/rest/Item', async function(ctx,next) {
-    models.on('/get/Item', async function(data, callback) {
+    models.on('/get/Item', async function (data, callback) {
       console.log(data);
       var start = data.start;
       var limit = data.limit;
@@ -629,7 +629,7 @@ class models {
     console.log(url);
     funcs[url](data, callback);
   }
-  static get_Contact = async function(data, callback) {
+  static get_Contact = async function (data, callback) {
     var start = data.start;
     var limit = data.limit;
     let search = '',

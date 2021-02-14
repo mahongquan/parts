@@ -8,7 +8,7 @@ export default class DlgOkCancel extends Component {
       this.onHide();
     }
   }
-  onShow = nextProps => {};
+  onShow = (nextProps) => {};
   onHide = () => {};
   ok = () => {
     this.props.closeModal(true);
@@ -27,7 +27,7 @@ export default class DlgOkCancel extends Component {
           <button onClick={this.ok} className="btn save btn-primary">
             确定
           </button>
-         {/* <button onClick={this.cancel} className="btn save btn-primary">
+          {/* <button onClick={this.cancel} className="btn save btn-primary">
             取消
           </button>*/}
         </Modal.Footer>

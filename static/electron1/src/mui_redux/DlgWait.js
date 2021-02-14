@@ -5,13 +5,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 class DlgWait extends React.Component {
   render() {
     return (
-      <Dialog
-        open={this.props.showModal}
-        onClose={this.props.handleClose}
-      >
-        <DialogTitle>
-          请等待。。。
-        </DialogTitle>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
+        <DialogTitle>请等待。。。</DialogTitle>
         <DialogContent>
           <div>{this.props.store.allfile_err}</div>
         </DialogContent>

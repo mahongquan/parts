@@ -78,7 +78,7 @@ class DlgPacks extends Component {
         limit: this.mystate.limit,
         search: this.mystate.search,
       },
-      contacts2 => {
+      (contacts2) => {
         var user = contacts2.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -93,7 +93,7 @@ class DlgPacks extends Component {
       }
     );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
     if (this.mystate.start < 0) {
       this.mystate.start = 0;
@@ -101,7 +101,7 @@ class DlgPacks extends Component {
     //this.setState({start:start});
     this.loaddata();
   };
-  handleNext = e => {
+  handleNext = (e) => {
     this.mystate.start = this.mystate.start + this.mystate.limit;
     if (this.mystate.start > this.mystate.total - this.mystate.limit)
       this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
@@ -119,18 +119,18 @@ class DlgPacks extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.mystate.search = e.target.value;
     this.setState({ search: this.mystate.search });
   };
-  search = e => {
+  search = (e) => {
     this.mystate.start = 0;
     this.loaddata();
   };
-  handleEdit = pack_id => {
+  handleEdit = (pack_id) => {
     //this.setState({currentIndex:idx,showModal:true});
     this.props.store.actions.loadPackItem(pack_id);
     this.refs.edit1.open(pack_id);
@@ -200,33 +200,33 @@ class DlgPacks extends Component {
     }
     return (
       <Dialog open={this.state.showModal} onClose={this.close}>
-      <AppBar  className={this.props.classes.appBar}>
-      <Toolbar>
-      <Typography
+        <AppBar className={this.props.classes.appBar}>
+          <Toolbar>
+            <Typography
               variant="h6"
               color="inherit"
               className={this.props.classes.flex}
             >
               包
             </Typography>
-        <input
-            type="text"
-            value={this.state.search}
-            placeholder=""
-            onChange={this.handleSearchChange}
-          />
-          <Button
-            variant="contained"
-            id="id_bt_search"
-            color="secondary"
-            onClick={this.search}
-          >
-            搜索
-          </Button></
-          Toolbar>
+            <input
+              type="text"
+              value={this.state.search}
+              placeholder=""
+              onChange={this.handleSearchChange}
+            />
+            <Button
+              variant="contained"
+              id="id_bt_search"
+              color="secondary"
+              onClick={this.search}
+            >
+              搜索
+            </Button>
+          </Toolbar>
         </AppBar>
         <DialogContent>
-          <PackEdit  store={this.props.store} ref="edit1" title="编辑" />
+          <PackEdit store={this.props.store} ref="edit1" title="编辑" />
           <Table>
             <TableHead>
               <TableRow>

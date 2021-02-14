@@ -30,7 +30,7 @@ class DlgImportHT extends React.Component {
     data1.append('file', file);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/ht', data1, function(res) {
+    Client.postForm('/rest/ht', data1, function (res) {
       if (res.success) {
         self.props.parent.handleContactChange(null, res.data);
         self.setState({ showModal: false });
@@ -43,7 +43,7 @@ class DlgImportHT extends React.Component {
     var self = this;
     this.setState({ showModal: true, showalert: false });
     var data = { limit: 10, search: 'docx' };
-    Client.get('/rest/Contact', data, function(result) {
+    Client.get('/rest/Contact', data, function (result) {
       console.info(result);
       self.setState({ packs: result.data });
       console.log(result.data);
@@ -88,7 +88,7 @@ class DlgImportHT extends React.Component {
               accept="application/vnd.ms-word"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
             <button

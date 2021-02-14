@@ -31,11 +31,11 @@ class PackItems extends React.Component {
     this.addrow(data.suggestion.id);
     //this.setState({auto_value:value, auto_items: [ item ] })
   };
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     // console.log("auto_change");
     if (value.length > 1) {
-      Client.get('/rest/Item', { query: value, limit: 15 }, items => {
+      Client.get('/rest/Item', { query: value, limit: 15 }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     }
@@ -59,11 +59,11 @@ class PackItems extends React.Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   };*/
-  new_packitem = id => {
+  new_packitem = (id) => {
     var url = '/rest/BothPackItem';
     var data = { name: this.state.newPackName, pack: this.props.pack_id };
     console.log(data);
-    Client.postOrPut(url, data, res => {
+    Client.postOrPut(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.items.concat(p);
       this.setState({ items: newFoods });
@@ -75,22 +75,22 @@ class PackItems extends React.Component {
     console.log(contacts2);
     this.setState({ items: contacts2 });
   };
-  addrow = item_id => {
+  addrow = (item_id) => {
     var url = '/rest/PackItem';
     var data = { pack: this.props.pack_id, itemid: item_id };
-    Client.post(url, data, res => {
+    Client.post(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.items.concat(p);
       this.setState({ items: newFoods });
     });
   };
-  newpackChange = e => {
+  newpackChange = (e) => {
     this.setState({ newPackName: e.target.value });
   };
-  onEditClick = id => {};
-  onDeleteClick = itemIndex => {
+  onEditClick = (id) => {};
+  onDeleteClick = (itemIndex) => {
     var url = '/rest/PackItem';
-    Client.delete1(url, { id: this.state.items[itemIndex].id }, res => {
+    Client.delete1(url, { id: this.state.items[itemIndex].id }, (res) => {
       const filteredFoods = this.state.items.filter(
         (item, idx) => itemIndex !== idx
       );
@@ -101,12 +101,12 @@ class PackItems extends React.Component {
     // console.log(newValue);
     this.setState({ auto_value: newValue });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   onSuggestionsClearRequested = () => {};
   render() {
-    const  items  = this.props.store.packitems;
+    const items = this.props.store.packitems;
     const itemRows = items.map((item, idx) => {
       let ng = item.name + '/' + (item.guige === null ? '' : item.guige);
       return (
@@ -149,10 +149,10 @@ class PackItems extends React.Component {
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={item => item.name}
+            getSuggestionValue={(item) => item.name}
             ref="autocomplete"
             suggestions={this.state.auto_items}
-            renderSuggestion={item => (
+            renderSuggestion={(item) => (
               <span>
                 {item.id + ': ' + item.bh + ' '}
                 <b>{item.name}</b>

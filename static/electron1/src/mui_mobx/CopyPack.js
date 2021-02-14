@@ -14,7 +14,7 @@ class CopyPack extends React.Component {
     auto_items: [],
     auto_loading: false,
   };
-  newnameChange = event => {
+  newnameChange = (event) => {
     this.setState({ newname: event.target.value });
   };
   copy_pack = () => {
@@ -23,15 +23,15 @@ class CopyPack extends React.Component {
     var data1 = new FormData();
     data1.append('oldid', this.src_id);
     data1.append('newname', this.state.newname);
-    Client.postForm('/rest/copypack/', data1, result => {
+    Client.postForm('/rest/copypack/', data1, (result) => {
       self.setState({ error: result.message });
     });
   };
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     console.log('auto_change');
     if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value }, items => {
+      Client.get('/rest/Pack', { search: value }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     }
@@ -69,10 +69,10 @@ class CopyPack extends React.Component {
                   onSuggestionSelected={this.auto_select}
                   onSuggestionsFetchRequested={this.auto_change}
                   onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                  getSuggestionValue={item => item.name}
+                  getSuggestionValue={(item) => item.name}
                   ref="autocomplete"
                   suggestions={this.state.auto_items}
-                  renderSuggestion={item => <span>{item.name}</span>}
+                  renderSuggestion={(item) => <span>{item.name}</span>}
                 />
               </td>
             </tr>

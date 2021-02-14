@@ -32,7 +32,7 @@ class DlgCopyPack extends React.Component {
       return false;
     }
   }
-  newnameChange = event => {
+  newnameChange = (event) => {
     this.setState({ newname: event.target.value });
   };
   copy_pack = () => {
@@ -42,17 +42,17 @@ class DlgCopyPack extends React.Component {
     this.setState({ stopped: false });
     data1.append('oldid', this.src_id);
     data1.append('newname', this.state.newname);
-    Client.postForm('/rest/copypack/', data1, result => {
+    Client.postForm('/rest/copypack/', data1, (result) => {
       self.setState({ error: result.message });
       this.setState({ stopped: true });
     });
   };
   onSuggestionsClearRequested = () => {};
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     console.log('auto_change');
     if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value }, items => {
+      Client.get('/rest/Pack', { search: value }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     }
@@ -143,10 +143,10 @@ class DlgCopyPack extends React.Component {
                     onSuggestionsClearRequested={
                       this.onSuggestionsClearRequested
                     }
-                    getSuggestionValue={item => item.name}
+                    getSuggestionValue={(item) => item.name}
                     ref="autocomplete"
                     suggestions={this.state.auto_items}
-                    renderSuggestion={item => <span>{item.name}</span>}
+                    renderSuggestion={(item) => <span>{item.name}</span>}
                   />
                 </td>
               </tr>

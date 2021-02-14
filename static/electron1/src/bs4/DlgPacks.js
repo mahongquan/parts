@@ -9,7 +9,7 @@ class DlgPacks extends Component {
     contacts: [],
     user: 'AnonymousUser',
     start: 0,
-    limit:10,
+    limit: 10,
     total: 0,
     search: '',
     start_input: 1,
@@ -38,7 +38,7 @@ class DlgPacks extends Component {
         limit: this.state.limit,
         search: this.state.search,
       },
-      contacts2 => {
+      (contacts2) => {
         var user = contacts2.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -51,12 +51,14 @@ class DlgPacks extends Component {
         });
         // eslint-disable-next-line
         this.state.total = contacts2.total;
-      },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error);
-    });
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error);
+      }
+    );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start - this.state.limit;
     if (this.state.start < 0) {
@@ -66,7 +68,7 @@ class DlgPacks extends Component {
     //this.setState({start:start});
     this.loaddata();
   };
-  handleNext = e => {
+  handleNext = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start + this.state.limit;
     if (this.state.start > this.state.total - this.state.limit)
@@ -90,18 +92,18 @@ class DlgPacks extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.setState({ search: e.target.value });
   };
-  search = e => {
+  search = (e) => {
     // eslint-disable-next-line
     this.state.start = 0;
     this.loaddata();
   };
-  handleEdit = pack_id => {
+  handleEdit = (pack_id) => {
     //this.setState({currentIndex:idx,showModal:true});
     this.refs.edit1.open(pack_id);
   };
@@ -111,10 +113,7 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <Button
-              variant="light"
-              onClick={() => this.handleEdit(contact.id)}
-            >
+            <Button variant="light" onClick={() => this.handleEdit(contact.id)}>
               {contact.name}
             </Button>
           </td>
@@ -125,10 +124,7 @@ class DlgPacks extends Component {
         <tr key={idx}>
           <td>{contact.id}</td>
           <td>
-            <Button
-              variant="light"
-              onClick={() => this.handleEdit(contact.id)}
-            >
+            <Button variant="light" onClick={() => this.handleEdit(contact.id)}>
               [NONAME]
             </Button>
           </td>
@@ -151,12 +147,20 @@ class DlgPacks extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button variant="light" onClick={this.handlePrev}>前一页</Button>;
+      prev = (
+        <Button variant="light" onClick={this.handlePrev}>
+          前一页
+        </Button>
+      );
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button variant="light" onClick={this.handleNext}>后一页</Button>;
+      next = (
+        <Button variant="light" onClick={this.handleNext}>
+          后一页
+        </Button>
+      );
     } else {
       next = null;
     }
@@ -177,10 +181,7 @@ class DlgPacks extends Component {
             placeholder=""
             onChange={this.handleSearchChange}
           />
-          <Button
-            className="btn-primary"
-            onClick={this.search}
-          >
+          <Button className="btn-primary" onClick={this.search}>
             搜索
           </Button>
           <Table size="sm" responsive bordered condensed="true">

@@ -51,7 +51,7 @@ class DlgItems extends React.Component {
     auto_loading: false,
   };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.open();
     }
   }
@@ -69,7 +69,7 @@ class DlgItems extends React.Component {
         limit: this.mystate.limit,
         query: this.mystate.search,
       },
-      contacts2 => {
+      (contacts2) => {
         console.log(contacts2);
         this.setState({
           items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -77,12 +77,13 @@ class DlgItems extends React.Component {
           start: this.mystate.start,
         });
         this.mystate.total = contacts2.total;
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-    ,(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
     if (this.mystate.start < 0) {
       this.mystate.start = 0;
@@ -96,7 +97,7 @@ class DlgItems extends React.Component {
     console.log(contacts2);
     this.setState({ items: contacts2 });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     this.mystate.start = this.mystate.start + this.mystate.limit;
     if (this.mystate.start > this.mystate.total - this.mystate.limit)
       this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
@@ -114,18 +115,18 @@ class DlgItems extends React.Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.mystate.search = e.target.value;
     this.setState({ search: this.mystate.search });
   };
-  search = e => {
+  search = (e) => {
     this.mystate.start = 0;
     this.loaddata();
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   mapfunc = (contact, idx) => {
@@ -157,10 +158,7 @@ class DlgItems extends React.Component {
           <TableCell>{contact.guige}</TableCell>
           <TableCell>{contact.danwei}</TableCell>
           <TableCell>
-            <img
-              alt="no"
-              src={'/media/' + contact.image}
-            />
+            <img alt="no" src={'/media/' + contact.image} />
           </TableCell>
         </TableRow>
       );
@@ -172,7 +170,7 @@ class DlgItems extends React.Component {
     let prev;
     let next;
     //console.log(this.mystate);
-    console.log("DlgItems render")
+    console.log('DlgItems render');
     console.log(this.props);
     if (this.state.start === 0) {
       hasprev = false;

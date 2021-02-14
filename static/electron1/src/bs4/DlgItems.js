@@ -11,7 +11,7 @@ class DlgItems extends Component {
     user: 'AnonymousUser',
     start: 0,
     total: 0,
-    limit:10,
+    limit: 10,
     search: '',
     start_input: 1,
     showModal: false,
@@ -40,7 +40,7 @@ class DlgItems extends Component {
         limit: this.state.limit,
         query: this.state.search,
       },
-      contacts2 => {
+      (contacts2) => {
         var user = contacts2.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -51,12 +51,14 @@ class DlgItems extends Component {
           total: contacts2.total,
           start: this.state.start,
         });
-      },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error);
-    });
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error);
+      }
+    );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start - this.state.limit;
     if (this.state.start < 0) {
@@ -71,7 +73,7 @@ class DlgItems extends Component {
     console.log(contacts2);
     this.setState({ items: contacts2 });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     // eslint-disable-next-line
     this.state.start = this.state.start + this.state.limit;
     if (this.state.start > this.state.total - this.state.limit)
@@ -95,18 +97,18 @@ class DlgItems extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.setState({ search: e.target.value });
   };
-  search = e => {
+  search = (e) => {
     // eslint-disable-next-line
     this.state.start = 0;
     this.loaddata();
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   mapfunc = (contact, idx) => {
@@ -164,12 +166,20 @@ class DlgItems extends Component {
       hasnext = false;
     }
     if (hasprev) {
-      prev = <Button variant="light" onClick={this.handlePrev}>前一页</Button>;
+      prev = (
+        <Button variant="light" onClick={this.handlePrev}>
+          前一页
+        </Button>
+      );
     } else {
       prev = null;
     }
     if (hasnext) {
-      next = <Button  variant="light" onClick={this.handleNext}>后一页</Button>;
+      next = (
+        <Button variant="light" onClick={this.handleNext}>
+          后一页
+        </Button>
+      );
     } else {
       next = null;
     }
@@ -190,10 +200,7 @@ class DlgItems extends Component {
             placeholder="name"
             onChange={this.handleSearchChange}
           />
-          <Button
-            variant="primary"
-            onClick={this.search}
-          >
+          <Button variant="primary" onClick={this.search}>
             搜索
           </Button>
           <Table size="sm" responsive bordered condensed="true">

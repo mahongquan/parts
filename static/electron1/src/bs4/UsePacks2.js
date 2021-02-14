@@ -30,43 +30,50 @@ class UsePacks2 extends React.Component {
   //   }
   // }
   componentDidUpdate(prevProps) {
-    if(this.unload) return;
-    if (this.props.contact_hetongbh !==prevProps.contact_hetongbh) {
+    if (this.unload) return;
+    if (this.props.contact_hetongbh !== prevProps.contact_hetongbh) {
       this.setState({ newPackName: this.props.contact_hetongbh });
     }
-    if (prevProps.contact_id !== this.props.contact_id && this.props.contact_id) {
-      console.log("did update")
+    if (
+      prevProps.contact_id !== this.props.contact_id &&
+      this.props.contact_id
+    ) {
+      console.log('did update');
       this.load_data(this.props.contact_id);
     }
   }
-  load_data = contact_id => {
-    Client.UsePacks(contact_id, usepacks => {
-      if (!this.unload)
-        this.setState({
-          usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        });
-    },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error);
-    });
+  load_data = (contact_id) => {
+    Client.UsePacks(
+      contact_id,
+      (usepacks) => {
+        if (!this.unload)
+          this.setState({
+            usepacks: usepacks.data, //.slice(0, MATCHING_ITEM_LIMIT),
+          });
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error);
+      }
+    );
   };
   componentDidMount = () => {
     if (this.props.contact_hetongbh) {
       this.setState({ newPackName: this.props.contact_hetongbh });
     }
     if (this.props.contact_id) {
-      console.log("did mount")
+      console.log('did mount');
       this.load_data(this.props.contact_id);
     }
-    this.unload=false;
+    this.unload = false;
   };
   componentWillUnmount = () => {
     this.unload = true;
   };
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value }, items => {
+      Client.get('/rest/Pack', { search: value }, (items) => {
         this.setState({ auto_items: items.data });
       });
     }
@@ -97,52 +104,52 @@ class UsePacks2 extends React.Component {
   //     this.addrow(item.id);
   //     //this.setState({auto_value:value, auto_items: [ item ] })
   // }
-  bibei = id => {
+  bibei = (id) => {
     this.setState({ auto_value: '必备' });
     console.log(this.auto1);
     this.auto1.current.input.click();
     //this.auto_change(null,"必备");
   };
-  fujia = id => {
+  fujia = (id) => {
     this.setState({ auto_value: '附加' });
     //this.auto_change(null,"必备");
   };
-  new_pack = id => {
+  new_pack = (id) => {
     var url = '/rest/UsePackEx';
     var data = { name: this.state.newPackName, contact: this.props.contact_id };
-    Client.postOrPut(url, data, res => {
+    Client.postOrPut(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.usepacks.concat(p);
       this.setState({ usepacks: newFoods });
     });
   };
-  addrow = pack_id => {
+  addrow = (pack_id) => {
     var url = '/rest/UsePack';
     var data = { contact: this.props.contact_id, pack: pack_id };
-    Client.postOrPut(url, data, res => {
+    Client.postOrPut(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.usepacks.concat(p);
       this.setState({ usepacks: newFoods });
     });
   };
-  newpackChange = e => {
+  newpackChange = (e) => {
     this.setState({ newPackName: e.target.value });
   };
-  onEditClick = id => {};
-  onDeleteClick = itemIndex => {
+  onEditClick = (id) => {};
+  onDeleteClick = (itemIndex) => {
     var url = '/rest/UsePack';
-    Client.delete1(url, { id: this.state.usepacks[itemIndex].id }, res => {
+    Client.delete1(url, { id: this.state.usepacks[itemIndex].id }, (res) => {
       const filteredFoods = this.state.usepacks.filter(
         (item, idx) => itemIndex !== idx
       );
       this.setState({ usepacks: filteredFoods });
     });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     //this.setState({currentIndex:idx,showModal:true});
     this.refs.edit1.open2(idx);
   };
-  getUsers = input => {
+  getUsers = (input) => {
     console.log('getUsers');
     console.log(input);
     if (!input) {
@@ -152,8 +159,8 @@ class UsePacks2 extends React.Component {
     return fetch('/rest/Pack?limit=10&search=' + input, {
       credentials: 'include',
     })
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         var r = { options: json.data };
         console.log(r);
         return r;
@@ -166,7 +173,7 @@ class UsePacks2 extends React.Component {
       auto_value: newValue,
     });
   };
-  onValueClick = value => {
+  onValueClick = (value) => {
     console.log(value);
   };
   render() {
@@ -225,9 +232,9 @@ class UsePacks2 extends React.Component {
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={item => item.name}
+            getSuggestionValue={(item) => item.name}
             suggestions={this.state.auto_items}
-            renderSuggestion={item => <span>{item.name}</span>}
+            renderSuggestion={(item) => <span>{item.name}</span>}
           />
           <Button
             style={{ margin: '10px 10px 10px 10px' }}
@@ -251,7 +258,11 @@ class UsePacks2 extends React.Component {
             value={this.state.newPackName}
             onChange={this.newpackChange}
           />
-          <Button variant="secondary" id="id_new_usepack" onClick={this.new_pack}>
+          <Button
+            variant="secondary"
+            id="id_new_usepack"
+            onClick={this.new_pack}
+          >
             新包
           </Button>
         </div>

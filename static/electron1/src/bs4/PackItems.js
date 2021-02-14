@@ -16,7 +16,7 @@ class PackItems extends React.Component {
     auto_loading: false,
     release: true,
   };
-  close_ok = sure => {
+  close_ok = (sure) => {
     this.setState({ show_ok: false });
     // if (sure) {
     //   const filteredFoods = data.config.boards.filter(
@@ -25,17 +25,21 @@ class PackItems extends React.Component {
     //   data.config.boards = filteredFoods;
     //   this.setState({ boards: data.config.boards });
     // }
-  };  
+  };
   componentDidMount = () => {
     // this.auto_ref.current.input.focus();
-    Client.PackItems(this.props.pack_id, items => {
-      this.setState({
-        items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
-      });
-    },(error)=>{
-      console.log(error);
-      myglobal.app.show_webview(error);
-    });
+    Client.PackItems(
+      this.props.pack_id,
+      (items) => {
+        this.setState({
+          items: items.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        });
+      },
+      (error) => {
+        console.log(error);
+        myglobal.app.show_webview(error);
+      }
+    );
   };
   auto_select = (event, data) => {
     console.log('selected');
@@ -43,11 +47,11 @@ class PackItems extends React.Component {
     this.addrow(data.suggestion.id);
     //this.setState({auto_value:value, auto_items: [ item ] })
   };
-  auto_change = data => {
+  auto_change = (data) => {
     var value = data.value;
     // console.log("auto_change");
     if (value.length > 1) {
-      Client.get('/rest/Item', { query: value, limit: 15 }, items => {
+      Client.get('/rest/Item', { query: value, limit: 15 }, (items) => {
         this.setState({ auto_items: items.data, auto_loading: false });
       });
     }
@@ -71,15 +75,15 @@ class PackItems extends React.Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   };*/
-  new_packitem = id => {
-    if(this.state.newPackName===""){
-      this.setState({show_ok:true});
+  new_packitem = (id) => {
+    if (this.state.newPackName === '') {
+      this.setState({ show_ok: true });
       return;
     }
     var url = '/rest/BothPackItem';
     var data = { name: this.state.newPackName, pack: this.props.pack_id };
     console.log(data);
-    Client.postOrPut(url, data, res => {
+    Client.postOrPut(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.items.concat(p);
       this.setState({ items: newFoods });
@@ -91,22 +95,22 @@ class PackItems extends React.Component {
     console.log(contacts2);
     this.setState({ items: contacts2 });
   };
-  addrow = item_id => {
+  addrow = (item_id) => {
     var url = '/rest/PackItem';
     var data = { pack: this.props.pack_id, itemid: item_id };
-    Client.post(url, data, res => {
+    Client.post(url, data, (res) => {
       var p = res.data;
       const newFoods = this.state.items.concat(p);
       this.setState({ items: newFoods });
     });
   };
-  newpackChange = e => {
+  newpackChange = (e) => {
     this.setState({ newPackName: e.target.value });
   };
-  onEditClick = id => {};
-  onDeleteClick = itemIndex => {
+  onEditClick = (id) => {};
+  onDeleteClick = (itemIndex) => {
     var url = '/rest/PackItem';
-    Client.delete1(url, { id: this.state.items[itemIndex].id }, res => {
+    Client.delete1(url, { id: this.state.items[itemIndex].id }, (res) => {
       const filteredFoods = this.state.items.filter(
         (item, idx) => itemIndex !== idx
       );
@@ -117,7 +121,7 @@ class PackItems extends React.Component {
     // console.log(newValue);
     this.setState({ auto_value: newValue });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   onSuggestionsClearRequested = () => {};
@@ -128,7 +132,10 @@ class PackItems extends React.Component {
         <td>{item.itemid}</td>
         <td>{item.name}</td>
         <td>{item.guige}</td>
-        <td>{item.ct}{item.danwei}</td>
+        <td>
+          {item.ct}
+          {item.danwei}
+        </td>
         <td>{item.bh}</td>
         <td hidden={this.state.release}>{item.pack}</td>
         <td>
@@ -140,11 +147,16 @@ class PackItems extends React.Component {
           />
         </td>
         <td>
-          <Button size="sm" variant="light" onClick={() => this.handleEdit(idx)}>
+          <Button
+            size="sm"
+            variant="light"
+            onClick={() => this.handleEdit(idx)}
+          >
             编辑
           </Button>
           <Button
-            variant="warning" size="sm"
+            variant="warning"
+            size="sm"
             onClick={() => this.onDeleteClick(idx)}
           >
             删除
@@ -175,13 +187,13 @@ class PackItems extends React.Component {
             inputProps={{
               value: this.state.auto_value,
               onChange: this.onChange,
-              }}
+            }}
             onSuggestionSelected={this.auto_select}
             onSuggestionsFetchRequested={this.auto_change}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={item => item.name}
+            getSuggestionValue={(item) => item.name}
             suggestions={this.state.auto_items}
-            renderSuggestion={item => (
+            renderSuggestion={(item) => (
               <span>
                 {item.id + ': ' + item.bh + ' '}
                 <b>{item.name}</b>
@@ -209,10 +221,10 @@ class PackItems extends React.Component {
         <div style={{ minHeight: '200px' }} />
         <PackItemEditNew ref="dlg" parent={this} />
         <DlgOkCancel
-            description="备件名称编号不能为空"
-            showModal={this.state.show_ok}
-            closeModal={this.close_ok}
-          />
+          description="备件名称编号不能为空"
+          showModal={this.state.show_ok}
+          closeModal={this.close_ok}
+        />
       </div>
     );
   }

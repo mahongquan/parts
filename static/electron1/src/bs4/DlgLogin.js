@@ -15,7 +15,7 @@ class DlgLogin extends React.Component {
     //   console.log(res);
     // });
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     this.props.onLoginSubmit(data);
   };
   render() {

@@ -4,16 +4,17 @@ import RichTextEditor from 'react-rte';
 var _ = require('underscore');
 var moment = require('moment');
 export default class Store {
-  @action setState = newState => {
+  @action setState = (newState) => {
     _.extend(this.state, newState);
     console.log(this.state);
-  };  
+  };
   constructor(contactStore) {
-    this.contactStore=contactStore;
+    this.contactStore = contactStore;
     this.state = {
       @observable openCollapse: false,
       @observable showModal: false,
-      @observable contact: {
+      @observable
+      contact: {
         @observable yujifahuo_date: moment(),
         @observable tiaoshi_date: moment(),
         @observable addr: '',
@@ -31,7 +32,7 @@ export default class Store {
       @observable editRich: false,
       @observable rich: RichTextEditor.createEmptyValue(),
     };
-    autorun(()=>{
+    autorun(() => {
       console.log(this.state);
     });
   }

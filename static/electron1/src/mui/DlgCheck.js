@@ -25,57 +25,62 @@ class DlgCheck extends React.Component {
     data1.append('id', this.contact_id);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/check', data1, function(data) {
-      var showdata = [];
-      var left = data.result[0];
-      var notequal = data.result[1];
-      var right = data.result[2];
-      console.log(notequal);
-      var n = left.length;
-      if (n < right.length) {
-        n = right.length;
-      }
-      for (var i = 0; i < n; i++) {
-        var tr = {};
-        if (i < left.length) {
-          for (var one in left[i]) {
-            tr['left' + one] = left[i][one];
+    Client.postForm(
+      '/rest/check',
+      data1,
+      function (data) {
+        var showdata = [];
+        var left = data.result[0];
+        var notequal = data.result[1];
+        var right = data.result[2];
+        console.log(notequal);
+        var n = left.length;
+        if (n < right.length) {
+          n = right.length;
+        }
+        for (var i = 0; i < n; i++) {
+          var tr = {};
+          if (i < left.length) {
+            for (var one in left[i]) {
+              tr['left' + one] = left[i][one];
+            }
+          } else {
+            tr['left0'] = '';
+            tr['left1'] = '';
+            tr['left2'] = '';
           }
-        } else {
-          tr['left0'] = '';
-          tr['left1'] = '';
-          tr['left2'] = '';
-        }
-        if (i < right.length) {
-          for (one in right[i]) {
-            tr['right' + one] = right[i][one];
+          if (i < right.length) {
+            for (one in right[i]) {
+              tr['right' + one] = right[i][one];
+            }
+          } else {
+            tr['right0'] = '';
+            tr['right1'] = '';
+            tr['right2'] = '';
           }
-        } else {
-          tr['right0'] = '';
-          tr['right1'] = '';
-          tr['right2'] = '';
+          showdata.push(tr);
         }
-        showdata.push(tr);
+        n = notequal.length;
+        for (i = 0; i < n / 2; i++) {
+          tr = {};
+          var l = 2 * i + 0;
+          for (one in notequal[l]) {
+            tr['left' + one] = notequal[l][one];
+          }
+          var r = 2 * i + 1;
+          for (one in notequal[r]) {
+            tr['right' + one] = notequal[r][one];
+          }
+          showdata.push(tr);
+        }
+        console.log(showdata);
+        self.setState({ packs: showdata });
+        self.setState({ hideTable: false });
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-      n = notequal.length;
-      for (i = 0; i < n / 2; i++) {
-        tr = {};
-        var l = 2 * i + 0;
-        for (one in notequal[l]) {
-          tr['left' + one] = notequal[l][one];
-        }
-        var r = 2 * i + 1;
-        for (one in notequal[r]) {
-          tr['right' + one] = notequal[r][one];
-        }
-        showdata.push(tr);
-      }
-      console.log(showdata);
-      self.setState({ packs: showdata });
-      self.setState({ hideTable: false });
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
   open = (contact_id, yiqibh) => {
     this.contact_id = contact_id;
@@ -109,7 +114,7 @@ class DlgCheck extends React.Component {
               accept="application/vnd.ms-excel"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
             />
             <Button
               style={{ margin: '10px 10px 10px 10px' }}

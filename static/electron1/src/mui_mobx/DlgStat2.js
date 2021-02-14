@@ -44,18 +44,18 @@ class DlgStat extends Component {
     this.setState({ showModal: true });
     this.loaddata('%');
   };
-  loaddata = baoxiang => {
+  loaddata = (baoxiang) => {
     var self = this;
     var data = { limit: 10, search: 'xls', baoxiang: baoxiang };
-    Client.get('/rest/year12', data, function(result) {
+    Client.get('/rest/year12', data, function (result) {
       self.setState({ lbls: result.lbls, values: result.values, baoxiang: '' });
     });
   };
-  onClickBaoxiang = baoxiang => {
+  onClickBaoxiang = (baoxiang) => {
     this.setState({ baoxiang: baoxiang });
     this.loaddata(baoxiang);
   };
-  logChange = val => {
+  logChange = (val) => {
     console.log('Selected: ' + JSON.stringify(val));
     if (val != null) {
       this.setState({ baoxiang: val.value });

@@ -14,12 +14,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import UserDropDown from "./UserDropDown"
+import UserDropDown from './UserDropDown';
 import MomentUtils from '@date-io/moment';
-import {
-  DatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 // import Datetime from 'react-datetime';
 // import sprintf from 'sprintf';
 var moment = require('moment');
@@ -32,19 +29,19 @@ const styles = {
   },
 };
 
-function lastDay(m){
-  var m1=moment([m.year(),m.month(),1]);
-  m1.add(1,"months");
+function lastDay(m) {
+  var m1 = moment([m.year(), m.month(), 1]);
+  m1.add(1, 'months');
   // console.log(m.format('YYYY-MM-DD'))
-  m1.subtract(1,"days");
+  m1.subtract(1, 'days');
   // console.log(m.format('YYYY-MM-DD'))
   return m1;
 }
 class DlgItems extends Component {
-  constructor(){
+  constructor() {
     super();
-    this.state={
-      month:moment(),
+    this.state = {
+      month: moment(),
       items: [],
       items2: [],
       start: 0,
@@ -53,39 +50,39 @@ class DlgItems extends Component {
       search: '',
       start_input: 1,
       baoxiang: '',
-    }
+    };
   }
-  prev=()=>{
+  prev = () => {
     //m.subtract(2, 'months')
-    var m=this.state.month.clone();
+    var m = this.state.month.clone();
     m.subtract(1, 'months');
-    this.setState({month:m},()=>{
-       this.loaddata();
-    })
+    this.setState({ month: m }, () => {
+      this.loaddata();
+    });
     console.log(this.state);
-  }
-  next=()=>{
-    var m=this.state.month.clone();
+  };
+  next = () => {
+    var m = this.state.month.clone();
     m.add(1, 'months');
-    this.setState({month:m},()=>{
-       this.loaddata();
-    })
-  }
+    this.setState({ month: m }, () => {
+      this.loaddata();
+    });
+  };
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.open();
     } else if (prevProps.showModal && !this.props.showModal) {
       // this.onHide();
     }
   }
-  yujifahuo_date_change = value => {
+  yujifahuo_date_change = (value) => {
     var t = null;
     if (typeof value === 'string') {
       t = value;
     } else {
       t = value.format('YYYY-MM');
     }
-    this.setState({ month:moment(t)},()=>{
+    this.setState({ month: moment(t) }, () => {
       this.loaddata();
     });
   };
@@ -112,9 +109,9 @@ class DlgItems extends Component {
       "'  and tiaoshi_date between '" +
       start_date.format('YYYY-MM-DD') +
       "' and '" +
-       end_date.format('YYYY-MM-DD') +
+      end_date.format('YYYY-MM-DD') +
       "'";
-    Client.sql(cmd, contacts2 => {
+    Client.sql(cmd, (contacts2) => {
       // console.log(contacts2);
       this.setState({
         items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -133,9 +130,9 @@ class DlgItems extends Component {
       "'  and tiaoshi_date between '" +
       start_date.format('YYYY-MM-DD') +
       "' and '" +
-      end_date.format('YYYY-MM-DD')  +
+      end_date.format('YYYY-MM-DD') +
       "'";
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       // console.log(contacts2);
       this.setState({
         items2: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -148,24 +145,24 @@ class DlgItems extends Component {
       this.handleEdit(idx);
     });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     let contact = this.state.items[idx];
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 =
       "update parts_contact set work_month='" +
-      this.state.month.format("YYYY-MM-DD") +
+      this.state.month.format('YYYY-MM-DD') +
       "' where id=" +
       contact.id;
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       console.log(contacts2);
       this.loaddata();
     });
   };
-  handleEdit2 = idx => {
+  handleEdit2 = (idx) => {
     let contact = this.state.items2[idx];
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 = 'update parts_contact set work_month=NULL where id=' + contact.id;
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       console.log(contacts2);
       this.loaddata();
     });
@@ -199,7 +196,7 @@ class DlgItems extends Component {
       </TableRow>
     );
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     this.setState({ baoxiang: e }, () => {
       this.loaddata();
     });
@@ -231,59 +228,46 @@ class DlgItems extends Component {
       >
         <AppBar className={this.props.classes.appBar}>
           <Toolbar>
-            <IconButton
-              
-              onClick={this.props.handleClose}
-              aria-label="Close"
-            >
+            <IconButton onClick={this.props.handleClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              
-              className={this.props.classes.flex}
-            >
+            <Typography variant="h6" className={this.props.classes.flex}>
               工作量
             </Typography>
           </Toolbar>
         </AppBar>
         <DialogContent>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-        <div style={{ display: 'flex', alignItems: 'center'}}>
- <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
- <span>{this.state.baoxiang}</span>
-                 <DatePicker
-                    format="YYYY-MM-DD"
-                    value={this.month}
-                    onChange={this.yujifahuo_date_change}
-                  />
-        </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ border: 'solid 1px' }}>
-              未报工作量仪器
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>日期</TableCell>
-                    <TableCell>仪器号</TableCell>
-                    <TableCell>用户</TableCell>
-                    <TableCell>通道</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody id="contact-list">{contactRows}</TableBody>
-              </Table>
-              <Button
-                variant="outlined"
-                onClick={this.jump}
-              >
-                全部
-              </Button>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <UserDropDown titile="" onSelect={this.onSelectBaoxiang} />
+              <span>{this.state.baoxiang}</span>
+              <DatePicker
+                format="YYYY-MM-DD"
+                value={this.month}
+                onChange={this.yujifahuo_date_change}
+              />
             </div>
-            <div style={{ border: 'solid 1px'}}>
-              {right}
+            <div style={{ display: 'flex' }}>
+              <div style={{ border: 'solid 1px' }}>
+                未报工作量仪器
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>日期</TableCell>
+                      <TableCell>仪器号</TableCell>
+                      <TableCell>用户</TableCell>
+                      <TableCell>通道</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody id="contact-list">{contactRows}</TableBody>
+                </Table>
+                <Button variant="outlined" onClick={this.jump}>
+                  全部
+                </Button>
+              </div>
+              <div style={{ border: 'solid 1px' }}>{right}</div>
             </div>
-          </div>
-        </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider>
         </DialogContent>
       </Dialog>
     );

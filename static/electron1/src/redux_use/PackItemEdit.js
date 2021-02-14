@@ -18,9 +18,9 @@ class PackItemEdit extends Component {
   //   }
   //   this.setState({packitem:this.old});
   // }
-  constructor(props){
+  constructor(props) {
     super();
-    this.old=props.old;
+    this.old = props.old;
     this.state = {
       packitem: this.old,
       hiddenPacks: true,
@@ -38,10 +38,10 @@ class PackItemEdit extends Component {
   //   }
   //   this.setState({ packitem: this.old });
   // };
-  handleSave = data => {
+  handleSave = (data) => {
     var url = '/rest/BothPackItem';
     console.log(this.state.packitem);
-    Client.postOrPut(url, this.state.packitem, res => {
+    Client.postOrPut(url, this.state.packitem, (res) => {
       console.log(res);
       this.setState({ contact: res.data });
       this.parent.handlePackItemChange(this.index, res.data);
@@ -49,7 +49,7 @@ class PackItemEdit extends Component {
       this.close();
     });
   };
-  quehuoChange = e => {
+  quehuoChange = (e) => {
     var quehuo = this.state.packitem.quehuo;
     quehuo = !quehuo;
     if (this.old.quehuo === quehuo) {
@@ -67,7 +67,7 @@ class PackItemEdit extends Component {
     console.log(contact2);
     this.setState({ packitem: contact2 });
   };
-  handleChange = e => {
+  handleChange = (e) => {
     console.log('change');
     console.log(e);
     console.log(e.target);

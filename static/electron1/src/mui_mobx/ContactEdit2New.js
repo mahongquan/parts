@@ -61,11 +61,11 @@ class ContactEdit2New extends Component {
       this.onHide();
     }
   }
-  onShow = idx => {
+  onShow = (idx) => {
     this.open2(idx);
   };
   onHide = () => {};
-  open2 = idx => {
+  open2 = (idx) => {
     this.setState({ showModal: true });
     this.setState({ bg: {} });
     this.parent = this.props.parent;
@@ -129,7 +129,7 @@ class ContactEdit2New extends Component {
   //   console.log(contact2);
   //   this.setState({contact:contact2});
   // },
-  handleCopy = data => {
+  handleCopy = (data) => {
     console.log('copy');
     this.index = null;
     var contact2 = update(this.state.contact, { id: { $set: '' } });
@@ -137,11 +137,11 @@ class ContactEdit2New extends Component {
     this.setState({ contact: contact2 });
     this.setState({ hiddenPacks: true });
   };
-  handleSave = data => {
+  handleSave = (data) => {
     var url = '/rest/Contact';
     var dataSave = this.state.contact;
     dataSave.detail = this.state.rich.toString('html');
-    Client.postOrPut(url, dataSave, res => {
+    Client.postOrPut(url, dataSave, (res) => {
       if (res.success) {
         this.setState({ contact: res.data });
         //console.log("after save======================")
@@ -162,7 +162,7 @@ class ContactEdit2New extends Component {
       }
     });
   };
-  tiaoshi_date_change = value => {
+  tiaoshi_date_change = (value) => {
     //this.state.yujifahuo_date=value;
     var e_target_name = 'tiaoshi_date';
     console.log(this.old[e_target_name]);
@@ -197,7 +197,7 @@ class ContactEdit2New extends Component {
     this.setState({ contact: contact2 });
   };
 
-  yujifahuo_date_change = value => {
+  yujifahuo_date_change = (value) => {
     //this.state.yujifahuo_date=value;
     var e_target_name = 'yujifahuo_date';
     console.log(this.old[e_target_name]);
@@ -236,7 +236,7 @@ class ContactEdit2New extends Component {
   channels_select = (event, data) => {
     this.change1(data.suggestion);
   };
-  change1 = item => {
+  change1 = (item) => {
     console.log('selected');
     console.log(item);
     if (this.old.channels === item) {
@@ -256,7 +256,7 @@ class ContactEdit2New extends Component {
   yiqixinghao_select = (event, data) => {
     this.change2(data.suggestion);
   };
-  change2 = item => {
+  change2 = (item) => {
     console.log('selected');
     console.log(item);
     if (this.old.yiqixinghao === item) {
@@ -272,7 +272,7 @@ class ContactEdit2New extends Component {
     console.log(contact2);
     this.setState({ contact: contact2 });
   };
-  handleChange = e => {
+  handleChange = (e) => {
     console.log('change');
     console.log(e);
     console.log(e.target.value);
@@ -301,7 +301,7 @@ class ContactEdit2New extends Component {
   matchStateToTerm = (state, value) => {
     return state.toLowerCase().indexOf(value.toLowerCase()) !== -1;
   };
-  detailchange = value => {
+  detailchange = (value) => {
     console.log(value);
     this.setState({ rich: value });
   };
@@ -391,11 +391,11 @@ class ContactEdit2New extends Component {
                       '2O+2N',
                       '2O',
                     ]}
-                    getSuggestionValue={item => item}
+                    getSuggestionValue={(item) => item}
                     onSuggestionSelected={this.channels_select}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={item => <span>{item}</span>}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
               </tr>
@@ -424,11 +424,11 @@ class ContactEdit2New extends Component {
                       'ON-4000',
                       'ONH-3000',
                     ]}
-                    getSuggestionValue={item => item}
+                    getSuggestionValue={(item) => item}
                     onSuggestionsFetchRequested={() => {}}
                     onSuggestionsClearRequested={() => {}}
                     onSuggestionSelected={this.yiqixinghao_select}
-                    renderSuggestion={item => <span>{item}</span>}
+                    renderSuggestion={(item) => <span>{item}</span>}
                   />
                 </td>
                 <td>

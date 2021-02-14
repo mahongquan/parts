@@ -120,7 +120,7 @@ class Browser extends React.Component {
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null, value);
   };
-  channels_input = event => {
+  channels_input = (event) => {
     console.log(event);
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null, event);
@@ -150,7 +150,7 @@ class Browser extends React.Component {
     mode: 'text',
     connect_error: false,
   };
-  handleContextMenu = event => {
+  handleContextMenu = (event) => {
     //console.log(event);
     event.preventDefault();
     event.stopPropagation();
@@ -159,14 +159,14 @@ class Browser extends React.Component {
       this.setState({ showcontext: false });
     }, 5000);
   };
-  loadFilesFromServer = path => {
+  loadFilesFromServer = (path) => {
     if (path === '.' || path === './') {
       this.setState({ isroot: true });
     } else {
       this.setState({ isroot: false });
     }
     var self = this;
-    socket.emit('/fs/children', { path: path }, data => {
+    socket.emit('/fs/children', { path: path }, (data) => {
       var files = data.children.sort(self.state.sort);
       var paths = self.state.paths;
       if (paths[paths.length - 1] !== path) paths = paths.concat([path]);
@@ -184,7 +184,7 @@ class Browser extends React.Component {
       );
     });
   };
-  updateNavbarPath = path => {
+  updateNavbarPath = (path) => {
     // console.log("updateNavbarPath");
     // console.log(path);
     this.setState({ current_path: path });
@@ -221,7 +221,7 @@ class Browser extends React.Component {
     } else {
       var data = { path: thepath };
       // console.log(data);
-      socket.emit('/fs/parent', data, res => {
+      socket.emit('/fs/parent', data, (res) => {
         if (res.isroot) {
           alert('已经是根目录!');
         } else {
@@ -240,7 +240,7 @@ class Browser extends React.Component {
       showcontext: false,
     });
   };
-  uploadFile = evt => {
+  uploadFile = (evt) => {
     console.log(evt);
     // var path = this.currentPath();
     // const file = evt.target.files[0];
@@ -272,7 +272,7 @@ class Browser extends React.Component {
     this.loadFilesFromServer(path);
   };
 
-  updateSort = sort => {
+  updateSort = (sort) => {
     var files = this.state.files;
     var lastSort = this.state.sort;
     if (lastSort === sort) files = files.reverse();
@@ -295,10 +295,10 @@ class Browser extends React.Component {
   sizeSort = () => {
     this.updateSort(File.sizeSort);
   };
-  updatePath = path => {
+  updatePath = (path) => {
     this.loadFilesFromServer(path);
   };
-  getContent = path => {
+  getContent = (path) => {
     // console.log("content");
     // console.log(path);
     this.props.onFileClick(path);
@@ -312,7 +312,7 @@ class Browser extends React.Component {
       this.reloadFilesFromServer
     );
   };
-  onClick = f => {
+  onClick = (f) => {
     // console.log("onClick");
     // console.log(f);
     if (f.isdir) {
@@ -339,14 +339,14 @@ class Browser extends React.Component {
       />
     );
   };
-  onChange = newValue => {
+  onChange = (newValue) => {
     //console.log('change',newValue);
     this.setState({
       filecontent: newValue,
       filechange: true,
     });
   };
-  genpath = path => {
+  genpath = (path) => {
     // console.log("genpath=============")
     // console.log(path);
     var paths = path.split('\\');
@@ -396,13 +396,13 @@ class Browser extends React.Component {
     });
     return hs;
   };
-  onMouseLeave = idx => {
+  onMouseLeave = (idx) => {
     this.setState({ pathIdx: null });
   };
-  onMouseEnter = idx => {
+  onMouseEnter = (idx) => {
     this.setState({ pathIdx: idx });
   };
-  linkclick = e => {
+  linkclick = (e) => {
     console.log(e);
     this.updatePath(e);
   };
@@ -446,7 +446,7 @@ class Browser extends React.Component {
     );
   };
 
-  linkclick = e => {
+  linkclick = (e) => {
     console.log(e);
     this.updatePath(e);
   };

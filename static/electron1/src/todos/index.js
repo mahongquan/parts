@@ -8,10 +8,7 @@ import thunk from 'redux-thunk';
 class App2 extends React.Component {
   constructor() {
     super();
-    this.store = createStore(
-      reducer,
-      applyMiddleware(thunk)
-    );
+    this.store = createStore(reducer, applyMiddleware(thunk));
   }
   render() {
     return (

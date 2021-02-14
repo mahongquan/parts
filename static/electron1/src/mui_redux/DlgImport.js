@@ -24,7 +24,7 @@ class DlgImport extends React.Component {
     data1.append('file', file);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/standard', data1, function(res) {
+    Client.postForm('/rest/standard', data1, function (res) {
       if (res.result.length > 0) {
         const newFoods = update(self.state.packs, { $unshift: res.result });
         self.setState({ packs: newFoods });
@@ -63,7 +63,7 @@ class DlgImport extends React.Component {
     var self = this;
     //this.setState({ showModal: true,showalert:false });
     var data = { limit: 10, search: 'xls' };
-    Client.get('/rest/Pack', data, function(result) {
+    Client.get('/rest/Pack', data, function (result) {
       console.info(result);
       // if (!result.success){
       //    self.setState({error:result.message});
@@ -106,7 +106,7 @@ class DlgImport extends React.Component {
               accept="application/vnd.ms-excel"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
             <Button

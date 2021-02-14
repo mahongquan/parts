@@ -32,7 +32,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CONTACTActions, types } from './reducers';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -68,7 +68,7 @@ const styles = theme => ({
     },
   },
 });
-const CustomTableCell = withStyles(theme => ({
+const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
     color: theme.palette.common.white,
@@ -86,7 +86,7 @@ class App extends React.Component {
   handleContactChange = (idx, contact) => {
     this.props.store.handleContactChange(idx, contact);
   };
-  handleClickFilter = event => {
+  handleClickFilter = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ target: event.target, showcontext: true });
@@ -99,26 +99,26 @@ class App extends React.Component {
       baoxiang: this.props.baoxiang,
     });
   };
-  onLoginSubmit = data => {
+  onLoginSubmit = (data) => {
     this.props.actions.onLoginSubmit(data);
   };
-  handleUserChange = user => {
+  handleUserChange = (user) => {
     this.props.store.handleUserChange(user);
   };
   handleLogout = () => {
     this.props.actions.handleLogout();
   };
-  keypress = e => {
+  keypress = (e) => {
     if (e.which !== 13) return;
     // console.log('你按了回车键...');
 
     this.search();
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.props.dispatch({ type: types.SEARCH_CHANGE, value: e.target.value });
   };
 
-  handlePrev = e => {
+  handlePrev = (e) => {
     let start = this.props.start - this.props.limit;
     if (start < 0) {
       start = 0;
@@ -131,7 +131,7 @@ class App extends React.Component {
       baoxiang: this.props.baoxiang,
     });
   };
-  search = e => {
+  search = (e) => {
     this.props.actions.loadCONTACT({
       start: 0,
       limit: this.props.limit,
@@ -153,17 +153,17 @@ class App extends React.Component {
       baoxiang: this.props.baoxiang,
     });
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.props.dispatch({ type: types.PAGE_CHANGE, value: e.target.value });
   };
 
-  onDetailClick = contactid => {
+  onDetailClick = (contactid) => {
     // console.log(contactid);
     // window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
     // this.setState({ showDlgDetail: true, contactid: contactid });
     this.props.actions.details(contactid);
   };
-  handleNext = e => {
+  handleNext = (e) => {
     let start = this.props.start + this.props.limit;
     if (start > this.props.total - this.props.limit)
       start = this.props.total - this.props.limit; //total >limit
@@ -177,7 +177,7 @@ class App extends React.Component {
       baoxiang: this.props.baoxiang,
     });
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     this.props.actions.loadCONTACT({
       start: 0,
       limit: this.props.limit,
@@ -185,26 +185,26 @@ class App extends React.Component {
       baoxiang: e,
     });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     // this.setState({ showDlgEdit: true, currentIndex: idx });
-    if(idx) this.props.actions.loadUsePack(this.props.contacts[idx].id);
+    if (idx) this.props.actions.loadUsePack(this.props.contacts[idx].id);
     this.props.dispatch({
       type: types.SHOW_DLG_EDIT,
       visible: true,
       index: idx,
     });
   };
-  allfile = contactid => {
+  allfile = (contactid) => {
     // this.dlgwait.current.open(contactid);
-     // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-     this.props.actions.allfile(contactid)
+    // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+    this.props.actions.allfile(contactid);
   };
-  updateMethod = (contactid,idx) => {
+  updateMethod = (contactid, idx) => {
     // this.dlgwait.current.open(contactid);
-     // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-     this.props.actions.updateMethod(contactid, idx)
+    // this.props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
+    this.props.actions.updateMethod(contactid, idx);
   };
-  handleContactChange2 = contact => {
+  handleContactChange2 = (contact) => {
     var idx = this.currentIndex;
     console.log(idx);
     let contacts2;
@@ -222,21 +222,25 @@ class App extends React.Component {
   };
   openDlgItems = () => {
     // this.dlgitems.current.open();
-    this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: true});
+    this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: true });
   };
-  opendlgfolder = contactid => {
+  opendlgfolder = (contactid) => {
     // this.dlgfolder.current.open(contactid);
-    this.props.actions.forlder(contactid)
+    this.props.actions.forlder(contactid);
   };
   opendlgcheck = (idx) => {
-    this.props.dispatch({ type: types.SHOW_DLG_CHECK, visible: true,index: idx});
+    this.props.dispatch({
+      type: types.SHOW_DLG_CHECK,
+      visible: true,
+      index: idx,
+    });
   };
   openDlgPacks = () => {
     // this.dlgpacks.current.open();
-    this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: true});
+    this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: true });
   };
   openDlgCopyPack = () => {
-    this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: true});
+    this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: true });
   };
   // openDlgStat = () => {
   //   this.dlgstat.current.open();
@@ -274,16 +278,13 @@ class App extends React.Component {
             <MenuItem onClick={() => this.onDetailClick(contact.id)}>
               详细
             </MenuItem>
-            <MenuItem
-              onClick={() =>this.updateMethod(contact.id,idx)}>
+            <MenuItem onClick={() => this.updateMethod(contact.id, idx)}>
               更新方法
             </MenuItem>
             <MenuItem onClick={() => this.allfile(contact.id)}>
               全部文件
             </MenuItem>
-            <MenuItem
-              onClick={() => this.opendlgcheck(idx)}
-            >
+            <MenuItem onClick={() => this.opendlgcheck(idx)}>
               核对备料计划
             </MenuItem>
             <MenuItem onClick={() => this.opendlgfolder(contact.id)}>
@@ -331,19 +332,20 @@ class App extends React.Component {
     } else {
       next = null;
     }
-    const store={
-          detail:this.props.detail,
-          contacts:this.props.contacts,
-          packitems:this.props.packitems,
-          usepacks:this.props.usepacks,
-          dispatch:this.props.dispatch,
-          hiddenPacks:this.props.hiddenPacks,
-          currentIndex:this.props.currentIndex,
-          allfile_err:this.props.allfile_err,
-          users:this.props.users,
-          packs:this.props.packs,
-          actions:this.props.actions};
-    console.log("store==")
+    const store = {
+      detail: this.props.detail,
+      contacts: this.props.contacts,
+      packitems: this.props.packitems,
+      usepacks: this.props.usepacks,
+      dispatch: this.props.dispatch,
+      hiddenPacks: this.props.hiddenPacks,
+      currentIndex: this.props.currentIndex,
+      allfile_err: this.props.allfile_err,
+      users: this.props.users,
+      packs: this.props.packs,
+      actions: this.props.actions,
+    };
+    console.log('store==');
     console.log(store);
     return (
       <div className={this.props.classes.root}>
@@ -351,7 +353,10 @@ class App extends React.Component {
           store={store}
           showModal={this.props.showDlgWorkMonth}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLG_WORKMONTH, visible: false });
+            this.props.dispatch({
+              type: types.SHOW_DLG_WORKMONTH,
+              visible: false,
+            });
           }}
           baoxiang={this.props.baoxiang}
         />
@@ -361,32 +366,49 @@ class App extends React.Component {
             this.props.dispatch({ type: types.SHOW_DLG_ITEMS, visible: false });
           }}
         />
-        <DlgPacks showModal={this.props.showDlgPack}
+        <DlgPacks
+          showModal={this.props.showDlgPack}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: false});
-          }} />
-         <DlgCopyPack showModal={this.props.showDlgCopyPack}
+            this.props.dispatch({ type: types.SHOW_DLG_PACK, visible: false });
+          }}
+        />
+        <DlgCopyPack
+          showModal={this.props.showDlgCopyPack}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLG_COPYPACK, visible: false});
-          }} />
-        
-        <DlgStatMonth open={this.props.showDlgStatMonth}
+            this.props.dispatch({
+              type: types.SHOW_DLG_COPYPACK,
+              visible: false,
+            });
+          }}
+        />
+
+        <DlgStatMonth
+          open={this.props.showDlgStatMonth}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLGSTAT_MONTH, visible: false });
+            this.props.dispatch({
+              type: types.SHOW_DLGSTAT_MONTH,
+              visible: false,
+            });
           }}
         />
         <DlgImport
           showModal={this.props.showDlgImport}
           store={store}
           handleClose={() => {
-             this.props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: false });
+            this.props.dispatch({
+              type: types.SHOW_DLG_IMPORT,
+              visible: false,
+            });
           }}
         />
-        <DlgCheck showModal={this.props.showDlgCheck}
+        <DlgCheck
+          showModal={this.props.showDlgCheck}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLG_CHECK, visible: false});
-          }} />
-        <DlgWait showModal={this.props.showdlgWait}
+            this.props.dispatch({ type: types.SHOW_DLG_CHECK, visible: false });
+          }}
+        />
+        <DlgWait
+          showModal={this.props.showdlgWait}
           store={store}
           handleClose={() => {
             this.props.dispatch({ type: types.SHOW_DLG_WAIT, visible: false });
@@ -396,7 +418,7 @@ class App extends React.Component {
         <DlgLogin
           showModal={this.props.show_login}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_LOGIN,visible:false});
+            this.props.dispatch({ type: types.SHOW_LOGIN, visible: false });
           }}
           onLoginSubmit={this.onLoginSubmit}
         />
@@ -405,12 +427,19 @@ class App extends React.Component {
           showModal={this.props.showDlgDetail}
           store={store}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLG_DETAIL,visible:false});
+            this.props.dispatch({
+              type: types.SHOW_DLG_DETAIL,
+              visible: false,
+            });
           }}
         />
-        <DlgStatYear open={this.props.showDlgStatYear}
+        <DlgStatYear
+          open={this.props.showDlgStatYear}
           handleClose={() => {
-            this.props.dispatch({ type: types.SHOW_DLGSTAT_YEAR, visible: false });
+            this.props.dispatch({
+              type: types.SHOW_DLGSTAT_YEAR,
+              visible: false,
+            });
           }}
         />
         <ContactEdit2New
@@ -424,28 +453,29 @@ class App extends React.Component {
         />
         <AppBar position="static">
           <Toolbar>
-            <Typography
-              variant="h6"
-              className={this.props.classes.grow}
-            >
+            <Typography variant="h6" className={this.props.classes.grow}>
               装箱单
             </Typography>
-            <Button  onClick={this.openDlgPacks}>
-              包
-            </Button>
-            <Button  onClick={this.openDlgItems}>
-              备件
-            </Button>
-            <Button  onClick={this.openDlgCopyPack}>
-              复制包
-            </Button>
+            <Button onClick={this.openDlgPacks}>包</Button>
+            <Button onClick={this.openDlgItems}>备件</Button>
+            <Button onClick={this.openDlgCopyPack}>复制包</Button>
             <DropdownButton title="统计">
-              <MenuItem onClick={
-                ()=>{this.props.dispatch({ type: types.SHOW_DLGSTAT_MONTH, visible: true });
-              }}>月</MenuItem>
               <MenuItem
                 onClick={() => {
-                  this.props.dispatch({ type: types.SHOW_DLGSTAT_YEAR, visible: true });
+                  this.props.dispatch({
+                    type: types.SHOW_DLGSTAT_MONTH,
+                    visible: true,
+                  });
+                }}
+              >
+                月
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  this.props.dispatch({
+                    type: types.SHOW_DLGSTAT_YEAR,
+                    visible: true,
+                  });
                 }}
               >
                 年
@@ -477,38 +507,34 @@ class App extends React.Component {
               }}
               onChange={this.handleSearchChange}
             />
-            <Button  onClick={this.search}>
+            <Button onClick={this.search}>
               <SearchIcon />
             </Button>
             <Button
-              
               style={{ margin: '0px 10px 0px 10px' }}
               variant="contained"
               onClick={() => this.handleEdit(null)}
             >
               新仪器
             </Button>
-            <Button
-              
-              variant="contained"
-              onClick={this.openDlgImport}
-            >
+            <Button variant="contained" onClick={this.openDlgImport}>
               导入标样
             </Button>
             <Button
-              
               style={{ margin: '0px 10px 0px 10px', display: 'none' }}
               onClick={this.openDlgImportHT}
             >
               导入合同
             </Button>
             <Button
-              
               variant="contained"
               style={{ margin: '0px 10px 0px 10px' }}
               onClick={() => {
                 // this.setState({ showDlgWorkMonth: true });
-                this.props.dispatch({ type: types.SHOW_DLG_WORKMONTH, visible: true });
+                this.props.dispatch({
+                  type: types.SHOW_DLG_WORKMONTH,
+                  visible: true,
+                });
               }}
             >
               工作量
@@ -519,7 +545,10 @@ class App extends React.Component {
               ) : (
                 <MenuItem
                   onClick={() => {
-                    this.props.dispatch({ type: types.SHOW_LOGIN,visible:true });
+                    this.props.dispatch({
+                      type: types.SHOW_LOGIN,
+                      visible: true,
+                    });
                   }}
                 >
                   登录
@@ -580,19 +609,19 @@ class App extends React.Component {
 App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   // console.log("map==============")
   // console.log(state);
   return state.CONTACTs;
 };
 
-const mapDispatchToProps = dispatch =>{ 
+const mapDispatchToProps = (dispatch) => {
   // console.log("map========================");
   // console.log(dispatch);
   return {
-  actions: bindActionCreators(CONTACTActions, dispatch),
-  dispatch: dispatch,
-  }
+    actions: bindActionCreators(CONTACTActions, dispatch),
+    dispatch: dispatch,
+  };
 };
 export default connect(
   mapStateToProps,

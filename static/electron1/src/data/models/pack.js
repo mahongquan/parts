@@ -1,4 +1,4 @@
-export default function(sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   var Pack = sequelize.define(
     'Pack',
     {

@@ -22,11 +22,11 @@ class socket {
     funcs[url](data, callback);
   }
 }
-socket.init = callback => {
+socket.init = (callback) => {
   models.sequelize
     .sync()
-    .then(function() {
-      socket.on('/post/standard', function(data, callback) {
+    .then(function () {
+      socket.on('/post/standard', function (data, callback) {
         console.log('/post/standard');
         console.log(data);
         callback({
@@ -35,7 +35,7 @@ socket.init = callback => {
           message: 'delete Contact ok',
         });
       });
-      socket.on('/get/showcontact', async function(data, callback) {
+      socket.on('/get/showcontact', async function (data, callback) {
         console.log(data);
         var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
         callback({
@@ -48,7 +48,7 @@ socket.init = callback => {
           message: 'showcontact ok',
         });
       });
-      socket.on('/sql', async function(cmd, callback) {
+      socket.on('/sql', async function (cmd, callback) {
         console.log(cmd);
         var cursor = await models.sequelize.query(cmd);
         console.log(cursor[0]);
@@ -58,7 +58,7 @@ socket.init = callback => {
         });
       });
 
-      socket.on('/get/year12', async function(data, callback) {
+      socket.on('/get/year12', async function (data, callback) {
         var baoxiang = data.baoxiang;
         var end_date = new Date();
         var start_date = new Date(); //datetime.datetime(end_date.year-1,1,1,0,0,0)
@@ -103,7 +103,7 @@ socket.init = callback => {
           values: values,
         });
       });
-      socket.on('/get/month12', async function(data, callback) {
+      socket.on('/get/month12', async function (data, callback) {
         var baoxiang = data.baoxiang;
         var end_date = new Date();
         var start_date = new Date(); //datetime.datetime(end_date.year-1,1,1,0,0,0)
@@ -150,7 +150,7 @@ socket.init = callback => {
           values: values,
         });
       });
-      socket.on('/parts/showcontact', async function(data, callback) {
+      socket.on('/parts/showcontact', async function (data, callback) {
         var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
         callback({
           data: contact,
@@ -158,7 +158,7 @@ socket.init = callback => {
         });
       }); //delete
       //route.delete('/rest/Contact/:contact_id', async function(ctx,next) {
-      socket.on('/delete/Contact', async function(data, callback) {
+      socket.on('/delete/Contact', async function (data, callback) {
         var contact = await models.Contact.findById(data.contact_id); //.then(function(packitem) {
         contact.destroy();
         callback({
@@ -167,7 +167,7 @@ socket.init = callback => {
         });
       }); //delete
       //route.post('/rest/Contact', async function(ctx,next) {
-      socket.on('/post/Contact', async function(data, callback) {
+      socket.on('/post/Contact', async function (data, callback) {
         let contact;
         try {
           contact = await models.Contact.create(data);
@@ -189,7 +189,7 @@ socket.init = callback => {
         }
       });
       //route.put('/rest/Contact', async function(ctx,next) {
-      socket.on('/put/Contact', async function(data, callback) {
+      socket.on('/put/Contact', async function (data, callback) {
         var contact = await models.Contact.findById(data.id); //.then(function(packitem) {
         contact.update(data);
         contact.save();
@@ -200,7 +200,7 @@ socket.init = callback => {
         });
       });
       //route.get('/rest/Contact', async function(ctx,next) {
-      socket.on('/get/Contact', async function(data, callback) {
+      socket.on('/get/Contact', async function (data, callback) {
         var start = data.start;
         var limit = data.limit;
         let search = '',
@@ -260,7 +260,7 @@ socket.init = callback => {
       });
       //UsePack//////////////////////////////////////////////////////////////////////
       //route.delete('/rest/UsePack/:contact_id', async function(ctx) {
-      socket.on('/delete/UsePack', async function(data, callback) {
+      socket.on('/delete/UsePack', async function (data, callback) {
         var contact = await models.UsePack.findById(data.id); //.then(function(packitem) {
         contact.destroy();
         callback({
@@ -269,7 +269,7 @@ socket.init = callback => {
         });
       }); //delete
       //route.post('/rest/UsePack', async function(ctx,next) {
-      socket.on('/post/UsePack', async function(data, callback) {
+      socket.on('/post/UsePack', async function (data, callback) {
         var data1 = {};
         data1.contact_id = data.contact;
         data1.pack_id = data.pack;
@@ -284,7 +284,7 @@ socket.init = callback => {
         });
       });
       //route.put('/rest/UsePack', async function(ctx,next) {
-      socket.on('/put/UsePack', async function(data, callback) {
+      socket.on('/put/UsePack', async function (data, callback) {
         console.log(data);
         var contact = await models.UsePack.findById(data.id); //.then(function(packitem) {
         contact.update(data);
@@ -294,7 +294,7 @@ socket.init = callback => {
           message: 'update  UsePack ok',
         });
       });
-      socket.on('/post/UsePackEx', async function(data, callback) {
+      socket.on('/post/UsePackEx', async function (data, callback) {
         console.log(data);
         var rec1 = await models.Pack.create(data);
         var rec = await models.UsePack.create({
@@ -310,7 +310,7 @@ socket.init = callback => {
         });
       });
 
-      socket.on('/put/BothPackItem', async function(data, callback) {
+      socket.on('/put/BothPackItem', async function (data, callback) {
         console.log('BothPackItem');
         console.log(data);
         var item = await models.Item.findById(data.itemid); //.then(function(packitem) {
@@ -330,7 +330,7 @@ socket.init = callback => {
         });
       });
 
-      socket.on('/post/BothPackItem', async function(data, callback) {
+      socket.on('/post/BothPackItem', async function (data, callback) {
         console.log(data);
         if (!data.ct) data.ct = 0;
         if (!data.danwei) data.danwei = '';
@@ -352,7 +352,7 @@ socket.init = callback => {
           message: 'create PackItem ok',
         });
       });
-      socket.on('/get/UsePack', async function(data, callback) {
+      socket.on('/get/UsePack', async function (data, callback) {
         console.log(data);
         var start = data.start;
         var limit = data.limit;
@@ -391,7 +391,7 @@ socket.init = callback => {
       });
       //PackItem//////////////////////////////////////////////////////////////////////
       //route.delete('/rest/PackItem/:contact_id',  async function(ctx,contact_id) {
-      socket.on('/delete/PackItem', async function(data, callback) {
+      socket.on('/delete/PackItem', async function (data, callback) {
         var contact = await models.PackItem.findById(data.id); //.then(function(packitem) {
         contact.destroy();
         callback({
@@ -400,7 +400,7 @@ socket.init = callback => {
         });
       }); //delete
       //route.post('/rest/PackItem', async function(ctx,next) {
-      socket.on('/post/PackItem', async function(data, callback) {
+      socket.on('/post/PackItem', async function (data, callback) {
         console.log(data); //pack itemid
         let data1 = {
           pack_id: data.pack,
@@ -422,7 +422,7 @@ socket.init = callback => {
         });
       });
       //route.put('/rest/PackItem/:id',async  function(ctx,next) {
-      socket.on('/put/PackItem', async function(data, callback) {
+      socket.on('/put/PackItem', async function (data, callback) {
         console.log(data.id);
         var packitem = await models.PackItem.findById(data.id, {
           include: [
@@ -452,7 +452,7 @@ socket.init = callback => {
       // 	};
       // }));
       //route.get('/rest/PackItem', async function(ctx,next) {
-      socket.on('/get/PackItem', async function(data, callback) {
+      socket.on('/get/PackItem', async function (data, callback) {
         console.log('/get/PackItem');
         console.log(data);
         var start = data.start;
@@ -496,7 +496,7 @@ socket.init = callback => {
       });
       //Pack
       //route.post('/rest/Pack', async function(ctx,next) {
-      socket.on('/post/Pack', async function(data, callback) {
+      socket.on('/post/Pack', async function (data, callback) {
         var data = await models.Pack.create(data);
         callback({
           data: data,
@@ -504,7 +504,7 @@ socket.init = callback => {
         });
       });
       //route.get('/rest/Pack', async function(ctx,next) {
-      socket.on('/get/Pack', async function(data, callback) {
+      socket.on('/get/Pack', async function (data, callback) {
         console.log(data);
         var start = data.start;
         var limit = data.limit;
@@ -548,14 +548,14 @@ socket.init = callback => {
       });
       //Item
       //route.post('/rest/Item', async function(ctx,next) {
-      socket.on('/post/Item', async function(data, callback) {
+      socket.on('/post/Item', async function (data, callback) {
         var data = await models.Item.create(data);
         callback({
           data: data,
           message: 'create item ok',
         });
       });
-      socket.on('/put/Item', async function(data, callback) {
+      socket.on('/put/Item', async function (data, callback) {
         console.log(data);
         var item = await models.Item.findById(data.id);
         item.update(data);
@@ -567,7 +567,7 @@ socket.init = callback => {
         });
       });
       //route.get('/rest/Item', async function(ctx,next) {
-      socket.on('/get/Item', async function(data, callback) {
+      socket.on('/get/Item', async function (data, callback) {
         console.log(data);
         var start = data.start;
         var limit = data.limit;
@@ -611,7 +611,7 @@ socket.init = callback => {
       });
       callback();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };

@@ -33,7 +33,7 @@ export default class TablePages extends Component {
         search: this.state.search,
         baoxiang: this.state.baoxiang,
       },
-      Items2 => {
+      (Items2) => {
         this.setState({
           items: Items2.data, //.slice(0, MATCHING_ITEM_LIMIT),
           total: Items2.total,
@@ -42,7 +42,7 @@ export default class TablePages extends Component {
       }
     );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     let start = this.state.start - this.state.limit;
     if (start < 0) {
       start = 0;
@@ -51,7 +51,7 @@ export default class TablePages extends Component {
       this.loaddata();
     });
   };
-  handleNext = e => {
+  handleNext = (e) => {
     let start = this.state.start + this.state.limit;
     if (start > this.state.total - this.state.limit) {
       start = this.state.total - this.state.limit; //total >limit
@@ -71,7 +71,7 @@ export default class TablePages extends Component {
       this.loaddata();
     });
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
   mapfunc = (item, idx) => {
@@ -113,7 +113,7 @@ export default class TablePages extends Component {
         </TableRow>
       );
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     this.refs.dlg.open2(idx);
   };
   render = () => {

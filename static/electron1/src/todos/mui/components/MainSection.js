@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
 import Footer from './Footer';
@@ -13,8 +13,8 @@ import List from '@material-ui/core/List';
 import Tooltip from '@material-ui/core/Tooltip';
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
-  [SHOW_ACTIVE]: todo => !todo.completed,
-  [SHOW_COMPLETED]: todo => todo.completed,
+  [SHOW_ACTIVE]: (todo) => !todo.completed,
+  [SHOW_COMPLETED]: (todo) => todo.completed,
 };
 
 export default class MainSection extends React.Component {
@@ -29,7 +29,7 @@ export default class MainSection extends React.Component {
     this.props.actions.clearCompleted();
   };
 
-  handleShow = filter => {
+  handleShow = (filter) => {
     this.setState({ filter });
   };
 
@@ -88,7 +88,7 @@ export default class MainSection extends React.Component {
       <section className="main">
         {this.renderToggleAll(completedCount)}
         <List className="todo-list">
-          {filteredTodos.map(todo => (
+          {filteredTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} {...actions} />
           ))}
         </List>
