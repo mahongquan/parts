@@ -30,6 +30,7 @@
         "@material-ui/core": "latest",
         "@material-ui/icons": "latest",
         "@material-ui/pickers": "latest",
+        "@reduxjs/toolkit": "^1.5.0",
         "electron": "latest",
         "electron-builder": "latest",
         "immutability-helper": "latest",
@@ -49,6 +50,8 @@
         "redux": "latest",
         "redux-thunk": "latest",
         "request": "latest",
+        "sequelize": "^6.5.0",
+        "sqlite3": "^5.0.1",
         "trim-right": "latest"
     }
 }

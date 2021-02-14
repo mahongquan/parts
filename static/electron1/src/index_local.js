@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import myglobal from './myglobal';
-import App from './indexRouter';
+import App from './redux_use/index2';
 console.log(myglobal);
 const path = require('path');
 function link(where, module_name) {
@@ -15,8 +15,8 @@ function link(where, module_name) {
 function getWhere() {
   return window.require('electron').ipcRenderer.sendSync('getpath');
 }
-// let where = getWhere();
-// link('./', 'autosuggest.css');
+let where = getWhere();
+link('./', 'autosuggest.css');
 // link('./', 'react-datetime.css');
 // myglobal.api = 'models';
 // if (myglobal.api === 'models') {
@@ -30,10 +30,10 @@ function getWhere() {
 //   myglobal.Client = require('./Client_axios').default;
 // }
 // let AppName='./bs4/App';
-let AppName='./mui/App';
+// let AppName='./mui/App';
 // if (AppName==='./bs4/App'){
 //   let where=getWhere();
 //   link(where, 'node_modules/bootstrap/dist/css/bootstrap.css');
 //   link('./bs4', 'index.css');
 // }
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<div><a href="http://www.baidu.com">baidu</a><App /></div>, document.getElementById('root'));
