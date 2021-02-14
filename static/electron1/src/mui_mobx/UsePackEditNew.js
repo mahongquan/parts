@@ -3,8 +3,6 @@ import PackItems from './PackItems';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import Button from '@material-ui/core/Button';
 class UsePackEditNew extends Component {
   state = {
     showModal: false,
@@ -16,17 +14,6 @@ class UsePackEditNew extends Component {
     this.setState({ showModal: false });
   };
   handleChange = () => {};
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ showModal: nextProps.showModal });
-  //   if (nextProps.index==null){
-  //     this.old={};
-  //   }
-  //   else{
-  //     this.parent=nextProps.parent;
-  //     this.old=this.parent.state.usepacks[nextProps.index];
-  //   }
-  //   this.setState({usepack:this.old});
-  // }
   close = () => {
     this.setState({ showModal: false });
   };

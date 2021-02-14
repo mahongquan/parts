@@ -223,22 +223,22 @@ class models {
       var w = {};
       if (data.yiqibh && data.yiqibh != '') {
         w.yiqibh = {
-          $like: '%' + data.yiqibh + '%',
+          [Sequelize.Op.like]: '%' + data.yiqibh + '%',
         };
       }
       if (search != '') {
         w.hetongbh = {
-          $like: '%' + search + '%',
+          [Sequelize.Op.like]: '%' + search + '%',
         };
       }
       if (filter_danwei != '') {
         w.yonghu = {
-          $like: '%' + filter_danwei + '%',
+          [Sequelize.Op.like]: '%' + filter_danwei + '%',
         };
       }
       if (baoxiang != '') {
         w.baoxiang = {
-          $like: '%' + baoxiang + '%',
+          [Sequelize.Op.like]: '%' + baoxiang + '%',
         };
       }
       console.log(w);
@@ -408,6 +408,11 @@ class models {
       });
     }); //delete
     //route.post('/rest/PackItem', async function(ctx,next) {
+    models.on('/post/login', async function(data, callback) {
+      var output={"success":true,"message":"User" }
+      output["data"]={name:"马红权"}
+      callback(output);
+    });
     models.on('/post/PackItem', async function(data, callback) {
       console.log(data); //pack itemid
       let data1 = {
@@ -756,7 +761,7 @@ models.PackItem.belongsTo(models.Item, {
   foreignKey: 'item_id',
 });
 models.PackItem.belongsTo(models.Pack, {
-  foreignKey: 'item_id',
+  foreignKey: 'pack_id',
 });
 models.init(() => {});
 export default models;
