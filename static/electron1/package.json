@@ -46,6 +46,7 @@
         "react-router-dom": "^5.2.0",
         "react-rte": "latest",
         "react-select": "latest",
+        "react-use": "^17.1.1",
         "recharts": "latest",
         "redux": "latest",
         "redux-thunk": "latest",

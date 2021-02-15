@@ -29,6 +29,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
+import {useMount} from 'react-use';
 const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
@@ -88,6 +89,9 @@ function App(props) {
     console.log('=====App===================================================');
     console.log(state);
     return state.parts.user;
+  });
+  useMount(() =>{
+    dispatch(store.loadCONTACT({limit:limit}));
   });
   // componentDidMount = () => {
   //   props.actions.loadCONTACT({

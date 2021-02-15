@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import myglobal from './myglobal';
-import App from './redux_use/index2';
+import App from './indexRouter';
 console.log(myglobal);
 const path = require('path');
 function link(where, module_name) {
@@ -37,9 +37,6 @@ link('./', 'autosuggest.css');
 //   link('./bs4', 'index.css');
 // }
 ReactDOM.render(
-  <div>
-    <a href="http://www.baidu.com">baidu</a>
-    <App />
-  </div>,
+  <App />,
   document.getElementById('root')
 );
