@@ -10,7 +10,7 @@ export default class Index extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <App />
+        <App store={store} />
       </Provider>
     );
   }

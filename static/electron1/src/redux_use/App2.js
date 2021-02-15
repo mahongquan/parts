@@ -28,8 +28,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { useSelector, useDispatch } from 'react-redux';
-import * as store from './reducers/partsSlice';
-import {useMount} from 'react-use';
+import * as slice from './reducers/partsSlice';
+// import {useMount} from 'react-use';
 const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#333333',
@@ -75,6 +75,7 @@ const styles = (theme) => ({
     },
   },
 });
+// window.slice=slice;
 function App(props) {
   const dispatch = useDispatch();
   var contacts = useSelector((state) => state.parts.contacts);
@@ -86,13 +87,21 @@ function App(props) {
   var connect_error = useSelector((state) => state.parts.connect_error);
   var start_input = useSelector((state) => state.parts.start_input);
   var user = useSelector((state) => {
-    console.log('=====App===================================================');
-    console.log(state);
     return state.parts.user;
   });
-  useMount(() =>{
-    dispatch(store.loadCONTACT({start:start,limit:limit}));
+  React.useEffect(() => {
+    console.log("App render=====================================");
+    console.log(props.store.getState());
   });
+  React.useEffect(() => {
+    console.log("one time")
+    // window.addEventListener('keydown', handleKeyDown);
+    dispatch(slice.loadCONTACT({start:start,limit:limit}));
+    // return () => {
+    //   console.log("remove");
+    //   window.removeEventListener('keydown', handleKeyDown);
+    // };
+  }, []);
   // componentDidMount = () => {
   //   props.actions.loadCONTACT({
   //     start: props.start,
@@ -102,10 +111,10 @@ function App(props) {
   //   });
   // };
   const onLoginSubmit = (data) => {
-    dispatch(store.onLoginSubmit(data));
+    dispatch(slice.onLoginSubmit(data));
   };
   const handleUserChange = (user) => {
-    props.store.handleUserChange(user);
+    props.slice.handleUserChange(user);
   };
   const handleLogout = () => {
     props.actions.handleLogout();
@@ -115,7 +124,7 @@ function App(props) {
     search_go();
   };
   const handleSearchChange = (e) => {
-    dispatch(store.actions.SEARCH_CHANGE(e.target.value));
+    dispatch(slice.actions.SEARCH_CHANGE(e.target.value));
   };
 
   const handlePrev = (e) => {
@@ -124,7 +133,7 @@ function App(props) {
       start2 = 0;
     }
     dispatch(
-      store.loadCONTACT({
+      slice.loadCONTACT({
         start: start2,
         limit: limit,
         search: search,
@@ -134,7 +143,7 @@ function App(props) {
   };
   const search_go = (e) => {
     dispatch(
-      store.loadCONTACT({
+      slice.loadCONTACT({
         start: 0,
         limit: limit,
         search: search,
@@ -149,17 +158,17 @@ function App(props) {
       start2 = 0;
     }
     dispatch(
-      store.loadCONTACT({
+      slice.loadCONTACT({
         start: start2,
         limit: limit,
         search: search,
         baoxiang: baoxiang,
       })
     );
-    dispatch(store.load_user());
+    dispatch(slice.load_user());
   };
   const handlePageChange = (e) => {
-    dispatch(store.actions.PAGE_CHANGE(e.target.value));
+    dispatch(slice.actions.PAGE_CHANGE(e.target.value));
   };
 
   const onDetailClick = (contactid) => {
@@ -175,7 +184,7 @@ function App(props) {
       start2 = 0;
     }
     dispatch(
-      store.loadCONTACT({
+      slice.loadCONTACT({
         start: start2,
         limit: limit,
         search: search,
@@ -184,9 +193,9 @@ function App(props) {
     );
   };
   const onSelectBaoxiang = (e) => {
-    // dispatch(store.actions.BAOXIANG(e));
+    // dispatch(slice.actions.BAOXIANG(e));
     dispatch(
-      store.loadCONTACT({
+      slice.loadCONTACT({
         start: start,
         limit: limit,
         search: search,
@@ -196,40 +205,40 @@ function App(props) {
   };
   const handleEdit = (idx) => {
     // setState({ showDlgEdit: true, currentIndex: idx });
-    dispatch(store.edit(idx));
+    dispatch(slice.edit(idx));
   };
   const allfile = (contactid) => {
     // dlgwait.current.open(contactid);
     // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-    dispatch(store.allfile(contactid));
+    dispatch(slice.allfile(contactid));
   };
   const updateMethod = (contactid, idx) => {
     // dlgwait.current.open(contactid);
     // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
-    dispatch(store.updateMethod(contactid, idx));
+    dispatch(slice.updateMethod(contactid, idx));
   };
   const openDlgItems = () => {
     // dlgitems.current.open();
-    dispatch(store.actions.SHOW_DLG_ITEMS(true));
+    dispatch(slice.actions.SHOW_DLG_ITEMS(true));
   };
   const opendlgfolder = (contactid) => {
     // dlgfolder.current.open(contactid);
     props.actions.forlder(contactid);
   };
   const opendlgcheck = (idx) => {
-    dispatch(store.actions.SHOW_DLG_CHECK({ visible: true, index: idx }));
+    dispatch(slice.actions.SHOW_DLG_CHECK({ visible: true, index: idx }));
   };
   const openDlgPacks = () => {
     // dlgpacks.current.open();
-    dispatch(store.actions.SHOW_DLG_PACK(true));
+    dispatch(slice.actions.SHOW_DLG_PACK(true));
   };
   const openDlgCopyPack = () => {
-    dispatch(store.actions.SHOW_DLG_COPYPACK(true));
+    dispatch(slice.actions.SHOW_DLG_COPYPACK(true));
   };
   const openDlgImport = () => {
     // props.dispatch({ type: types.SHOW_DLG_IMPORT, visible: true});
     var data = { limit: 10, search: 'xls' };
-    dispatch(store.importXls(data));
+    dispatch(slice.importXls(data));
   };
   const contactRows = contacts.map((contact, idx) => (
     <TableRow key={idx} className={props.classes.row}>
@@ -297,81 +306,81 @@ function App(props) {
       <DlgWorkMonth
         showModal={useSelector((state) => state.parts.showDlgWorkMonth)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_WORKMONTH(false));
+          dispatch(slice.actions.SHOW_DLG_WORKMONTH(false));
         }}
         baoxiang={baoxiang}
       />
       <DlgItems
         showModal={useSelector((state) => state.parts.showDlgItem)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_ITEMS(false));
+          dispatch(slice.actions.SHOW_DLG_ITEMS(false));
         }}
       />
       <DlgPacks
         showModal={useSelector((state) => state.parts.showDlgPack)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_PACK(false));
+          dispatch(slice.actions.SHOW_DLG_PACK(false));
         }}
       />
       <DlgCopyPack
         showModal={useSelector((state) => state.parts.showDlgCopyPack)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_COPYPACK(false));
+          dispatch(slice.actions.SHOW_DLG_COPYPACK(false));
         }}
       />
 
       <DlgStatMonth
         open={useSelector((state) => state.parts.showDlgStatMonth)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLGSTAT_MONTH(false));
+          dispatch(slice.actions.SHOW_DLGSTAT_MONTH(false));
         }}
       />
       <DlgImport
         showModal={useSelector((state) => state.parts.showDlgImport)}
-        store={store}
+        slice={slice}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_IMPORT(false));
+          dispatch(slice.actions.SHOW_DLG_IMPORT(false));
         }}
       />
       <DlgCheck
         showModal={useSelector((state) => state.parts.showDlgCheck)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_CHECK(false));
+          dispatch(slice.actions.SHOW_DLG_CHECK(false));
         }}
       />
       <DlgWait
         showModal={useSelector((state) => state.parts.showdlgWait)}
-        store={store}
+        store={props.store}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_WAIT(false));
+          dispatch(slice.actions.SHOW_DLG_WAIT(false));
         }}
       />
 
       <DlgLogin
         showModal={useSelector((state) => state.parts.show_login)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_LOGIN(false));
+          dispatch(slice.actions.SHOW_LOGIN(false));
         }}
         onLoginSubmit={onLoginSubmit}
       />
       {/*        <DlgDetail
           contactid={props.contactid}
           showModal={useSelector((state) => state.parts.showDlgDetail)}
-          store={store}
+          slice={slice}
           handleClose={() => {
-            dispatch(store.actions.SHOW_DLG_DETAIL(false));
+            dispatch(slice.actions.SHOW_DLG_DETAIL(false));
           }}
         />*/}
       <DlgStatYear
         open={useSelector((state) => state.parts.showDlgStatYear)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLGSTAT_YEAR(false));
+          dispatch(slice.actions.SHOW_DLGSTAT_YEAR(false));
         }}
       />
       <ContactEdit2New
         showModal={useSelector((state) => state.parts.showDlgEdit)}
         handleClose={() => {
-          dispatch(store.actions.SHOW_DLG_EDIT({ visible: false }));
+          dispatch(slice.actions.SHOW_DLG_EDIT({ visible: false }));
         }}
         title="编辑"
       />
@@ -384,14 +393,14 @@ function App(props) {
           <DropdownButton title="统计">
             <MenuItem
               onClick={() => {
-                dispatch(store.actions.SHOW_DLGSTAT_MONTH(true));
+                dispatch(slice.actions.SHOW_DLGSTAT_MONTH(true));
               }}
             >
               月
             </MenuItem>
             <MenuItem
               onClick={() => {
-                dispatch(store.actions.SHOW_DLGSTAT_YEAR(true));
+                dispatch(slice.actions.SHOW_DLGSTAT_YEAR(true));
               }}
             >
               年
@@ -435,7 +444,7 @@ function App(props) {
             variant="contained"
             style={{ margin: '0px 10px 0px 10px' }}
             onClick={() => {
-              dispatch(store.actions.SHOW_DLG_WORKMONTH(true));
+              dispatch(slice.actions.SHOW_DLG_WORKMONTH(true));
             }}
           >
             工作量
@@ -446,7 +455,7 @@ function App(props) {
             ) : (
               <MenuItem
                 onClick={() => {
-                  dispatch(store.actions.SHOW_LOGIN(true));
+                  dispatch(slice.actions.SHOW_LOGIN(true));
                 }}
               >
                 登录

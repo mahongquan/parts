@@ -185,6 +185,7 @@ function load_contact(dispatch, data) {
   Client.contacts(
     data, (res) => {
       res.baoxiang=data.baoxiang;
+      res.start=data.start;
       dispatch(actions.LOAD_CONTACT_RES(res));
     },
     (error) => {
