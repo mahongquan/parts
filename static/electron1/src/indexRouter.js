@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import App_redux from './redux_use/index2';
+import App_redux2 from './redux_use/index2';
+import App_redux from './mui_redux/index';
 import { HashRouter as Router, Route, Switch, Link } from 'react-router-dom';
 function Mini(){
   const [state,setState]=React.useState("http://127.0.0.1:8000");
@@ -33,6 +34,7 @@ class Index extends Component {
         }}
       >
         <Link to="/mui_redux">mui_redux</Link>
+        <Link to="/redux_use">redux_use</Link>
       </div>
     );
   };
@@ -43,6 +45,7 @@ class Routers extends Component {
     return (
       <Switch>
         <Route exact path="/mui_redux" component={App_redux} />
+        <Route exact path="/redux_use" component={App_redux2} />
         <Route exact path="/index" component={Index} />
         <Route component={Index} />
       </Switch>

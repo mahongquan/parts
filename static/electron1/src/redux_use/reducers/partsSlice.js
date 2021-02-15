@@ -9,7 +9,6 @@ var initialState = {
   bg: {},
   old: {},
   index_packitem: null,
-  value: 0,
   users: [],
   logined: false,
   connect_error: false,
@@ -53,38 +52,18 @@ export const partsSlice = createSlice({
   name: 'parts',
   initialState: initialState,
   reducers: {
-    INCREMENT: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
-    },
-    DECREMENT: (state) => {
-      state.value -= 1;
-    },
     PackItemEdit_SAVE: (state, action) => {
-      // dispatch(savePackItemEdit(state.packitem));
     },
     DELETE_PACKITEM: (state, action) => {
       console.log(action);
-      // var res=action.payload;
-      // state.packitem=res.data;
-      // state.bg={};
-      // state.old = res.data;
     },
     ADD_PACKITEM_RES: (state, action) => {
       var res = action.payload;
       console.log(res);
-      // if(res.success){
       state.packitems = state.packitems.concat(res.data);
-      // }
     },
     SEARCH_CHANGE: (state, action) => {
       state.search = action.payload;
-    },
-    BAOXIANG: (state, action) => {
-      state.baoxiang = action.payload;
     },
     PAGE_CHANGE: (state, action) => {
       state.start_input = action.payload;
@@ -137,6 +116,8 @@ export const partsSlice = createSlice({
       }
     },
     SEARCH_PACK_RES: (state, action) => {
+      console.log("SEARCH_PACK_RES");
+      console.log(action);
       state.packs = action.payload.data;
     },
     SHOW_DLG_EDIT_USEPACK: (state, action) => {
@@ -171,6 +152,7 @@ export const partsSlice = createSlice({
       state.showDlgStatYear = action.payload;
     },
     LOAD_USER_RES: (state, action) => {
+      console.log(action);
       state.users = action.payload.data;
     },
     LOAD_PACKITEM_RES: (state, action) => {
@@ -180,10 +162,11 @@ export const partsSlice = createSlice({
     LOAD_CONTACT_RES: (state, action) => {
       console.log(action);
       state.connect_error = false;
-      state.contacts = action.payload.contacts;
+      state.contacts = action.payload.data;
       state.total = action.payload.total;
       state.user = action.payload.user;
       state.start = action.payload.start;
+      if(action.payload.baoxiang) state.baoxiang = action.payload.baoxiang;
     },
     LOAD_USEPACK_RES: (state, action) => {
       state.usepacks = action.payload.data;
@@ -200,23 +183,9 @@ export const partsSlice = createSlice({
 });
 function load_contact(dispatch, data) {
   Client.contacts(
-    data,
-    (contacts) => {
-      console.log(contacts);
-      var user = contacts.user;
-      if (user === undefined) {
-        user = 'AnonymousUser';
-      }
-      let res = {
-        contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        user: user,
-        total: contacts.total,
-        start: data.start,
-        baoxiang: data.baoxiang,
-      };
-      // dispatch({ type: LOAD_CONTACT_RES, res });
+    data, (res) => {
+      res.baoxiang=data.baoxiang;
       dispatch(actions.LOAD_CONTACT_RES(res));
-      load_user(dispatch);
     },
     (error) => {
       // console.log(typeof(error));
@@ -325,7 +294,7 @@ export const onLoginSubmit = (data) => (dispatch) => {
     }
   });
 };
-function load_user(dispatch) {
+export const load_user=()=>dispatch=>{
   Client.users((res) => {
     if (res.success) {
       dispatch(actions.LOAD_USER_RES(res));
@@ -343,13 +312,4 @@ export const savePackItemEdit = (data) => (dispatch) => {
     dispatch(actions.PackItemEdit_SAVE_RES(res));
   });
 };
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.counter.value)`
-// export const select_count = state =>{
-//   return state.parts.value
-// };
-// export const select_show_login = state => state.parts.show_login;
-// export const select_state = state => state.parts;
 export default partsSlice.reducer;

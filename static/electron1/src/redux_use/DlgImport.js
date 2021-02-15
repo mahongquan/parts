@@ -13,10 +13,7 @@ export default function DlgImport(props) {
   const [error, set_error] = React.useState('');
   const [info, set_info] = React.useState('');
   const [alert, set_alert] = React.useState(false);
-  let packs = useSelector((state) => {
-    console.log(state);
-    return state.parts.packs;
-  });
+  let packs = useSelector((state) => state.parts.packs);
   const contactRows = packs.map((pack, idx) => (
     <tr key={idx}>
       <td>{pack.id}</td>

@@ -156,6 +156,7 @@ function App(props) {
         baoxiang: baoxiang,
       })
     );
+    dispatch(store.load_user());
   };
   const handlePageChange = (e) => {
     dispatch(store.actions.PAGE_CHANGE(e.target.value));
@@ -183,7 +184,7 @@ function App(props) {
     );
   };
   const onSelectBaoxiang = (e) => {
-    dispatch(store.actions.BAOXIANG(e));
+    // dispatch(store.actions.BAOXIANG(e));
     dispatch(
       store.loadCONTACT({
         start: start,
@@ -379,9 +380,7 @@ function App(props) {
           <Typography variant="h6" className={props.classes.grow}>
             装箱单
           </Typography>
-          <Button onClick={openDlgPacks}>包</Button>
-          <Button onClick={openDlgItems}>备件</Button>
-          <Button onClick={openDlgCopyPack}>复制包</Button>
+          <Button variant="outlined" onClick={openDlgCopyPack}>复制包</Button>
           <DropdownButton title="统计">
             <MenuItem
               onClick={() => {
