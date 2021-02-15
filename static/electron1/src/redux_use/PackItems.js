@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client.js';
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
+import SelectItem from './SelectItem';
 var _ = require('lodash');
 export default function PackItems(props) {
   const dispatch = useDispatch();
@@ -95,45 +96,10 @@ export default function PackItems(props) {
       </Table>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>输入备件</label>
-        <Autosuggest
-          inputProps={{
-            id: 'states-autocomplete',
-            value: state.auto_value,
-            onChange: (event, { newValue }) => {
-              set_state((prev) => {
-                var new_state = _.clone(prev);
-                new_state.auto_value = newValue;
-                return new_state;
-              });
-            },
-          }}
-          onSuggestionSelected={(event, data) => {
-            addrow(pack_id, data.suggestion.id);
-          }}
-          onSuggestionsFetchRequested={(data) => {
-            var value = data.value;
-            if (value.length > 1) {
-              Client.get('/rest/Item', { query: value, limit: 15 }, (items) => {
-                set_state((prev) => {
-                  var new_state = _.clone(prev);
-                  new_state.auto_items = items.data;
-                  new_state.auto_loading = false;
-                  return new_state;
-                });
-              });
-            }
-          }}
-          onSuggestionsClearRequested={() => {}}
-          getSuggestionValue={(item) => item.name}
-          suggestions={state.auto_items}
-          renderSuggestion={(item) => (
-            <span>
-              {item.id + ': ' + item.bh + ' '}
-              <b>{item.name}</b>
-              {' ' + item.guige}
-            </span>
-          )}
-        />
+        <SelectItem onChange={  
+          (data) => {
+          this.addrow(data.id);}
+        } />
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>新备件名称：</label>

@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import UsePackEditNew from './UsePackEditNew';
 import Button from '@material-ui/core/Button';
-import Autosuggest from 'react-autosuggest';
+import SelectPack from './SelectPack';
 function UsePacks2(props) {
   const dispatch = useDispatch();
   var usepacks = useSelector((state) => state.parts.usepacks);
@@ -131,7 +131,10 @@ function UsePacks2(props) {
 
   return (
     <div>
-      <UsePackEditNew title="编辑" />
+      <UsePackEditNew title="编辑" open={useSelector((state) => state.parts.show_usepack_edit)} 
+      onClose={()=>{
+        dispatch(store.actions.SHOW_DLG_EDIT_USEPACK(false));
+      }}/>
       <Table responsive="true" bordered="true" condensed="true">
         <TableHead>
           <TableRow>
@@ -144,19 +147,11 @@ function UsePacks2(props) {
       </Table>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>输入包:</label>
-        <Autosuggest
-          inputProps={{
-            id: 'states-autocomplete',
-            value: state.auto_value,
-            onChange: onChange,
-          }}
-          onSuggestionSelected={auto_select}
-          onSuggestionsFetchRequested={auto_change}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={(item) => item.name}
-          suggestions={state.auto_items}
-          renderSuggestion={(item) => <span>{item.name}</span>}
-        />
+        <SelectPack onChange={(data) => {
+          console.log('selected');
+          console.log(data);
+          addrow(data.id);
+        }} />
         <Button
           variant="outlined"
           style={{ margin: '10px 10px 10px 10px' }}

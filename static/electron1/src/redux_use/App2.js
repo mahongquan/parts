@@ -91,7 +91,7 @@ function App(props) {
     return state.parts.user;
   });
   useMount(() =>{
-    dispatch(store.loadCONTACT({limit:limit}));
+    dispatch(store.loadCONTACT({start:start,limit:limit}));
   });
   // componentDidMount = () => {
   //   props.actions.loadCONTACT({

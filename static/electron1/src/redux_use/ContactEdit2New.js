@@ -18,6 +18,8 @@ import { types } from './reducers';
 // import Datetime from 'react-datetime';
 import MomentUtils from '@date-io/moment';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import SelectYQXH from './SelectYQXH';
+import SelectChannels from './SelectChannels';
 var _ = require('lodash');
 var moment = require('moment');
 // eslint-disable-next-line
@@ -281,7 +283,7 @@ function ContactEdit2New(props) {
                     id="id"
                     name="id"
                     disabled="disabled"
-                    value={contact.id}
+                    value={contact.id||""}
                   />
                 </td>
                 <td>
@@ -293,7 +295,7 @@ function ContactEdit2New(props) {
                     type="text"
                     id="yonghu"
                     name="yonghu"
-                    value={contact.yonghu}
+                    value={contact.yonghu||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -306,37 +308,17 @@ function ContactEdit2New(props) {
                     type="text"
                     id="addr"
                     name="addr"
-                    value={contact.addr}
+                    value={contact.addr||""}
                     onChange={handleChange}
                   />
                 </td>
                 <td>通道配置:</td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'channels-autocomplete',
-                      style: { backgroundColor: bg.channels },
-                      value: contact.channels,
-                      onChange: channels_change,
-                    }}
-                    suggestions={[
-                      '1O(低氧)',
-                      '1O(高氧)',
-                      '1O(低氧)+2N',
-                      '1C(低碳)+2S',
-                      '1C(高碳)+2S',
-                      '2C+1S(低硫)',
-                      '2C+1S(高硫)',
-                      '2C+2S',
-                      '2O+2N',
-                      '2O',
-                    ]}
-                    getSuggestionValue={(item) => item}
-                    onSuggestionSelected={channels_select}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    renderSuggestion={(item) => <span>{item}</span>}
-                  />
+                  <SelectChannels
+                      style={{ backgroundColor: bg.channels }}
+                      value={contact.channels||""}
+                      onChange={channels_change}
+                    />
                 </td>
               </tr>
               <tr>
@@ -344,32 +326,11 @@ function ContactEdit2New(props) {
                   <label>仪器型号:</label>
                 </td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'yiqixinghao-autocomplete',
-                      style: { backgroundColor: bg.yiqixinghao },
-                      value: contact.yiqixinghao,
-                      onChange: yiqixinghao_change,
-                    }}
-                    suggestions={[
-                      'CS-1011C',
-                      'CS-2800',
-                      'CS-3000',
-                      'CS-3000G',
-                      'HD-5',
-                      'N-3000',
-                      'O-3000',
-                      'OH-3000',
-                      'ON-3000',
-                      'ON-4000',
-                      'ONH-3000',
-                    ]}
-                    getSuggestionValue={(item) => item}
-                    onSuggestionsFetchRequested={() => {}}
-                    onSuggestionsClearRequested={() => {}}
-                    onSuggestionSelected={yiqixinghao_select}
-                    renderSuggestion={(item) => <span>{item}</span>}
-                  />
+                    <SelectYQXH
+                      value={contact.yiqixinghao||""}
+                      onChange={yiqixinghao_change}
+                      style={{ backgroundColor: bg.yiqixinghao }}
+                    />
                 </td>
                 <td>
                   <label>仪器编号:</label>
@@ -380,7 +341,7 @@ function ContactEdit2New(props) {
                     type="text"
                     id="yiqibh"
                     name="yiqibh"
-                    value={contact.yiqibh}
+                    value={contact.yiqibh||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -395,7 +356,7 @@ function ContactEdit2New(props) {
                     type="text"
                     id="baoxiang"
                     name="baoxiang"
-                    value={contact.baoxiang}
+                    value={contact.baoxiang||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -406,7 +367,7 @@ function ContactEdit2New(props) {
                     type="text"
                     id="shenhe"
                     name="shenhe"
-                    value={contact.shenhe}
+                    value={contact.shenhe||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -418,7 +379,7 @@ function ContactEdit2New(props) {
                 <td>
                   <DatePicker
                     format="YYYY-MM-DD"
-                    value={contact.yujifahuo_date}
+                    value={contact.yujifahuo_date||""}
                     onChange={yujifahuo_date_change}
                     style={{ backgroundColor: bg.yujifahuo_date }}
                   />
@@ -428,7 +389,7 @@ function ContactEdit2New(props) {
                   <DatePicker
                     format="YYYY-MM-DD"
                     style={{ backgroundColor: bg.tiaoshi_date }}
-                    value={contact.tiaoshi_date}
+                    value={contact.tiaoshi_date||""}
                     onChange={tiaoshi_date_change}
                   />
                 </td>
@@ -443,7 +404,7 @@ function ContactEdit2New(props) {
                     type="text"
                     id="hetongbh"
                     name="hetongbh"
-                    value={contact.hetongbh}
+                    value={contact.hetongbh||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -455,7 +416,7 @@ function ContactEdit2New(props) {
                     id="method"
                     name="method"
                     disabled={true}
-                    value={contact.method}
+                    value={contact.method||""}
                   />
                 </td>
               </tr>
@@ -467,7 +428,7 @@ function ContactEdit2New(props) {
                     style={{ backgroundColor: bg.dianqi }}
                     type="text"
                     name="dianqi"
-                    value={contact.dianqi}
+                    value={contact.dianqi||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -478,7 +439,7 @@ function ContactEdit2New(props) {
                     type="text"
                     name="jixie"
                     onChange={handleChange}
-                    value={contact.jixie}
+                    value={contact.jixie||""}
                   />
                 </td>
               </tr>
@@ -489,7 +450,7 @@ function ContactEdit2New(props) {
                     style={{ backgroundColor: bg.hongwai }}
                     type="text"
                     name="hongwai"
-                    value={contact.hongwai}
+                    value={contact.hongwai||""}
                     onChange={handleChange}
                   />
                 </td>
@@ -500,7 +461,7 @@ function ContactEdit2New(props) {
                     type="text"
                     name="redao"
                     onChange={handleChange}
-                    value={contact.redao}
+                    value={contact.redao||""}
                   />
                 </td>
               </tr>
@@ -540,7 +501,7 @@ function ContactEdit2New(props) {
               复制
             </Button>
           </div>
-          <div id="id_usepacks" hidden={hiddenPacks}>
+          <div hidden={hiddenPacks}>
             <UsePacks2
               contact_hetongbh={contact.hetongbh}
               contact_id={contact.id}
