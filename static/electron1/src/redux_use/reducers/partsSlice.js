@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Client from '../Client';
 var initialState = {
+  usepack:{},
+  index_usepack:null,
   hiddenPacks: false,
   contact: {},
   show_usepack_edit: false,
@@ -141,7 +143,16 @@ export const partsSlice = createSlice({
       state.packs = action.payload.data;
     },
     SHOW_DLG_EDIT_USEPACK: (state, action) => {
-      state.show_usepack_edit = action.payload;
+      console.log(action);
+      state.show_usepack_edit= action.payload.visible;
+      console.log(action);
+      if (action.payload.visible && action.payload.idx != null) {
+        state.index_usepack = action.payload.idx;
+        state.usepack = state.usepacks[action.payload.idx];
+      } else {
+        state.index_usepack = null;
+        state.usepack = {};
+      }
     },
     SHOW_DLG_IMPORT: (state, action) => {
       state.showDlgImport = action.payload;
@@ -270,6 +281,16 @@ export const edit = (idx,contact_id) => (dispatch) => {
       visible: true,
       idx: idx,
       contact_id:contact_id,
+    })
+  );
+};
+export const editUsePack = (idx,pack_id) => (dispatch) => {
+  dispatch(loadPackItems(pack_id));
+  dispatch(
+    actions.SHOW_DLG_EDIT_USEPACK({
+      visible: true,
+      idx: idx,
+      pack_id:pack_id,
     })
   );
 };

@@ -362,10 +362,7 @@ function ContactEdit2New(props) {
             </Button>
           </div>
           <div hidden={hiddenPacks}>
-            <UsePacks2
-              contact_hetongbh={contact.hetongbh}
-              contact_id={contact.id}
-            />
+            <UsePacks2 />
           </div>
         </MuiPickersUtilsProvider>
       </DialogContent>

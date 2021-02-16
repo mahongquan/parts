@@ -49,9 +49,6 @@ export default function PackItems(props) {
   const items = useSelector((state) => state.parts.packitems); //props.store.packitems;
   const itemRows = items.map((item, idx) => {
     let ng = item.name + '/' + (item.guige === null ? '' : item.guige);
-    console.log('state========================');
-    console.log(state);
-
     return (
       <TableRow key={idx}>
         <TableCell>
@@ -83,7 +80,6 @@ export default function PackItems(props) {
   });
   return (
     <div>
-      <div>id:{pack_id}</div>
       <Table responsive="true" bordered="true" condensed="true">
         <TableHead>
           <TableRow>

@@ -10,44 +10,16 @@ import TableRow from '@material-ui/core/TableRow';
 import UsePackEditNew from './UsePackEditNew';
 import Button from '@material-ui/core/Button';
 import SelectPack from './SelectPack';
-function UsePacks2(props) {
+export default function UsePacks2(props) {
   const dispatch = useDispatch();
+  var contact = useSelector((state) => state.parts.contact);
   var usepacks = useSelector((state) => state.parts.usepacks);
   const [state, setState] = React.useState({
     newPackName: '',
-    auto_value: '',
-    auto_items: [],
-    auto_loading: false,
-    release: true,
   });
-  const auto_change = (data) => {
-    var value = data.value;
-    if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value, limit: 15 }, (items) => {
-        setState({ auto_items: items.data });
-      });
-    }
-  };
-  const auto_select = (event, data) => {
-    console.log('selected');
-    console.log(data);
-    addrow(data.suggestion.id);
-    //setState({auto_value:value, auto_items: [ item ] })
-  };
-  const onSuggestionsClearRequested = () => {};
-  const bibei = (id) => {
-    setState({ auto_value: '必备' });
-    console.log(auto1);
-    auto1.current.input.click();
-    //auto_change(null,"必备");
-  };
-  const fujia = (id) => {
-    setState({ auto_value: '附加' });
-    //auto_change(null,"必备");
-  };
   const new_pack = (id) => {
     var url = '/rest/UsePackEx';
-    var data = { name: state.newPackName, contact: props.contact_id };
+    var data = { name: state.newPackName, contact: contact.id };
     Client.postOrPut(url, data, (res) => {
       var p = res.data;
       const newFoods = state.usepacks.concat(p);
@@ -55,63 +27,21 @@ function UsePacks2(props) {
     });
   };
   const addrow = (pack_id) => {
-    var url = '/rest/UsePack';
-    var data = { contact: props.contact_id, pack: pack_id };
+    var data = { contact: contact.id, pack: pack_id };
     dispatch(store.addUsePack(data));
   };
   const newpackChange = (e) => {
     setState({ newPackName: e.target.value });
   };
-  const onEditClick = (id) => {};
-  // const onDeleteClick = (itemIndex) => {
-  //   var url = '/rest/UsePack';
-  //   Client.delete1(url, { id: state.usepacks[itemIndex].id }, (res) => {
-  //     const filteredFoods = state.usepacks.filter(
-  //       (item, idx) => itemIndex !== idx
-  //     );
-  //     setState({ usepacks: filteredFoods });
-  //   });
-  // };
-  const handleEdit = (idx) => {
-    //setState({currentIndex:idx,showModal:true});
-    console.log(props.store.usepacks[idx]);
-    props.store.actions.loadPackItem(props.store.usepacks[idx].pack);
-    refs.edit1.open2(idx);
-  };
-  const getUsers = (input) => {
-    console.log('getUsers');
-    console.log(input);
-    if (!input) {
-      return Promise.resolve({ options: [] });
-    }
-
-    return fetch('/rest/Pack?limit=10&search=' + input, {
-      credentials: 'include',
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        var r = { options: json.data };
-        console.log(r);
-        return r;
-      });
-  };
-  const onChange = (event, { newValue }) => {
-    console.log('onChange======================');
-    console.log(newValue);
-    setState({
-      auto_value: newValue,
-    });
-  };
-  const onValueClick = (value) => {
-    console.log(value);
-  };
-
-  const usepackRows = usepacks.map((usepack, idx) => (
-    <TableRow key={idx}>
+  const usepackRows = usepacks.map((usepack, idx) => {
+    console.log(usepack);
+    return (<TableRow key={idx}>
       <TableCell>{usepack.id}</TableCell>
       <TableCell>{usepack.name}</TableCell>
       <TableCell>
-        <Button variant="outlined" onClick={() => handleEdit(idx)}>
+        <Button variant="outlined" onClick={() =>{
+            dispatch(store.editUsePack(idx,usepack.pack));
+          }}>
           编辑
         </Button>
         <Button
@@ -124,14 +54,15 @@ function UsePacks2(props) {
           删除
         </Button>
       </TableCell>
-    </TableRow>
-  ));
+    </TableRow>);
+  });
 
   return (
     <div>
-      <UsePackEditNew title="编辑" open={useSelector((state) => state.parts.show_usepack_edit)} 
+      <UsePackEditNew title="编辑" 
+      open={useSelector((state) => state.parts.show_usepack_edit)} 
       onClose={()=>{
-        dispatch(store.actions.SHOW_DLG_EDIT_USEPACK(false));
+        dispatch(store.actions.SHOW_DLG_EDIT_USEPACK({visible:false}));
       }}/>
       <Table responsive="true" bordered="true" condensed="true">
         <TableHead>
@@ -176,4 +107,4 @@ function UsePacks2(props) {
     </div>
   );
 }
-export default UsePacks2;
+
