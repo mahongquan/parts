@@ -30,7 +30,6 @@ const styles = {
     flex: 1,
   },
 };
-// class ContactEdit2New extends Component {
 function ContactEdit2New(props) {
   const dispatch = useDispatch();
   var hiddenPacks = useSelector((state) => state.parts.hiddenPacks);

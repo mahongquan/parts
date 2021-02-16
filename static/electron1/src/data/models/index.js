@@ -33,9 +33,9 @@ class models {
   }
   static init = (callback) => {
     models.on('/sql', async function (cmd, callback) {
-      console.log(cmd);
+      // console.log(cmd);
       var cursor = await models.sequelize.query(cmd);
-      console.log(cursor[0]);
+      // console.log(cursor[0]);
       callback({
         success: true,
         data: cursor[0],

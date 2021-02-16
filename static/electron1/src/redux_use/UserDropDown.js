@@ -3,7 +3,7 @@ import React from 'react';
 // import Client from './Client';
 import DropdownButton from './DropdownButton.js';
 export default function Userdropdown(props) {
-  console.log('userdropdown render');
+  // console.log('userdropdown render');
   let userMenu;
   let users = useSelector((state) => state.parts.users);
   if (users.length > 0) {
