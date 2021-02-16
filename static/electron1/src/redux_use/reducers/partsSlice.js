@@ -44,7 +44,6 @@ var initialState = {
   show_login: false,
   show_packitem_edit: false,
   //edit
-  hiddenPacks: true,
   allfile_err: null,
   detail: null,
 };
@@ -55,13 +54,26 @@ export const partsSlice = createSlice({
     PackItemEdit_SAVE: (state, action) => {
     },
     DELETE_PACKITEM: (state, action) => {
+      state.packitems = state.packitems.filter(
+        (item, idx) => action.payload.idx !== idx
+      );
+    },
+    DELETE_USEPACK: (state, action) => {
       console.log(action);
+      state.usepacks = state.usepacks.filter(
+        (item, idx) => action.payload.idx !== idx
+      );
     },
     ADD_PACKITEM_RES: (state, action) => {
       var res = action.payload;
       console.log(res);
       state.packitems = state.packitems.concat(res.data);
     },
+    ADD_USEPACK_RES: (state, action) => {
+      var res = action.payload;
+      console.log(res);
+      state.usepacks = state.usepacks.concat(res.data);
+    },    
     SEARCH_CHANGE: (state, action) => {
       state.search = action.payload;
     },
@@ -129,8 +141,13 @@ export const partsSlice = createSlice({
     SHOW_DLG_EDIT: (state, action) => {
       state.showDlgEdit = action.payload.visible;
       console.log(action);
+      if(action.payload.contact_id){
+        state.hiddenPacks=false;
+      }
+      else{
+        state.hiddenPacks=true;
+      }
       if (action.payload.visible && action.payload.idx != null) {
-        console.log('set packitem');
         state.currentIndex = action.payload.idx;
         state.contact = state.contacts[action.payload.idx];
         state.bg = {};
@@ -223,6 +240,12 @@ export const deletePackItem = (idx, item_id) => (dispatch) => {
     dispatch(actions.DELETE_PACKITEM({ res: res, idx: idx }));
   });
 };
+export const deleteUsePack = (idx, item_id) => (dispatch) => {
+  var url = '/rest/UsePack';
+  Client.delete1(url, { id: item_id }, (res) => {
+    dispatch(actions.DELETE_USEPACK({ res: res, idx: idx }));
+  });
+};
 export const editPackItem = (idx) => (dispatch) => {
   // if(contact_id) dispatch(loadUsePack(contact_id));
   dispatch(
@@ -232,22 +255,27 @@ export const editPackItem = (idx) => (dispatch) => {
     })
   );
 };
-export const edit = (idx) => (dispatch) => {
-  // if(contact_id) dispatch(loadUsePack(contact_id));
+export const edit = (idx,contact_id) => (dispatch) => {
+  if(contact_id) dispatch(loadUsePack(contact_id));
   dispatch(
     actions.SHOW_DLG_EDIT({
       visible: true,
       idx: idx,
+      contact_id:contact_id,
     })
   );
+};
+export const addUsePack = (data) => (dispatch) => {
+  console.log(data);
+  var url = '/rest/UsePack';
+  Client.postOrPut(url, data, (res) => {
+    dispatch(actions.ADD_USEPACK_RES(res));
+  });
 };
 export const addPackItem = (data) => (dispatch) => {
   var url = '/rest/PackItem';
   Client.post(url, data, (res) => {
     dispatch(actions.ADD_PACKITEM_RES(res));
-    // var p = res.data;
-    // const newFoods = state.items.concat(p);
-    // set_state({ items: newFoods });
   });
 };
 export const loadUsePack = (contact_id) => (dispatch) => {

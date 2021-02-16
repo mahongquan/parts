@@ -57,25 +57,21 @@ function UsePacks2(props) {
   const addrow = (pack_id) => {
     var url = '/rest/UsePack';
     var data = { contact: props.contact_id, pack: pack_id };
-    Client.postOrPut(url, data, (res) => {
-      var p = res.data;
-      const newFoods = state.usepacks.concat(p);
-      setState({ usepacks: newFoods });
-    });
+    dispatch(store.addUsePack(data));
   };
   const newpackChange = (e) => {
     setState({ newPackName: e.target.value });
   };
   const onEditClick = (id) => {};
-  const onDeleteClick = (itemIndex) => {
-    var url = '/rest/UsePack';
-    Client.delete1(url, { id: state.usepacks[itemIndex].id }, (res) => {
-      const filteredFoods = state.usepacks.filter(
-        (item, idx) => itemIndex !== idx
-      );
-      setState({ usepacks: filteredFoods });
-    });
-  };
+  // const onDeleteClick = (itemIndex) => {
+  //   var url = '/rest/UsePack';
+  //   Client.delete1(url, { id: state.usepacks[itemIndex].id }, (res) => {
+  //     const filteredFoods = state.usepacks.filter(
+  //       (item, idx) => itemIndex !== idx
+  //     );
+  //     setState({ usepacks: filteredFoods });
+  //   });
+  // };
   const handleEdit = (idx) => {
     //setState({currentIndex:idx,showModal:true});
     console.log(props.store.usepacks[idx]);
@@ -120,7 +116,9 @@ function UsePacks2(props) {
         </Button>
         <Button
           variant="outlined"
-          onClick={() => onDeleteClick(idx)}
+          onClick={() => {
+                dispatch(store.deleteUsePack(idx, usepack.id));
+          }}
           style={{ marginLeft: '10px' }}
         >
           删除
@@ -152,16 +150,7 @@ function UsePacks2(props) {
           console.log(data);
           addrow(data.id);
         }} />
-        <Button
-          variant="outlined"
-          style={{ margin: '10px 10px 10px 10px' }}
-          className="btn"
-          onClick={bibei}
-        >
-          必备
-        </Button>
       </div>
-
       <div
         style={{
           margin: '10px 10px 10px 0px',

@@ -203,9 +203,9 @@ function App(props) {
       })
     );
   };
-  const handleEdit = (idx) => {
+  const handleEdit = (idx,contactid) => {
     // setState({ showDlgEdit: true, currentIndex: idx });
-    dispatch(slice.edit(idx));
+    dispatch(slice.edit(idx,contactid));
   };
   const allfile = (contactid) => {
     // dlgwait.current.open(contactid);
@@ -248,7 +248,7 @@ function App(props) {
         <Button
           variant="outlined"
           style={{ display: 'inline' }}
-          onClick={() => handleEdit(idx)}
+          onClick={() => handleEdit(idx,contact.id)}
         >
           {contact.yiqibh}
         </Button>

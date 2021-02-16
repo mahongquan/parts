@@ -268,7 +268,7 @@ class models {
     //UsePack//////////////////////////////////////////////////////////////////////
     //route.delete('/rest/UsePack/:contact_id', async function(ctx) {
     models.on('/delete/UsePack', async function (data, callback) {
-      var contact = await models.UsePack.findById(data.id); //.then(function(packitem) {
+      var contact = await models.UsePack.findByPk(data.id); //.then(function(packitem) {
       contact.destroy();
       callback({
         data: [],
@@ -282,11 +282,12 @@ class models {
       data1.pack_id = data.pack;
       var contact = await models.UsePack.create(data1);
       var pack = await contact.getPack();
-      contact.dataValues['Pack'] = pack;
-      contact.name = pack.name;
-      contact.pack = pack.id;
+      var res={}
+      res.id =contact.id;
+      res.name = pack.name;
+      res.pack = pack.id;
       callback({
-        data: contact,
+        data: res,
         message: 'create UsePack ok',
       });
     });
@@ -388,7 +389,8 @@ class models {
       });
       let res = [];
       for (var i = 0; i < contacts.length; i++) {
-        res[i] = contacts[i].dataValues;
+        res[i]={};
+        res[i].id= contacts[i].id;//dataValues;
         res[i].name = contacts[i].Pack.name;
         res[i].pack = contacts[i].Pack.id;
       }
@@ -553,6 +555,7 @@ class models {
         res[i] = contacts[i].dataValues;
       }
       callback({
+          success:true,
           data: res,
           total: total,
       });
@@ -739,7 +742,7 @@ models.UsePack.belongsTo(models.Pack, {
   foreignKey: 'pack_id',
 });
 models.UsePack.belongsTo(models.Contact, {
-  foreignKey: 'pack_id',
+  foreignKey: 'contact_id',
 });
 models.PackItem = sequelize.define(
   'PackItem',
