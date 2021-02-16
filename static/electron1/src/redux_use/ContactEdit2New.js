@@ -14,8 +14,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import RichTextEditor from 'react-rte';
 import { withStyles } from '@material-ui/core/styles';
-import { types } from './reducers';
-// import Datetime from 'react-datetime';
 import MomentUtils from '@date-io/moment';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import SelectYQXH from './SelectYQXH';
@@ -42,64 +40,6 @@ function ContactEdit2New(props) {
     editRich: false,
     rich: RichTextEditor.createEmptyValue(),
   });
-  // state = {
-  //   openCollapse: false,
-  //   showModal: false,
-  //   contact: {
-  //     yujifahuo_date: moment(),
-  //     tiaoshi_date: moment(),
-  //   },
-  //   hiddenPacks: true,
-  //   bg: {},
-  //   date_open: false,
-  //   editRich: false,
-  //   rich: RichTextEditor.createEmptyValue(),
-  // };
-
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   //console.log(nextProps)
-  //   if (!props.showModal && nextProps.showModal) {
-  //     onShow(nextProps.index);
-  //   } else if (props.showModal && !nextProps.showModal) {
-  //     onHide();
-  //   }
-  // }
-  // onShow = idx => {
-  //   open2(idx);
-  // };
-  // onHide = () => {};
-  // open2 = idx => {
-  //   setState({ bg: {} });
-  //   index = idx;
-  //   if (index == null) {
-  //     old = {
-  //       yujifahuo_date: moment().format('YYYY-MM-DD'),
-  //       tiaoshi_date: moment().format('YYYY-MM-DD'),
-  //       addr: '',
-  //       channels: '',
-  //       baoxiang: '',
-  //       hetongbh: '',
-  //       shenhe: '',
-  //       yonghu: '',
-  //       yiqibh: '',
-  //       yiqixinghao: '',
-  //     };
-  //     setState({ hiddenPacks: true });
-  //   } else {
-  //     old = _.clone(props.store.contacts[index]);
-  //     setState({ hiddenPacks: false });
-  //   }
-  //   old.dianqi = old.dianqi || '';
-  //   old.jixie = old.jixie || '';
-  //   old.redao = old.redao || '';
-  //   old.hongwai = old.hongwai || '';
-  //   old.channels = old.channels || '';
-  //   old.detail = old.detail || '';
-  //   old.addr = old.addr || '';
-  //   var val1 = RichTextEditor.createValueFromString(old.detail, 'html');
-  //   setState({ rich: val1 });
-  //   setState({ contact: old });
-  // };
   const handleCopy = (data) => {
     console.log('copy');
     index = null;
@@ -116,74 +56,7 @@ function ContactEdit2New(props) {
       open2(0);
     });
   };
-  const tiaoshi_date_change = (value) => {
-    //state.yujifahuo_date=value;
-    var e_target_name = 'tiaoshi_date';
-    console.log(old[e_target_name]);
-    var t = null;
-    if (typeof value === 'string') {
-      t = value;
-    } else {
-      t = value.format('YYYY-MM-DD');
-    }
-    console.log(t);
-    if (old[e_target_name] === t) {
-      const bg2 = update(state.bg, {
-        [e_target_name]: { $set: '#ffffff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    } else {
-      //console.log("not equal")
-      //state.bg[e_target_name]="#8888ff";
-      const bg2 = update(state.bg, {
-        [e_target_name]: { $set: '#8888ff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    }
-    const contact2 = update(state.contact, {
-      [e_target_name]: { $set: t },
-    });
-    console.log(contact2);
-    setState({ contact: contact2 });
-  };
-
-  const yujifahuo_date_change = (value) => {
-    //state.yujifahuo_date=value;
-    var e_target_name = 'yujifahuo_date';
-    console.log(old[e_target_name]);
-    var t = null;
-    if (typeof value === 'string') {
-      t = value;
-    } else {
-      t = value.format('YYYY-MM-DD');
-    }
-    console.log(t);
-    if (old[e_target_name] === t) {
-      const bg2 = update(state.bg, {
-        [e_target_name]: { $set: '#ffffff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    } else {
-      const bg2 = update(state.bg, {
-        [e_target_name]: { $set: '#8888ff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    }
-    const contact2 = update(state.contact, {
-      [e_target_name]: { $set: t },
-    });
-    console.log(contact2);
-    setState({ contact: contact2 });
-  };
-  const channels_change = (event, { newValue }) => {
+  const channels_change = (newValue) => {
     change1(newValue);
   };
   const channels_change_fetch = () => {};
@@ -191,73 +64,43 @@ function ContactEdit2New(props) {
     change1(data.suggestion);
   };
   const change1 = (item) => {
-    console.log('selected');
-    console.log(item);
-    if (old.channels === item) {
-      const bg2 = update(state.bg, { channels: { $set: '#ffffff' } });
-      setState({ bg: bg2 });
-    } else {
-      const bg2 = update(state.bg, { channels: { $set: '#8888ff' } });
-      setState({ bg: bg2 });
-    }
-    const contact2 = update(state.contact, { channels: { $set: item } });
-    console.log(contact2);
-    setState({ contact: contact2 });
+    dispatch(
+      store.actions.CONTACT_EDIT_CHANGE({
+        name: "channels",
+        value: item,
+      })
+    );
   };
-  const yiqixinghao_change = (event, { newValue }) => {
+  const yiqixinghao_change = (newValue) => {
     change2(newValue);
   };
   const yiqixinghao_select = (event, data) => {
     change2(data.suggestion);
   };
   const change2 = (item) => {
-    console.log('selected');
-    console.log(item);
-    if (old.yiqixinghao === item) {
-      const bg2 = update(state.bg, { yiqixinghao: { $set: '#ffffff' } });
-      setState({ bg: bg2 });
-    } else {
-      const bg2 = update(state.bg, { yiqixinghao: { $set: '#8888ff' } });
-      setState({ bg: bg2 });
-    }
-    const contact2 = update(state.contact, {
-      yiqixinghao: { $set: item },
-    });
-    // console.log(contact2);
-    setState({ contact: contact2 });
+    dispatch(
+      store.actions.CONTACT_EDIT_CHANGE({
+        name: "yiqixinghao",
+        value: item,
+      })
+    );
   };
   const handleChange = (e) => {
-    // console.log('change');
-    // console.log(e);
-    // console.log(e.target.value);
-    // console.log(e.target.name);
-    if (old[e.target.name] === e.target.value) {
-      const bg2 = update(state.bg, {
-        [e.target.name]: { $set: '#ffffff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    } else {
-      const bg2 = update(state.bg, {
-        [e.target.name]: { $set: '#8888ff' },
-      });
-      //state.bg[e_target_name]="#ffffff";
-      //console.log("equal");
-      setState({ bg: bg2 });
-    }
-    const contact2 = update(state.contact, {
-      [e.target.name]: { $set: e.target.value },
-    });
-    // console.log(contact2);
-    setState({ contact: contact2 });
-  };
-  const matchStateToTerm = (state, value) => {
-    return state.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+    console.log(e);
+    dispatch(
+      store.actions.CONTACT_EDIT_CHANGE({
+        name: e.target.name,
+        value: e.target.value,
+      })
+    );
   };
   const detailchange = (value) => {
     console.log(value);
-    setState({ rich: value });
+    setState((prev)=>{
+      var new_state=_.clone(prev);
+      new_state.rich=value;
+      return new_state;
+    });
   };
   return (
     <Dialog open={props.showModal} onClose={props.handleClose} fullScreen>
@@ -379,8 +222,15 @@ function ContactEdit2New(props) {
                 <td>
                   <DatePicker
                     format="YYYY-MM-DD"
-                    value={contact.yujifahuo_date||""}
-                    onChange={yujifahuo_date_change}
+                    value={moment(contact.yujifahuo_date)}
+                    onChange={(v)=>{
+                      dispatch(
+                        store.actions.CONTACT_EDIT_CHANGE({
+                          name: "yujifahuo_date",
+                          value: v.format('YYYY-MM-DD'),
+                        })
+                      );
+                    }}
                     style={{ backgroundColor: bg.yujifahuo_date }}
                   />
                 </td>
@@ -389,8 +239,15 @@ function ContactEdit2New(props) {
                   <DatePicker
                     format="YYYY-MM-DD"
                     style={{ backgroundColor: bg.tiaoshi_date }}
-                    value={contact.tiaoshi_date||""}
-                    onChange={tiaoshi_date_change}
+                    value={moment(contact.tiaoshi_date)}
+                    onChange={(v)=>{
+                      dispatch(
+                        store.actions.CONTACT_EDIT_CHANGE({
+                          name: "tiaoshi_date",
+                          value: v.format('YYYY-MM-DD'),
+                        })
+                      );
+                    }}
                   />
                 </td>
               </tr>
@@ -470,7 +327,11 @@ function ContactEdit2New(props) {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      setState({ editRich: !state.editRich });
+                      setState((prev)=>{
+                        var new_state=_.clone(prev);
+                        new_state.editRich=!prev.editRich;
+                        return new_state;
+                      });
                     }}
                   >
                     备注:

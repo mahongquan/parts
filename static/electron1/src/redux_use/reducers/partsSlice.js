@@ -104,6 +104,14 @@ export const partsSlice = createSlice({
       }
       state.packitem[action.payload.name] = action.payload.value;
     },
+    CONTACT_EDIT_CHANGE: (state, action) => {
+      if (state.old[action.payload.name] === action.payload.value) {
+        state.bg[action.payload.name] = '#ffffff';
+      } else {
+        state.bg[action.payload.name] = '#8888ff';
+      }
+      state.contact[action.payload.name] = action.payload.value;
+    },
     INCREMENTBYAMOUNT: (state, action) => {
       state.value += action.payload;
     },
