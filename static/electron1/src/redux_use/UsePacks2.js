@@ -77,9 +77,8 @@ export default function UsePacks2(props) {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>输入包:</label>
         <SelectPack onChange={(data) => {
-          console.log('selected');
-          console.log(data);
-          addrow(data.id);
+          // console.log('selected');
+          if(data!=null)   addrow(data.id);
         }} />
       </div>
       <div

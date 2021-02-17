@@ -585,7 +585,7 @@ class models {
       console.log(data);
       var start = data.start;
       var limit = data.limit;
-      var search = data.search;
+      var search = data.query;
       var w = null;
       if (search && search != '') {
         w = {
@@ -611,17 +611,14 @@ class models {
         offset: start,
         order: [['id', 'DESC']],
       });
-      if (contacts.length > 0) {
-        callback({
-          data: contacts,
-          total: total,
-        });
-      } else {
-        callback({
-          data: contacts,
-          total: 0,
-        });
+      var r=[]
+      for(var i=0;i<contacts.length;i++){
+        r.push(contacts[i].dataValues);
       }
+      callback({
+        data: r,
+        total: total,
+      });
     });
     callback();
   };

@@ -93,8 +93,7 @@ export default function PackItems(props) {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>输入备件</label>
         <SelectItem onChange={  
-          (data) => {
-          this.addrow(data.id);}
+          (data) => {if(data!=null) addrow(pack_id,data.id);}
         } />
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>

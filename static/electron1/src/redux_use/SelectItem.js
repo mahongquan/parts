@@ -33,6 +33,7 @@ const components = {
   },
 };
 const loadOptions = (inputValue, callback) => {
+  console.log(inputValue);
   Client.get(
     '/rest/Item',
     {
@@ -59,7 +60,7 @@ export default class WithCallbacks extends React.Component {
         placeholder="Select item"
         loadOptions={loadOptions}
         onChange={this.props.onChange}
-        clearable={false}
+        isClearable
       />
     );
   }

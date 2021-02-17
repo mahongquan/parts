@@ -3,15 +3,15 @@ import Client from './Client';
 import AsyncSelect from 'react-select/async';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-const styles = {
-  container: (provided, state) => {
-    return {
-      ...provided,
-      minWidth: '200px',
-      maxWidth: '300px',
-    };
-  },
-};
+// const styles = {
+//   container: (provided, state) => {
+//     return {
+//       ...provided,
+//       minWidth: '200px',
+//       maxWidth: '300px',
+//     };
+//   },
+// };
 const components = {
   Option: (props) => {
     // console.log(props);
@@ -26,15 +26,16 @@ const components = {
     );
   },
   SingleValue: (props) => {
-    const { children, innerProps } = props;
+    // console.log(props);
     return (
-      <div {...innerProps}>
-        {props.data.name} {children}
+      <div {...props.innerProps}>
+        {props.data.name} {props.children}
       </div>
     );
   },
 };
 const loadOptions = (inputValue, callback) => {
+  console.log("loadOptions=========================")
   Client.get(
     '/rest/Pack',
     {
@@ -43,6 +44,7 @@ const loadOptions = (inputValue, callback) => {
       search: inputValue,
     },
     (res) => {
+      console.log(res);
       if (res.success) {
         callback(res.data);
       }
@@ -59,7 +61,6 @@ export default class SelectItem extends React.Component {
     this.state = {
       inputValue: '',
       menuIsOpen: false,
-      colourOptions: [],
     };
   }
   onClick = () => {
@@ -82,17 +83,19 @@ export default class SelectItem extends React.Component {
     );
   };
   render() {
+    console.log("selecPack===========================");
+    console.log(this.state)
     return (
       <Grid container spacing={1} style={{ maxWidth: '400px' }}>
         <Grid item xs={9}>
           <AsyncSelect
             components={components}
-            styles={styles}
             placeholder="Select Pack"
-            defaultOptions={this.state.colourOptions}
             loadOptions={loadOptions}
             inputValue={this.state.inputValue}
+            isClearable
             onInputChange={(inputValue, meta) => {
+              console.log("onInputChange==================")
               console.log(inputValue);
               console.log(meta);
               this.setState({ inputValue: inputValue });

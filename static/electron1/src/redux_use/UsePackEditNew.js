@@ -35,6 +35,7 @@ export default function  UsePackEditNew(props){
             </tbody>
           </table>
           <PackItems/>
+          <div style={{ minHeight: '200px' }} />
         </DialogContent>
       </Dialog>
     );
