@@ -68,7 +68,7 @@ class DlgPacks extends Component {
         limit: this.mystate.limit,
         search: this.mystate.search,
       },
-      contacts2 => {
+      (contacts2) => {
         var user = contacts2.user;
         if (user === undefined) {
           user = 'AnonymousUser';
@@ -80,12 +80,13 @@ class DlgPacks extends Component {
           start: this.mystate.start,
         });
         this.mystate.total = contacts2.total;
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-    ,(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
-  handlePrev = e => {
+  handlePrev = (e) => {
     this.mystate.start = this.mystate.start - this.mystate.limit;
     if (this.mystate.start < 0) {
       this.mystate.start = 0;
@@ -93,7 +94,7 @@ class DlgPacks extends Component {
     //this.setState({start:start});
     this.loaddata();
   };
-  handleNext = e => {
+  handleNext = (e) => {
     this.mystate.start = this.mystate.start + this.mystate.limit;
     if (this.mystate.start > this.mystate.total - this.mystate.limit)
       this.mystate.start = this.mystate.total - this.mystate.limit; //total >limit
@@ -111,18 +112,18 @@ class DlgPacks extends Component {
     }
     this.loaddata();
   };
-  handlePageChange = e => {
+  handlePageChange = (e) => {
     this.setState({ start_input: e.target.value });
   };
-  handleSearchChange = e => {
+  handleSearchChange = (e) => {
     this.mystate.search = e.target.value;
     this.setState({ search: this.mystate.search });
   };
-  search = e => {
+  search = (e) => {
     this.mystate.start = 0;
     this.loaddata();
   };
-  handleEdit = pack_id => {
+  handleEdit = (pack_id) => {
     //this.setState({currentIndex:idx,showModal:true});
     this.refs.edit1.open(pack_id);
   };

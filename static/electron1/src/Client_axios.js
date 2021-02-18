@@ -29,7 +29,7 @@ function getRaw(url, cb, err_callback) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       if (err_callback) {
         err_callback(error);
       } else {
@@ -53,7 +53,7 @@ function post(url, data, cb) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       alert(error + '\n请检查服务器/刷新网页/登录');
     });
   // var method="POST"
@@ -65,7 +65,7 @@ function put(url, data, cb) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       alert(error + '\n请检查服务器/刷新网页/登录');
     });
   // var method="POST"
@@ -77,7 +77,7 @@ function delete2(url, data, cb) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       alert(error + '\n请检查服务器/刷新网页/登录');
     });
   // var method="POST"
@@ -103,7 +103,7 @@ function postForm(url, data, cb) {
     .then(checkStatus)
     .then(parseJSON)
     .then(cb)
-    .catch(error => {
+    .catch((error) => {
       //console.log(error)
       alert(error + '\n请刷新网页/登录');
     });
@@ -125,7 +125,7 @@ function items(query, cb) {
   return get('/rest/Item', data, cb);
 }
 function login_index(cb) {
-  return get('/rest/login_index', undefined, cb, error => {
+  return get('/rest/login_index', undefined, cb, (error) => {
     alert(error + '\n请检查服务器/刷新网页/登录');
   });
 }
@@ -134,7 +134,7 @@ function logout(cb) {
 }
 
 function login(username, password, cb) {
-  login_index(res => {
+  login_index((res) => {
     // csrftoken=res.csrf_token;
     var payload = {
       username: username,
@@ -152,7 +152,7 @@ function login(username, password, cb) {
       .then(checkStatus)
       .then(parseJSON)
       .then(cb)
-      .catch(error => {
+      .catch((error) => {
         alert(error + '\n请检查服务器/刷新网页/登录');
       });
   });

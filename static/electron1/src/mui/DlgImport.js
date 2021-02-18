@@ -25,18 +25,23 @@ class DlgImport extends React.Component {
     data1.append('file', file);
     //console.log(data1)
     var self = this;
-    Client.postForm('/rest/standard', data1, function(res) {
-      if (res.result.length > 0) {
-        const newFoods = update(self.state.packs, { $unshift: res.result });
-        self.setState({ packs: newFoods });
+    Client.postForm(
+      '/rest/standard',
+      data1,
+      function (res) {
+        if (res.result.length > 0) {
+          const newFoods = update(self.state.packs, { $unshift: res.result });
+          self.setState({ packs: newFoods });
+        }
+        self.setState({
+          showalert: true,
+          info: '导入了' + res.result.length + '个合同的标钢。',
+        });
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
       }
-      self.setState({
-        showalert: true,
-        info: '导入了' + res.result.length + '个合同的标钢。',
-      });
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    );
   };
   shouldComponentUpdate(nextProps, nextState) {
     if (!_.isEqual(this.props.showModal, nextProps.showModal)) {
@@ -51,9 +56,9 @@ class DlgImport extends React.Component {
     }
     return false;
   }
-  
+
   componentDidUpdate(prevProps) {
-    if (!prevProps.showModal && this.props.showModal ) {
+    if (!prevProps.showModal && this.props.showModal) {
       this.onShow();
     } else if (prevProps.showModal && !this.props.showModal) {
       this.onHide();
@@ -67,17 +72,22 @@ class DlgImport extends React.Component {
     var self = this;
     //this.setState({ showModal: true,showalert:false });
     var data = { limit: 10, search: 'xls' };
-    Client.get('/rest/Pack', data, function(result) {
-      console.info(result);
-      // if (!result.success){
-      //    self.setState({error:result.message});
-      // }
-      // else
-      self.setState({ packs: result.data });
-      console.log(result.data);
-    },(error)=>{
-      myglobal.app.show_webview(error.response.url);
-    });
+    Client.get(
+      '/rest/Pack',
+      data,
+      function (result) {
+        console.info(result);
+        // if (!result.success){
+        //    self.setState({error:result.message});
+        // }
+        // else
+        self.setState({ packs: result.data });
+        console.log(result.data);
+      },
+      (error) => {
+        myglobal.app.show_webview(error.response.url);
+      }
+    );
   };
   handleDismiss = () => {
     this.setState({ showalert: false });
@@ -112,7 +122,7 @@ class DlgImport extends React.Component {
               accept="application/vnd.ms-excel"
               type="file"
               name="file"
-              ref={ref => (this.fileUpload = ref)}
+              ref={(ref) => (this.fileUpload = ref)}
               onChange={this.inputChange}
             />
             <Button

@@ -36,6 +36,7 @@ class DlgStat extends Component {
     this.setState({ showModal: true,baoxiang:"" });
     this.loaddata('%');
   };
+  
   loaddata = baoxiang => {
     var self = this;
     var data = { baoxiang: baoxiang };
@@ -63,23 +64,13 @@ class DlgStat extends Component {
     }
   };
   render = () => {
+    console.log(this.state);
     return (
       <Modal show={this.props.showModal} onHide={this.props.handleClose} 
       dialogClassName="modal-700px">
         <Modal.Header>月统计</Modal.Header>
         <Modal.Body>
-          <DropdownButton title={this.state.baoxiang} >
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('马红权')}>
-              马红权
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('陈旺')}>
-              陈旺
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('吴振宁')}>
-              吴振宁
-            </Dropdown.Item>
-            <Dropdown.Item onSelect={() => this.onClickBaoxiang('%')}>*</Dropdown.Item>
-          </DropdownButton>
+          <UserDropDown title="" onSelect={this.onClickBaoxiang} /><span>this.state.baoxiang</span>
       <div style={{ width: '660px', height: 300 }}>
         <ResponsiveContainer>
           <ComposedChart

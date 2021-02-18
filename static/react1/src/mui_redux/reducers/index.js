@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 import Client from '../Client';
 import update from 'immutability-helper';
-// const ADD_CONTACT = 'ADD_CONTACT';
-const LOAD_CONTACT = 'LOAD_CONTACT';
-// const EDIT_CONTACT = 'EDIT_CONTACT';
+const DETAIL_RES="DETAIL_RES"
 const SHOW_DLG_WORKMONTH="SHOW_DLG_WORKMONTH"
 const SHOW_LOGIN = 'SHOW_LOGIN';
 const SHOW_DLGSTAT_MONTH = 'SHOW_DLGSTAT_MONTH';
@@ -12,46 +10,54 @@ const SEARCH_CHANGE = 'SEARCH_CHANGE';
 const LOG_OUT = 'LOG_OUT';
 const PAGE_CHANGE = 'PAGE_CHANGE';
 const SHOW_DLG_EDIT = 'SHOW_DLG_EDIT';
+const SHOW_DLG_PACK = 'SHOW_DLG_PACK';
+const SHOW_DLG_DETAIL = 'SHOW_DLG_DETAIL';
 const SHOW_DLG_WAIT="SHOW_DLG_WAIT"
 const SHOW_DLG_ITEMS="SHOW_DLG_ITEMS"
+const SHOW_DLG_COPYPACK="SHOW_DLG_COPYPACK"
+const SHOW_DLG_IMPORT="SHOW_DLG_IMPORT"
+const SEARCH_PACK_RES="SEARCH_PACK_RES"
+const SHOW_DLG_CHECK="SHOW_DLG_CHECK"
 const hiddenPacks = 'hiddenPacks';
-
+const LOAD_PACKITEM_RES = 'LOAD_PACKITEM_RES';
 const LOAD_CONTACT_RES = 'LOAD_CONTACT_RES';
+const LOAD_USEPACK_RES = 'LOAD_USEPACK_RES';
+const LOAD_USER_RES = 'LOAD_USER_RES';
 const LOAD_CONTACT_FAIL = 'LOAD_CONTACT_FAIL';
 const LOGIN_RES = 'LOGIN_RES';
 const SAVE_CONTACT_RES = 'SAVE_CONTACT_RES';
-
+const ALLFILE_ERR="ALLFILE_ERR";
+//dispatch
 export const types = {
+  SHOW_DLG_PACK,
+  SHOW_DLG_CHECK,
+  SHOW_DLG_DETAIL,
   SHOW_LOGIN,
   SHOW_DLG_ITEMS,
+  SHOW_DLG_COPYPACK,
   SHOW_DLGSTAT_MONTH,
   SHOW_DLGSTAT_YEAR,
-  LOAD_CONTACT,
+  SHOW_DLG_IMPORT,
   SEARCH_CHANGE,
   PAGE_CHANGE,
   LOG_OUT,
   SHOW_DLG_EDIT,
   SHOW_DLG_WORKMONTH,
+  SHOW_DLG_WAIT,
   hiddenPacks,
 };
-
-const onLoginSubmit = data => {
-  return async dispatch => {
-    Client.login(data.username, data.password, result => {
-      if (result.success) {
-        let res = {
-          logined: true,
-          user: data.username,
-          contacts: [],
-        };
-        dispatch({ type: LOGIN_RES, res });
-      }
+function load_user (dispatch)  {
+    Client.users((res)=>{
+          if(res.success){
+            dispatch({type:LOAD_USER_RES,res})
+          }
+          else{
+            console.log("not success")
+          }
     });
-  };
-};
-const loadCONTACT = data => {
-  return async dispatch => {
-    Client.contacts(
+}
+function load_contact(dispatch,data){
+   Client.contacts(
       data,
       contacts => {
         var user = contacts.user;
@@ -66,6 +72,7 @@ const loadCONTACT = data => {
           baoxiang: data.baoxiang,
         };
         dispatch({ type: LOAD_CONTACT_RES, res });
+        load_user(dispatch);
       },
       error => {
         // console.log(typeof(error));
@@ -77,12 +84,103 @@ const loadCONTACT = data => {
         }
       }
     );
+}
+const onLoginSubmit = data => {
+  return async dispatch => {
+    Client.login(data.username, data.password, result => {
+      if (result.success) {
+        let res = {
+          logined: true,
+          user: data.username,
+          contacts: [],
+        };
+        dispatch({ type: LOGIN_RES, res });
+        load_contact(dispatch, initialState);   
+      }
+    });
   };
 };
+const loadCONTACT = data => {
+  console.log("loadCONTACT============");
+  return async dispatch => {
+    load_contact(dispatch,data);
+  };
+};
+const loadUsePack = contact_id => {
+  return async dispatch => {
+    Client.UsePacks(contact_id, res => {
+      dispatch({ type: LOAD_USEPACK_RES, res });
+    });
+  };
+};
+const loadPackItem = pack_id => {
+  return async dispatch => {
+    Client.PackItems(pack_id, res => {
+      dispatch({ type: LOAD_PACKITEM_RES, res });
+    });
+  };
+};
+
 const handleLogout = () => {
   return async dispatch => {
     Client.logout(() => {
       dispatch({ type: LOG_OUT });
+    });
+  };
+};
+const details = (contactid) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_DETAIL, visible:true});
+    var data1 = { id: contactid };
+    Client.get('/rest/showcontact', data1, res => {
+      if (!res.items2) res.items2 = [];
+      dispatch({ type: DETAIL_RES, res:res});
+    });
+  };
+};
+const allfile = (contact_id) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/allfile', { id: contact_id}, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        // self.setState({ error: result.message });
+        dispatch({ type: ALLFILE_ERR, allfile_err: result.message});
+      } else {
+        // this.props.handleClose();
+        dispatch({ type: SHOW_DLG_WAIT, visible:false});
+      }
+    });
+  };
+};
+const forlder = (contact_id) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/folder/', { id: contact_id }, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        dispatch({ type: ALLFILE_ERR, allfile_err: result.message});
+      } else {
+        dispatch({ type: SHOW_DLG_WAIT, visible:false});
+      }
+    },(error)=>{
+      dispatch({ type: ALLFILE_ERR, allfile_err: error});
+    });
+  };
+};
+const updateMethod = (contact_id, idx) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/updateMethod', { id: contact_id }, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        dispatch({ type: ALLFILE_ERR, allfile_err: result.message});
+      } else {
+
+        dispatch({ type: SHOW_DLG_WAIT, visible:false});
+      }
+    },(error)=>{
+      dispatch({ type: ALLFILE_ERR, allfile_err: error});
     });
   };
 };
@@ -93,7 +191,7 @@ const saveContact = (dataSave, index, callback) => {
       if (res.success) {
         let result = { contact: res.data, currentIndex: index };
         dispatch({ type: SAVE_CONTACT_RES, result: result });
-        callback();
+        callback(result);
         // this.old = res.data;
         // this.setState({ bg: {} });
         // this.setState({ hiddenPacks: false });
@@ -103,14 +201,30 @@ const saveContact = (dataSave, index, callback) => {
     });
   };
 };
+const importXls = (data, callback) => {
+  return async dispatch => {
+    dispatch({ type: SHOW_DLG_IMPORT, visible: true });
+    Client.get('/rest/Pack', data, (res) =>{
+      dispatch({ type: SEARCH_PACK_RES, res});
+    });
+  };
+};
 export const CONTACTActions = {
+  loadPackItem,
+  loadUsePack,
   loadCONTACT,
   onLoginSubmit,
   handleLogout,
   saveContact,
+  allfile,
+  details,
+  forlder,
+  updateMethod,
+  importXls,
 };
 
 const initialState = {
+  users:[],
   logined: false,
   connect_error: false,
   search2: '',
@@ -118,6 +232,10 @@ const initialState = {
   target: null,
   showcontext: false,
   contacts: [],
+  contact:{},
+  usepacks:[],
+  packitems:[],
+  packs:[],
   limit: 10,
   user: 'AnonymousUser',
   search: '',
@@ -134,15 +252,22 @@ const initialState = {
   showDlgStatMonth: false,
   showDlgItem: false,
   showDlgWorkMonth: false,
+  showDlgCopyPack:false,
+  showDlgForder:false,
   showdlgWait:false,
+  showDlgPack:false,
+  showDlgCheck:false,
   show_login: false,
   //edit
   hiddenPacks: true,
+  allfile_err:null,
+  detail:null,
 };
 
 export function CONTACTs(state = initialState, action) {
+  // console.log("action============================")
+  console.log(action)
   let new_state;
-  console.log(action);
   switch (action.type) {
     case hiddenPacks:
       new_state = update(state, {
@@ -150,7 +275,11 @@ export function CONTACTs(state = initialState, action) {
         currentIndex: { $set: null },
       });
       return new_state;
-
+    case ALLFILE_ERR:
+      new_state = update(state, {
+        allfile_err: { $set: action.allfile_err },
+      });
+      return new_state;
     case SAVE_CONTACT_RES:
       let contacts2;
       if (action.result.currentIndex != null) {
@@ -171,10 +300,38 @@ export function CONTACTs(state = initialState, action) {
       });
       return new_state;
     case SHOW_DLG_EDIT:
+
       new_state = update(state, {
+        contact: { $set: action.index === null||action.index===undefined ? {} : state.contacts[action.index] },
         showDlgEdit: { $set: action.visible },
         hiddenPacks: { $set: action.index === null ? true : false },
         currentIndex: { $set: action.index },
+      });
+      return new_state;
+    case SHOW_DLG_CHECK:
+      new_state = update(state, {
+        showDlgCheck: { $set: action.visible },
+        currentIndex: { $set: action.index },
+      });
+      return new_state;
+    case SHOW_DLG_COPYPACK:
+      new_state = update(state, {
+        showDlgCopyPack: { $set: action.visible },
+      });
+      return new_state;
+    case SHOW_DLG_DETAIL:
+      new_state = update(state, {
+        showDlgDetail: { $set: action.visible },
+      });
+      return new_state;
+    case SHOW_DLG_PACK:
+      new_state = update(state, {
+        showDlgPack: { $set: action.visible },
+      });
+      return new_state;
+    case SHOW_DLG_IMPORT:
+      new_state = update(state, {
+        showDlgImport: { $set: action.visible },
       });
       return new_state;
     case SHOW_DLG_WAIT:
@@ -196,6 +353,7 @@ export function CONTACTs(state = initialState, action) {
       new_state = initialState;
       return new_state;
     case LOGIN_RES:
+
       new_state = update(state, {
         user: { $set: action.res.user },
         logined: { $set: action.res.user },
@@ -211,6 +369,11 @@ export function CONTACTs(state = initialState, action) {
         search: { $set: action.value },
       });
       return new_state;
+    case DETAIL_RES:
+      new_state = update(state, {
+        detail: { $set: action.res },
+      });
+      return new_state;
     case LOAD_CONTACT_RES:
       new_state = update(state, {
         connect_error: { $set: false },
@@ -221,6 +384,29 @@ export function CONTACTs(state = initialState, action) {
         baoxiang: { $set: action.res.baoxiang },
       });
       return new_state;
+    case LOAD_USEPACK_RES:
+      new_state = update(state, {
+        usepacks: { $set: action.res.data },
+      });
+      return new_state;
+    case SEARCH_PACK_RES:
+      if(action.res.success){
+        new_state = update(state, {
+          packs: { $set: action.res.data},
+        });
+        return new_state;   
+      }
+      break;
+    case LOAD_USER_RES:
+      new_state = update(state, {
+        users: { $set: action.res.data },
+      });
+      return new_state;      
+    case LOAD_PACKITEM_RES:
+      new_state = update(state, {
+        packitems: { $set: action.res.data },
+      });
+      return new_state;  
     case SHOW_LOGIN:
       new_state = update(state, {
         show_login: { $set: action.visible },

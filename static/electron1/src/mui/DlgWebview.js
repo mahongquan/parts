@@ -26,7 +26,7 @@ class HtmlEditor extends Component {
     this.state = {
       show_about: false,
       filename_input: __dirname + '/../test/index.html',
-      filename: "about:blank",//__dirname + '/../test/index.html',
+      filename: 'about:blank', //__dirname + '/../test/index.html',
       canGoBack: false,
       canGoForward: false,
       failLoad: false,
@@ -35,7 +35,6 @@ class HtmlEditor extends Component {
     };
   }
   componentDidMount() {
-
     // console.log(this.w);
     // this.w.addEventListener("new-window",(e)=>{
     //   console.log(e);
@@ -45,19 +44,19 @@ class HtmlEditor extends Component {
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     //console.log(nextProps)
-    if (nextProps.url && nextProps.url!==this.props.url) {
-      this.setState({filename:nextProps.url})
+    if (nextProps.url && nextProps.url !== this.props.url) {
+      this.setState({ filename: nextProps.url });
     }
   }
   componentWillUnmount() {}
-  filename_input_change = e => {
+  filename_input_change = (e) => {
     this.setState({ filename_input: e.target.value });
   };
   go_click = () => {
     console.log('go');
     this.w.loadURL(this.state.filename_input);
   };
-  updatenavigate = e => {
+  updatenavigate = (e) => {
     this.setState({
       canGoForward: this.w.canGoForward(),
       canGoBack: this.w.canGoBack(),
@@ -113,101 +112,101 @@ class HtmlEditor extends Component {
     }
     const { classes } = this.props;
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-        fullScreen
-      >
-      <DialogContent>
-        <AppBar position="static">
-          <ToolBar>
-           <IconButton
-              color="inherit"
-              onClick={this.props.onClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <img alt=""
-            src={this.state.favicon}
-            style={{
-              lineHeight: '16px',
-              width: '16px',
-              height: '16px',
-              marginTop: '0px',
-              paddingTop: '0px',
-            }}
+      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen>
+        <DialogContent>
+          <AppBar position="static">
+            <ToolBar>
+              <IconButton
+                color="inherit"
+                onClick={this.props.onClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <img
+                alt=""
+                src={this.state.favicon}
+                style={{
+                  lineHeight: '16px',
+                  width: '16px',
+                  height: '16px',
+                  marginTop: '0px',
+                  paddingTop: '0px',
+                }}
               />
-            <Typography color="inherit" className={classes.grow}>
-              {this.state.title}
-            </Typography>
-          </ToolBar>
-        </AppBar>
-        <input
-          style={{ width: '330px' }}
-          onChange={this.filename_input_change}
-          value={this.state.filename_input}
-        />
-        <button onClick={this.go_click}>go</button>
-        <span
-          style={{
-            backgroundColor: '#f00',
-            display: this.state.failLoad ? 'inline' : 'none',
-          }}
-        >
-          fail
-        </span>
-        <button
-          onClick={() => {
-            this.w.reload();
-          }}
-        >
-          reload
-        </button>
-        {gobackbutton}
-        {goforwardbutton}
-        <button onClick={()=>{
-          this.w.openDevTools();
-        }}>dev</button>
-        <Webview
-          style={{width:"100%",height:"100%"}}
-          ref={this.webviewRef}
-          src={this.state.filename}
-          // onDomReady={this.onDomReady}
-          onPageTitleUpdated={e => {
-            this.setState({ title: e.title });
-          }}
-          onPageFaviconUpdated={e => {
-            // console.log(e);
-            this.setState({favicon:e.favicons[0]});
-          }}
-          onDidAttach={() => {
-            // console.log("onDidAttach======================================")
-            this.w = this.webviewRef.current; //document.getElementById("preview");
+              <Typography color="inherit" className={classes.grow}>
+                {this.state.title}
+              </Typography>
+            </ToolBar>
+          </AppBar>
+          <input
+            style={{ width: '330px' }}
+            onChange={this.filename_input_change}
+            value={this.state.filename_input}
+          />
+          <button onClick={this.go_click}>go</button>
+          <span
+            style={{
+              backgroundColor: '#f00',
+              display: this.state.failLoad ? 'inline' : 'none',
+            }}
+          >
+            fail
+          </span>
+          <button
+            onClick={() => {
+              this.w.reload();
+            }}
+          >
+            reload
+          </button>
+          {gobackbutton}
+          {goforwardbutton}
+          <button
+            onClick={() => {
+              this.w.openDevTools();
+            }}
+          >
+            dev
+          </button>
+          <Webview
+            style={{ width: '100%', height: '100%' }}
+            ref={this.webviewRef}
+            src={this.state.filename}
+            // onDomReady={this.onDomReady}
+            onPageTitleUpdated={(e) => {
+              this.setState({ title: e.title });
+            }}
+            onPageFaviconUpdated={(e) => {
+              // console.log(e);
+              this.setState({ favicon: e.favicons[0] });
+            }}
+            onDidAttach={() => {
+              // console.log("onDidAttach======================================")
+              this.w = this.webviewRef.current; //document.getElementById("preview");
               // window.w = this.w;
-            // console.log(this.w);
-            this.w.loadURL(this.state.filename);
-          }}
-          onDidNavigate={e => {
-            // console.log(e);
-            this.setState({ filename_input: e.url, failLoad: false });
-            this.updatenavigate();
-          }}
-          onConsoleMessage={e => {
-            // console.log(e);
-          }}
-          onDidFailLoad={() => {
-            this.updatenavigate();
-            this.setState({ failLoad: true });
-          }}
-          onNewWindow={e => {
-            // console.log(e.url);
-            // this.setState({ filename_input: e.url });
-            this.w.loadURL(e.url);
-          }}
-        >
-        </Webview>
-      </DialogContent>
+              // console.log(this.w);
+              this.w.loadURL(this.state.filename);
+            }}
+            onDidNavigate={(e) => {
+              // console.log(e);
+              this.setState({ filename_input: e.url, failLoad: false });
+              this.updatenavigate();
+            }}
+            onConsoleMessage={(e) => {
+              // console.log(e);
+            }}
+            onDidFailLoad={() => {
+              this.updatenavigate();
+              this.setState({ failLoad: true });
+            }}
+            onNewWindow={(e) => {
+              // console.log(e.url);
+              // this.setState({ filename_input: e.url });
+              this.w.loadURL(e.url);
+            }}
+          ></Webview>
+        </DialogContent>
       </Dialog>
     );
   }

@@ -1,8 +1,0 @@
-{
-  "parser": "babel-eslint",
-  "extends": "airbnb",
-  "rules": {
-    "react/no-find-dom-node": 0,
-    "react/prop-types": 0
-  }
-}

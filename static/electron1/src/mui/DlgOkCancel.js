@@ -15,27 +15,25 @@ export default class DlgOkCancel extends React.Component {
   };
   render = () => {
     return (
-        <Dialog open={this.props.open} onClose={this.props.onClose}>
-          <DialogTitle>
-          {this.props.prompt}
-          </DialogTitle>
-          <DialogActions>
-            <Button
-              variant="outlined"
-              className="btn btn-primary"
-              onClick={this.ok}
-            >
-              确定
-            </Button>
-            <Button
-              variant="outlined"
-              className="btn btn-primary"
-              onClick={this.props.onClose}
-            >
-              取消
-            </Button>
-          </DialogActions>
-        </Dialog>
+      <Dialog open={this.props.open} onClose={this.props.onClose}>
+        <DialogTitle>{this.props.prompt}</DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            className="btn btn-primary"
+            onClick={this.ok}
+          >
+            确定
+          </Button>
+          <Button
+            variant="outlined"
+            className="btn btn-primary"
+            onClick={this.props.onClose}
+          >
+            取消
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 }

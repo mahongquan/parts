@@ -26,7 +26,7 @@ class HtmlEditor extends Component {
     this.state = {
       show_about: false,
       filename_input: __dirname + '/../test/index.html',
-      filename: "http://www.baidu.com",//__dirname + '/../test/index.html',
+      filename: 'http://www.baidu.com', //__dirname + '/../test/index.html',
       canGoBack: false,
       canGoForward: false,
       failLoad: false,
@@ -35,18 +35,18 @@ class HtmlEditor extends Component {
     };
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.url && nextProps.url!==this.props.url) {
-      this.setState({filename:nextProps.url})
+    if (nextProps.url && nextProps.url !== this.props.url) {
+      this.setState({ filename: nextProps.url });
     }
   }
   componentWillUnmount() {}
-  filename_input_change = e => {
+  filename_input_change = (e) => {
     this.setState({ filename_input: e.target.value });
   };
   go_click = () => {
-    this.setState({filename:this.state.filename_input});
+    this.setState({ filename: this.state.filename_input });
   };
-  updatenavigate = e => {
+  updatenavigate = (e) => {
     this.setState({
       canGoForward: this.w.canGoForward(),
       canGoBack: this.w.canGoBack(),
@@ -102,71 +102,72 @@ class HtmlEditor extends Component {
     }
     const { classes } = this.props;
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-        fullScreen
-      >
-      <DialogContent>
-        <AppBar position="static">
-          <ToolBar>
-           <IconButton
-              color="inherit"
-              onClick={this.props.onClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <img alt=""
-            src={this.state.favicon}
-            style={{
-              lineHeight: '16px',
-              width: '16px',
-              height: '16px',
-              marginTop: '0px',
-              paddingTop: '0px',
-            }}
+      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen>
+        <DialogContent>
+          <AppBar position="static">
+            <ToolBar>
+              <IconButton
+                color="inherit"
+                onClick={this.props.onClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <img
+                alt=""
+                src={this.state.favicon}
+                style={{
+                  lineHeight: '16px',
+                  width: '16px',
+                  height: '16px',
+                  marginTop: '0px',
+                  paddingTop: '0px',
+                }}
               />
-            <Typography color="inherit" className={classes.grow}>
-              {this.state.title}
-            </Typography>
-          </ToolBar>
-        </AppBar>
-        <input
-          style={{ width: '330px' }}
-          onChange={this.filename_input_change}
-          value={this.state.filename_input}
-        />
-        <button onClick={this.go_click}>go</button>
-        <span
-          style={{
-            backgroundColor: '#f00',
-            display: this.state.failLoad ? 'inline' : 'none',
-          }}
-        >
-          fail
-        </span>
-        <button
-          onClick={() => {
-            this.w.reload();
-          }}
-        >
-          reload
-        </button>
-        {gobackbutton}
-        {goforwardbutton}
-        <button onClick={()=>{
-          this.w.openDevTools();
-        }}>dev</button>
-        <iframe
-          title="iframe1"
-          ref={this.webviewRef}
-          src={this.state.filename}
-          style={{ width: '100vw', height: '100vh' }}
-        >
-          {' '}
-        </iframe>
-      </DialogContent>
+              <Typography color="inherit" className={classes.grow}>
+                {this.state.title}
+              </Typography>
+            </ToolBar>
+          </AppBar>
+          <input
+            style={{ width: '330px' }}
+            onChange={this.filename_input_change}
+            value={this.state.filename_input}
+          />
+          <button onClick={this.go_click}>go</button>
+          <span
+            style={{
+              backgroundColor: '#f00',
+              display: this.state.failLoad ? 'inline' : 'none',
+            }}
+          >
+            fail
+          </span>
+          <button
+            onClick={() => {
+              this.w.reload();
+            }}
+          >
+            reload
+          </button>
+          {gobackbutton}
+          {goforwardbutton}
+          <button
+            onClick={() => {
+              this.w.openDevTools();
+            }}
+          >
+            dev
+          </button>
+          <iframe
+            title="iframe1"
+            ref={this.webviewRef}
+            src={this.state.filename}
+            style={{ width: '100vw', height: '100vh' }}
+          >
+            {' '}
+          </iframe>
+        </DialogContent>
       </Dialog>
     );
   }

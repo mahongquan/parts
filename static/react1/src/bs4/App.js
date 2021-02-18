@@ -18,10 +18,8 @@ import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgFolder2 from './DlgFolder2';
-// import DlgStat from './DlgMonthStat';
-// import DlgStat2 from './DlgYearStat';
-import DlgStat from './DlgStat';
-import DlgStat2 from './DlgStat2';
+import DlgStatMonth from './DlgStatMonth';
+import DlgStatYear from './DlgStatYear';
 import DlgImport from './DlgImport';
 import DlgImportHT from './DlgImportHT';
 import DlgCheck from './DlgCheck';
@@ -35,7 +33,6 @@ import myglobal from '../myglobal';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../react-datetime.css';
 import './index.css';
-import '../autosuggest.css';
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -70,8 +67,8 @@ export default class App extends Component {
       showDlgEdit: false,
       showDlgDetail: false,
       showDlgTodos: false,
-      showDlgStat:false,
-      showDlgStat2: false,
+      showDlgStatMonth:false,
+      showDlgStatYear: false,
       showDlgFolder2: false,
       showDlgWork:false,
     };
@@ -301,7 +298,7 @@ export default class App extends Component {
   };
   openDlgStat = () => {
     // this.dlgstat.current.open();
-    this.setState({showDlgStat:true});
+    this.setState({showDlgStatMonth:true});
   };
   openDlgLogin = () => {
     // console.log("openDlgLogin");
@@ -321,8 +318,8 @@ export default class App extends Component {
     this.setState({ showcontext: false });
   };
   render() {
-    console.log("render=========================");
-    console.log(this.state);
+    // console.log("render=========================");
+    // console.log(this.state);
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx}>
         <td>{contact.id}</td>
@@ -459,14 +456,14 @@ export default class App extends Component {
             this.setState({ showDlgDetail: false });
           }}
         />
-        <DlgStat showModal={this.state.showDlgStat}
+        <DlgStatMonth showModal={this.state.showDlgStatMonth}
           handleClose={() => {
-            this.setState({ showDlgStat: false });
+            this.setState({ showDlgStatMonth: false });
           }} />
-        <DlgStat2
-          showModal={this.state.showDlgStat2}
+        <DlgStatYear
+          showModal={this.state.showDlgStatYear}
           handleClose={() => {
-            this.setState({ showDlgStat2: false });
+            this.setState({ showDlgStatYear: false });
           }}
         />
         <DlgWorkMonth
@@ -513,7 +510,7 @@ export default class App extends Component {
               <Nav.Link
                 href="#"
                 onClick={() => {
-                  this.setState({ showDlgStat2: true });
+                  this.setState({ showDlgStatYear: true });
                 }}
               >
                 年统计

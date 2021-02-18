@@ -67,12 +67,6 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    let showbutton;
-    if (this.state.stopped) {
-      showbutton = 'block';
-    } else {
-      showbutton = 'none';
-    }
     console.log(this.state);
     return (
       <Dialog open={this.props.showModal} onClose={this.props.handleClose}>

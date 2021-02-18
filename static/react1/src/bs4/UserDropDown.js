@@ -11,10 +11,10 @@ class LoginFormComponent extends React.Component {
   };
   componentDidMount = () => {
     Client.users((res)=>{
-          console.log(res);
+          // console.log(res);
           if(res.success){
-            console.log("set users");
-            console.log(this.state);
+            // console.log("set users");
+            // console.log(this.state);
             this.setState({users:res.data});
           }
           else{
@@ -33,7 +33,7 @@ class LoginFormComponent extends React.Component {
     return (
       <DropdownButton
         variant="light"
-        title={this.props.title}
+        title={this.props.title||""}
         onClick={
           (e)=>{e.stopPropagation();}
         }

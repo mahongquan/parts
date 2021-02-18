@@ -1,37 +1,35 @@
 import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
 import TextField from '@material-ui/core/TextField';
-import Autosuggest from 'react-autosuggest';
-import Spinner from './react-spin';
-var _ = require('lodash');
+import SelectPack from './SelectPack'
+import myglobal from '../myglobal';
 class DlgCopyPack extends React.Component {
-  state = {
-    showModal: false,
-    error: '',
-    lbls: [],
-    values: [],
-    newPackName: '',
-    newname: '',
-    auto_value: '',
-    auto_items: [],
-    auto_loading: false,
-    stopped: true,
-  };
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      !_.isEqual(this.props, nextProps) ||
-      !_.isEqual(this.state, nextState)
-    ) {
-      return true;
-    } else {
-      return false;
+  constructor(props) {
+    super(props);
+    this.state = {
+      stopped: true,
+      error: '',
+      auto_value: '',
+      newname: '',
+    };
+    this.src_id=null;
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.showModal && this.props.showModal ) {
+      this.onShow();
+    } else if (prevProps.showModal && !this.props.showModal) {
+      this.onHide();
     }
   }
+  onShow = () => {
+    this.open();
+  };
+  onHide = () => {};
   newnameChange = event => {
     this.setState({ newname: event.target.value });
   };
@@ -45,43 +43,18 @@ class DlgCopyPack extends React.Component {
     Client.postForm('/rest/copypack/', data1, result => {
       self.setState({ error: result.message });
       this.setState({ stopped: true });
+    },(error)=>{
+      myglobal.app.show_webview(error.response.url);
     });
   };
-  onSuggestionsClearRequested = () => {};
-  auto_change = data => {
-    var value = data.value;
-    console.log('auto_change');
-    if (value.length > 1) {
-      Client.get('/rest/Pack', { search: value }, items => {
-        this.setState({ auto_items: items.data, auto_loading: false });
-      });
-    }
-  };
-  // auto_change=(event, value)=>{
-  //   console.log("auto_change");
-  //   if (value.length>1)
-  //   {
-  //     this.setState({ auto_value:value, auto_loading: true });
-  //     Client.get("/rest/Pack",{search:value} ,(items) => {
-  //         this.setState({ auto_items: items.data, auto_loading: false })
-  //     });
-  //   }
-  //   else{
-  //     this.setState({ auto_value:value, auto_loading: false });
-  //   };
-  // }
-  auto_select = (event, data) => {
+  auto_select = ( data) => {
     console.log('selected');
     console.log(data);
-    this.src_id = data.suggestion.id;
+    this.src_id = data.id;
     //this.setState({ auto_items: [ item ] })
-  };
-  close = () => {
-    this.setState({ showModal: false });
   };
   open = () => {
     this.setState({
-      showModal: true,
       stopped: true,
       error: '',
       auto_value: '',
@@ -94,35 +67,9 @@ class DlgCopyPack extends React.Component {
     this.setState({ auto_value: newValue });
   };
   render = () => {
-    const spinCfg = {
-      lines: 8, // The number of lines to draw
-      length: 5, // The length of each line
-      width: 30, // The line thickness
-      radius: 35, // The radius of the inner circle
-      scale: 0.25, // Scales overall size of the spinner
-      //corners: 1, // Corner roundness (0..1)
-      //color: '#ffffff', // CSS color or array of colors
-      //fadeColor: 'transparent', // CSS color or array of colors
-      // opacity: 0.25, // Opacity of the lines
-      // rotate: 0, // The rotation offset
-      // direction: 1, // 1: clockwise, -1: counterclockwise
-      // speed: 1, // Rounds per second
-      // trail: 60, // Afterglow percentage
-      // fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
-      // zIndex: 2e9, // The z-index (defaults to 2000000000)
-      top: '85px', // Top position relative to parent
-      left: '100px', // Left position relative to parent
-      //position: 'realative' // Element positioning
-    };
-    let showbutton;
-    if (this.state.stopped) {
-      showbutton = 'block';
-    } else {
-      showbutton = 'none';
-    }
     // console.log(this.state);
     return (
-      <Dialog open={this.state.showModal} onClose={this.close}>
+      <Dialog open={this.props.showModal} onClose={this.props.handleClose}>
         <DialogTitle>复制包</DialogTitle>
         <DialogContent>
           <table>
@@ -132,22 +79,9 @@ class DlgCopyPack extends React.Component {
                   <label>包名称:</label>
                 </td>
                 <td>
-                  <Autosuggest
-                    inputProps={{
-                      id: 'states-autocomplete',
-                      value: this.state.auto_value,
-                      onChange: this.onChange,
-                    }}
-                    onSuggestionSelected={this.auto_select}
-                    onSuggestionsFetchRequested={this.auto_change}
-                    onSuggestionsClearRequested={
-                      this.onSuggestionsClearRequested
-                    }
-                    getSuggestionValue={item => item.name}
-                    ref="autocomplete"
-                    suggestions={this.state.auto_items}
-                    renderSuggestion={item => <span>{item.name}</span>}
-                  />
+                  <SelectPack 
+                  value={this.state.auto_value}
+                  onChange={this.auto_select}/>
                 </td>
               </tr>
               <tr>
@@ -159,7 +93,7 @@ class DlgCopyPack extends React.Component {
                     id="nameto"
                     type="text"
                     onChange={this.newnameChange}
-                    size="15"
+                    size="medium"
                     value={this.state.newname}
                     maxLength="30"
                   />
@@ -167,21 +101,25 @@ class DlgCopyPack extends React.Component {
               </tr>
               <tr>
                 <td>
-                  <div>
-                    <Button
-                      style={{ display: showbutton }}
+                  <Button color="inherit"
+              variant="outlined" 
+              style={{
+                display: this.state.stopped ? '' : 'none',
+              }}
                       onClick={this.copy_pack}
-                    >
-                      复制
-                    </Button>
-                    <Spinner config={spinCfg} stopped={this.state.stopped} />
+                    >复制</Button>
+                  <div align="center"
+          style={{
+            display: this.state.stopped ? 'none' : '',
+          }}>
+                  <CircularProgress  color="secondary" />
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-
           <p>{this.state.error}</p>
+          <div style={{ minHeight: '200px' }} />
         </DialogContent>
       </Dialog>
     );

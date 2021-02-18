@@ -17,7 +17,7 @@ class DlgWait extends React.Component {
   open(contact_id) {
     var self = this;
     this.setState({ showModal: true });
-    Client.get('/rest/allfile', { id: contact_id }, function(result) {
+    Client.get('/rest/allfile', { id: contact_id }, function (result) {
       console.info(result);
       if (!result.success) {
         self.setState({ error: result.message });
@@ -28,13 +28,8 @@ class DlgWait extends React.Component {
   }
   render() {
     return (
-      <Dialog
-        open={this.state.showModal}
-        onClose={this.close}
-      >
-        <DialogTitle>
-          请等待。。。
-        </DialogTitle>
+      <Dialog open={this.state.showModal} onClose={this.close}>
+        <DialogTitle>请等待。。。</DialogTitle>
         <DialogContent>
           <div>{this.state.error}</div>
         </DialogContent>

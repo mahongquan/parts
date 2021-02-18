@@ -71,7 +71,7 @@ class DlgItems extends Component {
       "' and '" +
       end_date_s +
       "'";
-    Client.sql(cmd, contacts2 => {
+    Client.sql(cmd, (contacts2) => {
       console.log(contacts2);
       this.setState({
         items: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -92,7 +92,7 @@ class DlgItems extends Component {
       "' and '" +
       end_date_s +
       "'";
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       console.log(contacts2);
       this.setState({
         items2: contacts2.data, //.slice(0, MATCHING_ITEM_LIMIT),
@@ -105,7 +105,7 @@ class DlgItems extends Component {
       this.handleEdit(idx);
     });
   };
-  handleEdit = idx => {
+  handleEdit = (idx) => {
     let contact = this.state.items[idx];
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 =
@@ -113,16 +113,16 @@ class DlgItems extends Component {
       this.end_date_s +
       "' where id=" +
       contact.id;
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       console.log(contacts2);
       this.loaddata();
     });
   };
-  handleEdit2 = idx => {
+  handleEdit2 = (idx) => {
     let contact = this.state.items2[idx];
     let cmd2; //strftime('%Y',tiaoshi_date) as month,count(id) as ct
     cmd2 = 'update parts_contact set work_month=NULL where id=' + contact.id;
-    Client.sql(cmd2, contacts2 => {
+    Client.sql(cmd2, (contacts2) => {
       console.log(contacts2);
       this.loaddata();
     });
@@ -156,7 +156,7 @@ class DlgItems extends Component {
       </TableRow>
     );
   };
-  onSelectBaoxiang = e => {
+  onSelectBaoxiang = (e) => {
     this.setState({ baoxiang: e }, () => {
       this.loaddata();
     });

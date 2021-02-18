@@ -86,7 +86,7 @@ class DlgCheck extends React.Component {
         <td style={{ color: 'green' }}>{pack.right1}</td>
         <td style={{ color: 'green' }}>{pack.right2}</td>
       </tr>
-    ));
+    )); //accept="application/vnd.ms-excel"
     return (
       <Modal
         show={this.state.showModal}
@@ -104,7 +104,6 @@ class DlgCheck extends React.Component {
             <input
               style={{ margin: '10px 10px 10px 10px' }}
               id="file"
-              accept="application/vnd.ms-excel"
               type="file"
               name="file"
               ref={ref => (this.fileUpload = ref)}

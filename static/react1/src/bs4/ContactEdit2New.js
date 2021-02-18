@@ -90,13 +90,6 @@ class ContactEdit2New extends Component {
       // this.old.tiaoshi_date=moment(this.old.tiaoshi_date, "YYYY-MM-DD");
       this.setState({ hiddenPacks: false });
     }
-    this.old.dianqi = this.old.dianqi || '';
-    this.old.jixie = this.old.jixie || '';
-    this.old.redao = this.old.redao || '';
-    this.old.hongwai = this.old.hongwai || '';
-    this.old.channels = this.old.channels || '';
-    this.old.detail = this.old.detail || '';
-    this.old.addr = this.old.addr || '';
     var val1 = RichTextEditor.createValueFromString(this.old.detail, 'html');
     this.setState({ rich: val1 });
     this.setState({ contact: this.old });
@@ -310,7 +303,7 @@ class ContactEdit2New extends Component {
                     id="id"
                     name="id"
                     disabled="disabled"
-                    value={this.state.contact.id}
+                    value={this.state.contact.id||""}
                   />
                 </td>
                 <td>
@@ -322,7 +315,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="yonghu"
                     name="yonghu"
-                    value={this.state.contact.yonghu}
+                    value={this.state.contact.yonghu||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -335,7 +328,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="addr"
                     name="addr"
-                    value={this.state.contact.addr}
+                    value={this.state.contact.addr||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -345,7 +338,7 @@ class ContactEdit2New extends Component {
                     inputProps={{
                       id: 'channels-autocomplete',
                       style: { backgroundColor: this.state.bg.channels },
-                      value: this.state.contact.channels,
+                      value: this.state.contact.channels||"",
                       onChange: this.channels_change,
                     }}
                     suggestions={[
@@ -377,7 +370,7 @@ class ContactEdit2New extends Component {
                     inputProps={{
                       id: 'yiqixinghao-autocomplete',
                       style: { backgroundColor: this.state.bg.yiqixinghao },
-                      value: this.state.contact.yiqixinghao,
+                      value: this.state.contact.yiqixinghao||"",
                       onChange: this.yiqixinghao_change,
                     }}
                     suggestions={[
@@ -409,7 +402,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="yiqibh"
                     name="yiqibh"
-                    value={this.state.contact.yiqibh}
+                    value={this.state.contact.yiqibh||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -424,7 +417,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="baoxiang"
                     name="baoxiang"
-                    value={this.state.contact.baoxiang}
+                    value={this.state.contact.baoxiang||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -435,7 +428,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="shenhe"
                     name="shenhe"
-                    value={this.state.contact.shenhe}
+                    value={this.state.contact.shenhe||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -481,7 +474,7 @@ class ContactEdit2New extends Component {
                     type="text"
                     id="hetongbh"
                     name="hetongbh"
-                    value={this.state.contact.hetongbh}
+                    value={this.state.contact.hetongbh||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -493,7 +486,7 @@ class ContactEdit2New extends Component {
                     id="method"
                     name="method"
                     disabled={true}
-                    value={this.state.contact.method}
+                    value={this.state.contact.method||""}
                   />
                   {
                     //<button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
@@ -510,7 +503,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.dianqi }}
                     type="text"
                     name="dianqi"
-                    value={this.state.contact.dianqi}
+                    value={this.state.contact.dianqi||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -520,7 +513,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.jixie }}
                     type="text"
                     name="jixie"
-                    value={this.state.contact.jixie}
+                    value={this.state.contact.jixie||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -532,7 +525,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.hongwai }}
                     type="text"
                     name="hongwai"
-                    value={this.state.contact.hongwai}
+                    value={this.state.contact.hongwai||""}
                     onChange={this.handleChange}
                   />
                 </td>
@@ -542,7 +535,7 @@ class ContactEdit2New extends Component {
                     style={{ backgroundColor: this.state.bg.redao }}
                     type="text"
                     name="redao"
-                    value={this.state.contact.redao}
+                    value={this.state.contact.redao||""}
                     onChange={this.handleChange}
                   />
                 </td>
