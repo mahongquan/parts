@@ -3,7 +3,7 @@ import App from './bs4/App';
 import App_mui from './mui/App';
 import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
-import App_redux from './mui_redux/index';
+// import App_redux from './mui_redux/index';
 import App_use from './redux_use/index2';
 // import Picker from './Mpicker.js'
 import {HashRouter as Router, Route,Switch,Link} from 'react-router-dom'
@@ -36,7 +36,7 @@ class Routers extends Component{
                 <Route exact path="/contacts" component={App} />
                 <Route exact path="/todos" component={Todos} />
                 <Route exact path="/mui_todos" component={Todos_mui} />
-               <Route exact path="/mui_redux" component={App_redux} /> 
+               {/*<Route exact path="/mui_redux" component={App_redux} /> */}
                 <Route exact path="/mui_app" component={App_mui} />
                 <Route exact path="/index" component={Index} />
                 <Route component={App}/>

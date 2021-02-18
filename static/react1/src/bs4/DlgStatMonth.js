@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-// import DropdownButton from './DropdownButton';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import MenuItem from '@material-ui/core/MenuItem';
 import { Modal, DropdownButton, Dropdown } from 'react-bootstrap';
 import Client from './Client';
 import {
   ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip 
 } from 'recharts';
+import UserDropDown from "./UserDropDown";
 class DlgStat extends Component {
   state = {
     showModal: false,
@@ -70,7 +66,8 @@ class DlgStat extends Component {
       dialogClassName="modal-700px">
         <Modal.Header>月统计</Modal.Header>
         <Modal.Body>
-          <UserDropDown title="" onSelect={this.onClickBaoxiang} /><span>this.state.baoxiang</span>
+          <UserDropDown title="" onSelect={this.onClickBaoxiang} />
+          <span>{this.state.baoxiang}</span>
       <div style={{ width: '660px', height: 300 }}>
         <ResponsiveContainer>
           <ComposedChart

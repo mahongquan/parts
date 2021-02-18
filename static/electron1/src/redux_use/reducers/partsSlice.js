@@ -301,6 +301,12 @@ export const addUsePack = (data) => (dispatch) => {
     dispatch(actions.ADD_USEPACK_RES(res));
   });
 };
+export const allfile = (data) => (dispatch) => {
+  // var url = '/rest/PackItem';
+  // Client.post(url, data, (res) => {
+  //   dispatch(actions.ADD_PACKITEM_RES(res));
+  // });
+};
 export const addPackItem = (data) => (dispatch) => {
   var url = '/rest/PackItem';
   Client.post(url, data, (res) => {

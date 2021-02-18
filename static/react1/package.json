@@ -14,6 +14,7 @@
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
     "@material-ui/pickers": "3.2.10",
+    "@reduxjs/toolkit": "^1.5.0",
     "bootstrap": "latest",
     "caniuse-lite": "^1.0.30001183",
     "chart.js": "latest",

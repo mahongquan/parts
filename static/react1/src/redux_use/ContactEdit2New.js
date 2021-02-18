@@ -40,18 +40,17 @@ function ContactEdit2New(props) {
   });
   const handleCopy = (data) => {
     console.log('copy');
-    index = null;
     var contact2 = update(state.contact, { id: { $set: '' } });
     console.log(contact2);
     setState({ contact: contact2 });
-    props.store.dispatch({ type: types.hiddenPacks });
+    // props.store.dispatch({ type: types.hiddenPacks });
     // setState({ hiddenPacks: true });
   };
   const handleSave = () => {
     let dataSave = state.contact;
     dataSave.detail = state.rich.toString('html');
     props.store.actions.saveContact(dataSave, props.index, (res) => {
-      open2(0);
+      // open2(0);
     });
   };
   const channels_change = (newValue) => {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Client from './Client';
-import UserDropDown from "./UserDropDown";
 import {
   ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip 
 } from 'recharts';
+import UserDropDown from "./UserDropDown";
 // const CustomTooltip = ({ active, payload, label }) => {
 //   if (active) {
 //     return (

@@ -370,4 +370,8 @@ export const savePackItemEdit = (data) => (dispatch) => {
     dispatch(actions.PackItemEdit_SAVE_RES(res));
   });
 };
+export const allfile = (data) => (dispatch) => {
+};
+export const updateMethod = (data) => (dispatch) => {
+};
 export default partsSlice.reducer;
