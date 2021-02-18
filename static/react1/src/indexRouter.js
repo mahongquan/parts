@@ -4,6 +4,7 @@ import App_mui from './mui/App';
 import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
 import App_redux from './mui_redux/index';
+import App_use from './redux_use/index2';
 // import Picker from './Mpicker.js'
 import {HashRouter as Router, Route,Switch,Link} from 'react-router-dom'
 // import createHashHistory from "history/createHashHistory";
@@ -23,6 +24,7 @@ class Index extends Component{
                 <Link to="/mui_todos" >mui Todos</Link>
                 <Link to="/mui_app" >mui App</Link>
                 <Link to="/mui_redux" >mui_redux</Link>
+                <Link to="/app_use" >App use</Link>
               </div>);
   }
 }
@@ -30,6 +32,7 @@ class Routers extends Component{
   render=()=>{
     // console.log(this.props);
     return(<Switch>
+                <Route exact path="/app_use" component={App_use} />
                 <Route exact path="/contacts" component={App} />
                 <Route exact path="/todos" component={Todos} />
                 <Route exact path="/mui_todos" component={Todos_mui} />
