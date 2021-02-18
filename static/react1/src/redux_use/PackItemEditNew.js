@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
-import update from 'immutability-helper';
-import Client from './Client';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
 export default function PackItemEditNew(props) {
   const dispatch = useDispatch();

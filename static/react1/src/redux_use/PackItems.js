@@ -5,7 +5,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import PackItemEditNew from './PackItemEditNew';
-import update from 'immutability-helper';
 import Button from '@material-ui/core/Button';
 import DropdownButton from './DropdownButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,7 +12,6 @@ import Client from './Client.js';
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
 import SelectItem from './SelectItem';
-var _ = require('lodash');
 export default function PackItems(props) {
   const dispatch = useDispatch();
   const [state, set_state] = React.useState({
@@ -34,12 +32,6 @@ export default function PackItems(props) {
       const newFoods = state.items.concat(p);
       set_state({ items: newFoods });
     });
-  };
-  const handlePackItemChange = (idx, contact) => {
-    console.log(idx);
-    const contacts2 = update(state.items, { [idx]: { $set: contact } });
-    console.log(contacts2);
-    set_state({ items: contacts2 });
   };
   const addrow = (pack_id, item_id) => {
     var data = { pack: pack_id, itemid: item_id };

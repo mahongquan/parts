@@ -18,8 +18,8 @@ import {
   DatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-var _ = require('lodash');
-var moment = require('moment');
+// var _ = require('lodash');
+// var moment = require('moment');
 // eslint-disable-next-line
 var locale = require('moment/locale/zh-cn');
 const styles = {

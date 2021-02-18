@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import * as store from './reducers/partsSlice';
-import React, { Component } from 'react';
+import React from 'react';
 import UsePacks2 from './UsePacks2';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -56,10 +56,6 @@ function ContactEdit2New(props) {
   const channels_change = (newValue) => {
     change1(newValue);
   };
-  const channels_change_fetch = () => {};
-  const channels_select = (event, data) => {
-    change1(data.suggestion);
-  };
   const change1 = (item) => {
     dispatch(
       store.actions.CONTACT_EDIT_CHANGE({
@@ -70,9 +66,6 @@ function ContactEdit2New(props) {
   };
   const yiqixinghao_change = (newValue) => {
     change2(newValue);
-  };
-  const yiqixinghao_select = (event, data) => {
-    change2(data.suggestion);
   };
   const change2 = (item) => {
     dispatch(

@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PackItems from './PackItems';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import { useSelector, useDispatch } from 'react-redux';
-import * as store from './reducers/partsSlice';
+import { useSelector } from 'react-redux';
 export default function  UsePackEditNew(props){
   var usepack = useSelector((state) => state.parts.usepack);
     return (

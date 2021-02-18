@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import DropdownButton from './DropdownButton';
-import update from 'immutability-helper';
 import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
@@ -13,7 +11,7 @@ import DlgCheck from './DlgCheck';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
-import DlgDetail from './DlgDetail';
+// import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -113,9 +111,9 @@ function App(props) {
   const onLoginSubmit = (data) => {
     dispatch(slice.onLoginSubmit(data));
   };
-  const handleUserChange = (user) => {
-    props.slice.handleUserChange(user);
-  };
+  // const handleUserChange = (user) => {
+  //   props.slice.handleUserChange(user);
+  // };
   const handleLogout = () => {
     props.actions.handleLogout();
   };
@@ -217,10 +215,10 @@ function App(props) {
     // props.dispatch({type: types.SHOW_DLG_WAIT, visible: true,index:idx});
     dispatch(slice.updateMethod(contactid, idx));
   };
-  const openDlgItems = () => {
-    // dlgitems.current.open();
-    dispatch(slice.actions.SHOW_DLG_ITEMS(true));
-  };
+  // const openDlgItems = () => {
+  //   // dlgitems.current.open();
+  //   dispatch(slice.actions.SHOW_DLG_ITEMS(true));
+  // };
   const opendlgfolder = (contactid) => {
     // dlgfolder.current.open(contactid);
     props.actions.forlder(contactid);
@@ -228,10 +226,10 @@ function App(props) {
   const opendlgcheck = (idx) => {
     dispatch(slice.actions.SHOW_DLG_CHECK({ visible: true, index: idx }));
   };
-  const openDlgPacks = () => {
-    // dlgpacks.current.open();
-    dispatch(slice.actions.SHOW_DLG_PACK(true));
-  };
+  // const openDlgPacks = () => {
+  //   // dlgpacks.current.open();
+  //   dispatch(slice.actions.SHOW_DLG_PACK(true));
+  // };
   const openDlgCopyPack = () => {
     dispatch(slice.actions.SHOW_DLG_COPYPACK(true));
   };

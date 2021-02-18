@@ -1,12 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
-import * as store from './reducers/partsSlice';
+import { useSelector } from 'react-redux';
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Client from './Client';
-import update from 'immutability-helper';
 export default function DlgImport(props) {
   // const dispatch = useDispatch();
   const ref = React.useRef();
