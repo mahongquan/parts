@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import App from './bs4/App';
-import App_mui from './mui/App';
-import Todos from './todos/index';
+// import App_mui from './mui/App';
+// import Todos from './todos/index';
 import Todos_mui from './todos/index_mui';
 // import App_redux from './mui_redux/index';
 import App_use from './redux_use/index2';
@@ -20,10 +20,7 @@ class Index extends Component{
           ,justifyContent:"space-between"
           ,alignItems:"center"}}>
                 <Link to="/contacts" >bs4 App</Link>
-                <Link to="/todos" >bs4 Todos</Link>
                 <Link to="/mui_todos" >mui Todos</Link>
-                <Link to="/mui_app" >mui App</Link>
-                <Link to="/mui_redux" >mui_redux</Link>
                 <Link to="/app_use" >App use</Link>
               </div>);
   }
@@ -34,10 +31,7 @@ class Routers extends Component{
     return(<Switch>
                 <Route exact path="/app_use" component={App_use} />
                 <Route exact path="/contacts" component={App} />
-                <Route exact path="/todos" component={Todos} />
                 <Route exact path="/mui_todos" component={Todos_mui} />
-               {/*<Route exact path="/mui_redux" component={App_redux} /> */}
-                <Route exact path="/mui_app" component={App_mui} />
                 <Route exact path="/index" component={Index} />
                 <Route component={App}/>
               </Switch>);

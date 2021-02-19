@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import DropdownButton from './DropdownButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import MenuItem from '@material-ui/core/MenuItem';
 import Client from './Client';
 import {
   ResponsiveContainer,
@@ -14,6 +12,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from 'recharts';
+import UserDropDown from "./UserDropDown";
 class DlgStat extends Component {
   state = {
     error: '',
@@ -65,18 +64,8 @@ class DlgStat extends Component {
       <Dialog open={this.props.open} onClose={this.props.handleClose}>
         <DialogTitle>年统计</DialogTitle>
         <DialogContent>
-          <DropdownButton title={this.state.baoxiang}>
-            <MenuItem onClick={() => this.onClickBaoxiang('马红权')}>
-              马红权
-            </MenuItem>
-            <MenuItem onClick={() => this.onClickBaoxiang('陈旺')}>
-              陈旺
-            </MenuItem>
-            <MenuItem onClick={() => this.onClickBaoxiang('吴振宁')}>
-              吴振宁
-            </MenuItem>
-            <MenuItem onClick={() => this.onClickBaoxiang('%')}>*</MenuItem>
-          </DropdownButton>
+          <UserDropDown title="" onSelect={this.onClickBaoxiang} />
+          <span>{this.state.baoxiang}</span>
           <div style={{ width: '500px', height: 300 }}>
             <ResponsiveContainer>
               <ComposedChart

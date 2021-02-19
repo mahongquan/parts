@@ -95,6 +95,7 @@ function App(props) {
     console.log("one time")
     // window.addEventListener('keydown', handleKeyDown);
     dispatch(slice.loadCONTACT({start:start,limit:limit}));
+    dispatch(slice.load_user());
     // return () => {
     //   console.log("remove");
     //   window.removeEventListener('keydown', handleKeyDown);
@@ -163,7 +164,7 @@ function App(props) {
         baoxiang: baoxiang,
       })
     );
-    dispatch(slice.load_user());
+    
   };
   const handlePageChange = (e) => {
     dispatch(slice.actions.PAGE_CHANGE(e.target.value));

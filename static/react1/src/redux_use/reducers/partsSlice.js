@@ -22,7 +22,7 @@ var initialState = {
   usepacks: [],
   packitems: [],
   packs: [],
-  limit: 3,
+  limit: 10,
   user: 'AnonymousUser',
   search: '',
   start: 0,
