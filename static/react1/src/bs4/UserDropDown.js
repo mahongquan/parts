@@ -10,17 +10,9 @@ class LoginFormComponent extends React.Component {
     pwd: '333333',
   };
   componentDidMount = () => {
-    Client.users((res)=>{
-          // console.log(res);
-          if(res.success){
-            // console.log("set users");
-            // console.log(this.state);
-            this.setState({users:res.data});
-          }
-          else{
-            console.log("not success")
-          }
-        });
+    Client.cache_users((res)=>{
+            this.setState({users:res});
+    });
   };
   render = () => {
     const userMenu = this.state.users.map((user, idx) => (

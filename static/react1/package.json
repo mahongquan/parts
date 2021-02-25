@@ -35,7 +35,8 @@
     "redux-thunk": "latest"
   },
   "scripts": {
-  	"e":"esbuild --bundle --watch src/index_nocss.js --outfile=build/main.js --loader:.js=jsx",
+  	"e":"esbuild --define:process.env.NODE_ENV='dev' --sourcemap --bundle --watch src/index_nocss.js --outfile=build/main.js --loader:.js=jsx",
+    "h":"esbuild --help",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
