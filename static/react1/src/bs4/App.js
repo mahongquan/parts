@@ -30,9 +30,9 @@ import DlgPacks from './DlgPacks';
 import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth'
 import myglobal from '../myglobal';
-import 'bootstrap/dist/css/bootstrap.css';
-import '../react-datetime.css';
-import './index.css';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import '../react-datetime.css';
+// import './index.css';
 export default class App extends Component {
   constructor(props) {
     super(props);

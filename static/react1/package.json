@@ -35,6 +35,7 @@
     "redux-thunk": "latest"
   },
   "scripts": {
+  	"e":"esbuild --bundle --watch src/index_nocss.js --outfile=build/main.js --loader:.js=jsx",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
