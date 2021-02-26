@@ -189,7 +189,7 @@ export const partsSlice = createSlice({
     },
     LOAD_USER_RES: (state, action) => {
       console.log(action);
-      state.users = action.payload.data;
+      state.users = action.payload;
     },
     LOAD_PACKITEM_RES: (state, action) => {
       state.pack_id = action.payload.pack_id;
@@ -353,12 +353,8 @@ export const onLoginSubmit = (data) => (dispatch) => {
   });
 };
 export const load_user=()=>dispatch=>{
-  Client.users((res) => {
-    if (res.success) {
+  Client.cache_users((res) => {
       dispatch(actions.LOAD_USER_RES(res));
-    } else {
-      console.log('not success');
-    }
   });
 }
 export const loadCONTACT = (data) => (dispatch) => {
