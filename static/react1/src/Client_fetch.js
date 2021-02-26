@@ -110,6 +110,23 @@ function users( cb) {
   var data = {};
   return get('/rest/view_user/',data,  cb);
 }
+var users_c=null;
+function cache_users(cb){
+  if(users_c===null){
+    users((res)=>{
+      if(res.success){
+        users_c=res.data;
+        cb(users_c);
+      }
+      else{
+        console.log("not success")
+      }
+    });
+  }
+  else{
+    cb(users_c);
+  }
+}
 function items(query, cb) {
   var data = { search: query };
   return get('/rest/Item/', data, cb);
@@ -165,6 +182,7 @@ const Client = {
   contacts,
   items,
   users,
+  cache_users,
   login_index,
   login,
   logout,

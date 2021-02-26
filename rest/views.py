@@ -32,7 +32,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from myutil import MyEncoder
 import traceback
-import xlrd
+from openpyxl import load_workbook
 from django.db import connection,transaction
 from docx import Document
 # @transaction.commit_on_success
@@ -1101,16 +1101,58 @@ def check(request):
         # try to write file to the dir.
     res={"success":True, "result":(left,notequal,right)}
     return HttpResponse(json.dumps(res, ensure_ascii=False))    
-def readStandardFile(fn,filename):
-    book = xlrd.open_workbook(file_contents=fn)
-    table=book.sheets()[0]
-    nrows = table.nrows
-    ncols = table.ncols
+def show_row(row):
+    r=""
+    for c in row:
+        r+=c.value
+    print(r)
+def treatOne(rows,fn,at):
+    logging.info(rows)
+    r=None
+    beizhu=rows[3][3].value
+    print(beizhu)
+    if beizhu[:2]=="CS" or beizhu[:2]=="ON" or beizhu[:2]=="NH" or beizhu[:3]=="DON" or beizhu[:3]=="DCS":
+        name=beizhu+"_"+str(at)+"_"+fn
+        d=Pack.objects.filter(name=name)
+        logging.info(d)
+        if len(d)>0:
+            pass
+        else:
+            d=Pack()
+            d.name=name
+            d.save()
+            n=len(rows)
+            items_xls=rows[6:n]
+            for i in items_xls:
+                show_row(i)
+                # input("show")
+                if i[0].value=="":
+                    break
+                items=Item.objects.filter(bh=i[0].value).all()
+                if len(items)>1:
+                    item=items[0]
+                else:
+                    item=Item()
+                item.bh=i[0].value
+                item.name=i[1].value
+                item.danwei=i[2].value
+                item.save()
+                di=PackItem()
+                di.pack=d
+                di.item=item
+                di.ct=i[4].value
+                di.save()
+            r={"id":d.id,"name":d.name}
+    return r
+
+def readStandardFile(book,filename):
+    table=book.worksheets[0]
     begin=False
     dan=[]
-    for i in range(nrows ):
-        cells=table.row_values(i)
-        if cells[0]=="其他入库单":
+    for i in table.rows:
+        cells=i
+        print(cells[0].value)
+        if cells[0].value=="库存其它入库单":
             if not begin:
                 begin=True
                 onedan=[]
@@ -1134,44 +1176,6 @@ def readStandardFile(fn,filename):
             rs.append(r)
         at+=1
     return rs
-def treatOne(rows,fn,at):
-    logging.info(rows)
-    r=None
-    beizhu=rows[1][7]
-    if beizhu[:2]=="CS" or beizhu[:2]=="ON" or beizhu[:3]=="DON" or beizhu[:3]=="DCS":
-        name=rows[1][7]+"_"+str(at)+"_"+fn
-        d=Pack.objects.filter(name=name)
-        logging.info(d)
-        if len(d)>0:
-            pass
-        else:
-            d=Pack()
-            d.name=name
-            d.save()
-            n=len(rows)
-            items=rows[4:n]
-            for i in items:
-                #i=DanjuItem()
-                if i[0]=="合计":
-                    break
-                print(i[1],i[2],i[3],i[4],i[5])
-                items=Item.objects.filter(bh=i[1]).all()
-                if len(items)>1:
-                    item=items[0]
-                else:
-                    item=Item()
-                item.bh=i[1]
-                item.name=str(i[2])+" "+str(i[1])
-                item.guige=i[3]
-                item.danwei=i[4]
-                item.save()
-                di=PackItem()
-                di.pack=d
-                di.item=item
-                di.ct=i[5]
-                di.save()
-            r={"id":d.id,"name":d.name}
-    return r
 def standard(request):
     # right, so 'file' is the name of the file upload field
     #print request.FILES
@@ -1180,7 +1184,7 @@ def standard(request):
     logging.info(dir(f))
     filename = f.name
     filetype = f.content_type
-    packs=readStandardFile(f.read(),filename)
+    packs=readStandardFile(load_workbook(f),filename)
     res={"success":True, "result":packs}
     return HttpResponse(json.dumps(res, ensure_ascii=False))   
 def readHtFile(fn,filename):

@@ -114,7 +114,7 @@ class DlgImport extends React.Component {
             <input
               style={{ margin: '10px 10px 10px 10px' }}
               id="file"
-              accept="application/vnd.ms-excel"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               type="file"
               name="file"
               ref={ref => (this.fileUpload = ref)}

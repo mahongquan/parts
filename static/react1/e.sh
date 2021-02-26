@@ -1,0 +1,1 @@
+esbuild --define:process.env.NODE_ENV=\"production\" --sourcemap --bundle --watch src/index.js --outfile=dist/main.js --loader:.js=jsx

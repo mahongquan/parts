@@ -35,6 +35,8 @@
     "redux-thunk": "latest"
   },
   "scripts": {
+  	"e":"esbuild --define:process.env.NODE_ENV=\"production\" --sourcemap --bundle --watch src/index.js --outfile=dist/main.js --loader:.js=jsx",
+    "h":"esbuild --help",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

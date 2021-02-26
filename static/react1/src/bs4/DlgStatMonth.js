@@ -60,7 +60,7 @@ class DlgStat extends Component {
     }
   };
   render = () => {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <Modal show={this.props.showModal} onHide={this.props.handleClose} 
       dialogClassName="modal-700px">
