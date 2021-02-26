@@ -1111,7 +1111,7 @@ def treatOne(rows,fn,at):
     r=None
     beizhu=rows[3][3].value
     print(beizhu)
-    if beizhu[:2]=="CS" or beizhu[:2]=="ON" or beizhu[:2]=="NH" or beizhu[:3]=="DON" or beizhu[:3]=="DCS":
+    if beizhu[:2]=="CS" or beizhu[:2]=="ON" or beizhu[:2]=="OH" or beizhu[:2]=="NH" or beizhu[:3]=="DON" or beizhu[:3]=="DCS":
         name=beizhu+"_"+str(at)+"_"+fn
         d=Pack.objects.filter(name=name)
         logging.info(d)
