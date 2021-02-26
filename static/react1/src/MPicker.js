@@ -5,7 +5,7 @@ import {
   DatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-var locale = require('moment/locale/zh-cn');
+// var locale = require('moment/locale/zh-cn');
 function App() {
   const [selectedDate, handleDateChange] = useState(new Date());
 

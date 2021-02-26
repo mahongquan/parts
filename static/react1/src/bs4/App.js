@@ -17,7 +17,7 @@ import DlgLogin from './DlgLogin';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-import DlgFolder2 from './DlgFolder2';
+// import DlgFolder2 from './DlgFolder2';
 import DlgStatMonth from './DlgStatMonth';
 import DlgStatYear from './DlgStatYear';
 import DlgImport from './DlgImport';
@@ -69,7 +69,7 @@ export default class App extends Component {
       showDlgTodos: false,
       showDlgStatMonth:false,
       showDlgStatYear: false,
-      showDlgFolder2: false,
+      // showDlgFolder2: false,
       showDlgWork:false,
     };
   }
@@ -284,9 +284,9 @@ export default class App extends Component {
   opendlgfolder = contactid => {
     this.dlgfolder.current.open(contactid);
   };
-  opendlgfolder2 = contactid => {
-    this.setState({ showDlgFolder2: true });
-  };
+  // opendlgfolder2 = contactid => {
+  //   this.setState({ showDlgFolder2: true });
+  // };
   opendlgcheck = (contactid, yiqibh) => {
     this.dlgcheck.current.open(contactid, yiqibh);
   };
@@ -364,9 +364,9 @@ export default class App extends Component {
             <Dropdown.Item onSelect={() => this.opendlgfolder(contact.id)}>
               资料文件夹
             </Dropdown.Item>
-            <Dropdown.Item style={{display:"none"}} onSelect={() => this.opendlgfolder2(contact.id)}>
+{/*            <Dropdown.Item style={{display:"none"}} onSelect={() => this.opendlgfolder2(contact.id)}>
               资料文件夹2
-            </Dropdown.Item>
+            </Dropdown.Item>*/}
           </DropdownButton>
         </td>
         <td>{contact.yiqixinghao}</td>
@@ -473,12 +473,12 @@ export default class App extends Component {
             this.setState({ showDlgWork: false });
           }}
         />
-        <DlgFolder2
+{/*        <DlgFolder2
           showModal={this.state.showDlgFolder2}
           close={() => {
             this.setState({ showDlgFolder2: false });
           }}
-        />
+        />*/}
         <ContactEdit2New
           showModal={this.state.showDlgEdit}
           handleClose={() => {

@@ -22,7 +22,7 @@ var initialState = {
   usepacks: [],
   packitems: [],
   packs: [],
-  limit: 3,
+  limit: 10,
   user: 'AnonymousUser',
   search: '',
   start: 0,
@@ -301,12 +301,6 @@ export const addUsePack = (data) => (dispatch) => {
     dispatch(actions.ADD_USEPACK_RES(res));
   });
 };
-export const allfile = (data) => (dispatch) => {
-  // var url = '/rest/PackItem';
-  // Client.post(url, data, (res) => {
-  //   dispatch(actions.ADD_PACKITEM_RES(res));
-  // });
-};
 export const addPackItem = (data) => (dispatch) => {
   var url = '/rest/PackItem';
   Client.post(url, data, (res) => {
@@ -375,5 +369,9 @@ export const savePackItemEdit = (data) => (dispatch) => {
   Client.postOrPut(url, data, (res) => {
     dispatch(actions.PackItemEdit_SAVE_RES(res));
   });
+};
+export const allfile = (data) => (dispatch) => {
+};
+export const updateMethod = (data) => (dispatch) => {
 };
 export default partsSlice.reducer;

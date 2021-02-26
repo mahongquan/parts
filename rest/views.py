@@ -89,7 +89,7 @@ def inItems(item,items):
     for i in range(len(items)):
         if items[i][0]==item[0]:
             inIt=True
-            if float(items[i][2])==float(item[2]):
+            if items[i][2]==item[2]:
                 equal=True
             v=items[i]
             items.remove(items[i])
@@ -1063,11 +1063,10 @@ def readBeiliaofile(fn):
     ncols = table.ncols
     begin=False
     dan=[]
-    for i in range(nrows-13):
+    for i in range(nrows-7):
         #print(i,table.row_values(i)[0])
-        cells=table.row_values(11+i)
-        logging.info(len(cells))
-        dan.append((cells[1],cells[2],cells[12]))#bh,name,ct
+        cells=table.row_values(7+i)
+        dan.append((cells[0],cells[1],cells[7]))#bh,name,ct
     return dan
 def check(request):
     contactid=int(request.POST.get("id"))
@@ -1109,7 +1108,6 @@ def readStandardFile(fn,filename):
     ncols = table.ncols
     begin=False
     dan=[]
-    onedan=None
     for i in range(nrows ):
         cells=table.row_values(i)
         if cells[0]=="其他入库单":
@@ -1175,25 +1173,16 @@ def treatOne(rows,fn,at):
             r={"id":d.id,"name":d.name}
     return r
 def standard(request):
-    try:
-        # right, so 'file' is the name of the file upload field
-        #print request.FILES
-        logging.info(request.FILES)
-        f= request.FILES[ 'file' ]
-        logging.info(dir(f))
-        filename = f.name
-        filetype = f.content_type
-        packs=readStandardFile(f.read(),filename)
-        res={"success":True, "result":packs}
-        return HttpResponse(json.dumps(res, ensure_ascii=False))   
-    except:
-        message=""
-        info = sys.exc_info()
-        for file, lineno, function, text in traceback.extract_tb(info[2]):
-            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
-        message+= "** %s: %s" % info[:2]
-        out={"success":False,"message":message}
-        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # right, so 'file' is the name of the file upload field
+    #print request.FILES
+    logging.info(request.FILES)
+    f= request.FILES[ 'file' ]
+    logging.info(dir(f))
+    filename = f.name
+    filetype = f.content_type
+    packs=readStandardFile(f.read(),filename)
+    res={"success":True, "result":packs}
+    return HttpResponse(json.dumps(res, ensure_ascii=False))   
 def readHtFile(fn,filename):
     try:
         document = Document(fn)
@@ -1494,7 +1483,7 @@ def showcontact(request):
     dic["totalid"]=len(items)
     return HttpResponse(json.dumps(dic, ensure_ascii=False,cls=MyEncoder))     
 def allfile(request):
-    try:
+    #try:
         contact_id=request.GET["id"]
         c=Contact.objects.get(id=contact_id)
         thename=c.yonghu.replace(" ","")
@@ -1567,14 +1556,14 @@ def allfile(request):
             os.system('start '+p)
         out={"success":True}
         return HttpResponse(json.dumps(out, ensure_ascii=False))
-    except:
-        message=""
-        info = sys.exc_info()
-        for file, lineno, function, text in traceback.extract_tb(info[2]):
-            message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
-        message+= "** %s: %s" % info[:2]
-        out={"success":False,"message":message}
-        return HttpResponse(json.dumps(out, ensure_ascii=False))
+    # except:
+    #     message=""
+    #     info = sys.exc_info()
+    #     for file, lineno, function, text in traceback.extract_tb(info[2]):
+    #         message+= "%s line:, %s in %s: %s\n" % (file,lineno,function,text)
+    #     message+= "** %s: %s" % info[:2]
+    #     out={"success":False,"message":message}
+    #     return HttpResponse(json.dumps(out, ensure_ascii=False))
 def folder(request):
     contact_id=request.GET["id"]
     c=Contact.objects.get(id=contact_id)
@@ -1594,7 +1583,7 @@ def folder(request):
         os.system('start '+p)
     out={"success":True}
     return HttpResponse(json.dumps(out, ensure_ascii=False))    
-@login_required
+# @login_required
 def todo(request):
     logging.info("===================")
     logging.info(request)
@@ -1659,5 +1648,5 @@ def destroy_todo(request):
     rec=Todo.objects.get(id=id1)
     rec.delete()
     output={"success":True,"message":"OK"}
-    output["data"]={"id":rec.id}
+    output["data"]={"id":id1}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
