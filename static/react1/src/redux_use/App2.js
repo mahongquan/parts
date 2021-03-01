@@ -407,9 +407,8 @@ function App(props) {
             </MenuItem>
           </DropdownButton>
           <UserDropDown
-          
-                titile="包箱2"
-                onSelect={this.onSelectBaoxiang}
+                title="包箱"
+                onSelect={onSelectBaoxiang}
           />
 
           <InputBase

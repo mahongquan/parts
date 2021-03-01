@@ -53,6 +53,9 @@ export const partsSlice = createSlice({
   name: 'parts',
   initialState: initialState,
   reducers: {
+    SHOW_DLG_WAIT:(state, action) => {
+      state.showdlgWait=action.payload;
+    },
     PackItemEdit_SAVE: (state, action) => {
     },
     DELETE_PACKITEM: (state, action) => {
@@ -75,7 +78,10 @@ export const partsSlice = createSlice({
       var res = action.payload;
       console.log(res);
       state.usepacks = state.usepacks.concat(res.data);
-    },    
+    },   
+    ALLFILE_ERR:(state, action) => {
+      state.allfile_err = action.payload;
+    },   
     SEARCH_CHANGE: (state, action) => {
       state.search = action.payload;
     },
@@ -366,8 +372,22 @@ export const savePackItemEdit = (data) => (dispatch) => {
     dispatch(actions.PackItemEdit_SAVE_RES(res));
   });
 };
+
 export const allfile = (data) => (dispatch) => {
+  console.log("allfile")
 };
-export const updateMethod = (data) => (dispatch) => {
+export const updateMethod = (contact_id, idx) => (dispatch) => {
+  console.log("updateMethod")
+    dispatch(actions.SHOW_DLG_WAIT(true));// { type: SHOW_DLG_WAIT, visible:true});
+    Client.get('/rest/updateMethod', { id: contact_id }, (result)=>{
+      console.info(result);
+      if (!result.success) {
+        dispatch(actions.ALLFILE_ERR(result.message));
+      } else {
+        dispatch(actions.SHOW_DLG_WAIT(false));
+      }
+    },(error)=>{
+      dispatch(actions.ALLFILE_ERR(error));
+    });
 };
 export default partsSlice.reducer;
