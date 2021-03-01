@@ -11,6 +11,7 @@ import DlgCheck from './DlgCheck';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
 import DlgPacks from './DlgPacks';
+import UserDropDown from "./UserDropDown";
 // import DlgDetail from './DlgDetail';
 import DlgWorkMonth from './DlgWorkMonth';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -405,16 +406,11 @@ function App(props) {
               年
             </MenuItem>
           </DropdownButton>
-          <DropdownButton title={'包箱:' + baoxiang} id="id_dropdown2">
-            <MenuItem onClick={() => onSelectBaoxiang('')}>*</MenuItem>
-            <MenuItem onClick={() => onSelectBaoxiang('马红权')}>
-              马红权
-            </MenuItem>
-            <MenuItem onClick={() => onSelectBaoxiang('陈旺')}>陈旺</MenuItem>
-            <MenuItem onClick={() => onSelectBaoxiang('吴振宁')}>
-              吴振宁
-            </MenuItem>
-          </DropdownButton>
+          <UserDropDown
+          
+                titile="包箱2"
+                onSelect={this.onSelectBaoxiang}
+          />
 
           <InputBase
             onKeyPress={keypress}
