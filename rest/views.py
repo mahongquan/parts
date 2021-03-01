@@ -1652,5 +1652,5 @@ def destroy_todo(request):
     rec=Todo.objects.get(id=id1)
     rec.delete()
     output={"success":True,"message":"OK"}
-    output["data"]={"id":rec.id}
+    output["data"]={"id":id1}
     return HttpResponse(json.dumps(output, ensure_ascii=False))
