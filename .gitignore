@@ -1,6 +1,7 @@
 django
 *.lock
 *.pyc
+*.js.map
 *~
 media/*
 rest_framework/*
